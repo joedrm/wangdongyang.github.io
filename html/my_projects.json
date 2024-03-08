@@ -1,0 +1,268 @@
+[
+    {
+        "projuct_id": 1,
+        "imgs": [
+            "https://s2.loli.net/2022/07/20/9qHY3mylBCKn5t8.jpg",
+            "https://s2.loli.net/2022/07/20/bdBYlmLfSiDUJPM.jpg",
+            "https://s2.loli.net/2022/07/20/ubAprcSdTe6n3Va.jpg"
+        ],
+        "project_name": "简悦(免费开源项目)",
+        "duration": "历时1个月",
+        "player": "独立开发",
+        "skill_list": "Flutter + Dart + MVVM + Provider + GET + audioplayers + Swift + Java",
+        "intro": "一款支持支持网易、酷狗、酷我、百度和咪咕音乐的播放器。",
+        "skill_points": [
+            
+        ],
+        "skill_intro": "混合多平台开发，支持移动端和PC端，音乐播放器，逆向加密算法，本地化数据存储等",
+        "down_urls": [
+            {
+                "platform": "iOS",
+                "url": "https://hopemkw.github.io/"
+            }
+        ]
+    },
+    {
+        "projuct_id": 1,
+        "imgs": [
+            "https://ftp.bmp.ovh/imgs/2020/11/6fa7e0dd70ec1a31.png",
+            "https://ftp.bmp.ovh/imgs/2020/12/d96cb418a081d6ad.png",
+            "https://ftp.bmp.ovh/imgs/2020/12/7a3f9b9c4145342e.png",
+            "https://gitee.com/mzxj/blog_pic/raw/master/imgs/20220121133210.png"
+        ],
+        "project_name": "生迪智能照明",
+        "duration": "历时3个月",
+        "player": "独立开发",
+        "skill_list": "Flutter + Dart + MVVM + Provider + EventBus + MQTT + Swift + Java + Jpush",
+        "intro": "生迪智能照明是通过智能终端来控制照明设备的情景的切换，控制设备有手机App、PIR人感、光感、遥控器和面板开关，控制参数有灯的亮度、色温、定时开关等，主要使用行业包括：教育、办公和商业，并针对不同行业的需求做了设备和情景的定制。Flutter开发，目前已经迭代了2个版本。",
+        "skill_points": [
+            "使用Flutter作为主要开发语言来开发双端App（iOS、Android），不同的屏幕做适配，其中还包括 Android Pad 等。",
+            "MVVM 架构，把业务处理层、网络请求和UI显示层做单独的封装，将 VIewModel 继承 ChangeNotifier， 在 ViewModel 里封装请求参数、发送网络请求、解析JSON数据并通知给持有 ViewModel 的页面 Page（UI显示层）刷新数据，而页面 Page 及其子Widget的数据的改变也会同步到VIewModel的属性中，三层各司其职，降低耦合，增加代码的可读性。",
+            "集成MQTT，生迪智能照明涉及到网关、服务器和App三端通信，App上数据的修改从发送到收到结果耗时太长，改成MQTT通信后，网关直接将结果告诉App，大大减少了响应时间。",
+            "国际化多语言适配、图表显示耗电、设备入网（扫描局域网内的网关、电机等设备后Socket通信同步到后端）。"
+        ],
+        "skill_intro": "Flutter + Dart开发，屏幕适配；MVVM 架构；MQTT直接和网关通信；国际化多语言适配、图表显示耗电、设备入网局域网内Socket通信…",
+        "down_urls": [
+            {
+                "platform": "iOS",
+                "url": "https://ftp.bmp.ovh/imgs/2020/11/6fa7e0dd70ec1a31.png"
+            }
+        ]
+    },
+    {
+        "projuct_id": 1,
+        "imgs": [
+            "https://s2.loli.net/2022/11/02/Fpkvlh4YUEnmzaL.jpg",
+            "https://s2.loli.net/2022/11/02/iCfbAPp1M5oKwYn.jpg",
+            "https://s2.loli.net/2022/11/02/Gu1Ib2xKVgkqevZ.jpg"
+        ],
+        "project_name": "房贷计算器小程序",
+        "duration": "历时0.5个月",
+        "player": "独立开发",
+        "skill_list": "Uniapp + Vue + JS + CSS + HTML + 腾讯云服务",
+        "intro": "商业、公积金和组合贷款的各种计算，计算分别展示出等额本金和等额本息结果对面",
+        "skill_points": [
+            
+        ],
+        "skill_intro": "多平台小程序开发，兼容微信和支付宝小程序、iOS和Android App",
+        "down_urls": [
+            {
+                "platform": "iOS",
+                "url": "https://hopemkw.github.io/"
+            }
+        ]
+    },
+    {
+        "projuct_id": 2,
+        "imgs": [
+            "https://ftp.bmp.ovh/imgs/2020/11/7244d3fa53765d24.png"
+        ],
+        "project_name": "客眸",
+        "duration": "历时2个月",
+        "player": "独立开发",
+        "skill_list": "Swift + OC + C/C++ + FunSDK + Alamofire + SnapKit + Charts + Flutter",
+        "intro": "客眸是生迪智能巡店的App，适用于连锁型企业提供基于视频的可视化管理和大数据的营销服务",
+        "skill_points": [
+            "独立开发和维护客眸iOS客户端App。",
+            "拉取摄像头、PTZ等设备视频流数据并实时播放预览，处理视频播放的参数和播放控制。",
+            "解决Swift + OC + C/C混编的问题，抽取 OC + C/C 混编的业务类，提供调用的中间者供多个项目使用。",
+            "组件化开发，将巡店预览模块（包括实时视频巡店、本地巡店、图片编辑）等业务模块独立出来，单独维护，作为私有库集成到宿主工程。",
+            "Flutter 和原生混合开发，部分业务（访客详情页）是Flutter来实现，通过MessageChannel相互通信。",
+            "热力图算法绘制、统计图表、极光推送等。"
+        ],
+        "skill_intro": "iOS 原生开发，Swift语言，处理Swift + OC + C/C混编的问题，组件化开发；Flutter 混合开发；热力图算法绘制、统计图表、极光推送等…",
+        "down_urls": [
+            {
+                "platform": "iOS",
+                "url": "https://ftp.bmp.ovh/imgs/2020/11/6fa7e0dd70ec1a31.png"
+            }
+        ]
+    },
+    {
+        "projuct_id": 3,
+        "imgs": [
+            "https://ftp.bmp.ovh/imgs/2020/11/7244d3fa53765d24.png"
+        ],
+        "project_name": "简历小程序",
+        "duration": "历时1个月",
+        "player": "独立开发",
+        "skill_list": "Wepy + Sketch",
+        "intro": "个人的简历小程序",
+        "skill_points": [],
+        "skill_intro": "独立设计与开发",
+        "down_urls": []
+    },
+    {
+        "projuct_id": 4,
+        "imgs": [
+            "https://ftp.bmp.ovh/imgs/2020/11/be57e0072bda07b8.png"
+        ],
+        "project_name": "智托芯(智学芯)教师端",
+        "duration": "历时1.5个月",
+        "player": "4人",
+        "skill_list": "Flutter + iOS原生 + Android原生",
+        "intro": "",
+        "skill_points": [],
+        "skill_intro": "Flutter 的外包私活项目，智能托辅产品教师端App，负责的功能：发布作业、班级管理、任务查看，常用Widget的封装。",
+        "down_urls": []
+    },
+    {
+        "projuct_id": 5,
+        "imgs": [
+            "https://ftp.bmp.ovh/imgs/2020/11/7244d3fa53765d24.png"
+        ],
+        "project_name": "钱牛牛",
+        "duration": "2017年8月 - 2019年12月",
+        "player": "2个人",
+        "skill_list": "Swift + OC + Week + Alamofire + SnapKit + React + RSA",
+        "intro": "出借端项目，为个人用户提供小额出借和承接业务",
+        "skill_points": [
+            "主导探索和实践移动端跨平台开发，从H5到Weex，再到Flutter，寻求跨平台开发与业务的最佳结合，目前Weex作为备选方案，Flutter已经替代了原生的部分页面。",
+            "多个APP之间公共模块私有库、通用导航栏优化、公用UI组件、混合加密、崩溃和卡顿监控、埋点、日志收集、电量包体积优化等"
+        ],
+        "skill_intro": "iOS 原生为主，H5、Weex混合开发，由OC切换到Swift，Swift代码占90%，导航栏优化、启动优化、包体积优化，线上Bug追踪的修复。",
+        "down_urls": [
+            {
+                "platform": "iOS",
+                "url": "https://ftp.bmp.ovh/imgs/2020/11/6fa7e0dd70ec1a31.png"
+            }
+        ]
+    },
+    {
+        "projuct_id": 6,
+        "imgs": [
+            "https://ftp.bmp.ovh/imgs/2020/12/5705c2d63d1066f0.png",
+            "https://ftp.bmp.ovh/imgs/2020/12/b70cadeba0e786b8.jpg"
+        ],
+        "project_name": "超级签名后端+Web端",
+        "duration": "2019年8月 - 2019年10月",
+        "player": "2个人",
+        "skill_list": "iOS+ Vue + ElementUI + Spring + SpringMVC +MyBatis + Radis",
+        "intro": "超级签名是公司内部用个人账户来分发安装iOS包的项目，其原理就是使用了苹果提供给开发者的Ad- Hoc分发通道，把安装设备当做开发设备进行分发，通过Web上传ipa原包后，iPhone 手机端扫描二维码安装。主导了整个原理梳理和逻辑实现，主要用于公司内部的App应用的安装和特殊途径的安装。",
+        "skill_points": [
+            "iOS 签名机制，脱离Mac系统的iOS自动签名的实现。",
+            "Ruby 脚本实现iPhone手机的UDID的获取、UDID的配置文件签名的获取、.mobileconfig更新和下载、ipa的原包的重签。",
+            "JavaWeb实现签名的管理、苹果账号的分配和分发下载的管理，Vue实现后台管理系统，管理ipa原包和苹果账号及分发下载的落地页等。"
+        ],
+        "skill_intro": "iOS 签名机制，JavaWeb后端开发，Vue + ElementUI搭建管理平台，未越狱的手机可直接通过一个分发的H5页面来下载安装App...",
+        "down_urls": [
+            {
+                "platform": "iOS",
+                "url": "https://ftp.bmp.ovh/imgs/2020/11/6fa7e0dd70ec1a31.png"
+            }
+        ]
+    },
+    {
+        "projuct_id": 7,
+        "imgs": [
+            "https://ftp.bmp.ovh/imgs/2020/11/7244d3fa53765d24.png"
+        ],
+        "project_name": "牛客栈",
+        "duration": "2019年6月 - 2019年7月",
+        "player": "2个人",
+        "skill_list": "Swift + OC + Java + Week + Alamofire + SnapKit + Vue",
+        "intro": "贷款端的项目，使用Weex和原生混合开发，该项目业务代码和界面全部是Weex来实现，包括整个项目的热更新、和原生项目的交互等。",
+        "skill_points": [],
+        "skill_intro": "Weex为主 + iOS 原生，热更新热部署，Weex和原生通信等。",
+        "down_urls": [
+            {
+                "platform": "iOS",
+                "url": "https://ftp.bmp.ovh/imgs/2020/11/6fa7e0dd70ec1a31.png"
+            }
+        ]
+    },
+    {
+        "projuct_id": 6,
+        "imgs": [
+            "https://ftp.bmp.ovh/imgs/2020/11/1eaa5f72c4db66ef.png"
+        ],
+        "project_name": "乐宝教师端",
+        "duration": "2016年6月 - 2019年8月",
+        "player": "2个人",
+        "skill_list": "OC + AFNetworking + Masonry + MVVM + ReactiveCocoa + AsyncSocket  + H5",
+        "intro": "乐宝是一个线上和线下相互结合主要针对幼儿园授课的教育平台，为教师定制了丰富的课堂内容，教师端通过绑定乐宝盒子根据课程表来授课，分享学生的学习情况和作业完成情况，家长可查看孩子的作业以及和教师互动。",
+        "skill_points": [
+            "独立开发家长端 iOS 客户端。",
+            "组件化封装，包括基础组件、公用UI组件、网络组件、第三方业务组件等，集中处理，利用中间层通信，供家长端和教师端使用，前期快速迭代提升了效率。",
+            "RAC + MVVM的架构模式，将逻辑代码、网络请求等都写入了VM中，减少代码复杂度，代码层次分明、逻辑清晰更便于维护升级。",
+            "MV相册和画册，将分享的照片通过人脸识别分类后生成可播放的视频相册，制作多种视频编辑美化和转场效果，将照片根据特定蒙版生成画册，拿来分享和线下打印。",
+            "Socket绑定乐宝盒子，和盒子端通信，教师端通过App控制视频和互动游戏的播放暂停。"
+        ],
+        "skill_intro": "iOS 原生OC开发，MVVM + RAC实现，GCDAsyncSocket与乐宝盒子通信，IM聊天，人脸识别整理学生图片，信息流卡片优化，富文本布局。",
+        "down_urls": [
+            {
+                "platform": "iOS",
+                "url": "https://ftp.bmp.ovh/imgs/2020/11/6fa7e0dd70ec1a31.png"
+            }
+        ]
+    },
+    {
+        "projuct_id": 7,
+        "imgs": [
+            "https://ftp.bmp.ovh/imgs/2020/11/e60e9794d9348b58.png"
+        ],
+        "project_name": "乐宝家长端",
+        "duration": "2016年6月 - 2019年8月",
+        "player": "2个人",
+        "skill_list": "OC + AFNetworking + Masonry + MVVM + ReactiveCocoa + AsyncSocket  + H5",
+        "intro": "乐宝是一个线上和线下相互结合主要针对幼儿园授课的教育平台，为教师定制了丰富的课堂内容，教师端通过绑定乐宝盒子根据课程表来授课，分享学生的学习情况和作业完成情况，家长可查看孩子的作业以及和教师互动。",
+        "skill_points": [
+            "独立开发家长端 iOS 客户端。",
+            "组件化封装，包括基础组件、公用UI组件、网络组件、第三方业务组件等，集中处理，利用中间层通信，供家长端和教师端使用，前期快速迭代提升了效率。",
+            "RAC + MVVM的架构模式，将逻辑代码、网络请求等都写入了VM中，减少代码复杂度，代码层次分明、逻辑清晰更便于维护升级。",
+            "MV相册和画册，将分享的照片通过人脸识别分类后生成可播放的视频相册，制作多种视频编辑美化和转场效果，将照片根据特定蒙版生成画册，拿来分享和线下打印。",
+            "Socket绑定乐宝盒子，和盒子端通信，教师端通过App控制视频和互动游戏的播放暂停。"
+        ],
+        "skill_intro": "iOS 原生OC开发，MVVM + RAC实现，GCDAsyncSocket与乐宝盒子通信，IM聊天，人脸识别整理学生图片，信息流卡片优化，富文本布局。",
+        "down_urls": [
+            {
+                "platform": "iOS",
+                "url": "https://ftp.bmp.ovh/imgs/2020/11/6fa7e0dd70ec1a31.png"
+            }
+        ]
+    },
+    {
+        "projuct_id": 8,
+        "imgs": [
+            "https://ftp.bmp.ovh/imgs/2020/11/9ca208c8b7dbb249.png"
+        ],
+        "project_name": "大博智能+经营宝",
+        "duration": "2012年7月 - 2016年5月",
+        "player": "4个人",
+        "skill_list": "OC + ASI + AFN + SDWebImage + BaiduMapSDK + 环信IM",
+        "intro": "是基于位置的在线推广和营销的系统，商家通过经营宝App绑定WIFI盒子后，将WIFI共享出去，用户连接到WIFI，商家再发布一些优惠信息和活动，",
+        "skill_points": [
+            "开发大博智能 iOS 客户端周边和个人中心模块，周边功能主要涉及到的功能和解决的问题：UITableView 性能优化(圆角绘制造成的离屏渲染，图片的异步下载)、上拉加载和下拉刷新、图片的缓存处理、自定义头部的筛选菜单控件(多个tableView联动)及显示和隐藏动画( UIView Animation )、店家详情页不同类型cell的显示、空列表的占位视图的显示、个人中心的用户数据本地缓存( Object Archiver )、多图片等数据的异步上传、用户数据修改多个界面同步显示。",
+            "维护和更新经营宝(大博商户版) App，重构了大量以前的代码，主要有：更换网络请求框架(将 ASI 改为 AFN )，重新封装网络请求工具类、response 回调和 json 解析，网络层数据缓存和容错处理；放弃适配 iOS6，最低兼容到 iOS7，修改和删除过时的 api；将 Frame 布局改为 Autolayout 布局，并尽量使用代码布局；解决 cell 内部嵌套 UITextField 造成键盘遮挡等 bug。",
+            "集成百度 Map，自定义 Annotation 实时显示用户的地位位置和商家的位置信息(定位、地理编码、反编码)；集成友盟统计、第三方分享和消息推送。",
+            "集成环信SDK聊天功能，定制个性化聊天界面，包括文字、图片、视频、位置、语音等聊天内容的展示，远程消息的推送。"
+        ],
+        "skill_intro": "OC开发，主要负责周边和个人中心模块，UITableView 性能优化，不同类型cell的显示的封装处理，自定义头部的筛选菜单控件，iOS7适配，Frame 布局改为 Autolayout 布局...",
+        "down_urls": [
+            {
+                "platform": "iOS",
+                "url": "https://ftp.bmp.ovh/imgs/2020/11/6fa7e0dd70ec1a31.png"
+            }
+        ]
+    }
+]
