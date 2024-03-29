@@ -70,7 +70,7 @@
 <meta property="og:image" content="https://s2.loli.net/2024/03/27/RvQMhaPd8p4cOf5.png">
 <meta property="og:image" content="https://s2.loli.net/2022/11/09/fNBn2gWw8tVazkr.jpg">
 <meta property="article:published_time" content="2024-03-26T06:34:10.000Z">
-<meta property="article:modified_time" content="2024-03-27T09:57:43.504Z">
+<meta property="article:modified_time" content="2024-03-29T01:26:09.584Z">
 <meta property="article:author" content="joe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s2.loli.net/2024/03/26/JeSiB7lAUKF69zg.png">
@@ -237,7 +237,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-27 17:57:43" itemprop="dateModified" datetime="2024-03-27T17:57:43+08:00">2024-03-27</time>
+                <time title="修改时间：2024-03-29 09:26:09" itemprop="dateModified" datetime="2024-03-29T09:26:09+08:00">2024-03-29</time>
               </span>
 
           
@@ -322,7 +322,7 @@
 <figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppInitializer</span> </span>{</span><br><span class="line">  AppInitializer();</span><br><span class="line"></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; init() <span class="keyword">async</span> {</span><br><span class="line">    <span class="keyword">await</span> SharedConfig.getInstance().init();</span><br><span class="line">    <span class="keyword">await</span> DataConfig.getInstance().init();</span><br><span class="line">    <span class="keyword">await</span> DomainConfig.getInstance().init();</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 <p><code>widgets</code> 作为公共的 UI 组件库，不处理业务逻辑，在多项目开发时经常会使用到。上图中的 <code>Other Plugin Module</code> 指的的是其它组件包，特别是需要单独开发与原生交互的插件时会用到，</p>
 <p>这种分层设计出来的架构或许在开发过程中带来一下不便，如调用一个接口，第一步：需要先在抽象类 <code>repository</code> 写好函数声明；第二步：然后再去<code>Api Service</code> 写具体请求代码，并在<code>repository_impl</code> 实现类中调用；第三步：还需要在 <code>UserCase</code> 去做业务调用，错误处理等；最后一步：在<code>bloc</code>的<code>event</code>中调用。这么一趟下来，确实有些繁琐或者说是过度设计。但是如果维度设定在大的项目中多人合作开发的时候，却能规避很多问题，每个分层组件都有自己的职责互不干扰，都支持单独的开发测试，尽可能的做到依赖于抽象而不是具体的实现。</p>
-<p>本篇文章就到这里，源码后面这个系列的文章里放出来，感谢您的阅读，也希望您能关注我的公众号“Flutter技术实践”，原创不易，您的关注是我更新下去最大的动力。</p>
+<p>本篇文章就到这里，源码会在后面这个系列的文章里放出来，感谢您的阅读，也希望您能关注我的公众号“Flutter技术实践”，原创不易，您的关注是我更新下去最大的动力。</p>
 <p><img src="https://s2.loli.net/2022/11/09/fNBn2gWw8tVazkr.jpg" alt="Flutter技术实践"></p>
 </body></html>
     </div>
@@ -362,6 +362,9 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
+                <a href="/2024/03/29/%E6%B5%85%E8%B0%88-Flutter-%E7%9A%84%E5%B9%B6%E5%8F%91%E5%92%8C-isolates/" rel="prev" title="浅谈 Flutter 的并发和 isolates">
+                  浅谈 Flutter 的并发和 isolates <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
       </footer>
@@ -417,7 +420,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
