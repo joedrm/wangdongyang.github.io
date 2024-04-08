@@ -51,12 +51,12 @@
   };
 </script>
 
-  <meta name="description" content="有没有一种感觉，就我自己而言，Flutter 项目开发了好几个了，但是对这个 isolates 印象依旧很陌生，日常开发中好像很少见到它身影或者用到它，但真实情况是这样的吗？今天就来聊一聊它。 Flutter 中的 isolates 是什么？在 Flutter 中，Isolates（隔离区）是一种轻量级的并发执行单元，用于在单个进程中执行代码。与线程有点儿像，但是每个 Isolates 之间又是完">
+  <meta name="description" content="有没有一种感觉，就我自己而言，Flutter 项目开发了好几个了，但是对这个 isolates 印象依旧很陌生，日常开发中好像很少见到它身影或者用到它，但真实情况是这样的吗？今天就来聊一聊它。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浅谈 Flutter 的并发和 isolates">
 <meta property="og:url" content="http://www.nnxkcloud.com/2024/03/29/%E6%B5%85%E8%B0%88-Flutter-%E7%9A%84%E5%B9%B6%E5%8F%91%E5%92%8C-isolates/index.html">
 <meta property="og:site_name" content="那年星空">
-<meta property="og:description" content="有没有一种感觉，就我自己而言，Flutter 项目开发了好几个了，但是对这个 isolates 印象依旧很陌生，日常开发中好像很少见到它身影或者用到它，但真实情况是这样的吗？今天就来聊一聊它。 Flutter 中的 isolates 是什么？在 Flutter 中，Isolates（隔离区）是一种轻量级的并发执行单元，用于在单个进程中执行代码。与线程有点儿像，但是每个 Isolates 之间又是完">
+<meta property="og:description" content="有没有一种感觉，就我自己而言，Flutter 项目开发了好几个了，但是对这个 isolates 印象依旧很陌生，日常开发中好像很少见到它身影或者用到它，但真实情况是这样的吗？今天就来聊一聊它。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s2.loli.net/2024/03/29/CDvIZky73nROsKx.png">
 <meta property="og:image" content="https://s2.loli.net/2024/03/29/AIBKfoWXlGns43k.png">
@@ -64,7 +64,7 @@
 <meta property="og:image" content="https://s2.loli.net/2024/03/29/qmSskpNbYcWAygE.webp">
 <meta property="og:image" content="https://s2.loli.net/2022/11/09/fNBn2gWw8tVazkr.jpg">
 <meta property="article:published_time" content="2024-03-29T12:34:25.000Z">
-<meta property="article:modified_time" content="2024-03-29T12:35:21.980Z">
+<meta property="article:modified_time" content="2024-04-08T07:22:20.805Z">
 <meta property="article:author" content="joe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s2.loli.net/2024/03/29/CDvIZky73nROsKx.png">
@@ -223,10 +223,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-03-29 20:34:25 / 修改时间：20:35:21" itemprop="dateCreated datePublished" datetime="2024-03-29T20:34:25+08:00">2024-03-29</time>
+              <time title="创建时间：2024-03-29 20:34:25" itemprop="dateCreated datePublished" datetime="2024-03-29T20:34:25+08:00">2024-03-29</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-04-08 15:22:20" itemprop="dateModified" datetime="2024-04-08T15:22:20+08:00">2024-04-08</time>
+              </span>
 
           
   
@@ -253,7 +259,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <html><head></head><body></body></html><html><head></head><body><p>有没有一种感觉，就我自己而言，<code>Flutter</code> 项目开发了好几个了，但是对这个 <code>isolates</code> 印象依旧很陌生，日常开发中好像很少见到它身影或者用到它，但真实情况是这样的吗？今天就来聊一聊它。</p>
+        <p>有没有一种感觉，就我自己而言，<code>Flutter</code> 项目开发了好几个了，但是对这个 <code>isolates</code> 印象依旧很陌生，日常开发中好像很少见到它身影或者用到它，但真实情况是这样的吗？今天就来聊一聊它。</p>
+<span id="more"></span>
+
 <h2 id="Flutter-中的-isolates-是什么？"><a href="#Flutter-中的-isolates-是什么？" class="headerlink" title="Flutter 中的 isolates 是什么？"></a><code>Flutter</code> 中的 <code>isolates</code> 是什么？</h2><p>在 <code>Flutter</code> 中，<code>Isolates</code>（隔离区）是一种轻量级的并发执行单元，用于在单个进程中执行代码。与线程有点儿像，但是每个 <code>Isolates</code> 之间又是完全独立的，彼此之间没有共享内存。每个 <code>Isolates</code> 都有自己的内存堆，可以独立执行代码，处理任务，而不会受到其他 <code>Isolates</code> 的影响。它们之间只能通过消息传递进行通信。</p>
 <p>我们可以通过 <code>Isolate.current</code> 来查看当前正在执行的 <code>Isolate</code></p>
 <p><img src="https://s2.loli.net/2024/03/29/CDvIZky73nROsKx.png" alt="正在执行的 Isolate"></p>
@@ -263,14 +271,14 @@
 <li><code>Background Isolates</code>：运行在后台，可以用于执行耗时操作，如网络请求、长的<code>JSON</code> 解析、文件读取、计算密集型任务等。通过后台 <code>Background Isolates</code>，可以避免在主 <code>Isolate</code> 中执行长时间运行的任务，从而保持应用程序的响应性。</li>
 </ul>
 <p>默认情况下，<code>Flutter</code> 应用程序会在 <code>Main Isolates</code> 上完成所有工作，切处理速度很快，不会出现 <code>UI</code> 卡顿，但执行异常大的计算的时候，会出现 <code>UI</code> 卡顿，和原生开发一样，在子线程执行耗时操作，在 <code>Flutter</code> 中就需要将耗时操作放在辅助的 <code>Isolates</code> 中，也就是 <code>Background Isolates</code>。</p>
-<h2 id="事件循环与页面卡顿"><a href="#事件循环与页面卡顿" class="headerlink" title="事件循环与页面卡顿"></a>事件循环与页面卡顿</h2><p>每个 <code>Isolates</code>  都有自己的内存和事件循环，事件循环是按照事件添加到事件队列的顺序来处理事件。在 <code>Main Isolates</code> 中，这些事件可以是用户的点击事件、函数执行和绘制视图到屏幕上等等。 为了更平滑的渲染视图，<code>Flutter</code> 底层会以 60次/每秒 向事件队列添加“绘制帧”事件（对于 60Hz 设备）。 如果这些事件没有及时处理，就会出现 <code>UI</code> 卡顿或者没有响应。</p>
+<h2 id="事件循环与页面卡顿"><a href="#事件循环与页面卡顿" class="headerlink" title="事件循环与页面卡顿"></a>事件循环与页面卡顿</h2><p>每个 <code>Isolates</code>  都有自己的内存和事件循环，事件循环是按照事件添加到事件队列的顺序来处理事件。在 <code>Main Isolates</code> 中，这些事件可以是用户的点击事件、函数执行和绘制视图到屏幕上等等。 为了更平滑的渲染视图，<code>Flutter</code> 底层会以 60次&#x2F;每秒 向事件队列添加“绘制帧”事件（对于 60Hz 设备）。 如果这些事件没有及时处理，就会出现 <code>UI</code> 卡顿或者没有响应。</p>
 <p><img src="https://s2.loli.net/2024/03/29/aC5WXrNBL4kvV9l.webp" alt="事件循环与页面卡顿"></p>
 <p>如果某个事件无法在两帧之间的时间（帧间隙）内完成时，最好将这个事件的执行放在其它的 <code>Isolates</code>，用来确保 <code>Main Isolates</code>  每秒可以生成 60 帧。 </p>
 <h2 id="Isolates-之间通信"><a href="#Isolates-之间通信" class="headerlink" title="Isolates 之间通信"></a><code>Isolates</code> 之间通信</h2><p>创建一个新的 <code>isolate</code> 有两种方式，构造方法 <code>Isolate(...)</code> 和 静态方法 <code> Isolate.spaw</code>。下面例子创建一个新的 <code>isolate</code>  每隔一秒向 <code>Main Isolates</code> 发送当前时间戳。</p>
-<figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;<span class="keyword">void</span>&gt; main() <span class="keyword">async</span> {</span><br><span class="line">  <span class="keyword">if</span> (kDebugMode) {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Isolate.current = <span class="subst">${Isolate.current.debugName}</span>"</span>);</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  Isolate timerIsolate;</span><br><span class="line">  <span class="keyword">final</span> mainControlPort = ReceivePort()..listen((message) {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"sending back to MainIsolate: <span class="subst">$message</span>"</span>);</span><br><span class="line">  });</span><br><span class="line"></span><br><span class="line">  timerIsolate = <span class="keyword">await</span> Isolate.spawn(</span><br><span class="line">    timerTick,</span><br><span class="line">    mainControlPort.sendPort,</span><br><span class="line">    debugName: <span class="string">"TimerIsolate"</span>,</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  runApp(App());</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> timerTick(SendPort mainPort) <span class="keyword">async</span> {</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"<span class="subst">${Isolate.current.debugName}</span> started"</span>);</span><br><span class="line">  Timer.periodic(<span class="keyword">const</span> <span class="built_in">Duration</span>(seconds: <span class="number">1</span>), (timer) {</span><br><span class="line">    <span class="keyword">final</span> ts = <span class="built_in">DateTime</span>.now().toIso8601String();</span><br><span class="line">    mainPort.send(ts);</span><br><span class="line">  });</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;<span class="keyword">void</span>&gt; main() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (kDebugMode) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Isolate.current = <span class="subst">$&#123;Isolate.current.debugName&#125;</span>&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Isolate timerIsolate;</span><br><span class="line">  <span class="keyword">final</span> mainControlPort = ReceivePort()..listen((message) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;sending back to MainIsolate: <span class="subst">$message</span>&quot;</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  timerIsolate = <span class="keyword">await</span> Isolate.spawn(</span><br><span class="line">    timerTick,</span><br><span class="line">    mainControlPort.sendPort,</span><br><span class="line">    debugName: <span class="string">&quot;TimerIsolate&quot;</span>,</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  runApp(App());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> timerTick(SendPort mainPort) <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&quot;<span class="subst">$&#123;Isolate.current.debugName&#125;</span> started&quot;</span>);</span><br><span class="line">  Timer.periodic(<span class="keyword">const</span> <span class="built_in">Duration</span>(seconds: <span class="number">1</span>), (timer) &#123;</span><br><span class="line">    <span class="keyword">final</span> ts = <span class="built_in">DateTime</span>.now().toIso8601String();</span><br><span class="line">    mainPort.send(ts);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>执行结果的 <code>log</code>：</p>
-<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Performing hot restart...</span><br><span class="line">Syncing files to device iphone...</span><br><span class="line">Restarted application in 886ms.</span><br><span class="line">flutter: Isolate.current = main</span><br><span class="line">flutter: TimerIsolate started</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:39.598746</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:40.594376</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:41.594763</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:42.594927</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:43.593959</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:44.594098</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:45.594441</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:46.594051</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:47.594242</span><br><span class="line">Application finished.</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Performing hot restart...</span><br><span class="line">Syncing files to device iphone...</span><br><span class="line">Restarted application in 886ms.</span><br><span class="line">flutter: Isolate.current = main</span><br><span class="line">flutter: TimerIsolate started</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:39.598746</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:40.594376</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:41.594763</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:42.594927</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:43.593959</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:44.594098</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:45.594441</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:46.594051</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:47.594242</span><br><span class="line">Application finished.</span><br></pre></td></tr></table></figure>
 
 <p><code>isolate</code>  消息传递的流程图如下：<br><img src="https://s2.loli.net/2024/03/29/qmSskpNbYcWAygE.webp" alt="Isolates 之间通信"></p>
 <p>实际上，<code>Flutter</code> 中<code>Isolates</code>  就是 <code>Actor model</code> 实现，<code>Isolates</code> 之间只能通过消息传递来相互通信，而且消息是通过复制的方式从发送 <code>Isolate</code> 传递到接收的 <code>Isolate</code>，也就是说，当这个数据消息在接收的 <code>Isolate</code> 上发生变化的时候，发送 <code>Isolate</code> 的原数据不受影响。</p>
@@ -282,7 +290,7 @@
 <p>还有一点，目前 <code>Web</code> 平台还不支持 <code>Isolate</code> 。</p>
 <p>本篇文章就到这里，感谢您的阅读，也希望您能关注我的公众号 <strong>Flutter技术实践</strong>，原创不易，您的关注是我更新下去最大的动力。</p>
 <p><img src="https://s2.loli.net/2022/11/09/fNBn2gWw8tVazkr.jpg" alt="Flutter技术实践"></p>
-</body></html>
+
     </div>
 
     
