@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Flutter 日常开发小技巧</title>
+    <url>/2024/04/08/Flutter-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E5%B0%8F%E6%8A%80%E5%B7%A7/</url>
+    <content><![CDATA[<html><head></head><body></body></html><html><head></head><body></body></html>]]></content>
+  </entry>
+  <entry>
     <title>浅谈 Flutter 的并发和 isolates</title>
     <url>/2024/03/29/%E6%B5%85%E8%B0%88-Flutter-%E7%9A%84%E5%B9%B6%E5%8F%91%E5%92%8C-isolates/</url>
     <content><![CDATA[<html><head></head><body></body></html><html><head></head><body><p>有没有一种感觉，就我自己而言，<code>Flutter</code> 项目开发了好几个了，但是对这个 <code>isolates</code> 印象依旧很陌生，日常开发中好像很少见到它身影或者用到它，但真实情况是这样的吗？今天就来聊一聊它。</p>
