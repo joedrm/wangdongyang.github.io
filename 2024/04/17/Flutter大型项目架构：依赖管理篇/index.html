@@ -51,29 +51,37 @@
   };
 </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="那年星空">
-<meta property="og:url" content="http://www.nnxkcloud.com/index.html">
+  <meta name="description" content="前两篇文章说到了 状态管理 和 **分层设计**，本篇换个角度来讲讲 Flutter 中的依赖管理，需要注意的是这里讲的依赖管理主要指项目内的代码，包括依赖注入、组件包之间的依赖关系，而不是第三方库的依赖管理，下面开始进入正题。 为啥需要依赖管理你可能会问，为啥搞那么麻烦使用依赖管理？不就是实例化的时候多写几句代码嘛，没有用它照样能把功能完成，不是吗？这么说也没错，如果只是在项目的几个位置这样写">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter大型项目架构：依赖管理篇">
+<meta property="og:url" content="http://www.nnxkcloud.com/2024/04/17/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E7%AF%87/index.html">
 <meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="前两篇文章说到了 状态管理 和 **分层设计**，本篇换个角度来讲讲 Flutter 中的依赖管理，需要注意的是这里讲的依赖管理主要指项目内的代码，包括依赖注入、组件包之间的依赖关系，而不是第三方库的依赖管理，下面开始进入正题。 为啥需要依赖管理你可能会问，为啥搞那么麻烦使用依赖管理？不就是实例化的时候多写几句代码嘛，没有用它照样能把功能完成，不是吗？这么说也没错，如果只是在项目的几个位置这样写">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/04/16/hkYiExGqXdo62Rw.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/27/RvQMhaPd8p4cOf5.png">
+<meta property="og:image" content="https://s2.loli.net/2022/11/09/fNBn2gWw8tVazkr.jpg">
+<meta property="article:published_time" content="2024-04-17T01:49:36.000Z">
+<meta property="article:modified_time" content="2024-04-17T01:54:57.623Z">
 <meta property="article:author" content="joe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/04/16/hkYiExGqXdo62Rw.png">
 
-<link rel="canonical" href="http://www.nnxkcloud.com/">
+<link rel="canonical" href="http://www.nnxkcloud.com/2024/04/17/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E7%AF%87/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome: true,
-    isPost: false,
+    isHome: false,
+    isPost: true,
     isPage: false,
     isArchive: false
   };
 </script>
 
-  <title>那年星空</title>
+  <title>Flutter大型项目架构：依赖管理篇 | 那年星空</title>
   
 
 
@@ -187,10 +195,10 @@
             
 
   <div class="posts-expand">
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/04/17/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E7%AF%87/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -204,8 +212,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/17/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E7%AF%87/" class="post-title-link" itemprop="url">Flutter大型项目架构：依赖管理篇</a>
+          Flutter大型项目架构：依赖管理篇
         </h1>
 
         <div class="post-meta">
@@ -244,7 +251,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <html><head></head><body></body></html><html><head></head><body><p><img src="https://s2.loli.net/2024/04/16/hkYiExGqXdo62Rw.png"></p>
+        <html><head></head><body></body></html><html><head></head><body><p><img src="https://s2.loli.net/2024/04/16/hkYiExGqXdo62Rw.png"></p>
 <p>前两篇文章说到了 <strong><a href="https://www.nnxkcloud.com/2023/08/09/flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/">状态管理</a></strong> 和 **<a href="https://www.nnxkcloud.com/2024/03/26/flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E7%AF%87/">分层设计</a>**，本篇换个角度来讲讲 <code>Flutter</code> 中的依赖管理，需要注意的是这里讲的依赖管理主要指项目内的代码，包括依赖注入、组件包之间的依赖关系，而不是第三方库的依赖管理，下面开始进入正题。</p>
 <h2 id="为啥需要依赖管理"><a href="#为啥需要依赖管理" class="headerlink" title="为啥需要依赖管理"></a>为啥需要依赖管理</h2><p>你可能会问，为啥搞那么麻烦使用依赖管理？不就是实例化的时候多写几句代码嘛，没有用它照样能把功能完成，不是吗？这么说也没错，如果只是在项目的几个位置这样写，问题也不大，可是放大到大型的项目中呢，该如何应对呢？下面这段代码是没有使用依赖管理之前的：</p>
 <figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RepositoryTool</span> </span>{</span><br><span class="line">  ApiService _apiService;</span><br><span class="line">  AppPreferences _appPreferences;</span><br><span class="line">  AppDatabase _appDatabase;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">factory</span> RepositoryTool() =&gt; _singleton;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">final</span> RepositoryTool _singleton = RepositoryTool._();</span><br><span class="line">  <span class="keyword">static</span> RepositoryTool <span class="keyword">get</span> instance =&gt; RepositoryTool();</span><br><span class="line">  </span><br><span class="line">  RepositoryTool._() {</span><br><span class="line">    _apiService = ApiService();</span><br><span class="line">    _appPreferences = AppPreferences();</span><br><span class="line">    _appDatabase = AppDatabase();</span><br><span class="line">  }</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 登录请求</span></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; login({</span><br><span class="line">    <span class="keyword">required</span> <span class="built_in">String</span> username,</span><br><span class="line">    <span class="keyword">required</span> <span class="built_in">String</span> password,</span><br><span class="line">  }) <span class="keyword">async</span> {</span><br><span class="line">    _appApiService.login(username: username, password: password);</span><br><span class="line">  }</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 从数据库中获取用户信息</span></span><br><span class="line">  Future&lt;User&gt; getLocalUser(<span class="built_in">int</span> id) <span class="keyword">async</span> {</span><br><span class="line">    _appDatabase.getLocalUser(id);</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
@@ -274,778 +281,47 @@
 <p>本篇算是上一篇文章 <strong><a href="%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1">《Flutter大型项目架构：分层设计篇》</a></strong> 的延伸，也是做分层设计的落地实施时必不可少的环节。今天分享到这里，更多系列文章更新在公众号：<strong>Flutter技术实践</strong> 里，感谢您的阅读。</p>
 <p><img src="https://s2.loli.net/2022/11/09/fNBn2gWw8tVazkr.jpg" alt="Flutter技术实践"></p>
 </body></html>
-      
     </div>
 
     
     
     
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2024/04/17/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E7%AF%87/" title="Flutter大型项目架构：依赖管理篇">http://www.nnxkcloud.com/2024/04/17/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E7%AF%87/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
         
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/04/13/Flutter%E5%BC%80%E5%8F%917%E4%B8%AA%E5%BB%BA%E8%AE%AE%EF%BC%8C%E8%AE%A9%E4%BD%A0%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%95%88%E7%8E%87%E9%A3%99%E5%8D%87/">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/me.png">
-      <meta itemprop="name" content="joe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="那年星空">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/13/Flutter%E5%BC%80%E5%8F%917%E4%B8%AA%E5%BB%BA%E8%AE%AE%EF%BC%8C%E8%AE%A9%E4%BD%A0%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%95%88%E7%8E%87%E9%A3%99%E5%8D%87/" class="post-title-link" itemprop="url">Flutter开发7个建议，让你的工作效率飙升</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-04-13 16:30:13 / 修改时间：22:09:28" itemprop="dateCreated datePublished" datetime="2024-04-13T16:30:13+08:00">2024-04-13</time>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">评论数：</span>
-    
-    <a title="valine" href="/2024/04/13/Flutter%E5%BC%80%E5%8F%917%E4%B8%AA%E5%BB%BA%E8%AE%AE%EF%BC%8C%E8%AE%A9%E4%BD%A0%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%95%88%E7%8E%87%E9%A3%99%E5%8D%87/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/13/Flutter%E5%BC%80%E5%8F%917%E4%B8%AA%E5%BB%BA%E8%AE%AE%EF%BC%8C%E8%AE%A9%E4%BD%A0%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%95%88%E7%8E%87%E9%A3%99%E5%8D%87/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://s2.loli.net/2024/04/13/9Pq84iVst1CG7oR.png" alt=" 10 5.png"></p>
-<p>刚开始接触用 <code>Flutter</code>  开发App的时候，比较喜欢它的 <code>UI</code> 编写方式，尤其是 <code>Flutter</code> 热重载特性，UI调试如同Web前端开发，能够即时查看代码更改的效果。那在日常开发中，还有没有其它提升工作效率的方法呢，今天就给大家分享几个超实用的建议，助你在 <code>Flutter</code> 开发中事半功倍。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/04/13/Flutter%E5%BC%80%E5%8F%917%E4%B8%AA%E5%BB%BA%E8%AE%AE%EF%BC%8C%E8%AE%A9%E4%BD%A0%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%95%88%E7%8E%87%E9%A3%99%E5%8D%87/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2024/04/13/Flutter%E5%BC%80%E5%8F%917%E4%B8%AA%E5%BB%BA%E8%AE%AE%EF%BC%8C%E8%AE%A9%E4%BD%A0%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%95%88%E7%8E%87%E9%A3%99%E5%8D%87/" rel="next" title="Flutter开发7个建议，让你的工作效率飙升">
+                  <i class="fa fa-chevron-left"></i> Flutter开发7个建议，让你的工作效率飙升
+                </a>
             </div>
-          <!--/noindex-->
-        
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+            <span class="post-nav-divider"></span>
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/04/12/App%E5%BC%80%E5%8F%91%E8%A3%85X%E6%8C%87%E5%8D%97%EF%BC%9A%E7%8E%A9%E8%BD%AC%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%98%E5%88%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/me.png">
-      <meta itemprop="name" content="joe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="那年星空">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/12/App%E5%BC%80%E5%8F%91%E8%A3%85X%E6%8C%87%E5%8D%97%EF%BC%9A%E7%8E%A9%E8%BD%AC%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%98%E5%88%B6/" class="post-title-link" itemprop="url">App开发装X指南：玩转自定义绘制</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-04-12 10:42:24 / 修改时间：10:46:09" itemprop="dateCreated datePublished" datetime="2024-04-12T10:42:24+08:00">2024-04-12</time>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">评论数：</span>
-    
-    <a title="valine" href="/2024/04/12/App%E5%BC%80%E5%8F%91%E8%A3%85X%E6%8C%87%E5%8D%97%EF%BC%9A%E7%8E%A9%E8%BD%AC%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%98%E5%88%B6/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/12/App%E5%BC%80%E5%8F%91%E8%A3%85X%E6%8C%87%E5%8D%97%EF%BC%9A%E7%8E%A9%E8%BD%AC%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%98%E5%88%B6/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>先来看看某互联网公司前端开发和产品的日常交流（互掐）：</p>
-<p><img src="https://s2.loli.net/2024/04/10/yXcNRd6bonluQ14.png" alt="前端开发和产品日常交流"></p>
-<p>很精彩吧，这种故事经常在互联网公司上演，那你可能会问这和本篇文章有什么关系呢？答案是没有关系。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/04/12/App%E5%BC%80%E5%8F%91%E8%A3%85X%E6%8C%87%E5%8D%97%EF%BC%9A%E7%8E%A9%E8%BD%AC%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%98%E5%88%B6/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
+            <div class="post-nav-prev post-nav-item">
             </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
+          </div>
       </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/04/08/Flutter-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E5%B0%8F%E6%8A%80%E5%B7%A7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/me.png">
-      <meta itemprop="name" content="joe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="那年星空">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/08/Flutter-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E5%B0%8F%E6%8A%80%E5%B7%A7/" class="post-title-link" itemprop="url">Flutter 日常开发小技巧</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-04-08 15:18:26 / 修改时间：15:22:13" itemprop="dateCreated datePublished" datetime="2024-04-08T15:18:26+08:00">2024-04-08</time>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
     
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">评论数：</span>
-    
-    <a title="valine" href="/2024/04/08/Flutter-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E5%B0%8F%E6%8A%80%E5%B7%A7/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/08/Flutter-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E5%B0%8F%E6%8A%80%E5%B7%A7/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>收集了一些日常开发中会用到技巧或者语法糖，简化代码，提升开发效率。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/04/08/Flutter-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E5%B0%8F%E6%8A%80%E5%B7%A7/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/03/29/%E6%B5%85%E8%B0%88-Flutter-%E7%9A%84%E5%B9%B6%E5%8F%91%E5%92%8C-isolates/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/me.png">
-      <meta itemprop="name" content="joe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="那年星空">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/29/%E6%B5%85%E8%B0%88-Flutter-%E7%9A%84%E5%B9%B6%E5%8F%91%E5%92%8C-isolates/" class="post-title-link" itemprop="url">浅谈 Flutter 的并发和 isolates</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-29 20:34:25" itemprop="dateCreated datePublished" datetime="2024-03-29T20:34:25+08:00">2024-03-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-08 15:22:20" itemprop="dateModified" datetime="2024-04-08T15:22:20+08:00">2024-04-08</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">评论数：</span>
-    
-    <a title="valine" href="/2024/03/29/%E6%B5%85%E8%B0%88-Flutter-%E7%9A%84%E5%B9%B6%E5%8F%91%E5%92%8C-isolates/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/29/%E6%B5%85%E8%B0%88-Flutter-%E7%9A%84%E5%B9%B6%E5%8F%91%E5%92%8C-isolates/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>有没有一种感觉，就我自己而言，<code>Flutter</code> 项目开发了好几个了，但是对这个 <code>isolates</code> 印象依旧很陌生，日常开发中好像很少见到它身影或者用到它，但真实情况是这样的吗？今天就来聊一聊它。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/03/29/%E6%B5%85%E8%B0%88-Flutter-%E7%9A%84%E5%B9%B6%E5%8F%91%E5%92%8C-isolates/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/03/26/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E7%AF%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/me.png">
-      <meta itemprop="name" content="joe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="那年星空">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/26/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E7%AF%87/" class="post-title-link" itemprop="url">Flutter大型项目架构：分层设计篇</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-26 14:34:10" itemprop="dateCreated datePublished" datetime="2024-03-26T14:34:10+08:00">2024-03-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-08 15:22:16" itemprop="dateModified" datetime="2024-04-08T15:22:16+08:00">2024-04-08</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">评论数：</span>
-    
-    <a title="valine" href="/2024/03/26/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E7%AF%87/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/26/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E7%AF%87/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>上篇文章讲的是状态管理，提到了 <code>Flutter BLoC</code> ，相比与原生的 <code>setState()</code> 及<code>Provider</code>等有哪些优缺点，并结合实际项目写了一个简单的使用，接下来本篇文章来讲 <code>Flutter</code> 大型项目是如何进行分层设计的，费话不多说，直接进入正题哈。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/03/26/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E7%AF%87/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/03/22/%E6%92%B8%E4%BA%86%E4%B8%80%E4%B8%AA%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7-%E6%AC%A2%E8%BF%8E%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/me.png">
-      <meta itemprop="name" content="joe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="那年星空">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/22/%E6%92%B8%E4%BA%86%E4%B8%80%E4%B8%AA%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7-%E6%AC%A2%E8%BF%8E%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">撸了一个轻量级在线工具，欢迎使用！</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-03-22 14:54:52 / 修改时间：17:11:16" itemprop="dateCreated datePublished" datetime="2024-03-22T14:54:52+08:00">2024-03-22</time>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">评论数：</span>
-    
-    <a title="valine" href="/2024/03/22/%E6%92%B8%E4%BA%86%E4%B8%80%E4%B8%AA%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7-%E6%AC%A2%E8%BF%8E%E4%BD%BF%E7%94%A8/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/22/%E6%92%B8%E4%BA%86%E4%B8%80%E4%B8%AA%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7-%E6%AC%A2%E8%BF%8E%E4%BD%BF%E7%94%A8/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <html><head></head><body></body></html><html><head></head><body><h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p><code>App</code> 开发时往往需要很多工具，当然类似的实用工具很多网站也能找得到，而专门针对 <code>App</code> 开发和 <code>Flutter</code> 的在线工具比较少，且在线工具的功能也比较分散，如 <code>App</code> 图标制作的是一个单独的网站，<code>JSON</code> 格式化又是一个单独的工具网站，还有图片压缩等等，每一种类型细分了很多其它功能，有的还需要登录才能使用，经常使用的话难免有些繁琐。刚好前段时间空下来就用 <code>Flutter</code> 开发了一个轻量的在线工具集合，以下是对它的介绍。</p>
-<h2 id="主页面"><a href="#主页面" class="headerlink" title="主页面"></a>主页面</h2><p>目前有四个功能：<strong>图标制作</strong>、**<code>JSON</code>转<code>Dart Model</code><strong>、</strong>图片批量压缩**和 <strong><code>JSON</code> 格式化</strong>，点击右上角可切换深色和浅色主题模式。<br><img src="https://s2.loli.net/2024/03/22/aCZYDHjlnrLpBkP.png" alt="主页面"></p>
-<h2 id="功能介绍"><a href="#功能介绍" class="headerlink" title="功能介绍"></a>功能介绍</h2><h3 id="图标制作"><a href="#图标制作" class="headerlink" title="图标制作"></a>图标制作</h3><p>目前支持 <code>iOS</code>、<code>Android</code>、<code>macOS</code> 的应用图标制作，选择一张 <code>.png</code> 格式尺寸为<code>1024*1024</code>的图片效果最佳。<br><img src="https://s2.loli.net/2024/03/22/zv9mOhjC67DbJGF.png" alt="App 图标制作"></p>
-<h3 id="JSON-转-Dart-Model"><a href="#JSON-转-Dart-Model" class="headerlink" title="JSON 转 Dart Model"></a><code>JSON</code> 转 <code>Dart Model</code></h3><p>下图左边是输入的 <code>JSON</code> 字符串，右边是转成 <code>Dart Model</code> 类，支持 <code>null safety</code>。<br><img src="https://s2.loli.net/2024/03/22/f3Sjbvqgpdh7E2t.png" alt="JSON 转 Dart Model"></p>
-<h3 id="图片压缩"><a href="#图片压缩" class="headerlink" title="图片压缩"></a>图片压缩</h3><p>一个简单的图片压缩功能，每张图片大小不能超过2M，暂时只支持 <code>png</code>、<code>jpg</code> 和 <code>jpeg</code> 格式的图片，点击下载按钮后会以<code>.zip</code>的压缩包存在本地。<br><img src="https://s2.loli.net/2024/03/22/K4MtaYvxwb9kigD.jpg" alt="图片压缩"></p>
-<h3 id="JSON-格式化"><a href="#JSON-格式化" class="headerlink" title="JSON 格式化"></a><code>JSON</code> 格式化</h3><p>常用的 <code>JSON</code> 数据处理功能，包括格式化、去掉转义、去转义并格式化、去掉空格和去空格并转义，右边就是 <code>JSON</code>  的树状接口，可以展开和折叠，点击每一个节点出现的下拉框还有更多其它的操作。<br><img src="https://s2.loli.net/2024/03/22/cUf95FdpkJToVhN.png" alt="JSON 格式化"></p>
-<h2 id="网站地址"><a href="#网站地址" class="headerlink" title="网站地址"></a>网站地址</h2><p><a target="_blank" rel="noopener" href="https://ftool.nnxkcloud.com/"><strong>FTool</strong></a></p>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>使用的时候，请确保您的输入内容符合工具的要求，避免出现不必要的错误。在使用过程中如有问题或建议，欢迎通过网站提供的联系方式与我们联系（联系方式后面会补上）。</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p><a target="_blank" rel="noopener" href="https://ftool.nnxkcloud.com/"><strong>FTool</strong></a>是一个轻量的在线工具集合网站，界面简洁清晰，操作流程简单明了，功能主要适用于 <code>App</code> 或者 <code>Flutter</code> 开发的工具，所有工具均为免费提供，没有后台用户也无需注册账号即可直接使用，方便快捷，提高工作效率，欢迎您的使用，当然更多的功能后续还会不间断的迭代更新。</p>
-<p>欢迎关注我的公众号 “<strong>Flutter技术实践</strong>”，原创技术文章第一时间推送。</p>
-<p><img src="https://s2.loli.net/2022/12/12/EWvyFX2LgiaeZ3d.jpg" alt="qrcode_for_gh_a1ca9094adfb_430.jpg"></p>
-</body></html>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/03/20/%E5%85%B3%E4%BA%8E-Flutter-%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%9B%BD%E9%99%85%E5%8C%96%EF%BC%8C%E5%8F%AA%E9%9C%80%E8%A6%81%E5%81%9A%E5%AF%B9%E8%BF%99%E5%87%A0%E6%AD%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/me.png">
-      <meta itemprop="name" content="joe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="那年星空">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/20/%E5%85%B3%E4%BA%8E-Flutter-%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%9B%BD%E9%99%85%E5%8C%96%EF%BC%8C%E5%8F%AA%E9%9C%80%E8%A6%81%E5%81%9A%E5%AF%B9%E8%BF%99%E5%87%A0%E6%AD%A5/" class="post-title-link" itemprop="url">关于 Flutter 项目的国际化，只需要做对这几步</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-20 18:03:49" itemprop="dateCreated datePublished" datetime="2024-03-20T18:03:49+08:00">2024-03-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-08 15:22:20" itemprop="dateModified" datetime="2024-04-08T15:22:20+08:00">2024-04-08</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">评论数：</span>
-    
-    <a title="valine" href="/2024/03/20/%E5%85%B3%E4%BA%8E-Flutter-%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%9B%BD%E9%99%85%E5%8C%96%EF%BC%8C%E5%8F%AA%E9%9C%80%E8%A6%81%E5%81%9A%E5%AF%B9%E8%BF%99%E5%87%A0%E6%AD%A5/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/20/%E5%85%B3%E4%BA%8E-Flutter-%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%9B%BD%E9%99%85%E5%8C%96%EF%BC%8C%E5%8F%AA%E9%9C%80%E8%A6%81%E5%81%9A%E5%AF%B9%E8%BF%99%E5%87%A0%E6%AD%A5/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近刚把公司项目的国际化搞完，顺便记录下Flutter项目国际化的几个步骤，来供大家参考。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/03/20/%E5%85%B3%E4%BA%8E-Flutter-%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%9B%BD%E9%99%85%E5%8C%96%EF%BC%8C%E5%8F%AA%E9%9C%80%E8%A6%81%E5%81%9A%E5%AF%B9%E8%BF%99%E5%87%A0%E6%AD%A5/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/me.png">
-      <meta itemprop="name" content="joe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="那年星空">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/" class="post-title-link" itemprop="url">Flutter 大型项目架构：状态管理篇</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-08-09 16:59:26" itemprop="dateCreated datePublished" datetime="2023-08-09T16:59:26+08:00">2023-08-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-12 10:46:19" itemprop="dateModified" datetime="2024-04-12T10:46:19+08:00">2024-04-12</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">评论数：</span>
-    
-    <a title="valine" href="/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近对手头上的项目进行重构，总结了有以下几个痛点：</p>
-<ol>
-<li>状态管理混乱<br>虽然用了 <code>provider</code> 来做状态管理，但一些代码如：异步请求、事件响应等还是会掺杂在UI页面的代码里面，一旦页面的各种 <code>Widget</code> 多了起来之后，显得非常严重，而且对业务逻辑的测试也不方便，多个组件可能需要共享相同的数据或状态，需要在每个组件中分别创建 <code>Provider</code> 实例，容易导致代码冗余，如果只需要更新页面的部分 <code>Widget</code> 使用<code>Provider</code> 还会导致嵌套过深，也可能导致性能问题、状态不一致以及难以追踪的错误。</li>
-<li>代码分层混乱，所有的代码都在一个工程里面，包括UI页面、<code>ViewModel</code>、<code>Util</code>、网络请求和通用的 <code>Widget</code> 等，模块划分不清晰，模块依赖和调用混乱，而且各个模块没发单独开发和测试，没有明确的分层可能导致业务逻辑和 UI 代码混杂在一起，而且多个项目之间很难做到代码复用。</li>
-<li>业务迭代导致API接口变动频繁，API接口返回的字段一旦出现类型解析问题就会导致出现崩溃，而目前负责 <code>Json</code> 映射的数据模型 <code>Model</code> 类在很多的 UI <code>Widget</code> 和 <code>Bloc</code> 中有使用到，修复这个问题就会导致大量依赖于此类的改动。而为了安全起见，数据模型类中的所有字段必须始终是这样的：<code>int？</code>、<code>string？</code>等，但是，这又可能会导致由于 <code>NullPoInterException</code> 而出现应用程序崩溃的风险。</li>
-<li>路由管理问题，<code>fluro</code>作为路由管理必须依赖于 <code>context</code>，如果在逻辑层需要处理页面跳转的话就会比较麻烦。而且参数传递只能作为转成字符串放在 <code>path</code> 中，然后再在注册路由的 <code>Handler</code> 中将字段解析出或者转成 <code>Model</code>，使用起来多少有些不方便。</li>
-</ol>
-<p>接下来系列文章来聊一聊怎解决上面的痛点，本篇文章先说一下状态管理方法，现有的项目需要一个能很好地应付大型项目的状态管理机制。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2022/09/09/Flutter%E5%AE%9E%E7%8E%B0%E9%9F%B3%E4%B9%90API%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/me.png">
-      <meta itemprop="name" content="joe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="那年星空">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/09/09/Flutter%E5%AE%9E%E7%8E%B0%E9%9F%B3%E4%B9%90API%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">Flutter实现音乐API加密算法</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-09-09 13:37:09" itemprop="dateCreated datePublished" datetime="2022-09-09T13:37:09+08:00">2022-09-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-08 13:37:19" itemprop="dateModified" datetime="2024-03-08T13:37:19+08:00">2024-03-08</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">评论数：</span>
-    
-    <a title="valine" href="/2022/09/09/Flutter%E5%AE%9E%E7%8E%B0%E9%9F%B3%E4%B9%90API%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/09/09/Flutter%E5%AE%9E%E7%8E%B0%E9%9F%B3%E4%B9%90API%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>关于某云音乐API接口加密算法的实现，网上已经有很多实现的例子，这里用<code>dart</code>代码实现一遍，以某云音乐搜索接口为例，核心参数为：<code>params</code>和<code>encSecKey</code>。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/09/09/Flutter%E5%AE%9E%E7%8E%B0%E9%9F%B3%E4%B9%90API%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
   </article>
   
   
@@ -1053,15 +329,10 @@
 
   </div>
 
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
-
-
 
           </div>
           
+    <div class="comments" id="comments"></div>
 
         </div>
           
@@ -1086,6 +357,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E5%95%A5%E9%9C%80%E8%A6%81%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">为啥需要依赖管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">2.</span> <span class="nav-text">依赖管理是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flutter-%E4%B8%AD%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E6%96%B9%E6%A1%88"><span class="nav-number">3.</span> <span class="nav-text">Flutter 中依赖管理方案</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
