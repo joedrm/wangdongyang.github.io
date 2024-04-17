@@ -51,18 +51,18 @@
   };
 </script>
 
-  <meta name="description" content="前两篇文章说到了 状态管理 和 **分层设计**，本篇换个角度来讲讲 Flutter 中的依赖管理，需要注意的是这里讲的依赖管理主要指项目内的代码，包括依赖注入、组件包之间的依赖关系，而不是第三方库的依赖管理，下面开始进入正题。">
+  <meta name="description" content="前两篇文章说到了 状态管理 和 分层设计 ，本篇换个角度来讲讲 Flutter 中的依赖管理，需要注意的是这里讲的依赖管理主要指项目内的代码，包括依赖注入、组件包之间的依赖关系，而不是第三方库的依赖管理，下面开始进入正题。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Flutter大型项目架构：依赖管理篇">
 <meta property="og:url" content="http://www.nnxkcloud.com/2024/04/17/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E7%AF%87/index.html">
 <meta property="og:site_name" content="那年星空">
-<meta property="og:description" content="前两篇文章说到了 状态管理 和 **分层设计**，本篇换个角度来讲讲 Flutter 中的依赖管理，需要注意的是这里讲的依赖管理主要指项目内的代码，包括依赖注入、组件包之间的依赖关系，而不是第三方库的依赖管理，下面开始进入正题。">
+<meta property="og:description" content="前两篇文章说到了 状态管理 和 分层设计 ，本篇换个角度来讲讲 Flutter 中的依赖管理，需要注意的是这里讲的依赖管理主要指项目内的代码，包括依赖注入、组件包之间的依赖关系，而不是第三方库的依赖管理，下面开始进入正题。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s2.loli.net/2024/04/16/hkYiExGqXdo62Rw.png">
 <meta property="og:image" content="https://s2.loli.net/2024/03/27/RvQMhaPd8p4cOf5.png">
 <meta property="og:image" content="https://s2.loli.net/2022/11/09/fNBn2gWw8tVazkr.jpg">
 <meta property="article:published_time" content="2024-04-17T01:49:36.000Z">
-<meta property="article:modified_time" content="2024-04-17T01:59:11.711Z">
+<meta property="article:modified_time" content="2024-04-17T02:00:46.547Z">
 <meta property="article:author" content="joe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s2.loli.net/2024/04/16/hkYiExGqXdo62Rw.png">
@@ -223,7 +223,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-04-17 09:49:36 / 修改时间：09:59:11" itemprop="dateCreated datePublished" datetime="2024-04-17T09:49:36+08:00">2024-04-17</time>
+              <time title="创建时间：2024-04-17 09:49:36 / 修改时间：10:00:46" itemprop="dateCreated datePublished" datetime="2024-04-17T09:49:36+08:00">2024-04-17</time>
             </span>
 
           
@@ -252,7 +252,7 @@
 
       
         <p><img src="https://s2.loli.net/2024/04/16/hkYiExGqXdo62Rw.png"></p>
-<p>前两篇文章说到了 <strong><a href="https://www.nnxkcloud.com/2023/08/09/flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/">状态管理</a></strong> 和 **<a href="https://www.nnxkcloud.com/2024/03/26/flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E7%AF%87/">分层设计</a>**，本篇换个角度来讲讲 <code>Flutter</code> 中的依赖管理，需要注意的是这里讲的依赖管理主要指项目内的代码，包括依赖注入、组件包之间的依赖关系，而不是第三方库的依赖管理，下面开始进入正题。</p>
+<p>前两篇文章说到了 <strong><a href="https://www.nnxkcloud.com/2023/08/09/flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/">状态管理</a></strong> 和 <strong><a href="https://www.nnxkcloud.com/2024/03/26/flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E7%AF%87/">分层设计</a></strong> ，本篇换个角度来讲讲 <code>Flutter</code> 中的依赖管理，需要注意的是这里讲的依赖管理主要指项目内的代码，包括依赖注入、组件包之间的依赖关系，而不是第三方库的依赖管理，下面开始进入正题。</p>
 <span id="more"></span>
 
 <h2 id="为啥需要依赖管理"><a href="#为啥需要依赖管理" class="headerlink" title="为啥需要依赖管理"></a>为啥需要依赖管理</h2><p>你可能会问，为啥搞那么麻烦使用依赖管理？不就是实例化的时候多写几句代码嘛，没有用它照样能把功能完成，不是吗？这么说也没错，如果只是在项目的几个位置这样写，问题也不大，可是放大到大型的项目中呢，该如何应对呢？下面这段代码是没有使用依赖管理之前的：</p>
