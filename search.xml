@@ -3,7 +3,7 @@
   <entry>
     <title>深入了解 Flutter 中的 BuildContext</title>
     <url>/2024/04/18/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3-Flutter-%E4%B8%AD%E7%9A%84-BuildContext/</url>
-    <content><![CDATA[<p><img src="https://s2.loli.net/2024/04/18/SsF9UpKf45ZbgIw.jpg" alt="sddefault.jpg"></p>
+    <content><![CDATA[<p><img src="https://s2.loli.net/2024/04/18/yD7IvSUXkAniB2M.png" alt="19.png"></p>
 <p>在 <code>Flutter</code> 中 <code>BuildContext</code> 可太常见了，不管是 <code>StatelessWidget</code> 还是 <code>StatefulWidget</code> 的 <code>build()</code> 函数参数都会带有 <code>BuildContext</code>，好像随处可见，就像我们的一位老朋友，但似乎又对其知之甚少（熟悉的陌生人），今天我们再来了解一下这位老朋友 <code>BuildContext</code>，看看它在 <code>Flutter</code> 架构中扮演什么角色，我们该如何使用它及使用的时候需要注意什么。</p>
 <span id="more"></span>
 
