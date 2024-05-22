@@ -6,7 +6,7 @@
   <link href="http://www.nnxkcloud.com/atom.xml" rel="self"/>
   
   <link href="http://www.nnxkcloud.com/"/>
-  <updated>2024-05-18T02:35:28.072Z</updated>
+  <updated>2024-05-22T02:20:52.834Z</updated>
   <id>http://www.nnxkcloud.com/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Flutter设计模式全面解析：单例模式</title>
+    <link href="http://www.nnxkcloud.com/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/"/>
+    <id>http://www.nnxkcloud.com/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</id>
+    <published>2024-05-22T02:20:52.000Z</published>
+    <updated>2024-05-22T02:20:52.834Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body></body></html><html><head></head><body></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>Flutter大型项目架构：路由管理篇</title>
@@ -380,29 +400,6 @@
     
     
     <category term="写作" scheme="http://www.nnxkcloud.com/tags/%E5%86%99%E4%BD%9C/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>你的Flutter在Web端跑起来了吗?</title>
-    <link href="http://www.nnxkcloud.com/2022/08/19/%E4%BD%A0%E7%9A%84Flutter%E5%9C%A8Web%E7%AB%AF%E8%B7%91%E8%B5%B7%E6%9D%A5%E4%BA%86%E5%90%97/"/>
-    <id>http://www.nnxkcloud.com/2022/08/19/%E4%BD%A0%E7%9A%84Flutter%E5%9C%A8Web%E7%AB%AF%E8%B7%91%E8%B5%B7%E6%9D%A5%E4%BA%86%E5%90%97/</id>
-    <published>2022-08-19T05:47:46.000Z</published>
-    <updated>2024-03-08T05:37:19.520Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="https://img-blog.csdnimg.cn/img_convert/d49a5d235d48d556b8518688e18ff2ac.jpeg" alt="istockphoto-1201654139-612x612"></p><p>近期尝试将自己的Flutter运行在Web页面上，可谓是一波三折，不过最终还是运行成功，在这里记录一下遇到的问题。</p><ol><li><p><code>Platform</code>兼容问题报错：<code>Unsupported operation: Platform._operatingSystem</code>。<br> 原因：应该是<code>Platform.isIOS</code>、<code>Platform.isAndroid</code>等不支持Web。<br> 解决：搜索后最终在Github上这个 <a href="https://github.com/flutter/flutter/issues/36126#issuecomment-596215587">flutter issue</a> 找到了解决办法。</p><p>在<code>pubspec.yaml</code>引入这个依赖：</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">universal_platform:</span> <span class="string">^1.0.0+1</span></span><br></pre></td></tr></table></figure></li></ol><span id="more"></span><p>   在用到<code>Platform.isIOS</code>等地方替换成<code>UniversalPlatform.isIOS</code>,或者用自定义的类包装一下供全局使用。</p>   <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:universal_platform/universal_platform.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DeviceUtil</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">get</span> isDesktop =&gt; !isWeb &amp;&amp; (isWindows || isLinux || isMacOS);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">get</span> isMobile =&gt; isAndroid || isIOS;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">get</span> isWeb =&gt; UniversalPlatform.isWeb;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">get</span> isWindows =&gt; UniversalPlatform.isWindows;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">get</span> isLinux =&gt; UniversalPlatform.isLinux;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">get</span> isMacOS =&gt; UniversalPlatform.isMacOS;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">get</span> isAndroid =&gt; UniversalPlatform.isAndroid;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">get</span> isFuchsia =&gt; UniversalPlatform.isFuchsia;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">get</span> isIOS =&gt; UniversalPlatform.isIOS;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>   使用：</p>   <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bool</span> isMobile = DeviceUtil.isMobile</span><br></pre></td></tr></table></figure><ol start="2"><li><p>跨域问题：<code>DioError [DioErrorType.response]: XMLHttpRequest error.</code>。<br> 原因：Flutter运行在浏览器上是<code>localhost:xxxx</code>，而我们的API接口是<code>xxxx.com</code>，两个不在同一个域名下不能直接访问跨域资源，关于为什么会存在跨域问题，网上有很多的资料，感兴趣的可以看看<a href="https://www.ruanyifeng.com/blog/2016/04/cors.html">这篇文章</a>。</p><p> 解决方法分两种：</p><ol><li><p>本地解决办法，参考 <a href="https://stackoverflow.com/questions/65630743/how-to-solve-flutter-web-api-cors-error-only-with-dart-code/66879350#66879350">stackoverflow</a> 上的。<br>  a. 删除<code>flutter\bin\cache</code>目录下的<code>flutter_tools.stamp</code>文件。<br>  b. 打开<code>flutter\packages\flutter_tools\lib\src\web</code>目录下的<code>chrome.dart</code>文件。<br>  c. 在<code>chrome.dart</code>中找到<code>--disable-extensions</code>一行，在其下方添加<code>--disable-web-security</code>。</p><p>   改好运行后的结果如下：</p><p> <img src="https://img-blog.csdnimg.cn/img_convert/2eb696d7b7e7458bf18976e633e90509.png">         </p></li><li><p>服务端解决方法，如果Web端需要上线，这种也是最终解决方案，当然需要和后端的兄弟沟通好。</p><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;Access-Control-Allow-Origin&#x27;</span>: <span class="string">&#x27;*&#x27;</span></span><br><span class="line"><span class="string">&#x27;Access-Control-Allow-Methods&#x27;</span>: <span class="string">&#x27;GET, POST, OPTIONS, PUT, PATCH, DELETE&#x27;</span> <span class="comment">// If needed</span></span><br><span class="line"><span class="string">&#x27;Access-Control-Allow-Headers&#x27;</span>: <span class="string">&#x27;X-Requested-With,content-type&#x27;</span> <span class="comment">// If needed</span></span><br><span class="line"><span class="string">&#x27;Access-Control-Allow-Credentials&#x27;</span>: <span class="keyword">true</span> <span class="comment">// If  needed</span></span><br></pre></td></tr></table></figure></li></ol></li><li><p>报错：<code>The provided ScrollController is currently attached to more than one ScrollPosition.</code></p><p><img src="https://img-blog.csdnimg.cn/img_convert/d38d02898a590d238beb97c5497cf925.png" alt="801660727683_.pic">解决：在<code>ListView</code>等<code>Widget</code>上加<code>controller: ScrollController()</code>解决。</p><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ListView.separated(</span><br><span class="line">        shrinkWrap: <span class="keyword">true</span>,</span><br><span class="line">        controller: ScrollController(),</span><br><span class="line">        itemCount: ..,</span><br><span class="line">        itemBuilder: (context, index) &#123;</span><br><span class="line">          <span class="keyword">return</span> ...;</span><br><span class="line">        &#125;,</span><br><span class="line">        separatorBuilder: (BuildContext context, <span class="built_in">int</span> index) &#123;</span><br><span class="line">          <span class="keyword">return</span> ...;</span><br><span class="line">        &#125;,</span><br><span class="line">      )</span><br></pre></td></tr></table></figure></li></ol><p>你的<code>Flutter</code>代码在Web端运行遇到过哪些问题呢？欢迎👏🏻在评论区交流一下！</p><p>欢迎关注公众号：<em><strong>flutter_todo</strong></em>，有更多技术干货和学习资源教程分享。</p><img src="https://s2.loli.net/2022/12/12/EWvyFX2LgiaeZ3d.jpg" alt="qrcode_for_gh_a1ca9094adfb_430" style="zoom:67%;">]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;img src=&quot;https://img-blog.csdnimg.cn/img_convert/d49a5d235d48d556b8518688e18ff2ac.jpeg&quot; alt=&quot;istockphoto-1201654139-612x612&quot;&gt;&lt;/p&gt;
-&lt;p&gt;近期尝试将自己的Flutter运行在Web页面上，可谓是一波三折，不过最终还是运行成功，在这里记录一下遇到的问题。&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;&lt;code&gt;Platform&lt;/code&gt;兼容问题报错：&lt;code&gt;Unsupported operation: Platform._operatingSystem&lt;/code&gt;。&lt;br&gt; 原因：应该是&lt;code&gt;Platform.isIOS&lt;/code&gt;、&lt;code&gt;Platform.isAndroid&lt;/code&gt;等不支持Web。&lt;br&gt; 解决：搜索后最终在Github上这个 &lt;a href=&quot;https://github.com/flutter/flutter/issues/36126#issuecomment-596215587&quot;&gt;flutter issue&lt;/a&gt; 找到了解决办法。&lt;/p&gt;
-&lt;p&gt;在&lt;code&gt;pubspec.yaml&lt;/code&gt;引入这个依赖：&lt;/p&gt;
-&lt;figure class=&quot;highlight yaml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;universal_platform:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;^1.0.0+1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
-&lt;/ol&gt;</summary>
-    
-    
-    
     
   </entry>
   
