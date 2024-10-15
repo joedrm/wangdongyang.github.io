@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="前言最近一直在研究iOS重签名的一些东西，也是对苹果超级签名机制的一次重新学习（之前只是了解），而在这之前先来过一遍加密解密数字签名等知识，下图是整个学习过程：  密码学主要解决四个核心问题：机密性（隐私性）、完整性、身份验证、不可抵赖性，经典的密码学算法有对称加密算法 、公开密钥算法等，而每一个密码学算法是为了解决哪些问题，还有哪些不足，下面来逐个分析一下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS签名机制">
+<meta property="og:url" content="http://www.nnxkcloud.com/2019/11/18/encrypt-and-decrypt/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="前言最近一直在研究iOS重签名的一些东西，也是对苹果超级签名机制的一次重新学习（之前只是了解），而在这之前先来过一遍加密解密数字签名等知识，下图是整个学习过程：  密码学主要解决四个核心问题：机密性（隐私性）、完整性、身份验证、不可抵赖性，经典的密码学算法有对称加密算法 、公开密钥算法等，而每一个密码学算法是为了解决哪些问题，还有哪些不足，下面来逐个分析一下">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_01.png">
+<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_03.jpeg">
+<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_04.jpeg">
+<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_05.jpeg">
+<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_06.jpeg">
+<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_07.jpeg">
+<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_08.jpeg">
+<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_09.jpeg">
+<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_10.jpg">
+<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_11.jpeg">
+<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_12.jpeg">
+<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_02.png">
+<meta property="article:published_time" content="2019-11-18T06:32:24.000Z">
+<meta property="article:modified_time" content="2024-10-15T03:05:34.690Z">
+<meta property="article:author" content="joe">
+<meta property="article:tag" content="超级签名">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_01.png">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2019/11/18/encrypt-and-decrypt/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>iOS签名机制 | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2019/11/18/encrypt-and-decrypt/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          iOS签名机制
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-18 14:32:24" itemprop="dateCreated datePublished" datetime="2019-11-18T14:32:24+08:00">2019-11-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-15 11:05:34" itemprop="dateModified" datetime="2024-10-15T11:05:34+08:00">2024-10-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2019/11/18/encrypt-and-decrypt/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/11/18/encrypt-and-decrypt/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近一直在研究iOS重签名的一些东西，也是对苹果超级签名机制的一次重新学习（之前只是了解），而在这之前先来过一遍加密解密数字签名等知识，下图是整个学习过程：</p>
+<p><img src="/.com//encrypt-and-decrypt_01.png"></p>
+<p>密码学主要解决四个核心问题：机密性（隐私性）、完整性、身份验证、不可抵赖性，经典的密码学算法有对称加密算法 、公开密钥算法等，而每一个密码学算法是为了解决哪些问题，还有哪些不足，下面来逐个分析一下</p>
+<span id="more"></span>
+
+<h2 id="对称加密算法"><a href="#对称加密算法" class="headerlink" title="对称加密算法"></a>对称加密算法</h2><p>什么是对称加算法呢？ 一般是通过一个算法和一个密钥（secret key）对明文（plaintext）进行处理，得到的不规则字符就是密文（ciphertext）</p>
+<p><img src="/.com//encrypt-and-decrypt_03.jpeg"></p>
+<p>常见的对称密码算法有：DES、3DES、AES，这三种算法也称块密码算法，在加密或者解密的时候，每次对固定长度的数据块进行处理，每完成一次加密解密可能要结果多次运算，最终得到和明文长度一样的密文，数据块的长度就是分组的长度，也就说如果明文或者密文的长度除以分组长度不是整数倍，需要对明文进行填充，保证数据的长度是分组长度的整数块。由于明文长度远大于分组的长度，需要多次迭代运算才能得到密文或明文，于是就有了多种分组模式，比如常见的有ECB、CBC、CTR等模式，目前，ECB已被证明存在安全问题，一般不建议使用，最常用的是CBC模式。<a target="_blank" rel="noopener" href="https://www.cnblogs.com/starwolf/p/3365834.html">详见</a></p>
+<p>AES(Advanced Encryption Standard)算法：AES为分组密码，分组密码也就是把明文分成一组一组的，每组长度相等，每次加密一组数据，直到加密完整个明文。在AES标准规范中，分组长度只能是128位，也就是说，每个分组为16个字节（每个字节8位）。密钥的长度可以使用128位、192位或256位。目前AES，已经逐步取代DES、3DES，成为首选的对称密码算法标准算法，</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_28205153/article/details/55798628">参考：AES加密算法的详细介绍与实现</a></p>
+<p>加密算法能够解决机密性的问题，但是并不能解决数据的完整性（完整性的意思是原消息没有被篡改），比如攻击者虽然能够截获加密数据，但如果没有密钥，则无法得到原文，但是可以修改密文的部分数据，然后发送给接收者，接收者通过密钥发现能够解密，但是解密出来的值实际上不是原文，消息己经被修改了。</p>
+<h2 id="单向散列函数"><a href="#单向散列函数" class="headerlink" title="单向散列函数"></a>单向散列函数</h2><p>单向散列函数也称为消息摘要函数, 哈希函数或者杂凑函数，其输出的散列值又称为消息摘要或者指纹，经典算法包括：MD4、MD5、SHA1、SHA256、SHA512等，特点：加密后密文的长度是定长的；计算速度快，高效；明文不一样，那么散列后的结果一定不一样；明文一样，那么加密后的密文一定一样；加密算法是公开的；单向性，不可以逆推反算。其中MD4、MD5已经被破解，SHA1目前已经不安全。</p>
+<p>其实，很多情况下，传递的消息没有必要加密，只要确保消息是完整且没有被篡改即可，如天气API接口，接口返回的数据并没有加密，其原因：1.接口的数据并不重要；2.加密和解密过程很消耗性能。如果我们目标就是防止数据被篡改，接口数据通过Hash算法得到一个摘要值，摘要值和接口数据一起返回客户端就能满足要求，其处理逻辑如图：</p>
+<p><img src="/.com//encrypt-and-decrypt_04.jpeg" alt="Hash 算法确保消息完整"></p>
+<p>上面的逻辑看上去没有问题，接收方校验摘要值是相同的，说明消息没有篡改，真的是这样吗？</p>
+<p>实际上这种方案存在中间人攻击的，攻击过程：攻击者对消息进行拦截，同时修改接口消息和消息的摘要值然后发送给接收方，接收方收到消息后，对接口消息计算摘要值，然后与接收到的摘要值进行比较，发现是相同的，接收方认为消息是完整的。</p>
+<p>可实际呢？消息虽然是完整的，但已经被篡改了，如图：</p>
+<p><img src="/.com//encrypt-and-decrypt_05.jpeg"></p>
+<p>那么，问题来了，如何确保消息是正确的发送者发送的呢？</p>
+<h2 id="问题一：如何确保消息是正确的发送者发送的呢？"><a href="#问题一：如何确保消息是正确的发送者发送的呢？" class="headerlink" title="问题一：如何确保消息是正确的发送者发送的呢？"></a>问题一：如何确保消息是正确的发送者发送的呢？</h2><h2 id="消息验证码算法"><a href="#消息验证码算法" class="headerlink" title="消息验证码算法"></a>消息验证码算法</h2><p>这里就要提到消息验证码算法了，在通信双方可以维护同一个密钥，只有拥有密钥的 通信双方才能生成和验证消息验证码，消息验证码算法需要一个密钥，这和对称加密算法是一样的，通信双方在消息传递之前需要获得同样的密钥。</p>
+<p>消息验证码模型： MAC 值 ＝ mac（消息，密钥）</p>
+<p>MAC算法有两种形式：CBC-MAC、HMAC</p>
+<p>MAC值一般和原始消息一起传输，原始消息可以选择加密，也可以选择不加密，通信双方会以相同的方式生成MAC值，然后进行比较，工作原理如下图：</p>
+<p><img src="/.com//encrypt-and-decrypt_06.jpeg"></p>
+<p>目前我们，已经解决了四大问题中的两个问题：消息的机密性和完整性，即对称加密算法可以保证消息的机密性，MAC算法可以保证消息的完整性，两者结合使用就可以保证消息同时具备机密性和完整性了。</p>
+<p>但是，好像遗漏了一点，那就是密钥配送的问题，要想使用对称加密，那么分享信息的个体之间都需要分享这个密钥，试想一下，如果1000个人之间都使用同一个密钥进行密文传输，只要其中一个人密钥被盗窃了，那么整体加密的信息将都被破解了，那岂不是太可怕了。</p>
+<h2 id="问题二：怎样避免对称加密算法的缺陷呢？"><a href="#问题二：怎样避免对称加密算法的缺陷呢？" class="headerlink" title="问题二：怎样避免对称加密算法的缺陷呢？"></a>问题二：怎样避免对称加密算法的缺陷呢？</h2><h2 id="非对称加密算法"><a href="#非对称加密算法" class="headerlink" title="非对称加密算法"></a>非对称加密算法</h2><p>非对称加密算法需要两个密钥：公开密钥（publickey:简称公钥）和私有密钥（privatekey:简称私钥）。公钥与私钥是一对，如果用公钥对数据进行加密，只有用对应的私钥才能解密。因为加密和解密使用的是两个不同的密钥（加密是单向的），不是一个算法而是一组算法，如果公开密钥算法用于加密解密运算，习惯上称为非对称加密算法。</p>
+<p>以下是对称加密算法和非对称加密算法的比较：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>功能</th>
+<th>密钥</th>
+<th>运算速度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>对称加密算法</td>
+<td>主要用于加密和解密</td>
+<td>密钥是一 串数字，加密者和解密者使用同样的 一个密钥</td>
+<td>比较快</td>
+</tr>
+<tr>
+<td>非对称加密算法</td>
+<td>加密解密、密钥协商、数字签名</td>
+<td>公开密钥算法的密钥是一对，分别是公钥（public key）和私钥（ private key），一般私钥由密钥对的生成方持有，避免泄露，而公钥任何人都可以持有，也不怕泄露。</td>
+<td>运算非常缓慢</td>
+</tr>
+</tbody></table>
+<p>加密解密过程如图：</p>
+<p><img src="/.com//encrypt-and-decrypt_07.jpeg"></p>
+<h3 id="RSA-算法"><a href="#RSA-算法" class="headerlink" title="RSA 算法"></a>RSA 算法</h3><p>公开密钥算法最重要和最广泛使用的算法就是RSA算法，该算法是Ron Rivest 、 AdiShamir、Leonard Adleman三个人创建的，以三个人名字的首字母命名。RSA 算法是一个多用途的算法 ，可以进行加密解密、密钥协商、数字签名。</p>
+<p>公钥和私钥由很多参数组成，一般以文件的形式提供。</p>
+<h4 id="密钥文件生成过程"><a href="#密钥文件生成过程" class="headerlink" title="密钥文件生成过程"></a>密钥文件生成过程</h4><p>内部结构大概如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">rsa_st</span>&#123;</span></span><br><span class="line">    BIGNUM *p; </span><br><span class="line">    BIGNUM *q; </span><br><span class="line">    BIGNUM *n; </span><br><span class="line">    BIGNUM *e; </span><br><span class="line">    BIGNUM *d; </span><br><span class="line">&#125; RSA;</span><br></pre></td></tr></table></figure>
+
+<p>密钥对生成过程：</p>
+<ul>
+<li>选取两个很大的质数 p 和 q</li>
+<li>求这两个数的乘积 n。</li>
+<li>取一 个公开指数 e ，这个数的值小于(p - 1)(q - 1), e对应的值和(p - 1)(q - 1)的值互质。</li>
+<li>e 和 n 组合起来就相当于公钥。 n 值的长度就相当于密钥对的长度。</li>
+<li>e、 p、 q 能够计算出私钥 d，d 和 n 组合起来就是私钥。</li>
+</ul>
+<h4 id="加密过程"><a href="#加密过程" class="headerlink" title="加密过程"></a>加密过程</h4><p>明文M进行多次幂运算，运算的次数就是公钥，计算出值后再进行模运算 (mod n)，最终得到的 C 就是密文。</p>
+<pre><code>    C = M ^ e (mod n)
+</code></pre>
+<h4 id="解密过程"><a href="#解密过程" class="headerlink" title="解密过程"></a>解密过程</h4><p>对密文进行 d 次的幂运算，然后进行模运算，最终得到明文 M。</p>
+<pre><code>    M = C ^ d (mod n)
+</code></pre>
+<h4 id="加密和解密互逆过程"><a href="#加密和解密互逆过程" class="headerlink" title="加密和解密互逆过程"></a>加密和解密互逆过程</h4><ul>
+<li>C^d 的过程相 当于 (M^e)^d。</li>
+<li>(M^e)^d 相当于 M^(e*d)。</li>
+<li>(e*d) mod n 等于 1。</li>
+<li>C^d (mod n）最终就能反解出 M。</li>
+</ul>
+<h4 id="RSA算法-为什么比较安全？"><a href="#RSA算法-为什么比较安全？" class="headerlink" title="RSA算法 为什么比较安全？"></a>RSA算法 为什么比较安全？</h4><p>幕运算的逆过程就是求对数问题，而模运算可以认为是离散问题，RSA算法就是离散对数模型，只要密钥长度足够长，离散对数很难破解。安全性和密钥对的长度有关，也就是和 n 这个值有关，它可以称为密钥长度，破解私钥有两个方法：</p>
+<ul>
+<li>公钥持有人有 e 和 n，而要计算出私钥d，需要知道 p 和 q，想通过一个巨大的数字 n 获取 p 和 q 是一个因式分解问题，暴力破解很难。</li>
+<li>攻击者假如想通过密文和公钥破解私钥，就要求解决离散对数问题，更是难上加难。</li>
+</ul>
+<h3 id="密钥协商算法"><a href="#密钥协商算法" class="headerlink" title="密钥协商算法"></a>密钥协商算法</h3><p>密钥协商算法是用来解决密钥分配、存储、传输等问题，在网络通信中，为了加密解密数据，可以采用动态密钥，也叫作会话密钥，其特点：</p>
+<ul>
+<li>会话密钥的作用就是为了加密解密通信数据，也就是对称加密算法可以使用会话密钥进行加密解密。</li>
+<li>在加密解密通信数据之前，客户端和服务器端需要协商出会话密钥，而会话密钥只有服务器端和特定的客户端才能知晓，不能泄露，这可以采用密钥协商算法解决。</li>
+<li>会话密钥客户端和服务器端的内存中，不用存储，一旦客户端和服 务器端的连接关闭，该密钥就会消失，安全性就得到了很大的保障。</li>
+</ul>
+<h4 id="RSA-密钥协商算法工作原理"><a href="#RSA-密钥协商算法工作原理" class="headerlink" title="RSA 密钥协商算法工作原理"></a>RSA 密钥协商算法工作原理</h4><ul>
+<li>客户端初始化连接服务器端，服务器发送 RSA 密钥对的公钥给客户端。 </li>
+<li>客户端生成一个随机值，这个值必须是随机的，不能被攻击者猜出，这个值就是会话密钥。 </li>
+<li>客户端使用服务器 RSA 密钥对的公钥加密会话密钥，并发送给服务器端，由于攻击者没有服务器的私钥，所以无法解密会话密钥。 </li>
+<li>服务器端用它的私钥解密出会话密钥。</li>
+<li>至此双方完成连接，接下来服务器端和客户端可以使用对称加密算法和会话密钥加密解密数据。</li>
+</ul>
+<p>由于会话密钥长度相对很小，数据量不大，比RSA加密也就快多了</p>
+<h2 id="混合加密系统"><a href="#混合加密系统" class="headerlink" title="混合加密系统"></a>混合加密系统</h2><p>好了，我们已经知道 RSA 算法的基本知识和 RSA 密钥协商算法，现在来回答上面提出的问题三，怎样解决密钥配送问题呢？</p>
+<p><img src="/.com//encrypt-and-decrypt_08.jpeg"></p>
+<p>上图所示，是将对称密码和公钥密码的优势相结合，解决了公钥密码速度慢，通过公钥密码解决了对称密码的密钥配送问题，也称混合加密系统。会话密钥为本次通信随机生成的临时密钥，作为对称密码的密钥，用于加密消息，提高速度。</p>
+<p>加密步骤（发送消息）：</p>
+<ol>
+<li>首先，消息发送者要拥有消息接收者的公钥</li>
+<li>生成会话密钥，作为对称密码的密钥，加密消息</li>
+<li>用消息接收者的公钥，加密会话密钥</li>
+<li>将前2步生成的加密结果，一并发给消息接收者</li>
+</ol>
+<p>解密步骤（接收消息）：</p>
+<ol>
+<li>消息接收者用自己的私钥解密出会话密钥</li>
+<li>再用第1步解密出来的会话密钥，解密消息</li>
+</ol>
+<p>到这里，混合加密系统是否完美无缺了呢？还是回到文章开头，我们还有两个问题没有解决：身份验证、不可抵赖性。</p>
+<p>A 、 B 、 C 三个人共享一个对称加密算法密钥， A 向 B 发送了一条消息，但是 A 可以抵赖说这条消息并不是他发送的，理由就是 C 也 有同样的密钥，这条力口密消息可能是 C 发送给 B 的，B 无法向第三方证明是 A 给他发送了消息。</p>
+<p>公开密钥算法中，如果算法用于加密解密，也同样不能防止抵赖，RSA 的公钥是完全公开的，RSA私钥拥有者虽然能够解密，但是并不能确认是哪个客户端发送的消息，任何人都可以抵赖。</p>
+<h2 id="问题三：如何确认对方的身份，防止抵赖呢？"><a href="#问题三：如何确认对方的身份，防止抵赖呢？" class="headerlink" title="问题三：如何确认对方的身份，防止抵赖呢？"></a>问题三：如何确认对方的身份，防止抵赖呢？</h2><h2 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h2><p>在RSA算法中，私钥只有密钥对的生成者持有，如果不考虑密钥泄露的问题，私钥拥有者使用密钥（注意不是加密操作）签署一条消息，然后发送给任意的接收方，接收方只要 拥有私钥对应的公钥，就能成功反解签署消息，由于只有私钥持有者才能”签署”消息，不能抵赖说这条签署消息不是他发送的，这就是数字签名技术。</p>
+<p>特点：</p>
+<ol>
+<li>防篡改：数据不会被修改。</li>
+<li>防伪造：发送的消息不能够伪造。</li>
+<li>防抵赖：消息签署者不能抵赖。</li>
+</ol>
+<p>前面两点，MAC 算法也具有，MAC 算法能保证传递的消息是经过验证的，但不能对消息发送者的身份进行验证，原因就在于消息发送方和接收方 拥有同样的密钥，所以双方可以抵赖。</p>
+<p>前面讲到的RSA加密，那么RSA加密和数字签名有什么区别呢？数字签名，其实就是将公钥密码反过来使用</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">私钥</th>
+<th align="center">公钥</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">公钥密码</td>
+<td align="center">接受者解密是使用</td>
+<td align="center">发送者加密时使用</td>
+</tr>
+<tr>
+<td align="center">数字签名</td>
+<td align="center">签名者生成签名时使用</td>
+<td align="center">验证者验证签名时使用</td>
+</tr>
+<tr>
+<td align="center">谁持有密钥</td>
+<td align="center">个人持有</td>
+<td align="center">任何人都可以持有</td>
+</tr>
+</tbody></table>
+<p>实现过程：</p>
+<p><img src="/.com//encrypt-and-decrypt_09.jpeg"></p>
+<p>签名生成:</p>
+<p>发送者Alice对消息计算摘要值。<br>发送者Alice用单向散列函数生成散列值，用自己的私钥对散列值（摘要值）进行签名得到签名值。<br>发送者Alice将原始消息和签名值一同发给接收者。</p>
+<p>签名验证:</p>
+<p>接收者Bob接收到消息后，拆分出消息和消息签名值 A。<br>接收者Bob使用单向散列函数对消息生成散列值 B。<br>接收者Bob对摘要值 B 和签名值 A 进行比较，如果相同表示签名验证成功，否则就是验证失败。</p>
+<blockquote>
+<p>注意：数字签名技术的本质不是为了加密，所以和签名值一同传递的消息是不用加密的，当然也可以对消息加密后 再计算签名值。<br>公开密钥算法运行比较缓慢，数字签名算法建议对消息摘要值进行签名，因为摘要值的长度是固定的，运算的时候速度会比较快。</p>
+</blockquote>
+<p>目前来讲，我们四个大问题都已经解决了，加密解密技术也一步一步走向成熟，混合加密系统解决了公钥密码加密速度慢、对称密码的密钥配送问题，数字签名可以做到防篡改、防伪造和防抵赖，好像一切都OK了。但是我们好像忽略一个地方，那就是不管是混合加密解密技术、RSA加密算法，还是数字签名技术，都需要传递一个公钥给对方，如果在传递公钥过程中被人做手脚了呢，换句话说，服务器传递给客户端的公钥可能被攻击者替换，安全性也就荡然无存了，这就是中间人攻击，攻击过程如图：</p>
+<p><img src="/.com//encrypt-and-decrypt_10.jpg"></p>
+<ul>
+<li>客户端向服务器端发起连接请求，期望获取服务器的RSA公钥，攻击者劫持了这个请求。</li>
+<li>攻击者自己生成一对 RSA 密钥对，然后将攻击者的 RSA 公钥发送给客户端。</li>
+<li>攻击者然后再向服务器端发送请求，服务器生成 RSA 密钥对，将 RSA 公钥发送给客户端，实际上是发送给攻击者。</li>
+<li>客户端通过攻击者的公钥加密密钥并发送给服务器，实际上是发送给攻击者。</li>
+<li>攻击者用自己的 RSA 私钥解密了密钥 A，然后自己生成一个密钥 B ，用服务器的 RSA 公钥加密后发送给服务器端。</li>
+<li>服务器端接收到请求后，用自己的 RSA 私钥解密出攻击者的密钥 B 。</li>
+<li>客户端使用攻击者的密钥块 A，采用对称加密算法（AES）加密数据并发送给服务器端，实际上是发送给攻击者。</li>
+<li>攻击者使用自己的密钥块A、采用 AES 算法解密出明文，客户端相当于泄露了隐私，攻击者使用密钥B ，采用 AES 算法加密明文后发送给服务器。</li>
+<li>服务器使用密钥块 B，采用 AES 算法加密数据并发送给攻击者。</li>
+<li>攻击者使用密钥块 B，采用 AES 算法解密出明文数据，此时客户端和服务器端的加密数据被成功破解。</li>
+</ul>
+<p>从上面可以看出，如果遭遇了中间人攻击，那么公钥将是伪造的，数字签名将失效。所以在验证签名之前，首先得先验证公钥的合法性</p>
+<h2 id="问题四：如何验证公钥的合法性？"><a href="#问题四：如何验证公钥的合法性？" class="headerlink" title="问题四：如何验证公钥的合法性？"></a>问题四：如何验证公钥的合法性？</h2><h2 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h2><p>证书，联想的是驾驶证、毕业证、英语四六级证等等，都是由权威机构认证的，密码学中的证书，全称叫公钥证书（Public-key Certificate，PKC），跟驾驶证类似里面有姓名、邮箱等个人信息，以及此人的公钥并由认证机构（Certificate Authority，CA）施加数字签名。</p>
+<p>CA就是能够认定“公钥确实属于此人”并能够生成数字签名的个人或者组织，有国际性组织、政府设立的组织，有通过提供认证服务来盈利的企业，个人也可以成立认证机构。</p>
+<p>认证过程如下：</p>
+<p>CA 机构也拥有一个密钥对，比如 RSA 密钥对（与服 务器 的 RSA 密钥对没有任何关系），它用私钥对证书进行数字签名 ，将签名的证书发送给服务器。浏览器再连接服务器，服务器发送证书给浏览器，浏览器拥有 CA 机构的公钥（内嵌在浏览器 中），然后校验证书的签名，一旦校验成功，就代表这个证书是可信的 CA 机构签发的。</p>
+<p>成功验证签名只能表示该证书是 CA 机构签发的，并不代表确认了身份，浏览器会继续校验，比如用户访问的网址是<a target="_blank" rel="noopener" href="https://www.example.com/">https://www.example.com</a> 浏览器接收到服务器发送过来的证书，验证签名后，发现证书包含的域名也是 <a target="_blank" rel="noopener" href="http://www.example.com/">www.example.com</a> 代表校验身份成功， 最后浏览器从证书中获取服务器的公钥，用来进行密钥协商。</p>
+<p><img src="/.com//encrypt-and-decrypt_11.jpeg"></p>
+<ul>
+<li>服务器实体（ end entity ），就是需要申请证书的实体， 比如 <a target="_blank" rel="noopener" href="http://www.example.com/">www.example.com</a> 域名的拥有者可以申请一张证书，证书能够证明 <a target="_blank" rel="noopener" href="http://www.example.com/">www.example.com</a> 域名所有者的身份。</li>
+<li>浏览器充当证书校验方，方必须充分信任第三方 CA 机构，浏览器集成了各个 CA 机构的根证书。</li>
+<li>CA 机构，CA 是证书签发机构，在审核服务器实体的有效身份后，给其签发证书，证书是用 CA 机构的密钥对（比如 RSA 密钥对）对服务器实体证书进行签名。</li>
+<li>证书仓库，CA 机构签发的证书全部保存在仓库中，证书也可能过期或者被吊销，CA 机构吊销的证书称为证书吊销列表 CRL (Certificate Revocation List）。</li>
+<li>OCSP ( Online Certificate Status Protocol）在线证书状态协议，是为了获取证书的吊销状态，需要部署专门的服务，这些服务由 CA 机构提供，通过数字签名技术保护。其校验过程：浏览器负责发送 OCSP 请求，然后等待 OCSP 响应，最终完成证书吊销状态的检查。</li>
+</ul>
+<h2 id="iOS签名机制"><a href="#iOS签名机制" class="headerlink" title="iOS签名机制"></a>iOS签名机制</h2><p>前面讲了这么多，主要是一些加密、解密、数字签名和证书等基础知识，开始进入重点了哈</p>
+<p>iOS签名的作用</p>
+<p>iOS签名机制的作用就是保证安装到用户手机上的APP都是经过Apple官方允许的，首要任务是保证设备及系统的安全性，只有被苹果设备认可的证书签名的代码才能够被执行，否则在安装或者运行时会因为无法通过内核的签名校验而失败。iOS的系统中内置了来自苹果的CA证书，系统自身的代码都是被苹果”签名“过的， 而用户从AppStore下载的App也都已被苹果官方进行签名。签名机制可以有效地防止来自外部的攻击。</p>
+<p>限制app的行为，比如可读写的路径，允许访问的硬件，允许使用的服务等等，这些是沙盒(Sandbox)技术，通常所说的Entitlements(授权文件)，也就是指iOS沙盒的配置文件，这个文件中声明了app所需的权限，如果app中使用到了某项沙盒限制的功能，但没有声明对应的权限，可能运行到相关的代码时会直接Crash，当然提交审核的时候也是无法通过的。Entitlements也是强制签名的，如果Entitlements文件可以被任意修改，那么Sandbox也就失去了意义。对于越狱来说，如果无法绕过签名和Sandbox，再强大的提权漏洞也无计可施。</p>
+<p>签名还给苹果带来了一个巨大的好处：App分发的绝对控制权。公开发行App的合法途径有且只有一种，就是上传到苹果官方的AppStore供用户下载。苹果会对App进行严格的审查并签名，App的功能及支付渠道也因此可以受苹果的严格管制，也带了巨大的经济效益。</p>
+<p>不管是真机调试，还是发布APP，开发者都需要经过一系列复杂的步骤</p>
+<ul>
+<li>生成CertificateSigningRequest.certSigningRequest文件</li>
+<li>获得ios_development.cer\ios_distribution.cer证书文件</li>
+<li>注册device、添加App ID</li>
+<li>获得*.mobileprovision文件</li>
+</ul>
+<p>当然，对于真机调试，现在的Xcode已经自动帮开发者做了以上操作，平时开发过程中也无需关心</p>
+<p>iOS 设备安装 APP有四种：</p>
+<ol>
+<li>App Store 上下载安装</li>
+<li>开发 App 时可以直接把开发中的应用安装进手机进行调试。</li>
+<li>In-House 企业内部分发，可以直接安装企业证书签名后的 APP。</li>
+<li>AD-Hoc 相当于企业分发的限制版，限制安装设备数量，较少用。</li>
+</ol>
+<p>先从简单的说起：App Store 上下载安装，其工作流程如下：<br>苹果官方生成一对公私钥，在 iOS 里内置一个公钥，私钥由苹果后台保存，我们传 App 上 AppStore 时，苹果后台用私钥对 APP 数据进行签名，iOS 系统下载这个 APP 后，用公钥验证这个签名，若签名正确，这个 APP 肯定是由苹果后台认证的，并且没有被修改过</p>
+<p><img src="/.com//encrypt-and-decrypt_12.jpeg"></p>
+<p>苹果要对其它三种方式安装的 App 的控制就没那么简单了，方案是使用了双层签名</p>
+<p><img src="/.com//encrypt-and-decrypt_02.png"></p>
+<p>过程用文字来描述：</p>
+<ol>
+<li>在你的 Mac 开发机器生成一对公私钥，</li>
+<li>苹果自己有固定的一对公私钥，跟上面 AppStore 例子一样，私钥在苹果后台，公钥在每个 iOS 设备上。</li>
+<li>把Mac公钥传到苹果后台，用苹果后台里的私钥去签名Mac公钥。得到一份数据包含了Mac公钥以及其签名，把这份数据称为证书。</li>
+<li>在苹果后台申请 AppID，配置好设备 ID 列表和 APP 可使用的权限，再加上第3步的证书，组成的数据用苹果私有签名，把数据和签名一起组成一个 Provisioning Profile 文件，下载到本地 Mac 开发机。</li>
+<li>在开发时，编译完一个 APP 后，用本地的对这个 APP 进行签名，同时把第4步得到的 Provisioning Profile 文件打包进 APP 里，文件名为 embedded.mobileprovision，把 APP 安装到手机上。</li>
+<li>在安装时，iOS 系统取得证书，通过系统内置的苹果公钥，去验证 embedded.mobileprovision 的数字签名是否正确，里面的证书签名也会再验一遍。</li>
+<li>确保了 embedded.mobileprovision 里的数据都是苹果授权以后，就可以取出里面的数据，做各种验证，包括用Mac公钥验证APP签名，验证设备 ID 是否在 ID 列表上，AppID 是否对应得上，权限开关是否跟 APP 里的 Entitlements 对应等。</li>
+</ol>
+<p>总结一下这些概念：</p>
+<ul>
+<li>证书：内容是公钥或私钥，由其他机构对其签名组成的数据包。</li>
+<li>Entitlements：包含了 App 权限开关列表。</li>
+<li>CertificateSigningRequest：本地公钥。</li>
+<li>p12：本地私钥，可以导入到其他电脑。</li>
+<li>Provisioning Profile：包含了 证书 &#x2F; Entitlements 等数据，并由苹果后台私钥签名的数据包。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2019/11/18/encrypt-and-decrypt/" title="iOS签名机制">http://www.nnxkcloud.com/2019/11/18/encrypt-and-decrypt/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E8%B6%85%E7%BA%A7%E7%AD%BE%E5%90%8D/" rel="tag"><i class="fa fa-tag"></i> 超级签名</a>
+              <a href="/tags/iOS/" rel="tag"><i class="fa fa-tag"></i> iOS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2019/11/14/%E8%B6%85%E7%BA%A7%E7%AD%BE%E5%90%8D%E8%AF%A6%E7%BB%86%E5%AE%9E%E7%8E%B0/" rel="next" title="超级签名详细实现">
+                  <i class="fa fa-chevron-left"></i> 超级签名详细实现
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2019/12/04/bundle-install-error/" rel="prev" title="bundle install 引发的报错问题">
+                  bundle install 引发的报错问题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">对称加密算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E5%90%91%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">单向散列函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E4%B8%80%EF%BC%9A%E5%A6%82%E4%BD%95%E7%A1%AE%E4%BF%9D%E6%B6%88%E6%81%AF%E6%98%AF%E6%AD%A3%E7%A1%AE%E7%9A%84%E5%8F%91%E9%80%81%E8%80%85%E5%8F%91%E9%80%81%E7%9A%84%E5%91%A2%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">问题一：如何确保消息是正确的发送者发送的呢？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E9%AA%8C%E8%AF%81%E7%A0%81%E7%AE%97%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">消息验证码算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E4%BA%8C%EF%BC%9A%E6%80%8E%E6%A0%B7%E9%81%BF%E5%85%8D%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E7%9A%84%E7%BC%BA%E9%99%B7%E5%91%A2%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">问题二：怎样避免对称加密算法的缺陷呢？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">7.</span> <span class="nav-text">非对称加密算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RSA-%E7%AE%97%E6%B3%95"><span class="nav-number">7.1.</span> <span class="nav-text">RSA 算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E8%BF%87%E7%A8%8B"><span class="nav-number">7.1.1.</span> <span class="nav-text">密钥文件生成过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86%E8%BF%87%E7%A8%8B"><span class="nav-number">7.1.2.</span> <span class="nav-text">加密过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86%E8%BF%87%E7%A8%8B"><span class="nav-number">7.1.3.</span> <span class="nav-text">解密过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86%E5%92%8C%E8%A7%A3%E5%AF%86%E4%BA%92%E9%80%86%E8%BF%87%E7%A8%8B"><span class="nav-number">7.1.4.</span> <span class="nav-text">加密和解密互逆过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RSA%E7%AE%97%E6%B3%95-%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94%E8%BE%83%E5%AE%89%E5%85%A8%EF%BC%9F"><span class="nav-number">7.1.5.</span> <span class="nav-text">RSA算法 为什么比较安全？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E5%8D%8F%E5%95%86%E7%AE%97%E6%B3%95"><span class="nav-number">7.2.</span> <span class="nav-text">密钥协商算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RSA-%E5%AF%86%E9%92%A5%E5%8D%8F%E5%95%86%E7%AE%97%E6%B3%95%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">7.2.1.</span> <span class="nav-text">RSA 密钥协商算法工作原理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B7%E5%90%88%E5%8A%A0%E5%AF%86%E7%B3%BB%E7%BB%9F"><span class="nav-number">8.</span> <span class="nav-text">混合加密系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E4%B8%89%EF%BC%9A%E5%A6%82%E4%BD%95%E7%A1%AE%E8%AE%A4%E5%AF%B9%E6%96%B9%E7%9A%84%E8%BA%AB%E4%BB%BD%EF%BC%8C%E9%98%B2%E6%AD%A2%E6%8A%B5%E8%B5%96%E5%91%A2%EF%BC%9F"><span class="nav-number">9.</span> <span class="nav-text">问题三：如何确认对方的身份，防止抵赖呢？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D"><span class="nav-number">10.</span> <span class="nav-text">数字签名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E5%9B%9B%EF%BC%9A%E5%A6%82%E4%BD%95%E9%AA%8C%E8%AF%81%E5%85%AC%E9%92%A5%E7%9A%84%E5%90%88%E6%B3%95%E6%80%A7%EF%BC%9F"><span class="nav-number">11.</span> <span class="nav-text">问题四：如何验证公钥的合法性？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%81%E4%B9%A6"><span class="nav-number">12.</span> <span class="nav-text">证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS%E7%AD%BE%E5%90%8D%E6%9C%BA%E5%88%B6"><span class="nav-number">13.</span> <span class="nav-text">iOS签名机制</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

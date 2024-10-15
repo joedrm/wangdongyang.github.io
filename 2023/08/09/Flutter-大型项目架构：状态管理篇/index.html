@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="最近对手头上的项目进行重构，总结了有以下几个痛点：  状态管理混乱虽然用了 provider 来做状态管理，但一些代码如：异步请求、事件响应等还是会掺杂在UI页面的代码里面，一旦页面的各种 Widget 多了起来之后，显得非常严重，而且对业务逻辑的测试也不方便，多个组件可能需要共享相同的数据或状态，需要在每个组件中分别创建 Provider 实例，容易导致代码冗余，如果只需要更新页面的部分 Wid">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter 大型项目架构：状态管理篇">
+<meta property="og:url" content="http://www.nnxkcloud.com/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="最近对手头上的项目进行重构，总结了有以下几个痛点：  状态管理混乱虽然用了 provider 来做状态管理，但一些代码如：异步请求、事件响应等还是会掺杂在UI页面的代码里面，一旦页面的各种 Widget 多了起来之后，显得非常严重，而且对业务逻辑的测试也不方便，多个组件可能需要共享相同的数据或状态，需要在每个组件中分别创建 Provider 实例，容易导致代码冗余，如果只需要更新页面的部分 Wid">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2023/08/07/5LW24hRuAZ1c9p3.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/filess/img19@main/2023/08/08/1691458663009-b32a0c28-5613-409b-85c5-45cbb573a236.png">
+<meta property="og:image" content="https://s2.loli.net/2023/08/09/QGWvPlkhiMcAw3q.png">
+<meta property="og:image" content="https://s2.loli.net/2022/12/12/EWvyFX2LgiaeZ3d.jpg">
+<meta property="article:published_time" content="2023-08-09T08:59:26.000Z">
+<meta property="article:modified_time" content="2024-10-15T03:05:34.688Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2023/08/07/5LW24hRuAZ1c9p3.png">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Flutter 大型项目架构：状态管理篇 | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter 大型项目架构：状态管理篇
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-08-09 16:59:26" itemprop="dateCreated datePublished" datetime="2023-08-09T16:59:26+08:00">2023-08-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-15 11:05:34" itemprop="dateModified" datetime="2024-10-15T11:05:34+08:00">2024-10-15</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近对手头上的项目进行重构，总结了有以下几个痛点：</p>
+<ol>
+<li>状态管理混乱<br>虽然用了 <code>provider</code> 来做状态管理，但一些代码如：异步请求、事件响应等还是会掺杂在UI页面的代码里面，一旦页面的各种 <code>Widget</code> 多了起来之后，显得非常严重，而且对业务逻辑的测试也不方便，多个组件可能需要共享相同的数据或状态，需要在每个组件中分别创建 <code>Provider</code> 实例，容易导致代码冗余，如果只需要更新页面的部分 <code>Widget</code> 使用<code>Provider</code> 还会导致嵌套过深，也可能导致性能问题、状态不一致以及难以追踪的错误。</li>
+<li>代码分层混乱，所有的代码都在一个工程里面，包括UI页面、<code>ViewModel</code>、<code>Util</code>、网络请求和通用的 <code>Widget</code> 等，模块划分不清晰，模块依赖和调用混乱，而且各个模块没发单独开发和测试，没有明确的分层可能导致业务逻辑和 UI 代码混杂在一起，而且多个项目之间很难做到代码复用。</li>
+<li>业务迭代导致API接口变动频繁，API接口返回的字段一旦出现类型解析问题就会导致出现崩溃，而目前负责 <code>Json</code> 映射的数据模型 <code>Model</code> 类在很多的 UI <code>Widget</code> 和 <code>Bloc</code> 中有使用到，修复这个问题就会导致大量依赖于此类的改动。而为了安全起见，数据模型类中的所有字段必须始终是这样的：<code>int？</code>、<code>string？</code>等，但是，这又可能会导致由于 <code>NullPoInterException</code> 而出现应用程序崩溃的风险。</li>
+<li>路由管理问题，<code>fluro</code>作为路由管理必须依赖于 <code>context</code>，如果在逻辑层需要处理页面跳转的话就会比较麻烦。而且参数传递只能作为转成字符串放在 <code>path</code> 中，然后再在注册路由的 <code>Handler</code> 中将字段解析出或者转成 <code>Model</code>，使用起来多少有些不方便。</li>
+</ol>
+<p>接下来系列文章来聊一聊怎解决上面的痛点，本篇文章先说一下状态管理方法，现有的项目需要一个能很好地应付大型项目的状态管理机制。</p>
+<span id="more"></span>
+
+<h2 id="什么是状态管理"><a href="#什么是状态管理" class="headerlink" title="什么是状态管理"></a>什么是状态管理</h2><p>Flutter 状态管理是指在 Flutter 应用中有效地管理应用的数据和状态，以确保用户界面（UI）与数据之间的一致性和交互性。在复杂的应用中，数据通常会在不同的部分之间流动和变化，而状态管理的目标是帮助开发者更好地组织、更新和共享这些数据。</p>
+<p>下面是使用比较多的状态管理方法及优缺点：</p>
+<p><img src="https://s2.loli.net/2023/08/07/5LW24hRuAZ1c9p3.png" alt="状态管理方法优缺点"></p>
+<p>上面可以看出如果是小型项目用 <code>setState()</code> 或 <code>InheritedWidget</code>，原生自带，简单快捷。大型项目可以选择更复杂的方法，如 <code>Provider</code>、<code>BLoC</code> 或 <code>Redux</code>。特别是对于复杂的应用逻辑，<code>BLoC</code> 和 <code>Redux</code> 提供了更强大的状态管理和业务分离，将逻辑业务从UI层中剥离，方便维护和拓展功能，但同时学习的复杂度也高一些。在项目初期选择合适的状态管理方法还是很重要的，提升效率的同时也避免了后面频繁更换引起大量代码的变更。</p>
+<p>本系列文章主要是针对大型项目的架构来展开的，所以选择了 <code>BLoC</code> 作为状态管理方法，那为什么是 <code>BLoC</code> ?</p>
+<h2 id="Why-Bloc"><a href="#Why-Bloc" class="headerlink" title="Why Bloc?"></a>Why Bloc?</h2><blockquote>
+<p>Bloc makes it easy to separate presentation from business logic, making your code fast, easy to test, and reusable.</p>
+</blockquote>
+<p>引用了 <a target="_blank" rel="noopener" href="https://bloclibrary.dev/#/whybloc">bloclibrary.dev</a> 中一句话：<code>Bloc</code> 可以轻松地将展示层与业务逻辑分离，使您的代码快速、易于测试且可重用。<br><img src="https://fastly.jsdelivr.net/gh/filess/img19@main/2023/08/08/1691458663009-b32a0c28-5613-409b-85c5-45cbb573a236.png"></p>
+<p>在 <code>Flutter BLoC</code> 架构中，应用的业务逻辑被组织为一个个的 <code>BLoC</code>。每个 <code>BLoC</code> 是一个独立的单元，一情况下对应一个页面（Page），负责管理这个页面特定的状态和逻辑，如网络请求、请求返回的数据解析处理、点击事件等等。<code>BLoC</code> 通过 <code>Streams</code>（流）和 <code>Sink</code>（数据源）与 UI 组件通信。这种分离的架构使得 UI 组件只需关注显示数据，而将数据获取、处理和变化交给了相应的 <code>BLoC</code>。</p>
+<p><code>Bloc</code> 主要由以下几个部分组成：</p>
+<p><code>State</code>： <code>Bloc</code> 包含一个状态对象，它存储了当前的应用状态。这个状态可以是任何数据类型，从简单的布尔值到复杂的对象都可以。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomeState</span>  </span>&#123;</span><br><span class="line">  <span class="built_in">bool</span> isShimmerLoading;</span><br><span class="line">  <span class="built_in">int</span> selectedIndex;</span><br><span class="line">  <span class="built_in">dynamic</span> responseData;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Event</code>： 事件是触发状态变化的操作或用户动作。当用户与应用交互时，事件会被触发，然后 BLoC 根据事件来决定如何改变状态。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">HomeEvent</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> HomeEvent();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomePageInitiated</span> <span class="keyword">extends</span> <span class="title">HomeEvent</span>  </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> HomePageInitiated(<span class="keyword">this</span>.status);</span><br><span class="line">  <span class="keyword">final</span> AuthenticationStatus status;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomePageRefreshed</span> <span class="keyword">extends</span> <span class="title">HomeEvent</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> HomePageRefreshed(<span class="keyword">this</span>.completer);</span><br><span class="line">  Completer&lt;<span class="keyword">void</span>&gt; completer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Bloc</code>： <code>Bloc</code> 中包含了实际的业务逻辑。根据接收到的事件，<code>Bloc</code> 可以对状态进行更新、计算、处理异步操作等。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomeBloc</span> <span class="keyword">extends</span> <span class="title">Bloc</span>&lt;<span class="title">HomeEvent</span>, <span class="title">HomeState</span>&gt; </span>&#123;</span><br><span class="line">  HomeBloc() : <span class="keyword">super</span>(HomeState()) &#123;</span><br><span class="line">    <span class="keyword">on</span>&lt;HomePageInitiated&gt;(</span><br><span class="line">      _onHomePageInitiated</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">on</span>&lt;HomePageRefreshed&gt;(</span><br><span class="line">      _onHomePageRefreshed</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  FutureOr&lt;<span class="keyword">void</span>&gt; _onHomePageInitiated(</span><br><span class="line">      HomePageInitiated event, Emitter&lt;HomeState&gt; emit)  &#123;</span><br><span class="line">      <span class="comment">// 发出一个新状态，通知页面更新。</span></span><br><span class="line">      emit(state.copyWith(isShimmerLoading: <span class="keyword">false</span>));</span><br><span class="line">  &#125;</span><br><span class="line">    </span><br><span class="line">  FutureOr&lt;<span class="keyword">void</span>&gt; _onHomePageRefreshed(</span><br><span class="line">      HomePageRefreshed event, Emitter&lt;HomeState&gt; emit)  &#123;</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>UI Page：<code>Bloc</code> 使用 <code>Streams</code> 将状态传递给 UI 组件，UI 组件可以订阅 <code>Bloc</code> 的 <code>Stream</code> 来监听状态变化，同时通过 <code>Sink</code> 向 <code>Bloc</code> 发送事件，触发状态变化。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line">Widget build(BuildContext context) &#123;</span><br><span class="line">  <span class="keyword">return</span> Scaffold(</span><br><span class="line">    appBar: AppBar(title: <span class="keyword">const</span> Text(<span class="string">&#x27;Home&#x27;</span>)),</span><br><span class="line">    body: Padding(</span><br><span class="line">      padding: <span class="keyword">const</span> EdgeInsets.all(<span class="number">12</span>),</span><br><span class="line">      child: BlocProvider(</span><br><span class="line">          create: (context) &#123;</span><br><span class="line">            <span class="keyword">return</span> HomeBloc();</span><br><span class="line">          &#125;,</span><br><span class="line">          child: BlocBuilder&lt;HomeBloc, HomeState&gt;(</span><br><span class="line">            buildWhen: (previous, current) =&gt; previous.isShimmerLoading != current.isShimmerLoading,</span><br><span class="line">            builder: (context, state) &#123;</span><br><span class="line">              <span class="keyword">return</span> GestureDetector(</span><br><span class="line">                onTap: () &#123;</span><br><span class="line">                  bloc.add(<span class="keyword">const</span> HomePageInitiated());</span><br><span class="line">                &#125;,</span><br><span class="line">                child: ......,</span><br><span class="line">              );</span><br><span class="line">            &#125;,</span><br><span class="line">          )</span><br><span class="line">      ),</span><br><span class="line">    ),</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样做的优势也很明显：</p>
+<ul>
+<li>业务逻辑分离： <code>Bloc</code> 架构将业务逻辑从 UI 中分离，使代码更具可读性和可维护性，同时便于单元测试。</li>
+<li>可测试性： 由于 <code>Bloc</code> 的状态和逻辑都是独立的，可以轻松地进行单元测试，确保代码质量。</li>
+<li>状态可预测： 使用 <code>Streams</code> 将状态传递给 UI 组件，确保状态的一致性和可预测性。</li>
+</ul>
+<h2 id="Bloc-实际应用"><a href="#Bloc-实际应用" class="headerlink" title="Bloc 实际应用"></a>Bloc 实际应用</h2><p>接下来实现<code>Bloc</code>中发送网络请求，获取数据后再刷新页面，实际应用中会导入<code>freezed</code>、<code>injectable</code>和<code>get_it</code>等依赖库，其中 <a target="_blank" rel="noopener" href="https://github.com/rrousselGit/freezed">freezed</a> 是数据体代码生成器，<a target="_blank" rel="noopener" href="https://github.com/Milad-Akarie/injectable">injectable</a> 搭配 <a target="_blank" rel="noopener" href="https://github.com/fluttercommunity/get_it">get_it</a> 解决依赖注入的问题。还有其它依赖如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">app</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">A</span> <span class="string">new</span> <span class="string">Flutter</span> <span class="string">project.</span></span><br><span class="line"><span class="attr">publish_to:</span> <span class="string">&#x27;none&#x27;</span> <span class="comment"># Remove this line if you wish to publish to pub.dev</span></span><br><span class="line"><span class="attr">version:</span> <span class="number">1.0</span><span class="number">.0</span><span class="string">+1</span></span><br><span class="line"></span><br><span class="line"><span class="attr">environment:</span></span><br><span class="line">  <span class="attr">sdk:</span> <span class="string">&quot;&gt;=2.15.0 &lt;3.0.0&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">dependency_overrides:</span></span><br><span class="line">  <span class="attr">analyzer:</span> <span class="number">5.2</span><span class="number">.0</span></span><br><span class="line">  <span class="attr">build_resolvers:</span> <span class="number">2.1</span><span class="number">.0</span></span><br><span class="line">  <span class="attr">dart_style:</span> <span class="number">2.2</span><span class="number">.4</span></span><br><span class="line">  <span class="attr">ffi:</span> <span class="string">^1.2.0</span></span><br><span class="line"></span><br><span class="line"><span class="attr">dependencies:</span></span><br><span class="line">  <span class="attr">flutter_localizations:</span></span><br><span class="line">    <span class="attr">sdk:</span> <span class="string">flutter</span></span><br><span class="line">  <span class="attr">flutter:</span></span><br><span class="line">    <span class="attr">sdk:</span> <span class="string">flutter</span></span><br><span class="line">  <span class="attr">cupertino_icons:</span> <span class="string">^1.0.2</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 以下这几个package后面会有文章单独来说</span></span><br><span class="line">  <span class="attr">widgets:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">../widgets</span></span><br><span class="line">  <span class="attr">shared:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">../shared</span></span><br><span class="line">  <span class="attr">domain:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">../domain</span></span><br><span class="line">  <span class="attr">resources:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">../resources</span></span><br><span class="line">  <span class="attr">initializer:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">../initializer</span></span><br><span class="line">    </span><br><span class="line">  <span class="attr">injectable:</span></span><br><span class="line">  <span class="attr">get_it:</span></span><br><span class="line">  <span class="attr">flutter_bloc:</span> <span class="number">8.0</span><span class="number">.1</span></span><br><span class="line">  <span class="attr">freezed_annotation:</span> <span class="number">2.2</span><span class="number">.0</span></span><br><span class="line">  <span class="attr">flutter_screenutil:</span> <span class="number">5.5</span><span class="number">.3</span><span class="string">+2</span></span><br><span class="line">  <span class="attr">auto_route:</span> <span class="number">5.0</span><span class="number">.4</span></span><br><span class="line">  <span class="attr">loading_animation_widget:</span> <span class="string">^1.2.0+4</span></span><br><span class="line">  <span class="attr">pull_to_refresh:</span> <span class="string">^2.0.0</span></span><br><span class="line">  <span class="attr">url_launcher:</span></span><br><span class="line"></span><br><span class="line"><span class="attr">dev_dependencies:</span></span><br><span class="line">  <span class="attr">flutter_test:</span></span><br><span class="line">    <span class="attr">sdk:</span> <span class="string">flutter</span></span><br><span class="line">  <span class="attr">flutter_lints:</span> <span class="string">^1.0.0</span></span><br><span class="line">  <span class="attr">injectable_generator:</span> <span class="string">^2.1.4</span></span><br><span class="line">  <span class="attr">build_runner:</span> <span class="number">2.3</span><span class="number">.3</span></span><br><span class="line">  <span class="attr">freezed:</span> <span class="number">2.3</span><span class="number">.2</span></span><br><span class="line">  <span class="attr">auto_route_generator:</span> <span class="number">5.0</span><span class="number">.3</span></span><br><span class="line">  <span class="attr">flutter_gen_runner:</span> <span class="number">4.1</span><span class="number">.6</span></span><br><span class="line"></span><br><span class="line"><span class="attr">flutter_gen:</span></span><br><span class="line">  <span class="attr">output:</span> <span class="string">lib/resource/generated</span></span><br><span class="line">  <span class="attr">line_lenght:</span> <span class="number">160</span></span><br><span class="line">  <span class="attr">null_safety:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">integrations:</span></span><br><span class="line">    <span class="attr">flutter_svg:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">assets:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">fonts:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="attr">flutter:</span></span><br><span class="line">  <span class="attr">uses-material-design:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">generate:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">assets:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">assets/images/</span></span><br></pre></td></tr></table></figure>
+<p>以 Home 页面为例，文件创建好后目录结构大概是这样的：<br><img src="https://s2.loli.net/2023/08/09/QGWvPlkhiMcAw3q.png" alt="image.png"></p>
+<p>其中 <code>home_event.freezed.dart</code> 和 <code>home_state.freezed.dart</code> 需要手动创建好，内容是添加 <code>@freezed</code> 注解后自动生成的，不需要手动更改内容。</p>
+<h4 id="home-event-dart"><a href="#home-event-dart" class="headerlink" title="home_event.dart"></a>home_event.dart</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:async&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:freezed_annotation/freezed_annotation.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;../../../base/bloc/base_bloc_event.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">part</span> <span class="string">&#x27;home_event.freezed.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">HomeEvent</span> <span class="keyword">extends</span> <span class="title">BaseBlocEvent</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> HomeEvent();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@freezed</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomePageInitiated</span> <span class="keyword">extends</span> <span class="title">HomeEvent</span> <span class="title">with</span> <span class="title">_</span>$<span class="title">HomePageInitiated</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">factory</span> HomePageInitiated() = _HomePageInitiated;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="home-state-dart"><a href="#home-state-dart" class="headerlink" title="home_state.dart"></a>home_state.dart</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:domain/domain.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:freezed_annotation/freezed_annotation.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:shared/shared.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;../../../base/bloc/base_bloc_state.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">part</span> <span class="string">&#x27;home_state.freezed.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@freezed</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomeState</span> <span class="keyword">extends</span> <span class="title">BaseBlocState</span> <span class="title">with</span> <span class="title">_</span>$<span class="title">HomeState</span> </span>&#123;</span><br><span class="line">  <span class="keyword">factory</span> HomeState(&#123;</span><br><span class="line">    <span class="meta">@Default</span>([]) <span class="built_in">List</span>&lt;PlayListItemData&gt; playList,</span><br><span class="line">  &#125;) = _HomeState;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="home-bloc-dart"><a href="#home-bloc-dart" class="headerlink" title="home_bloc.dart"></a>home_bloc.dart</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:async&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:app/base/bloc/base_bloc.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:domain/domain.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter_bloc/flutter_bloc.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:injectable/injectable.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:app/ui/home/bloc/home_event.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:app/ui/home/bloc/home_state.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:shared/util/log_utils.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomeBloc</span> <span class="keyword">extends</span> <span class="title">BaseBloc</span>&lt;<span class="title">HomeEvent</span>, <span class="title">HomeState</span>&gt; </span>&#123;</span><br><span class="line">  HomeBloc(<span class="keyword">this</span>._repository) : <span class="keyword">super</span>(HomeState()) &#123;</span><br><span class="line">    <span class="keyword">on</span>&lt;HomePageInitiated&gt;(</span><br><span class="line">      _onHomePageInitiated,</span><br><span class="line">      transformer: log(),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">on</span>&lt;UserLoadMore&gt;(</span><br><span class="line">      _onUserLoadMore,</span><br><span class="line">      transformer: log(),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">on</span>&lt;HomePageRefreshed&gt;(</span><br><span class="line">      _onHomePageRefreshed,</span><br><span class="line">      transformer: log(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> Repository _repository;</span><br><span class="line">  </span><br><span class="line">  FutureOr&lt;<span class="keyword">void</span>&gt; _onHomePageInitiated(</span><br><span class="line">      HomePageInitiated event, Emitter&lt;HomeState&gt; emit) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="built_in">List</span>&lt;PlayListItemData&gt; playList = <span class="keyword">await</span> _repository.playlist(<span class="string">&quot;&quot;</span>);</span><br><span class="line">      <span class="comment">// 获取数据后触发页面更新</span></span><br><span class="line">      emit(state.copyWith(playList: playList));</span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">      Log.e(err);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Repository</code> 是数据请求的接口，其实现类是<code>RepositoryImpl</code>，通过注解<code>@LazySingleton(as: Repository)</code> 将实现类<code>RepositoryImpl</code> 注入到 <code>di</code> 中，这一块儿将在网络层的重构会说到。</p>
+<p><code>HomePage</code> 的 <code>_HomePageState</code> 继承自 <code>BasePageState</code>，而 <code>BasePageState</code>继承<code>BasePageStateDelegate</code> 并在 <code>BasePageStateDelegate</code> 注册 <code>Bloc</code></p>
+<h4 id="base-page-state-dart"><a href="#base-page-state-dart" class="headerlink" title="base_page_state.dart"></a>base_page_state.dart</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BasePageState</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span>, <span class="title">B</span> <span class="keyword">extends</span> <span class="title">BaseBloc</span>&gt;</span></span><br><span class="line"><span class="class">    <span class="keyword">extends</span> <span class="title">BasePageStateDelegate</span>&lt;<span class="title">T</span>, <span class="title">B</span>&gt; <span class="title">with</span> <span class="title">LogMixin</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BasePageStateDelegate</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span>,</span></span><br><span class="line"><span class="class">    <span class="title">B</span> <span class="keyword">extends</span> <span class="title">BaseBloc</span>&gt; <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">ExceptionHandlerListener</span> </span>&#123;</span><br><span class="line">  <span class="keyword">late</span> <span class="keyword">final</span> AppNavigator navigator = GetIt.instance.<span class="keyword">get</span>&lt;AppNavigator&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">late</span> <span class="keyword">final</span> B bloc = GetIt.instance.<span class="keyword">get</span>&lt;B&gt;()</span><br><span class="line">    ..navigator = navigator;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Provider(</span><br><span class="line">      create: (context) &#123;&#125;,</span><br><span class="line">      child: MultiBlocProvider(</span><br><span class="line">        providers: [</span><br><span class="line">          BlocProvider(create: (_) =&gt; bloc),</span><br><span class="line">        ],</span><br><span class="line">        child: buildPageListeners(</span><br><span class="line">            child: isAppWidget</span><br><span class="line">                ? buildPage(context)</span><br><span class="line">                : Stack(</span><br><span class="line">                    children: [</span><br><span class="line">                      buildPage(context),</span><br><span class="line">                      BlocBuilder&lt;CommonBloc, CommonState&gt;(</span><br><span class="line">                        buildWhen: (previous, current) =&gt;</span><br><span class="line">                            previous.isLoading != current.isLoading,</span><br><span class="line">                        builder: (context, state) =&gt; Visibility(</span><br><span class="line">                          visible: state.isLoading,</span><br><span class="line">                          child: buildPageLoading(),</span><br><span class="line">                        ),</span><br><span class="line">                      ),</span><br><span class="line">                    ],</span><br><span class="line">                  ),</span><br><span class="line">          )</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Widget buildPageListeners(&#123;<span class="keyword">required</span> Widget child&#125;) =&gt; child;</span><br><span class="line"></span><br><span class="line">  Widget buildPageLoading() =&gt; <span class="keyword">const</span> Center(</span><br><span class="line">        child: CircularProgressIndicator(</span><br><span class="line">          color: Color(<span class="number">0xFF666666</span>),</span><br><span class="line">          strokeWidth: <span class="number">2</span>,</span><br><span class="line">        ),</span><br><span class="line">      );</span><br><span class="line"></span><br><span class="line">  Widget buildPage(BuildContext context);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> dispose() &#123;</span><br><span class="line">    <span class="keyword">super</span>.dispose();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="home-page-dart"><a href="#home-page-dart" class="headerlink" title="home_page.dart"></a>home_page.dart</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:app/ui/home/bloc/home_state.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:app/base/base_page_state.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:app/common_view/common_scaffold.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter_bloc/flutter_bloc.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;bloc/home_bloc.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;bloc/home_event.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomePage</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> HomePage(&#123;Key? key&#125;) : <span class="keyword">super</span>(key: key);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  _HomePageState createState() =&gt; _HomePageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_HomePageState</span> <span class="keyword">extends</span> <span class="title">BasePageState</span>&lt;<span class="title">HomePage</span>, <span class="title">HomeBloc</span>&gt; </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  initState() &#123;</span><br><span class="line">    <span class="keyword">super</span>.initState();</span><br><span class="line">    <span class="comment">// 向 bloc 添加 HomePageInitiated event</span></span><br><span class="line">    bloc.add(<span class="keyword">const</span> HomePageInitiated());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget buildPage(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> CommonScaffold(</span><br><span class="line">        backgroundColor: Colors.white,</span><br><span class="line">        hideKeyboardWhenTouchOutside: <span class="keyword">true</span>,</span><br><span class="line">        body: BlocBuilder&lt;HomeBloc, HomeState&gt;(</span><br><span class="line">          buildWhen: (previous, current) =&gt;</span><br><span class="line">              previous.playList != current.playList,</span><br><span class="line">          builder: (ctx, state) &#123;</span><br><span class="line">            <span class="keyword">return</span> ListView.separated(</span><br><span class="line">                itemBuilder: (BuildContext context, <span class="built_in">int</span> index) &#123;</span><br><span class="line">                  <span class="keyword">return</span> SizedBox(</span><br><span class="line">                    height: <span class="number">120</span>,</span><br><span class="line">                    child: Text(state.playList[index].name ?? <span class="string">&quot;&quot;</span>),</span><br><span class="line">                  );</span><br><span class="line">                &#125;,</span><br><span class="line">                separatorBuilder: (BuildContext context, <span class="built_in">int</span> index) &#123;</span><br><span class="line">                  <span class="keyword">return</span> Container();</span><br><span class="line">                &#125;,</span><br><span class="line">                itemCount: state.playList.length);</span><br><span class="line">          &#125;,</span><br><span class="line">        ));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>buildWhen</code> 中对比前后数据不一样的时候就会触发更新 <code>ListView</code> 的显示，而且只需要判断监听 <code>playList</code> 这一个字段的数据变化，如果需要监听其它字段来更新其它的 <code>Widget</code> 时也互相不干扰，，整个没有多余的逻辑处理，UI 层干净清爽多了。以事件为驱动，事件一旦被触发，然后 <code>BLoC</code> 根据事件来决定如何改变状态，好处是这里的状态和逻辑都是独立的，可以轻松地进行单元测试来确保代码质量。</p>
+<p>欢迎关注我的公众号“<strong>flutter技术实践</strong>”，原创技术文章第一时间推送。</p>
+<center>
+    <img src="https://s2.loli.net/2022/12/12/EWvyFX2LgiaeZ3d.jpg" style="width: 100px;">
+</center>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/" title="Flutter 大型项目架构：状态管理篇">http://www.nnxkcloud.com/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2022/09/09/Flutter%E5%AE%9E%E7%8E%B0%E9%9F%B3%E4%B9%90API%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/" rel="next" title="Flutter实现音乐API加密算法">
+                  <i class="fa fa-chevron-left"></i> Flutter实现音乐API加密算法
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2024/03/20/%E5%85%B3%E4%BA%8E-Flutter-%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%9B%BD%E9%99%85%E5%8C%96%EF%BC%8C%E5%8F%AA%E9%9C%80%E8%A6%81%E5%81%9A%E5%AF%B9%E8%BF%99%E5%87%A0%E6%AD%A5/" rel="prev" title="关于 Flutter 项目的国际化，只需要做对这几步">
+                  关于 Flutter 项目的国际化，只需要做对这几步 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">什么是状态管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-Bloc"><span class="nav-number">2.</span> <span class="nav-text">Why Bloc?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bloc-%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">Bloc 实际应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#home-event-dart"><span class="nav-number">3.0.1.</span> <span class="nav-text">home_event.dart</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#home-state-dart"><span class="nav-number">3.0.2.</span> <span class="nav-text">home_state.dart</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#home-bloc-dart"><span class="nav-number">3.0.3.</span> <span class="nav-text">home_bloc.dart</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#base-page-state-dart"><span class="nav-number">3.0.4.</span> <span class="nav-text">base_page_state.dart</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#home-page-dart"><span class="nav-number">3.0.5.</span> <span class="nav-text">home_page.dart</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

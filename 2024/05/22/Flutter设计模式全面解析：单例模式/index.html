@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="谈到设计模式这个“古老”的话题，大家先别急着划走哈，虽然对它再熟悉不过，几乎是最初开始学习编程到现在伴随着我们整个编程生涯，最早 Java、C++ 语言实现的各种设计模式到现在还会经常有所接触，面试中也是必问的环节，在开发 Flutter 项目的时候，也会多少借鉴了其它语言设计模式的实现，但始终觉得dart 语言实现的设计模式理解不够系统，有的实现还缺点儿 dart 语言本身的语法特性。加上最近">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter设计模式全面解析：单例模式">
+<meta property="og:url" content="http://www.nnxkcloud.com/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="谈到设计模式这个“古老”的话题，大家先别急着划走哈，虽然对它再熟悉不过，几乎是最初开始学习编程到现在伴随着我们整个编程生涯，最早 Java、C++ 语言实现的各种设计模式到现在还会经常有所接触，面试中也是必问的环节，在开发 Flutter 项目的时候，也会多少借鉴了其它语言设计模式的实现，但始终觉得dart 语言实现的设计模式理解不够系统，有的实现还缺点儿 dart 语言本身的语法特性。加上最近">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/05/22/tswSPnaY25B4Eie.png">
+<meta property="article:published_time" content="2024-05-22T02:20:52.000Z">
+<meta property="article:modified_time" content="2024-10-15T03:05:34.690Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/05/22/tswSPnaY25B4Eie.png">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Flutter设计模式全面解析：单例模式 | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter设计模式全面解析：单例模式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-05-22 10:20:52" itemprop="dateCreated datePublished" datetime="2024-05-22T10:20:52+08:00">2024-05-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-15 11:05:34" itemprop="dateModified" datetime="2024-10-15T11:05:34+08:00">2024-10-15</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://s2.loli.net/2024/05/22/tswSPnaY25B4Eie.png" alt="Flutter _1_.png"></p>
+<p>谈到设计模式这个“古老”的话题，大家先别急着划走哈，虽然对它再熟悉不过，几乎是最初开始学习编程到现在伴随着我们整个编程生涯，最早 <code>Java</code>、<code>C++</code> 语言实现的各种设计模式到现在还会经常有所接触，面试中也是必问的环节，在开发 <code>Flutter</code> 项目的时候，也会多少借鉴了其它语言设计模式的实现，但始终觉得<code>dart</code> 语言实现的设计模式理解不够系统，有的实现还缺点儿 <code>dart</code> 语言本身的语法特性。加上最近在看一些 <code>Flutter</code> 框架及常用第三方插件的源码时候，发现这些源码背后或多或少都有设计模式的影子。铺垫了这么多，还真不是我在这里故意卷<code>Flutter</code> 设计模式这些个话题，它对于我们日常编写高质量代码及理解 <code>dart</code> 语言特性、<code>Flutter</code> 的框架和热门第三方插件、<code>OOP</code> 设计模式、理解<code>SOLID</code> 原则及其应用、代码架构或软件工程等还是有很大的帮助的。既然这么多的好处，那还等什么呢？</p>
+<span id="more"></span>
+
+<h2 id="Singleton-Pattern"><a href="#Singleton-Pattern" class="headerlink" title="Singleton Pattern"></a><code>Singleton Pattern</code></h2><p><code>Singleton</code>  模式在项目中再常见不过了，实现起来也很简单，它一般包括私有构的造函数、一个静态实例和提供全局访问点。该模式是用来确保一个类只有一个实例，并提供一个全局访问点。简单来说，就是限制一个类在应用程序中只能有一个实例存在。这种模式通常用于需要全局共享资源的场景，比如配置管理、日志记录器、全局状态保存等，下面来实现一个单例类。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 1. 私有构造函数</span></span><br><span class="line">  Singleton._privateConstructor();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 2. 静态实例</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">final</span> Singleton _instance = Singleton._privateConstructor();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3. 提供全局访问点</span></span><br><span class="line">  <span class="keyword">static</span> Singleton <span class="keyword">get</span> instance =&gt; _instance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的单例类 <code>Singleton</code> 可以看出：</p>
+<ol>
+<li><code>Singleton</code> 类构造函数被标记为私有，用来确保该类不能从类外部去实例化。</li>
+<li>包含一个静态实例，该实例是对类实例本身的引用。</li>
+<li>该实例只能通过静态的 <code>get</code> 访问，为全局提供访问点。</li>
+</ol>
+<p>除了上面的写法还有没有其它的实现呢？我们可以使用 <code>factory</code> 构造函数特性来实现。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">final</span> Singleton _instance = Singleton._internal();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">factory</span> Singleton() &#123;</span><br><span class="line">    <span class="keyword">return</span> _instance;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Singleton._internal();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用</span></span><br><span class="line"><span class="comment">// Singleton();</span></span><br></pre></td></tr></table></figure>
+
+<p>在 <code>Dart</code> 中，<code>factory</code> 构造函数是一种特殊的构造函数，用于控制类实例的创建过程。与常规构造函数不同，<code>factory</code> 构造函数并不总是创建一个新的实例，它可以返回现有的实例或一个子类的实例，<code>factory</code> 构造函数也常被用来实现单例模式。当然除了前面两种还有如下面这种更加简单的实现：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">  Singleton._();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">final</span> Singleton instance = Singleton._();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用</span></span><br><span class="line"><span class="comment">// Singleton.instance;</span></span><br></pre></td></tr></table></figure>
+
+<p>在 <code>Flutter</code> 开发中，基于 <code>factory</code> 构造函数和上面第三种实现方式会更常见，因为它们够简单直接且线程安全。那么在 <code>Dart</code> 中还有没有更加便捷的方式创建单例呢？当然有的。</p>
+<h2 id="其它的实现方式"><a href="#其它的实现方式" class="headerlink" title="其它的实现方式"></a>其它的实现方式</h2><p>通过依赖注入插件 <code>injectable</code> 添加为类 <code>@Singleton</code> 和 <code>@LazySingleton</code> 注解也能实现单例，代码也更加的简洁，也是我个人比较推荐的实现方式。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AppNavigator</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> AppNavigator();</span><br><span class="line">  <span class="keyword">void</span> push();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@LazySingleton</span>(<span class="keyword">as</span>: AppNavigator)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppNavigatorImpl</span> </span>&#123;</span><br><span class="line">	<span class="meta">@override</span></span><br><span class="line">    <span class="keyword">void</span> push()&#123;</span><br><span class="line">    	<span class="comment">//......</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h2><p>我们知道 <code>Dart</code> 可以说是一种单线程编程语言，代码的执行通常发生在一个单线程上。这个单线程模型是通过事件循环来管理的。事件循环负责处理事件队列中的任务，这些任务包括 I&#x2F;O 操作、定时器回调、用户输入等。</p>
+<p>所有的 Dart 代码（除非明确使用多线程技术）都是在这个单线程上执行的，也就是一个隔离区（ <code>isolate</code> ）中执行，因此，在 <code>Dart</code> 中实现单例时，只要您不自己创建一个新的独立于代码的隔离区（ <code>isolate</code> ），根本就不必担心线程安全性。所以上面懒加载式单例的第一种实现方式基本上能满足我们的需求。</p>
+<h2 id="单例模式与-SOLID-原则"><a href="#单例模式与-SOLID-原则" class="headerlink" title="单例模式与 SOLID 原则"></a>单例模式与 <code>SOLID</code> 原则</h2><p>单例模式由于其本身的实现（确保一个类只有一个实例，并提供全局访问点）在某些方面与 <code>SOLID</code> 原则（面向对象设计的五个原则）是相冲突的，下面实现一个简单的日志打印的单例类来详细说明一下。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Logger</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">final</span> Logger _instance = Logger._internal();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 私有构造函数，防止外部实例化</span></span><br><span class="line">  Logger._internal();</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">static</span> Logger <span class="keyword">get</span> instance =&gt; _instance;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> log(<span class="built_in">String</span> message) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Log: <span class="subst">$message</span>&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>SOLID</code> 原则中的单一职责原则要求每个类应该只有一个职责，即仅负责一件事。而 <code>Logger</code> 单例类不仅负责日志记录，还负责管理其唯一实例的生命周期，它承担了额外的职责，违背了单一职责原则。</p>
+<p><code>SOLID</code> 原则中开闭原则要求类应该对扩展开放，对修改关闭，在而单例 <code>Logger</code> 中如果想要拓展以支持不同的日志目标，如将日志写入文件等，不得不修改现有代码，而不是通过继承或组合进行扩展功能。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Logger</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">final</span> Logger _instance = Logger._internal();</span><br><span class="line"></span><br><span class="line">  Logger._internal();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> Logger <span class="keyword">get</span> instance =&gt; _instance;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> log(<span class="built_in">String</span> message) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Log: <span class="subst">$message</span>&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 添加新功能</span></span><br><span class="line">  <span class="keyword">void</span> saveLogToFile(<span class="built_in">String</span> message) &#123;</span><br><span class="line">    <span class="comment">// 将日志写入文件的代码</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这不符合开闭原则，因为需要直接修改 <code>Logger</code> 类来添加新功能。</p>
+<p>里氏替换原则要求子类应该可以替换父类，并且不影响其它代码的正确执行。单例模式通过私有构造函数限制实例化，所以继承和替换就很难做到了。例如，如果创建一个子类 <code>FileLogger</code> 继承自 <code>Logger</code>。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileLogger</span> <span class="keyword">extends</span> <span class="title">Logger</span> </span>&#123;</span><br><span class="line">  <span class="keyword">void</span> log(<span class="built_in">String</span> message) &#123;</span><br><span class="line">    <span class="comment">// 自定义文件日志记录逻辑</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面写法会直接报错，<code>FileLogger</code> 也没法替换 <code>Logger</code> 来实现文件日志记录的逻辑。</p>
+<p>接口隔离原则要求不依赖于不需要的接口。单例模式本身与接口隔离原则没有直接冲突。然而，如果单例类实现了过多的职责，就可能导致其接口庞大，调用方很多时候不得不依赖于它们不需要的方法，这就违反接口隔离原则。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Logger</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">final</span> Logger _instance = Logger._internal();</span><br><span class="line"></span><br><span class="line">  Logger._internal();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> Logger <span class="keyword">get</span> instance =&gt; _instance;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> log(<span class="built_in">String</span> message) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Log: <span class="subst">$message</span>&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">void</span> logToFile(<span class="built_in">String</span> message) &#123;</span><br><span class="line">    <span class="comment">// 将日志写入文件的代码</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">void</span> logToNetwork(<span class="built_in">String</span> message) &#123;</span><br><span class="line">    <span class="comment">// 将日志发送到网络服务器的代码</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>依赖倒置原则要求高层模块不应该依赖低层模块，二者都应该依赖于抽象。单例模式通常通过静态方法或属性提供实例，这使得高层模块依赖于具体实现，而不是抽象接口。这个原则我在之前的文章《Flutter大型项目架构：依赖管理篇》中有讲到，文章的 <code>AppNavigator</code>  和 <code>AppNavigatorImpl</code> 类，<code>AppNavigator</code> 是抽象类，所有用到路由的调用都是通过 <code>AppNavigator</code>，而 <code>AppNavigatorImpl</code> 才是实现类，也可以参考上面其它实现方式的代码。</p>
+<h2 id="需要注意什么"><a href="#需要注意什么" class="headerlink" title="需要注意什么"></a>需要注意什么</h2><p>虽说 <code>Singleton</code> 很多和 <code>SOLID</code> 原则相违背，但其简单直接实现方式，尤其是在需要全局共享资源的场景中去使用太方便了。但是我们在追求方便的同时也要留意过度使用 <code>Singleton</code> 模式可能带来的问题，尤其是大型的 <code>Flutter</code> 项目中。</p>
+<ol>
+<li>确保单例适当的生命周期，避免资源的泄露，某些时候单例对象可能会持有大量资源，或者与其他部分有复杂的交互，需要在合适的时机释放这些资源。</li>
+<li>单例模式应仅用于那些需要在全局范围内唯一且易于访问的对象，如 <code>Logger</code> 类、<code>AppNavigator</code> 类等。如果滥用单例会导致代码难以维护和测试。</li>
+<li>确保单例对象在使用前已经正确配置和初始化。特别是在大型项目中，单例可能需要依赖多个模块的初始化顺序，确保这些依赖关系不会引发初始化错误，如在一个统一的模块（<code>initializer</code>）来处理 <code>Singleton</code> 初始化。</li>
+<li>在类中直接单例不咋容易被测试，这个时候可以使用依赖注入（<code>DI</code>）来创建和管理单例实例，在测试时可以替换单例对象。</li>
+<li>确保单例对象的职责单一，不要让其承担过多的责任。通过接口分离和依赖注入，保持系统设计的灵活性和可扩展性。参考 <code>AppNavigator</code>  和 <code>AppNavigatorImpl</code> 类的实现。</li>
+</ol>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本文介绍了单例模式实现的几种方式、单例的线程安全问题、单例模式与 <code>SOLID</code> 原则和在大型项目中使用单例需要注意什么，希望对你在以后的 <code>Flutter</code> 开发过程中有所帮助，感谢您的阅读！</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" title="Flutter设计模式全面解析：单例模式">http://www.nnxkcloud.com/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2024/05/18/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E8%B7%AF%E7%94%B1%E7%AE%A1%E7%90%86%E7%AF%87/" rel="next" title="Flutter大型项目架构：路由管理篇">
+                  <i class="fa fa-chevron-left"></i> Flutter大型项目架构：路由管理篇
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2024/05/24/Flutter%E4%B8%AD%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E4%BD%BF%E7%94%A8%E5%BC%B9%E6%A1%86/" rel="prev" title="Flutter中如何优雅地使用弹框">
+                  Flutter中如何优雅地使用弹框 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Singleton-Pattern"><span class="nav-number">1.</span> <span class="nav-text">Singleton Pattern</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E5%AE%83%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">其它的实现方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="nav-number">3.</span> <span class="nav-text">线程安全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E4%B8%8E-SOLID-%E5%8E%9F%E5%88%99"><span class="nav-number">4.</span> <span class="nav-text">单例模式与 SOLID 原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E4%BB%80%E4%B9%88"><span class="nav-number">5.</span> <span class="nav-text">需要注意什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">小结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

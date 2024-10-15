@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="好久没更新了，最近发生了太多的事儿，疫情还没有过去，目前还在武汉，相比较2个月前现在武汉的情况好太多了，虽然我居住小区还是封锁中，进出没那么自由，但人们心逐渐的平静下来，不再恐慌和担忧。我也静下心来写点东西，最近一个月写了一些Flutter相关的项目，遇到的问题不少，索性来个小总结吧，那就废话不多说，直接上干货。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter 实践小结">
+<meta property="og:url" content="http://www.nnxkcloud.com/2020/04/03/Flutter-%E5%AE%9E%E8%B7%B5%E5%B0%8F%E7%BB%93/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="好久没更新了，最近发生了太多的事儿，疫情还没有过去，目前还在武汉，相比较2个月前现在武汉的情况好太多了，虽然我居住小区还是封锁中，进出没那么自由，但人们心逐渐的平静下来，不再恐慌和担忧。我也静下心来写点东西，最近一个月写了一些Flutter相关的项目，遇到的问题不少，索性来个小总结吧，那就废话不多说，直接上干货。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/mzxj/blog_pic/raw/master/imgs/flutter_summary_01.jpeg">
+<meta property="og:image" content="https://gitee.com/mzxj/blog_pic/raw/master/imgs/flutter_summary_02.jpeg">
+<meta property="og:image" content="https://s2.loli.net/2022/12/12/EWvyFX2LgiaeZ3d.jpg">
+<meta property="article:published_time" content="2020-04-03T04:10:03.000Z">
+<meta property="article:modified_time" content="2024-10-15T03:05:34.688Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/mzxj/blog_pic/raw/master/imgs/flutter_summary_01.jpeg">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2020/04/03/Flutter-%E5%AE%9E%E8%B7%B5%E5%B0%8F%E7%BB%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Flutter 实践小结 | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2020/04/03/Flutter-%E5%AE%9E%E8%B7%B5%E5%B0%8F%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter 实践小结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-03 12:10:03" itemprop="dateCreated datePublished" datetime="2020-04-03T12:10:03+08:00">2020-04-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-15 11:05:34" itemprop="dateModified" datetime="2024-10-15T11:05:34+08:00">2024-10-15</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2020/04/03/Flutter-%E5%AE%9E%E8%B7%B5%E5%B0%8F%E7%BB%93/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/03/Flutter-%E5%AE%9E%E8%B7%B5%E5%B0%8F%E7%BB%93/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>好久没更新了，最近发生了太多的事儿，疫情还没有过去，目前还在武汉，相比较2个月前现在武汉的情况好太多了，虽然我居住小区还是封锁中，进出没那么自由，但人们心逐渐的平静下来，不再恐慌和担忧。我也静下心来写点东西，最近一个月写了一些Flutter相关的项目，遇到的问题不少，索性来个小总结吧，那就废话不多说，直接上干货。</p>
+<span id="more"></span>
+
+<h3 id="ListView-撑开剩余空间"><a href="#ListView-撑开剩余空间" class="headerlink" title="ListView 撑开剩余空间"></a>ListView 撑开剩余空间</h3><p>很多情况下，我们需要ListView撑开剩余空间，这个时候在外面套一个Expanded就可以做到了。如下面这个张图里显示的：</p>
+<div style="align:left;">
+<img width="220" src="https://gitee.com/mzxj/blog_pic/raw/master/imgs/flutter_summary_01.jpeg">
+</div>
+
+<p>核心代码：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Container(</span><br><span class="line">  child: Column(</span><br><span class="line">    mainAxisAlignment: MainAxisAlignment.start,</span><br><span class="line">    crossAxisAlignment: CrossAxisAlignment.start,</span><br><span class="line">    children: &lt;Widget&gt;[</span><br><span class="line">      <span class="comment">// ...</span></span><br><span class="line">      topicTitle(),</span><br><span class="line">      Expanded(</span><br><span class="line">        child: tListView.separated(</span><br><span class="line">          shrinkWrap: <span class="keyword">true</span>,</span><br><span class="line">          itemCount: <span class="number">10</span>,<span class="comment">//lenght,</span></span><br><span class="line">          itemBuilder: (BuildContext context, <span class="built_in">int</span> position) &#123;</span><br><span class="line">            <span class="comment">// ....</span></span><br><span class="line">          &#125;,</span><br><span class="line">          separatorBuilder: (BuildContext context, <span class="built_in">int</span> position) &#123;</span><br><span class="line">            <span class="keyword">return</span> Padding(padding: EdgeInsets.only(top: <span class="number">12</span>),);</span><br><span class="line">          &#125;,</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">      commitBtn(),</span><br><span class="line">    ],</span><br><span class="line">  ),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h3 id="底部弹框的使用"><a href="#底部弹框的使用" class="headerlink" title="底部弹框的使用"></a>底部弹框的使用</h3><p><code>showModalBottomSheet</code> 底部弹框的使用以及给底部弹框切圆角，可以这么做：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">showModalBottomSheet(</span><br><span class="line">      context: context,</span><br><span class="line">      <span class="comment">// 点击背景蒙版是否需要关闭弹框。</span></span><br><span class="line">      isDismissible: <span class="keyword">false</span>,</span><br><span class="line">      <span class="comment">// 是否可以拖拽弹框。</span></span><br><span class="line">      enableDrag: <span class="keyword">false</span>,</span><br><span class="line">      <span class="comment">// 给底部弹框左上方和右上方切圆角。</span></span><br><span class="line">      shape: RoundedRectangleBorder(</span><br><span class="line">        borderRadius: BorderRadius.only(</span><br><span class="line">            topLeft: Radius.circular(<span class="number">24</span>), </span><br><span class="line">            topRight: Radius.circular(<span class="number">24</span>)),</span><br><span class="line">      ),</span><br><span class="line">      builder: (BuildContext context) &#123;</span><br><span class="line">          <span class="comment">// 这里是自定义的Widget，用来显示弹框里面的内容。</span></span><br><span class="line">        <span class="keyword">return</span> RadioPicker(</span><br><span class="line">          start: () &#123;&#125;,</span><br><span class="line">          stop: () &#123;&#125;,</span><br><span class="line">          cancel: () &#123;&#125;,</span><br><span class="line">          title: recordDuration(),</span><br><span class="line">          data: vd,</span><br><span class="line">          dataArr: [],</span><br><span class="line">        );</span><br><span class="line">      &#125;);</span><br></pre></td></tr></table></figure>
+<p>再来看看效果：</p>
+<div style="align:left;">
+<img width="220" src="https://gitee.com/mzxj/blog_pic/raw/master/imgs/flutter_summary_02.jpeg">
+</div>
+
+<h3 id="点击背景关闭键盘"><a href="#点击背景关闭键盘" class="headerlink" title="点击背景关闭键盘"></a>点击背景关闭键盘</h3><p>一般用于页面有文本输入框要输入内容时，键盘弹起挡住页面其它内容，加上一下这一句就OK了。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GestureDetector(</span><br><span class="line">      behavior: HitTestBehavior.translucent,</span><br><span class="line">      onTap: () =&gt; FocusScope.of(context).requestFocus(FocusNode()),</span><br><span class="line">      child: Container());</span><br></pre></td></tr></table></figure>
+
+<h3 id="输入框的光标问题"><a href="#输入框的光标问题" class="headerlink" title="输入框的光标问题"></a>输入框的光标问题</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">    maxLines: <span class="number">3</span>,</span><br><span class="line">    scrollPadding: EdgeInsets.fromLTRB(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>),</span><br><span class="line">    expands: <span class="keyword">false</span>,</span><br><span class="line">    onChanged: (text) &#123;</span><br><span class="line">      _inputText = text</span><br><span class="line">    &#125;,</span><br><span class="line">    controller: TextEditingController.fromValue(</span><br><span class="line">      TextEditingValue(</span><br><span class="line">        text: _inputText,</span><br><span class="line">        selection: TextSelection.fromPosition(</span><br><span class="line">          TextPosition(</span><br><span class="line">            affinity: TextAffinity.downstream,</span><br><span class="line">            offset: _inputText.length</span><br><span class="line">          )</span><br><span class="line">        )</span><br><span class="line">      )</span><br><span class="line">    ), <span class="comment">// 这里要更新光标的偏移位置</span></span><br><span class="line">    decoration: InputDecoration(</span><br><span class="line">        contentPadding: EdgeInsets.fromLTRB(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>),</span><br><span class="line">        hintText: <span class="string">&quot;请输入作业项&quot;</span>,</span><br><span class="line">        hintStyle: TextStyle(fontSize: <span class="number">15</span>, color: Color(<span class="number">0xFF808080</span>)),</span><br><span class="line">        border: InputBorder.none),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="父组件动态更新子组件显示的内容"><a href="#父组件动态更新子组件显示的内容" class="headerlink" title="父组件动态更新子组件显示的内容"></a>父组件动态更新子组件显示的内容</h3><p>我这里是更新底部弹框的内容，使用的是 <code>ValueNotifier</code>，实现代码如下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ValueNotifierData</span> <span class="keyword">extends</span> <span class="title">ValueNotifier</span>&lt;<span class="title">String</span>&gt; </span>&#123;</span><br><span class="line">  ValueNotifierData(value) : <span class="keyword">super</span>(value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>子组件中的代码：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RadioPicker</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  ValueNotifierData data;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  _RadioPickerState createState() =&gt; _RadioPickerState();</span><br><span class="line"></span><br><span class="line">  RadioPicker(&#123;Key key, <span class="keyword">this</span>.data&#125;) : <span class="keyword">super</span>(key: key);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_RadioPickerState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">RadioPicker</span>&gt; </span>&#123;</span><br><span class="line">  <span class="built_in">String</span> title;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> initState() &#123;</span><br><span class="line">    <span class="keyword">super</span>.initState();</span><br><span class="line">    widget.data.addListener(_handleValueChanged);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> _handleValueChanged() &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      title = widget.data.value;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>父组件中动态去修改：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_ListenTaskPageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">ListenTaskPage</span>&gt; </span>&#123;</span><br><span class="line">  ValueNotifierData vd = ValueNotifierData(<span class="string">&#x27;00:00:00&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_ListenTaskPageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">ListenTaskPage</span>&gt; </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> initState() &#123;</span><br><span class="line">    <span class="keyword">super</span>.initState();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  _start() <span class="keyword">async</span> &#123;</span><br><span class="line">    vd.value = <span class="string">&quot;xxxxxx&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> recordMp3() &#123;</span><br><span class="line">    showModalBottomSheet(</span><br><span class="line">        context: context,</span><br><span class="line">        isDismissible: <span class="keyword">false</span>,</span><br><span class="line">        builder: (BuildContext context) &#123;</span><br><span class="line">          <span class="keyword">return</span> RadioPicker(</span><br><span class="line">                    data: vd,</span><br><span class="line">          );</span><br><span class="line">    &#125;);  </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="全局通知事件"><a href="#全局通知事件" class="headerlink" title="全局通知事件"></a>全局通知事件</h3><p>全局通知事件会使用到<code>ChangeNotifier</code>。这里使用场景是当收到推送的消息后更新学生任务角标数量。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="language-markdown">/<span class="strong">***</span></span></span></span><br><span class="line"><span class="strong"><span class="language-markdown"><span class="comment"> * 用来更新学生数据，目前用在了班级详情更新学生的角标(任务的个数)</span></span></span></span><br><span class="line"><span class="strong"><span class="language-markdown"><span class="comment"> * 获取数据：Provider.of<span class="language-xml"><span class="tag">&lt;<span class="name">NotificationProvider</span>&gt;</span></span>(context).studentID</span></span></span></span><br><span class="line"><span class="strong"><span class="language-markdown"><span class="comment"> * 更新数据：Provider.of<span class="language-xml"><span class="tag">&lt;<span class="name">NotificationProvider</span>&gt;</span></span>(context).updateStudentData(&quot;学生ID&quot;, 1);</span></span></span></span><br><span class="line"><span class="strong"><span class="language-markdown"><span class="comment"> <span class="emphasis">*/</span></span></span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NotificationProvider</span> <span class="title">with</span> <span class="title">ChangeNotifier</span> </span>&#123;</span><br><span class="line">  <span class="built_in">String</span> studentID;</span><br><span class="line">  <span class="built_in">int</span> dotCount;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/// <span class="language-markdown"><span class="strong"><span class="emphasis">更新学生的角标(任务的个数)</span></span></span></span></span><br><span class="line">  <span class="keyword">void</span> updateStudentData(<span class="built_in">String</span> studentID, <span class="built_in">int</span> dotCount) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.studentID = studentID;</span><br><span class="line">    <span class="keyword">this</span>.dotCount = dotCount;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 通知监听者更新界面</span></span><br><span class="line">    notifyListeners();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当然别忘了在 <code>main()</code> 函数里面加一下， <code>ChangeNotifierProvider</code> 套上：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main() <span class="keyword">async</span> &#123;</span><br><span class="line">  runApp(MultiProvider(</span><br><span class="line">      providers: [</span><br><span class="line">        ChangeNotifierProvider(create: (_)&#123;</span><br><span class="line">          <span class="keyword">return</span> NotificationProvider();</span><br><span class="line">        &#125;),</span><br><span class="line">      ],</span><br><span class="line">      child: MyApp(),</span><br><span class="line">    ));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="和原生进行通信"><a href="#和原生进行通信" class="headerlink" title="和原生进行通信"></a>和原生进行通信</h3><p>在flutter代码里打开 iOS 原生Apple Music 为例：</p>
+<p><code>dart</code> 代码实现：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (Platform.isIOS) &#123;</span><br><span class="line">   <span class="keyword">const</span> platform = <span class="keyword">const</span> MethodChannel(<span class="string">&#x27;joewang&#x27;</span>);</span><br><span class="line">   <span class="keyword">var</span> result;</span><br><span class="line">   <span class="keyword">try</span> &#123;</span><br><span class="line">     result = <span class="keyword">await</span> platform.invokeMethod(<span class="string">&#x27;openMedia&#x27;</span>);</span><br><span class="line">     <span class="built_in">print</span>(result);</span><br><span class="line">     <span class="keyword">return</span> Future.value(result);</span><br><span class="line">   &#125; <span class="keyword">on</span> PlatformException <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">     <span class="keyword">return</span> Future.error(e.toString());</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>iOS 原生代码（OC）实现：</p>
+<p><code>.h</code> 文件：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"><span class="meta">#import <span class="string">&lt;Flutter/Flutter.h&gt;</span></span></span><br><span class="line"><span class="meta">#import <span class="string">&lt;UIKit/UIKit.h&gt;</span></span></span><br><span class="line"><span class="meta">#import <span class="string">&lt;MediaPlayer/MediaPlayer.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">FlutterNativePlugin</span> : <span class="title">NSObject</span>&lt;<span class="title">FlutterPlugin</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">NS_ASSUME_NONNULL_END</span></span><br></pre></td></tr></table></figure>
+
+<p><code>.m</code> 文件：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="string">&quot;FlutterNativePlugin.h&quot;</span></span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">FlutterNativePlugin</span>() &lt;<span class="title">UIImagePickerControllerDelegate</span>, <span class="title">MPMediaPickerControllerDelegate</span>&gt;</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>) <span class="built_in">UIViewController</span> *viewController;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>) <span class="built_in">MPMediaPickerController</span> *audioPickerController;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">FlutterNativePlugin</span></span></span><br><span class="line"></span><br><span class="line">+ (<span class="type">void</span>)registerWithRegistrar:(<span class="built_in">NSObject</span>&lt;FlutterPluginRegistrar&gt; *)registrar &#123;</span><br><span class="line">    FlutterMethodChannel *channel = [FlutterMethodChannel methodChannelWithName:<span class="string">@&quot;joewang&quot;</span> binaryMessenger:[registrar messenger]];</span><br><span class="line">    <span class="built_in">UIViewController</span> *viewController = [<span class="built_in">UIApplication</span> sharedApplication].delegate.window.rootViewController;</span><br><span class="line">    FlutterNativePlugin *instance = [[FlutterNativePlugin alloc]initWithViewController:viewController];</span><br><span class="line">    [registrar addMethodCallDelegate:instance channel:channel];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithViewController:(<span class="built_in">UIViewController</span> *)viewController &#123;</span><br><span class="line">    <span class="keyword">self</span> = [<span class="variable language_">super</span> init];</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.viewController = viewController;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="type">void</span>)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult)result &#123;</span><br><span class="line">  <span class="keyword">if</span> ([call.method isEqualToString:<span class="string">@&quot;openMedia&quot;</span>]) &#123;</span><br><span class="line">    <span class="keyword">self</span>.audioPickerController = [[<span class="built_in">MPMediaPickerController</span> alloc] initWithMediaTypes:<span class="built_in">MPMediaTypeMusic</span>];</span><br><span class="line">    <span class="keyword">self</span>.audioPickerController.delegate = <span class="keyword">self</span>;</span><br><span class="line">    <span class="keyword">self</span>.audioPickerController.showsCloudItems = <span class="literal">NO</span>;</span><br><span class="line">    <span class="keyword">self</span>.audioPickerController.allowsPickingMultipleItems = <span class="literal">NO</span>;</span><br><span class="line">    <span class="keyword">self</span>.audioPickerController.modalPresentationStyle = <span class="built_in">UIModalPresentationCurrentContext</span>;</span><br><span class="line">    [<span class="keyword">self</span>.viewController presentViewController:<span class="keyword">self</span>.audioPickerController animated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>测试的时候记得iPhone要安装 Apple Music App哦，本人曾遇到过，还花了半天的时间找原因。</p>
+</blockquote>
+<h3 id="网络请求loading的显示问题。"><a href="#网络请求loading的显示问题。" class="headerlink" title="网络请求loading的显示问题。"></a>网络请求loading的显示问题。</h3><p>通常我们在发出请求之前，显示loading，请求完成后再 <code>dismiss</code> 掉这个loading。类似于这样的代码：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Future uploadMp3() <span class="keyword">async</span> &#123;</span><br><span class="line">  Loading(context).<span class="keyword">show</span>();</span><br><span class="line">  HttpUtil.post(<span class="string">&quot;url&quot;</span>, <span class="string">&quot;params&quot;</span>, (value) &#123;</span><br><span class="line">        Loading(context).dismiss();</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">      &#125;, (value) &#123;</span><br><span class="line">        Loading(context).dismiss();</span><br><span class="line">      &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一般来讲，这样 <code>show</code> 和 <code>dismiss</code> loading不会有什么问题，但是当网络请求在某一个异步回调函数中发出时，此时我们的loading调用 <code>dismiss</code> 好像不管用了。如：选择音频文件上传，在拿到音频文件完成后，我需要先异步来获取音频文件的时长，再将音频文件通过接口上传，那么此时会发现一直在loading。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="keyword">await</span> FilePicker.getFilePath(type: FileType.audio).then((value) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;value = <span class="subst">$value</span>&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (value == <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    _getDuration(value).then((duration) =&gt; &#123;</span><br><span class="line">      <span class="built_in">print</span>(duration)</span><br><span class="line">    &#125;).whenComplete(() &#123;</span><br><span class="line">      uploadMp3(value, context);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">  ZhituoxinToast.showToast(msg: e.toString());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解决办法：在 <code>Loading</code> 找到 <code>showDialog&lt;void&gt;()</code>。在调用 <code>showDialog</code> 时传入 <code>GlobalKey</code> ，通过 <code>GlobalKey</code> 去获取正确的 <code>context</code>。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Loading</span> </span>&#123;</span><br><span class="line">  _Body _dialog;</span><br><span class="line">  VoidCallback timeOutHandler;</span><br><span class="line">  <span class="built_in">int</span> timeOut;</span><br><span class="line">  <span class="built_in">String</span> msg;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> GlobalKey loadingGlobalKey = GlobalKey();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> <span class="keyword">show</span>() &#123;</span><br><span class="line">    showDialog&lt;<span class="built_in">dynamic</span>&gt;(</span><br><span class="line">        context: _context,</span><br><span class="line">        barrierDismissible: <span class="keyword">false</span>,</span><br><span class="line">        builder: (BuildContext context) &#123;</span><br><span class="line">          <span class="keyword">return</span> WillPopScope(</span><br><span class="line">            <span class="comment">/// <span class="language-markdown">这里使用 GlobalKey</span></span></span><br><span class="line">            key: loadingGlobalKey,</span><br><span class="line">            onWillPop: () &#123;</span><br><span class="line">              <span class="keyword">return</span> Future.value(_barrierDismissible);</span><br><span class="line">            &#125;,</span><br><span class="line">            child: Dialog(child: Container()),</span><br><span class="line">          );</span><br><span class="line">        &#125;,</span><br><span class="line">      );</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>网络请求里面调用的时候这样写：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Future uploadMp3() <span class="keyword">async</span> &#123;</span><br><span class="line">  Loading(context).<span class="keyword">show</span>();</span><br><span class="line">  HttpUtil.post(<span class="string">&quot;url&quot;</span>, <span class="string">&quot;params&quot;</span>, (value) &#123;</span><br><span class="line">    Loading(context).dismiss();</span><br><span class="line">    <span class="keyword">if</span> (Loading.loadingGlobalKey.currentContext != <span class="keyword">null</span>) &#123;</span><br><span class="line">      Navigator.of(Loading.loadingGlobalKey.currentContext)?.pop;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;, (value) &#123;</span><br><span class="line">    </span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Text设置ellipsis不起作用？"><a href="#Text设置ellipsis不起作用？" class="headerlink" title="Text设置ellipsis不起作用？"></a><code>Text</code>设置<code>ellipsis</code>不起作用？</h3><p><code>TextOverflow.ellipsis</code> 不起作用？可以这么做：最外层用Row或者Flex包裹，然后再用Expanded包一层就可以了</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Row(</span><br><span class="line">  mainAxisAlignment: MainAxisAlignment.start,</span><br><span class="line">  crossAxisAlignment: CrossAxisAlignment.start,</span><br><span class="line">  children: &lt;Widget&gt;[</span><br><span class="line">    Image.asset(</span><br><span class="line">      <span class="string">&#x27;assets/images/add_student_header_icon.png&#x27;</span>,</span><br><span class="line">      width: <span class="number">19</span>,</span><br><span class="line">      height: <span class="number">19</span></span><br><span class="line">    ),</span><br><span class="line">    Padding( padding: EdgeInsets.only(right: <span class="number">10</span>),),</span><br><span class="line">    Expanded(</span><br><span class="line">      child: Text(</span><br><span class="line">          <span class="string">&quot;听闻远方有你，动身跋涉千里，</span></span><br><span class="line"><span class="string">          我吹过你吹过的风，这算不算相拥，</span></span><br><span class="line"><span class="string">          我踏过你走过的路，这算不算相逢，</span></span><br><span class="line"><span class="string">          我还是喜欢你，认真且怂，从一而终。&quot;</span>,</span><br><span class="line">          textAlign: TextAlign.left,</span><br><span class="line">          maxLines: <span class="number">1</span>,</span><br><span class="line">          overflow: TextOverflow.ellipsis,</span><br><span class="line">          style: TextStyle(fontSize: <span class="number">14</span>, color: Color(<span class="number">0xFF808080</span>))),</span><br><span class="line">    )</span><br><span class="line">  ],</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>欢迎关注公众号：<em><strong>flutter_todo</strong></em>，有更多技术干货和学习资源教程分享。</p>
+<img src="https://s2.loli.net/2022/12/12/EWvyFX2LgiaeZ3d.jpg" alt="qrcode_for_gh_a1ca9094adfb_430" style="zoom:67%;">
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2020/04/03/Flutter-%E5%AE%9E%E8%B7%B5%E5%B0%8F%E7%BB%93/" title="Flutter 实践小结">http://www.nnxkcloud.com/2020/04/03/Flutter-%E5%AE%9E%E8%B7%B5%E5%B0%8F%E7%BB%93/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2019/12/04/bundle-install-error/" rel="next" title="bundle install 引发的报错问题">
+                  <i class="fa fa-chevron-left"></i> bundle install 引发的报错问题
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2020/05/21/%E4%BF%AE%E5%A4%8D-Flutter-Flutter-h-file-not-found-%E6%8A%A5%E9%94%99%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" rel="prev" title="修复'Flutter/Flutter.h' file not found 报错问题总结">
+                  修复'Flutter/Flutter.h' file not found 报错问题总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ListView-%E6%92%91%E5%BC%80%E5%89%A9%E4%BD%99%E7%A9%BA%E9%97%B4"><span class="nav-number">1.</span> <span class="nav-text">ListView 撑开剩余空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%95%E9%83%A8%E5%BC%B9%E6%A1%86%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">底部弹框的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%B9%E5%87%BB%E8%83%8C%E6%99%AF%E5%85%B3%E9%97%AD%E9%94%AE%E7%9B%98"><span class="nav-number">3.</span> <span class="nav-text">点击背景关闭键盘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E6%A1%86%E7%9A%84%E5%85%89%E6%A0%87%E9%97%AE%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text">输入框的光标问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%88%B6%E7%BB%84%E4%BB%B6%E5%8A%A8%E6%80%81%E6%9B%B4%E6%96%B0%E5%AD%90%E7%BB%84%E4%BB%B6%E6%98%BE%E7%A4%BA%E7%9A%84%E5%86%85%E5%AE%B9"><span class="nav-number">5.</span> <span class="nav-text">父组件动态更新子组件显示的内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E9%80%9A%E7%9F%A5%E4%BA%8B%E4%BB%B6"><span class="nav-number">6.</span> <span class="nav-text">全局通知事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%92%8C%E5%8E%9F%E7%94%9F%E8%BF%9B%E8%A1%8C%E9%80%9A%E4%BF%A1"><span class="nav-number">7.</span> <span class="nav-text">和原生进行通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82loading%E7%9A%84%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98%E3%80%82"><span class="nav-number">8.</span> <span class="nav-text">网络请求loading的显示问题。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Text%E8%AE%BE%E7%BD%AEellipsis%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8%EF%BC%9F"><span class="nav-number">9.</span> <span class="nav-text">Text设置ellipsis不起作用？</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

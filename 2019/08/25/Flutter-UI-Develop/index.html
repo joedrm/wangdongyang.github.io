@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="跨平台开发方案的三个时代Web容器时代:基于Web相关技术通过浏览器组件来实现界面及功能，典型的框架包括 Cordova(PhoneGap)、Ionic和微信小程序。缺点：一个完整H5页面的展示要经历浏 览器控件的加载、解析和渲染三大过程，性能消耗要比原生开发增加N个数量级，内存占用多、网页加载速度慢、渲染慢、JavaScript 执行慢、交互体验差等 泛Web容器时代:采用类Web标准进行开发，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter 界面开发详细介绍">
+<meta property="og:url" content="http://www.nnxkcloud.com/2019/08/25/Flutter-UI-Develop/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="跨平台开发方案的三个时代Web容器时代:基于Web相关技术通过浏览器组件来实现界面及功能，典型的框架包括 Cordova(PhoneGap)、Ionic和微信小程序。缺点：一个完整H5页面的展示要经历浏 览器控件的加载、解析和渲染三大过程，性能消耗要比原生开发增加N个数量级，内存占用多、网页加载速度慢、渲染慢、JavaScript 执行慢、交互体验差等 泛Web容器时代:采用类Web标准进行开发，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191115_01.png">
+<meta property="og:image" content="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191115_02.png">
+<meta property="og:image" content="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191115_03.png">
+<meta property="og:image" content="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191115_04.png">
+<meta property="og:image" content="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191115_05.png">
+<meta property="og:image" content="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191115_06.png">
+<meta property="og:image" content="https://s2.loli.net/2022/12/12/EWvyFX2LgiaeZ3d.jpg">
+<meta property="article:published_time" content="2019-08-25T08:25:26.000Z">
+<meta property="article:modified_time" content="2024-10-15T03:05:34.687Z">
+<meta property="article:author" content="joe">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191115_01.png">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2019/08/25/Flutter-UI-Develop/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Flutter 界面开发详细介绍 | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2019/08/25/Flutter-UI-Develop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter 界面开发详细介绍
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-08-25 16:25:26" itemprop="dateCreated datePublished" datetime="2019-08-25T16:25:26+08:00">2019-08-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-15 11:05:34" itemprop="dateModified" datetime="2024-10-15T11:05:34+08:00">2024-10-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2019/08/25/Flutter-UI-Develop/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/08/25/Flutter-UI-Develop/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="跨平台开发方案的三个时代"><a href="#跨平台开发方案的三个时代" class="headerlink" title="跨平台开发方案的三个时代"></a>跨平台开发方案的三个时代</h2><p>Web容器时代:基于Web相关技术通过浏览器组件来实现界面及功能，典型的框架包括 Cordova(PhoneGap)、Ionic和微信小程序。<br>缺点：一个完整H5页面的展示要经历浏 览器控件的加载、解析和渲染三大过程，性能消耗要比原生开发增加N个数量级，内存占用多、网页加载速度慢、渲染慢、JavaScript 执行慢、交互体验差等</p>
+<p>泛Web容器时代:采用类Web标准进行开发，但在运行时把绘制和渲染交由原生系统接管的技术，代表框 架有React Native、Weex和快应用，广义的还包括天猫的Virtual View等。<br>缺点：需要处理大量平台相关的逻辑外，随着系统版本变化和API的变化，我们还需要处理不同平台的原生 控件渲染能力差异，修复各类奇奇怪怪的Bug。</p>
+<span id="more"></span>
+
+<p>自绘引擎时代:自带渲染引擎，客户端仅提供一块画布即可获得从业务逻辑到功能呈现的多端高度一致的 渲染体验。Flutter，是为数不多的代表。</p>
+<p>下面是跨平台开发方案的对比：</p>
+<table>
+<thead>
+<tr>
+<th>开发方案</th>
+<th>Web容器</th>
+<th>RN</th>
+<th>Weex</th>
+<th>Flutter</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>类型</td>
+<td>Web容器</td>
+<td>泛Web容器</td>
+<td>泛Web容器</td>
+<td>自绘引擎</td>
+</tr>
+<tr>
+<td>支持平台</td>
+<td>Android&#x2F;iOS&#x2F;Web</td>
+<td>Android&#x2F;iOS</td>
+<td>Android&#x2F;iOS&#x2F;Web</td>
+<td>Android&#x2F;iOS</td>
+</tr>
+<tr>
+<td>开发语言</td>
+<td>Javascript</td>
+<td>Javascript(React)</td>
+<td>Javascript(Vue)</td>
+<td>Dart</td>
+</tr>
+<tr>
+<td>技术栈</td>
+<td>前端</td>
+<td>偏前端</td>
+<td>偏前端</td>
+<td>偏客户端</td>
+</tr>
+<tr>
+<td>动态化能力</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>渲染性能</td>
+<td>差</td>
+<td>一般</td>
+<td>一般</td>
+<td>好</td>
+</tr>
+<tr>
+<td>滑动性能</td>
+<td>差</td>
+<td>一般</td>
+<td>一般</td>
+<td>好</td>
+</tr>
+<tr>
+<td>页面级支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>区块级支持</td>
+<td>不支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>开发效率</td>
+<td>高</td>
+<td>一般</td>
+<td>一般</td>
+<td>一般</td>
+</tr>
+<tr>
+<td>维护成本</td>
+<td>低</td>
+<td>一般</td>
+<td>高</td>
+<td>低</td>
+</tr>
+<tr>
+<td>系统升级视频难度</td>
+<td>低</td>
+<td>中</td>
+<td>中</td>
+<td>低</td>
+</tr>
+<tr>
+<td>社区生态</td>
+<td>活跃</td>
+<td>活跃</td>
+<td>不活跃</td>
+<td>活跃</td>
+</tr>
+</tbody></table>
+<h2 id="Flutter框架介绍"><a href="#Flutter框架介绍" class="headerlink" title="Flutter框架介绍"></a>Flutter框架介绍</h2><p><img src="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191115_01.png"></p>
+<p>Flutter架构采用分层设计，从下到上分为三层，依次为:Embedder、Engine、Framework。</p>
+<p>Embedder是操作系统适配层，实现了渲染Surface设置，线程设置，以及平台插件等平台相关特性的适 配。从这里我们可以看到，Flutter平台相关特性并不多，这就使得从框架层面保持跨端一致性的成本相对 较低。</p>
+<p>Engine层主要包含Skia、Dart和Text，实现了Flutter的渲染引擎、文字排版、事件处理和Dart运行时等功 能。Skia和Text为上层接口提供了调用底层渲染和排版的能力，Dart则为Flutter提供了运行时调用Dart和 渲染引擎的能力。而Engine层的作用，则是将它们组合起来，从它们生成的数据中实现视图渲染。</p>
+<p>Framework层则是一个用Dart实现的UI SDK，包含了动画、图形绘制和手势识别等功能。为了在绘制控 件等固定样式的图形时提供更直观、更方便的接口，Flutter还基于这些基础能力，根据Material和 Cupertino两种视觉设计风格封装了一套UI组件库。我们在开发Flutter的时候，可以直接使用这些组件库。</p>
+<h2 id="Flutter是怎么运转的"><a href="#Flutter是怎么运转的" class="headerlink" title="Flutter是怎么运转的?"></a>Flutter是怎么运转的?</h2><p>Flutter和其他跨平台方案的本质区别<br>与用于构建移动应用程序的其他大多数框架不同，Flutter是重写了一整套包括底层渲染逻辑和上层开发语言 的完整解决方案。这样不仅可以保证视图渲染在Android和iOS上的高度一致性(即高保真)，在代码执行 效率和渲染性能上也可以媲美原生App的体验(即高性能)。自己完成了组件渲染的闭环</p>
+<p>React Native之类的框架，只是通过JavaScript虚拟机扩展调用系统组件，由Android和iOS系统进行组件 的渲染;</p>
+<p>Flutter是怎么完成组件渲染的呢?这需要从图像显示的基本原理说起。</p>
+<p>在计算机系统中，图像的显示需要CPU、GPU和显示器一起配合完成:CPU负责图像数据计算，GPU负责图 像数据渲染，而显示器则负责最终图像显示。</p>
+<p>CPU把计算好的、需要显示的内容交给GPU，由GPU完成渲染后放入帧缓冲区，随后视频控制器根据垂直同 步信号(VSync)以每秒60次的速度，从帧缓冲区读取帧数据交由显示器完成图像显示。</p>
+<p>操作系统在呈现图像时遵循了这种机制，而Flutter作为跨平台开发框架也采用了这种底层方案。</p>
+<p><img src="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191115_02.png"></p>
+<p>可以看到，Flutter关注如何尽可能快地在两个硬件时钟的VSync信号之间计算并合成视图数据，然后通过 Skia交给GPU渲染:UI线程使用Dart来构建视图结构数据，这些数据会在GPU线程进行图层合成，随后交给 Skia引擎加工成GPU数据，而这些数据会通过OpenGL最终提供给GPU渲染。</p>
+<h2 id="Skia-是什么"><a href="#Skia-是什么" class="headerlink" title="Skia 是什么?"></a>Skia 是什么?</h2><p>Skia是一款用C++开发的、性能彪悍的2D图像绘制引擎，其前身是一个向量绘图软件。2005年被Google公 司收购后，因为其出色的绘制表现被广泛应用在Chrome和Android等核心产品上。Skia在图形转换、文字渲 染、位图渲染方面都表现卓越，并提供了开发者友好的API。</p>
+<p>目前，Skia已然是Android官方的图像渲染引擎了，因此Flutter Android SDK无需内嵌Skia引擎就可以获得天 然的Skia支持;而对于iOS平台来说，由于Skia是跨平台的，因此它作为Flutter iOS渲染引擎被嵌入到Flutter 的 iOS SDK中，替代了iOS闭源的Core Graphics&#x2F;Core Animation&#x2F;Core Text，这也正是Flutter iOS SDK打包 的App包体积比Android要大一些的原因。</p>
+<p>底层渲染能力统一了，上层开发接口和功能体验也就随即统一了，开发者再也不用操心平台相关的渲染特性 了。也就是说，Skia保证了同一套代码调用在Android和iOS平台上的渲染效果是完全一致的。</p>
+<h2 id="Dart-是什么？"><a href="#Dart-是什么？" class="headerlink" title="Dart 是什么？"></a>Dart 是什么？</h2><h3 id="Dart-历史"><a href="#Dart-历史" class="headerlink" title="Dart 历史"></a>Dart 历史</h3><p>2011年10月，在丹麦召开的GOTO大会上，Google发布了一种新的编程语言Dart。如同Kotlin和Swift的出 现，分别是为了解决Java和Objective-C在编写应用程序的一些实际问题一样，Dart的诞生正是要解决 JavaScript存在的、在语言本质上无法改进的缺陷。</p>
+<p>JavaScript因为Node.js焕发了第二春，而Dart就没有那么好的运气了。由于缺少顶级项目的使用，Dart始终 不温不火。2015年，在听取了大量开发者的反馈后，Google决定将内置的Dart VM引擎从Chrome移除，这 对Dart的发展来说是重大挫折，替代JavaScript就更无从谈起了。</p>
+<p>在Google内部孵化了移动开发框架Flutter，弯道超车进入了移动开发的领 域;而在Google未来的操作系统Fuchsia中，Dart更是被指定为官方的开发语言。</p>
+<h3 id="Dart的特性"><a href="#Dart的特性" class="headerlink" title="Dart的特性"></a>Dart的特性</h3><p>核心特性<br>JIT与AOT：借助于先进的工具链和编译器，Dart是少数同时支持JIT(Just In Time，即时编译)和AOT(Ahead of Time，运行前编译)的语言之一。JIT在运行时即时编译，在开发周期中使用，可以动态下发和执行代码，开发测试效率高，但运行速度和 执行性能则会因为运行时即时编译受到影响。AOT即提前编译，可以生成被直接执行的二进制代码，运行速度快、执行性能表现好，但每次执行前都需 要提前编译，开发测试效率低。</p>
+<p>内存分配与垃圾回收：</p>
+<p>Dart VM的内存分配策略比较简单，创建对象时只需要在堆上移动指针，内存增长始终是线性的，省去了查 找可用内存的过程。<br>在Dart中，并发是通过Isolate实现的。Isolate是类似于线程但不共享内存，独立运行的worker。这样的机 制，就可以让Dart实现无锁的快速分配。</p>
+<p>Dart的垃圾回收，则是采用了多生代算法。新生代在回收内存时采用“半空间”机制，触发垃圾回收时， Dart会将当前半空间中的“活跃”对象拷贝到备用空间，然后整体释放当前空间的所有内存。回收过程中， Dart只需要操作少量的“活跃”对象，没有引用的大量“死亡”对象则被忽略，这样的回收机制很适合 Flutter框架中大量Widget销毁重建的场景。</p>
+<p>单线程模型：Dart中并没有线程，只有Isolate(隔离区)。Isolates之间不会共享内存，就像几个运行在不同进程 中的worker，通过事件循环(Event Looper)在事件队列(Event Queue)上传递消息通信。</p>
+<p>无需单独的声明式布局语言，界面布局直接通过Dart编码来定义，使得Flutter并不需要类似JSX或XML的声明式布局语言。所有的布 局都使用同一种格式，也使得Flutter很容易提供高级工具使布局更简单。</p>
+<h3 id="为什么是Dart"><a href="#为什么是Dart" class="headerlink" title="为什么是Dart?"></a>为什么是Dart?</h3><p>Google公司给出的原因很简单也很直接:Dart语言开发组就在隔壁，对于Flutter需要的一些语言新特 性，能够快速在语法层面落地实现;而如果选择了JavaScript，就必须经过各种委员会和浏览器提供商漫长的决议。</p>
+<ul>
+<li>同时支持即时编译JIT和事前编译AOT</li>
+<li>Dart的学习成本并不高，很容易上手，Dart作为一门现代化语言，集百家之长，拥有其他优秀编程语言的诸多特性</li>
+<li>利用独特的隔离区（Isolate）实现多线程。而且不共享内存，避免了抢占式调度和共享内存，可以在没有锁的情况下进行对象分配和垃圾回收，在性能方面表现相当不错。</li>
+<li>创建的对象分配内存时，Dart 是在现有的堆上移动指针，保证内存的增长是程线性的，于是就省了查找可用内存的过程。</li>
+<li>google的支持</li>
+</ul>
+<h2 id="Flutter-视图树结构"><a href="#Flutter-视图树结构" class="headerlink" title="Flutter 视图树结构"></a>Flutter 视图树结构</h2><p>Flutter 的视图结构的抽象分为三部分：Widget, Element, RenderObject</p>
+<p><img src="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191115_03.png"></p>
+<p>Widget：Widget 里面存储了一个视图的配置信息，可以高效的创建（build）和销毁<br>Element：是分离 WidgetTree 和真正的渲染对象的中间层， WidgetTree 用来描述对应的Element 属性<br>RenderObject：来执行 Diff， Hit Test 布局、绘制</p>
+<h2 id="视图树的操作"><a href="#视图树的操作" class="headerlink" title="视图树的操作"></a>视图树的操作</h2><h3 id="创建树"><a href="#创建树" class="headerlink" title="创建树"></a>创建树</h3><p><img src="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191115_04.png"></p>
+<p>创建树的过程：创建widget树 -&gt; 调用runApp(rootWidget)，将rootWidget传给rootElement,做为rootElement的子节点，生成Element树，由Element树生成Render树</p>
+<p>Widget：存放渲染内容、视图布局信息，widget的属性最好都是immutable<br>Element：存放上下文，通过Element遍历视图树，Element同时持有Widget和RenderObject<br>RenderObject：根据Widget的布局属性进行layout，paint Widget传人的内容</p>
+<h3 id="更新树"><a href="#更新树" class="headerlink" title="更新树"></a>更新树</h3><p>widget只是一个配置数据结构，创建是非常轻量的，加上flutter团队对widget的创建&#x2F;销毁做了优化，不用担心整个widget树重新创建所带来的性能问题，但是renderobject就不一样了，renderobject涉及到layout、paint等复杂操作，是一个真正渲染的view，整个view 树重新创建开销就比较大，所以答案是否定的。</p>
+<h3 id="树的更新规则"><a href="#树的更新规则" class="headerlink" title="树的更新规则"></a>树的更新规则</h3><ul>
+<li>找到widget对应的element节点，设置element为dirty，触发drawframe, drawframe会调用element的<code>performRebuild()</code>进行树重建</li>
+<li><code>widget.build() == null, deactive element.child</code> 删除子树，流程结束</li>
+<li><code>element.child.widget == NULL, mount</code> 的新子树，流程结束</li>
+<li><code>element.child.widget == widget.build()</code> 无需重建，否则进入流程5</li>
+<li><code>Widget.canUpdate(element.child.widget, newWidget) == true</code> 更新child的slot，element.child.update(newWidget)(如果child还有子节点，则递归上面的流程进行子树更新),流程结束，否则转6</li>
+<li><code>Widget.canUpdate(element.child.widget, newWidget) ！= true</code>（widget的classtype 或者 key 不相等），deactivew element.child，mount 新子树</li>
+</ul>
+<blockquote>
+<p>注意：<br><code>element.child.widget == widget.build()</code>,不会触发子树的update，当触发update的时候，如果没有生效，要注意widget是否使用旧widget，没有new widget，导致update流程走到该widget就停止了<br>子树的深度变化，会引起子树重建，如果子树是一个复杂度很高的树，可以使用GlobalKey做为子树widget的key。GlobalKey具有缓存功能</p>
+</blockquote>
+<h3 id="如何触发树更新"><a href="#如何触发树更新" class="headerlink" title="如何触发树更新"></a>如何触发树更新</h3><p>全局更新：调用<code>runApp(rootWidget)</code>，一般flutter启动时调用后不再会调用<br>局部子树更新, 将该子树做StatefullWidget的一个子widget，并创建对应的State类实例，通过调用state.setState() 触发该子树的刷新</p>
+<h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><p><img src="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191115_05.png"></p>
+<ul>
+<li><code>initState()</code>: state create之后被insert到tree时调用的</li>
+<li><code>didUpdateWidget(newWidget)</code>:祖先节点rebuild widget时调用</li>
+<li><code>deactivate()</code>:widget被remove的时候调用，一个widget从tree中remove掉，可以在dispose接口被调用前，重新instert到一个新tree中</li>
+<li><code>didChangeDependencies()</code>:</li>
+<li>初始化时，在<code>initState()</code>之后立刻调用</li>
+<li>当依赖的InheritedWidget rebuild,会触发此接口被调用</li>
+<li><code>build()</code>:</li>
+<li>After calling [initState].</li>
+<li>After calling [didUpdateWidget].</li>
+<li>After receiving a call to [setState].</li>
+<li>After a dependency of this [State] object changes (e.g., an[InheritedWidget] referenced by the previous [build] changes).</li>
+<li>After calling [deactivate] and then reinserting the [State] object into the tree at another location.</li>
+<li><code>dispose()</code>:Widget彻底销毁时调用</li>
+<li><code>reassemble()</code>: hot reload调用</li>
+</ul>
+<blockquote>
+<p>注意：<br>A页面push一个新的页面B,A页面的widget树中的所有state会依次调用<code>deactivate()</code>, <code>didUpdateWidget(newWidget)</code>、<code>build()</code>（这里怀疑是bug，A页面push一个新页面，理论上并没有将A页面进行remove操作），当然从功能上，没有看出来有什么异常<br>当ListView中的item滚动出可显示区域的时候，item会被从树中remove掉，此item子树中所有的state都会被dispose，state记录的数据都会销毁，item滚动回可显示区域时，会重新创建全新的state、element、renderobject<br>使用hot reload功能时，要特别注意state实例是没有重新创建的，如果该state中存在一下复杂的资源更新需要重新加载才能生效，那么需要在<code>reassemble()</code>添加处理，不然当你使用hot reload时候可能会出现一些意想不到的结果，例如，要将显示本地文件的内容到屏幕上，当你开发过程中，替换了文件中的内容，但是hot reload没有触发重新读取文件内容，页面显示还是原来的旧内容</p>
+</blockquote>
+<h2 id="数据流转"><a href="#数据流转" class="headerlink" title="数据流转"></a>数据流转</h2><h3 id="从上往下"><a href="#从上往下" class="headerlink" title="从上往下"></a>从上往下</h3><p>InheritedWidget用于子节点向祖先节点获取数据的机制</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FrogColor</span> <span class="keyword">extends</span> <span class="title">InheritedWidget</span> </span>&#123;</span><br><span class="line">   <span class="keyword">const</span> FrogColor(&#123;</span><br><span class="line">     Key key,</span><br><span class="line">     <span class="meta">@required</span> <span class="keyword">this</span>.color,</span><br><span class="line">     <span class="meta">@required</span> Widget child,</span><br><span class="line">   &#125;) : <span class="keyword">assert</span>(color != <span class="keyword">null</span>),</span><br><span class="line">        <span class="keyword">assert</span>(child != <span class="keyword">null</span>),</span><br><span class="line">        <span class="keyword">super</span>(key: key, child: child);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">final</span> Color color;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">static</span> FrogColor of(BuildContext context) &#123;</span><br><span class="line">     <span class="keyword">return</span> context.inheritFromWidgetOfExactType(FrogColor);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@override</span></span><br><span class="line">   <span class="built_in">bool</span> updateShouldNotify(FrogColor old) =&gt; color != old.color;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>child 及其以下的节点可以通过调用下面的接口读取color数据：FrogColor.of(context).color<br>context.inheritFromWidgetOfExactType(FrogColor) 其实是通过context&#x2F;element往上遍历树，查找到第一个FrogColor的祖先节点，取该节点的widget对象</p>
+<h3 id="从下往上"><a href="#从下往上" class="headerlink" title="从下往上"></a>从下往上</h3><p>通过发送通知的方式</p>
+<ul>
+<li>定义通知类，继承至Notification</li>
+<li>父节点使用NotificationListener 进行监听捕获通知</li>
+<li>子节点有数据变更调用下面接口进行数据上报</li>
+<li><code>Notification(data).dispatch(context)</code></li>
+</ul>
+<p>流程如下：</p>
+<p><img src="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191115_06.png"></p>
+<h2 id="Layout"><a href="#Layout" class="headerlink" title="Layout"></a>Layout</h2><h3 id="Size-计算"><a href="#Size-计算" class="headerlink" title="Size 计算"></a>Size 计算</h3><p>parent传入约束条件，在dramframe的layout阶段，child根据自身的渲染内容返回size。但是，有个问题，在build()阶段获取不到size，很多时候需要提前知道部分widget size来进行布局，解决方案当widget 在对应renderobject的layout阶段之后，发送一个LayoutChangeNotification,参考SizeChangedLayoutNotifier class，但是SizeChangedLayoutNotifier没有上报init layout size，可以自己参考这个实现封装一个Notifier</p>
+<h3 id="Offset-计算"><a href="#Offset-计算" class="headerlink" title="Offset 计算"></a>Offset 计算</h3><p>renderObject拿到计算好的size，再加上一些布局属性（align、paddig）等，计算child相对parent的offset；offset存放在每个child renderObject的BoxParentData中；当parent拥有mutil children时，BoxParentData还用来存children兄弟节点之间的遍历顺序</p>
+<h3 id="Relayout-boundary"><a href="#Relayout-boundary" class="headerlink" title="Relayout boundary"></a>Relayout boundary</h3><p>renderObject在layout阶段做了Relayout boundary的优化，当子树进行relayout时，满足下面三种中的一种</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">parentUsesSize == false</span><br><span class="line">sizedByParent == true</span><br><span class="line">constraints.isTight</span><br></pre></td></tr></table></figure>
+
+<p>那么该renderObject设置为Relayout boundary，也就是该renderObject的重新layout不触发parent的layout，一般情况下开发人员不需要关心Relayout boundary，除非是使用CustomMultiChildLayout。</p>
+<h2 id="本文完"><a href="#本文完" class="headerlink" title="本文完"></a>本文完</h2><p>欢迎关注公众号：<em><strong>flutter_todo</strong></em>，有更多技术干货和学习资源教程分享。</p>
+<img src="https://s2.loli.net/2022/12/12/EWvyFX2LgiaeZ3d.jpg" alt="qrcode_for_gh_a1ca9094adfb_430" style="zoom:67%;">
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2019/08/25/Flutter-UI-Develop/" title="Flutter 界面开发详细介绍">http://www.nnxkcloud.com/2019/08/25/Flutter-UI-Develop/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Flutter/" rel="tag"><i class="fa fa-tag"></i> Flutter</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2019/11/13/next-theme-set-tags/" rel="prev" title="Next主题设置分类和标签">
+                  Next主题设置分类和标签 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%A8%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%96%B9%E6%A1%88%E7%9A%84%E4%B8%89%E4%B8%AA%E6%97%B6%E4%BB%A3"><span class="nav-number">1.</span> <span class="nav-text">跨平台开发方案的三个时代</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flutter%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.</span> <span class="nav-text">Flutter框架介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flutter%E6%98%AF%E6%80%8E%E4%B9%88%E8%BF%90%E8%BD%AC%E7%9A%84"><span class="nav-number">3.</span> <span class="nav-text">Flutter是怎么运转的?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Skia-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">4.</span> <span class="nav-text">Skia 是什么?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">Dart 是什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E5%8E%86%E5%8F%B2"><span class="nav-number">5.1.</span> <span class="nav-text">Dart 历史</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart%E7%9A%84%E7%89%B9%E6%80%A7"><span class="nav-number">5.2.</span> <span class="nav-text">Dart的特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AFDart"><span class="nav-number">5.3.</span> <span class="nav-text">为什么是Dart?</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flutter-%E8%A7%86%E5%9B%BE%E6%A0%91%E7%BB%93%E6%9E%84"><span class="nav-number">6.</span> <span class="nav-text">Flutter 视图树结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%86%E5%9B%BE%E6%A0%91%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-number">7.</span> <span class="nav-text">视图树的操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%A0%91"><span class="nav-number">7.1.</span> <span class="nav-text">创建树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E6%A0%91"><span class="nav-number">7.2.</span> <span class="nav-text">更新树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%91%E7%9A%84%E6%9B%B4%E6%96%B0%E8%A7%84%E5%88%99"><span class="nav-number">7.3.</span> <span class="nav-text">树的更新规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%A7%A6%E5%8F%91%E6%A0%91%E6%9B%B4%E6%96%B0"><span class="nav-number">7.4.</span> <span class="nav-text">如何触发树更新</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">8.</span> <span class="nav-text">生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%B5%81%E8%BD%AC"><span class="nav-number">9.</span> <span class="nav-text">数据流转</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E4%B8%8A%E5%BE%80%E4%B8%8B"><span class="nav-number">9.1.</span> <span class="nav-text">从上往下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E4%B8%8B%E5%BE%80%E4%B8%8A"><span class="nav-number">9.2.</span> <span class="nav-text">从下往上</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Layout"><span class="nav-number">10.</span> <span class="nav-text">Layout</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Size-%E8%AE%A1%E7%AE%97"><span class="nav-number">10.1.</span> <span class="nav-text">Size 计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Offset-%E8%AE%A1%E7%AE%97"><span class="nav-number">10.2.</span> <span class="nav-text">Offset 计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Relayout-boundary"><span class="nav-number">10.3.</span> <span class="nav-text">Relayout boundary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E6%96%87%E5%AE%8C"><span class="nav-number">11.</span> <span class="nav-text">本文完</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

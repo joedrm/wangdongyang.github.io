@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="在本系列的依赖管理篇讲到了以路由依赖为例子来介绍如何做依赖设计的，具体操作就是将抽象类 AppNavigator 和实现类 AppNavigatorImpl 通过依赖注入的方式联系起来，而在使用的时候调用 AppNavigator  ，不再关心具体的实现逻辑，这种设计在做组件分层和处理多个组件间的依赖关系的时候显得尤为重要，也很好的诠释了软件架构设计中的 依赖于抽象而不是具体的实现。但是关于 F">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter大型项目架构：路由管理篇">
+<meta property="og:url" content="http://www.nnxkcloud.com/2024/05/18/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E8%B7%AF%E7%94%B1%E7%AE%A1%E7%90%86%E7%AF%87/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="在本系列的依赖管理篇讲到了以路由依赖为例子来介绍如何做依赖设计的，具体操作就是将抽象类 AppNavigator 和实现类 AppNavigatorImpl 通过依赖注入的方式联系起来，而在使用的时候调用 AppNavigator  ，不再关心具体的实现逻辑，这种设计在做组件分层和处理多个组件间的依赖关系的时候显得尤为重要，也很好的诠释了软件架构设计中的 依赖于抽象而不是具体的实现。但是关于 F">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/05/18/LpIQhSkEji1DgR3.png">
+<meta property="og:image" content="https://s2.loli.net/2024/05/17/1fmULcvRJndYST5.png">
+<meta property="article:published_time" content="2024-05-18T02:33:42.000Z">
+<meta property="article:modified_time" content="2024-10-15T03:05:34.689Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/05/18/LpIQhSkEji1DgR3.png">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2024/05/18/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E8%B7%AF%E7%94%B1%E7%AE%A1%E7%90%86%E7%AF%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Flutter大型项目架构：路由管理篇 | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/05/18/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E8%B7%AF%E7%94%B1%E7%AE%A1%E7%90%86%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter大型项目架构：路由管理篇
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-05-18 10:33:42" itemprop="dateCreated datePublished" datetime="2024-05-18T10:33:42+08:00">2024-05-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-15 11:05:34" itemprop="dateModified" datetime="2024-10-15T11:05:34+08:00">2024-10-15</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2024/05/18/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E8%B7%AF%E7%94%B1%E7%AE%A1%E7%90%86%E7%AF%87/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/18/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E8%B7%AF%E7%94%B1%E7%AE%A1%E7%90%86%E7%AF%87/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://s2.loli.net/2024/05/18/LpIQhSkEji1DgR3.png"></p>
+<p>在本系列的依赖管理篇讲到了以路由依赖为例子来介绍如何做依赖设计的，具体操作就是将抽象类 <code>AppNavigator</code> 和实现类 <code>AppNavigatorImpl</code> 通过依赖注入的方式联系起来，而在使用的时候调用 <code>AppNavigator</code>  ，不再关心具体的实现逻辑，这种设计在做组件分层和处理多个组件间的依赖关系的时候显得尤为重要，也很好的诠释了软件架构设计中的 <strong>依赖于抽象而不是具体的实现</strong>。但是关于 <code>Flutter</code> 中路由管理知识以及在大型项目中如何做路由设计很少有介绍，本篇就来说一说路由管理在大型的项目的实践。</p>
+<span id="more"></span>
+
+<h2 id="Flutter原生路由"><a href="#Flutter原生路由" class="headerlink" title="Flutter原生路由"></a><code>Flutter</code>原生路由</h2><p>记得刚开始开发 <code>Flutter</code> 应用的时候，跳转页面直接使用 <code>Navigator.of(context).push</code> ，返回 <code>Navigator.pop</code>，简单快捷，传参也方便，还能定制页面跳转的动画，从 <code>iOS</code> 原生开发转过来开发 <code>Flutter</code> 也能很快适应。随着应用的功能越来越多，逻辑也变得复杂，各种页面跳转及传参，发现了一些原生的路由（<code>Navigator</code> 和 <code>Route</code>）的弊端。</p>
+<p>对于更复杂的导航需求，比如深层嵌套的导航、条件导航、全局导航钩子等，原生路由的能力不足，比如一个常见多层次的开发场景，有三个页面：<code>HomeScreen</code>、<code>CategoryScreen</code> 和 <code>ItemScreen</code>。用户需要通过 <code>CategoryScreen</code> 导航到 <code>ItemScreen</code>，并从 <code>ItemScreen</code> 返回到 <code>CategoryScreen</code> 或 <code>HomeScreen</code>。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 配置路由表</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      initialRoute: <span class="string">&#x27;/&#x27;</span>,</span><br><span class="line">      routes: &#123;</span><br><span class="line">        <span class="string">&#x27;/&#x27;</span>: (context) =&gt; HomeScreen(),</span><br><span class="line">        <span class="string">&#x27;/category&#x27;</span>: (context) =&gt; CategoryScreen(),</span><br><span class="line">        <span class="string">&#x27;/item&#x27;</span>: (context) =&gt; ItemScreen(),</span><br><span class="line">      &#125;,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//  HomeScreen -&gt; CategoryScreen</span></span><br><span class="line">Navigator.pushNamed(context, <span class="string">&#x27;/category&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// CategoryScreen -&gt; ItemScreen</span></span><br><span class="line">Navigator.pushNamed(context, <span class="string">&#x27;/item&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// ItemScreen -&gt; HomeScreen</span></span><br><span class="line">Navigator.popUntil(context, ModalRoute.withName(<span class="string">&#x27;/&#x27;</span>));</span><br></pre></td></tr></table></figure>
+<p>上面例子可以看出来，深层嵌套导航时候需要手动去管理返回路径和路由堆栈，这还没有加上各种复杂的参数传递，在复杂的而应用中这样使用太麻烦了，还容易出错。当然如果你觉得上面这种写法还能接受，那么原生路由应用在处理 <code>tab</code> 页面中的嵌套路由的时候又会是什么情况呢？</p>
+<p>那好办啊，给每个 <code>Tab</code> 页面中使用一个独立的 <code>Navigator</code> 组件来管理该 <code>Tab</code> 内部的路由，这样可以使每个 <code>Tab</code> 页面具有独立的路由堆栈而互不影响，不就解决了嘛。嗯，好像是可以哈，这时候产品的需求来了：某个 <code>tab</code> 的子页面回到其它的 <code>tab</code> 首页（如下图所示），该怎么实现跳转呢？答案是没有很好的办法，因为每个 <code>tab</code> 中的 <code>Navigator</code> 是相互独立的，各自管理自己的路由堆栈。除非是通过全局状态管理来记录 <code>tab</code> 页面的状态，但是这样做复杂度又上升了。</p>
+<p><img src="https://s2.loli.net/2024/05/17/1fmULcvRJndYST5.png" alt="tab_stucture.png"></p>
+<p>条件导航、全局导航钩子也很理解，比如说对某些页面的访问进行权限控制，用户在未登录时访问主页需要重定向到登录页面，可以使用 <code>NavigatorObserver</code> 。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AuthGuard</span> <span class="keyword">extends</span> <span class="title">NavigatorObserver</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> didPush(Route&lt;<span class="built_in">dynamic</span>&gt; route, Route&lt;<span class="built_in">dynamic</span>&gt;? previousRoute) &#123;</span><br><span class="line">    <span class="keyword">super</span>.didPush(route, previousRoute);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (route.settings.name == <span class="string">&#x27;/protected&#x27;</span> &amp;&amp; !isLoggedIn) &#123;</span><br><span class="line">      <span class="comment">// 如果用户未登录，则重定向到登录页面</span></span><br><span class="line">      WidgetsBinding.instance.addPostFrameCallback((_) &#123;</span><br><span class="line">        route.navigator?.pushReplacementNamed(<span class="string">&#x27;/login&#x27;</span>);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">bool</span> <span class="keyword">get</span> isLoggedIn =&gt; <span class="keyword">false</span>; <span class="comment">// 假设这是用户登录状态</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用 <code>AuthGuard</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      initialRoute: <span class="string">&#x27;/&#x27;</span>,</span><br><span class="line">      routes: &#123;</span><br><span class="line">        <span class="string">&#x27;/&#x27;</span>: (context) =&gt; HomeScreen(),</span><br><span class="line">        <span class="string">&#x27;/protected&#x27;</span>: (context) =&gt; ProtectedScreen(),</span><br><span class="line">        <span class="string">&#x27;/login&#x27;</span>: (context) =&gt; LoginScreen(),</span><br><span class="line">      &#125;,</span><br><span class="line">      navigatorObservers: [AuthGuard()],</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>虽然可以使用 <code>NavigatorObserver</code> 实现类似需求，但使用起来还是不够方便简洁，而且当我们需要对某个页面添加 <code>Observer</code> 的时候，特别是需要对某些页面的访问进行特殊权限控制的时候，使用原生的  <code>NavigatorObserver</code>  更加麻烦了，下面的例子在 <code>HomeScreen</code> 跳转到 <code>DetailsScreen</code> 之间添加 <code>Observer</code> 。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Navigator.push(</span><br><span class="line">  context,</span><br><span class="line">  MaterialPageRoute(</span><br><span class="line">    builder: (context) =&gt; ObserverPage(</span><br><span class="line">      observer: MyPageObserver(),</span><br><span class="line">      child: DetailsScreen(),</span><br><span class="line">    ),</span><br><span class="line">  ),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>包装器 <code>ObserverPage</code> 类 和 <code>MyPageObserver</code> 的实现</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ObserverPage</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> Widget child;</span><br><span class="line">  <span class="keyword">final</span> NavigatorObserver observer;</span><br><span class="line"></span><br><span class="line">  ObserverPage(&#123;<span class="keyword">required</span> <span class="keyword">this</span>.child, <span class="keyword">required</span> <span class="keyword">this</span>.observer&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Navigator(</span><br><span class="line">      observers: [observer],</span><br><span class="line">      onGenerateRoute: (settings) &#123;</span><br><span class="line">        <span class="keyword">return</span> MaterialPageRoute(</span><br><span class="line">          builder: (context) =&gt; child,</span><br><span class="line">        );</span><br><span class="line">      &#125;,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyPageObserver</span> <span class="keyword">extends</span> <span class="title">NavigatorObserver</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> didPush(Route route, Route? previousRoute) &#123;</span><br><span class="line">    <span class="keyword">super</span>.didPush(route, previousRoute);</span><br><span class="line">    <span class="comment">// 处理特殊的业务逻辑</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="string">&quot;判断条件&quot;</span>) &#123;</span><br><span class="line">      WidgetsBinding.instance.addPostFrameCallback((_) &#123;</span><br><span class="line">        route.navigator?.pushReplacementNamed(<span class="string">&#x27;/xx&#x27;</span>);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种情况下使用自定义的 <code>NavigatorObserver</code> 太过麻烦了，有没有？一个小小的需求竟然要加这么代码，同样的问题在参数传递的过程中也有。</p>
+<p>原生路由在完成规模不大的项目时是能应对的，但是对于页面较多，跳转逻辑也比较复杂的应用它的弊端就会凸显出来了，那么大型项目是如何处理上面的问题呢？又是如何做路由管理的？</p>
+<h2 id="AppNavigator-的实现"><a href="#AppNavigator-的实现" class="headerlink" title="AppNavigator 的实现"></a><code>AppNavigator</code> 的实现</h2><p>为什么是 <code>auto_router</code> 而不是 <code>go_router</code> 呢？个人觉得因人而异吧，<code>auto_router</code> 刚好能我的使用需求，通过注解的方式配置路由，需要编写的代码量较少，而且支持嵌套路由、参数传递、路由守卫等高级功能，也可以很方便地与 <code>Provider</code>、<code>Bloc</code> 等状态管理库集成，上面介绍使用原生路由带来的问题在 <code>auto_router</code> 都有相应的解决方案，具体的使用大家可以看看它的文档。本篇主要讲一讲在大型的 <code>Flutter</code> 中如何使用和管理路由的。</p>
+<p>在做分层设计的时候，往往将抽象和具体实现分开，路由管理中就是抽象类 <code>AppNavigator</code> 放在 <code>domian</code> 组件包中，实现类 <code>AppNavigatorImpl</code> 直接放在了主工程中，通过依赖注入来关联彼此，下面来详细介绍一下简化版的实现类 <code>AppNavigatorImpl</code> 。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:app/navigation/routes/app_router.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:auto_route/auto_route.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:domain/domain.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span> <span class="keyword">as</span> m;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:injectable/injectable.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:app/navigation/base/base_popup_info_mapper.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:app/navigation/base/base_route_info_mapper.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:shared/shared.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@LazySingleton</span>(<span class="keyword">as</span>: AppNavigator)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppNavigatorImpl</span> <span class="keyword">extends</span> <span class="title">AppNavigator</span> <span class="title">with</span> <span class="title">LogMixin</span> </span>&#123;</span><br><span class="line">  AppNavigatorImpl(</span><br><span class="line">    <span class="keyword">this</span>._appRouter,</span><br><span class="line">    <span class="keyword">this</span>._appRouteInfoMapper,</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> tabRoutes = <span class="keyword">const</span> [</span><br><span class="line">    OrderTab(),</span><br><span class="line">    HomeTab(),</span><br><span class="line">    MyPageTab(),</span><br><span class="line">  ];</span><br><span class="line">  </span><br><span class="line">  TabsRouter? tabsRouter;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> AppRouter _appRouter;</span><br><span class="line">  <span class="keyword">final</span> BaseRouteInfoMapper _appRouteInfoMapper;</span><br><span class="line">  </span><br><span class="line">  StackRouter? <span class="keyword">get</span> _currentTabRouter =&gt; tabsRouter?.stackRouterOfIndex(currentBottomTab);</span><br><span class="line">  StackRouter <span class="keyword">get</span> _currentTabRouterOrRootRouter =&gt; _currentTabRouter ?? _appRouter;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;T?&gt; push&lt;T <span class="keyword">extends</span> <span class="built_in">Object?</span>&gt;(AppRouteInfo appRouteInfo) &#123;</span><br><span class="line">    <span class="keyword">return</span> _appRouter.push&lt;T&gt;(_appRouteInfoMapper.map(appRouteInfo));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;<span class="built_in">bool</span>&gt; pop&lt;T <span class="keyword">extends</span> <span class="built_in">Object?</span>&gt;(&#123;T? result, <span class="built_in">bool</span> useRootNavigator = <span class="keyword">false</span>&#125;) &#123;</span><br><span class="line">    <span class="keyword">return</span> useRootNavigator</span><br><span class="line">        ? _appRouter.pop&lt;T&gt;(result)</span><br><span class="line">        : _currentTabRouterOrRootRouter.pop&lt;T&gt;(result);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">int</span> <span class="keyword">get</span> currentBottomTab &#123;</span><br><span class="line">    <span class="keyword">if</span> (tabsRouter == <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="string">&#x27;Not found any TabRouter&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> tabsRouter?.activeIndex ?? <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> popUntilRootOfCurrentBottomTab() &#123;</span><br><span class="line">    <span class="keyword">if</span> (tabsRouter == <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="string">&#x27;Not found any TabRouter&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (_currentTabRouter?.canPop() == <span class="keyword">true</span>) &#123;</span><br><span class="line">      _currentTabRouter?.popUntilRoot();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> navigateToBottomTab(<span class="built_in">int</span> index, &#123;<span class="built_in">bool</span> notify = <span class="keyword">true</span>&#125;) &#123;</span><br><span class="line">    <span class="keyword">if</span> (tabsRouter == <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="string">&#x27;Not found any TabRouter&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    tabsRouter?.setActiveIndex(index, notify: notify);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 还有其它实现，这里先省略...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>AppNavigatorImpl</code> 构造方法中需注入三个实例，分别是 <code>AppRouter</code> 用于管理应用导航的核心类，是全局路由管理单例类，项目中用到所有的路由配置都集中在 <code>AppRouter</code>，通过使用 <code>auto_route</code> 包为 <code>AppRouter</code> 提供了一种结构化和类型安全的方式来定义和处理应用中的路由，下面是 <code>AppRouter</code> 配置代码：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:auto_route/auto_route.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:injectable/injectable.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">part</span> <span class="string">&#x27;app_router.gr.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@AutoRouterConfig</span>(</span><br><span class="line">  replaceInRouteName: <span class="string">&#x27;Page,Route&#x27;</span>,</span><br><span class="line">)</span><br><span class="line"><span class="meta">@LazySingleton</span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppRouter</span> <span class="keyword">extends</span> <span class="title">_</span>$<span class="title">AppRouter</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  RouteType <span class="keyword">get</span> defaultRouteType =&gt; <span class="keyword">const</span> RouteType.adaptive();</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">List</span>&lt;AutoRoute&gt; <span class="keyword">get</span> routes =&gt; [</span><br><span class="line">    	AutoRoute(page: LoginRoute.page),</span><br><span class="line">        AutoRoute(page: MainRoute.page, initial: <span class="keyword">true</span>, children: [</span><br><span class="line">            AutoRoute(</span><br><span class="line">              page: HomeTab.page,</span><br><span class="line">              maintainState: <span class="keyword">true</span>,</span><br><span class="line">              children: [</span><br><span class="line">                AutoRoute(page: HomeRoute.page, initial: <span class="keyword">true</span>),</span><br><span class="line">              ],</span><br><span class="line">            ),</span><br><span class="line">            AutoRoute(</span><br><span class="line">              page: OrderTab.page,</span><br><span class="line">              maintainState: <span class="keyword">true</span>,</span><br><span class="line">              children: [</span><br><span class="line">                AutoRoute(page: OrderRoute.page, initial: <span class="keyword">true</span>),</span><br><span class="line">              ],</span><br><span class="line">            ),</span><br><span class="line">            AutoRoute(</span><br><span class="line">              page: MyPageTab.page,</span><br><span class="line">              maintainState: <span class="keyword">true</span>,</span><br><span class="line">              children: [</span><br><span class="line">                AutoRoute(page: MyPageRoute.page, initial: <span class="keyword">true</span>),</span><br><span class="line">              ],</span><br><span class="line">            ),</span><br><span class="line">        ]),</span><br><span class="line">      ];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RoutePage</span>(name: <span class="string">&#x27;HomeTab&#x27;</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomeTabPage</span> <span class="keyword">extends</span> <span class="title">AutoRouter</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> HomeTabPage(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RoutePage</span>(name: <span class="string">&#x27;OrderTab&#x27;</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderTabPage</span> <span class="keyword">extends</span> <span class="title">AutoRouter</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> OrderTabPage(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RoutePage</span>(name: <span class="string">&#x27;MyPageTab&#x27;</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyPageTabPage</span> <span class="keyword">extends</span> <span class="title">AutoRouter</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> MyPageTabPage(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 <code>AppRouter</code> 配置了 <code>LoginPage</code>、<code>MainTabPage</code> 主页及下面的3个 <code>tab</code> 页面，在类 <code>AppNavigatorImpl</code>  使用 <code>_appRouter</code> 实例来实现各种页面的跳转，如 <code>push</code>、<code>pop</code>  等操作， </p>
+<p>而 <code>tabsRouter</code>  可以切换当前显示的 <code>tab</code> 页，如 <code>navigateToBottomTab</code> 函数，但是好像没有看到在哪里给 <code>tabsRouter</code> 赋值啊，其实 <code>tabsRouter</code> 是在 <code>MainPage</code> 中实现的。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line">Widget buildPage(BuildContext context) &#123;</span><br><span class="line">	<span class="comment">// 这里的 AutoTabsScaffold 也是 auto_router 提供用来创建 AutoTabsRouter 的</span></span><br><span class="line">  <span class="keyword">return</span> AutoTabsScaffold(</span><br><span class="line">    routes: (navigator <span class="keyword">as</span> AppNavigatorImpl).tabRoutes,</span><br><span class="line">    bottomNavigationBuilder: (_, tabsRouter) &#123;</span><br><span class="line">    	<span class="comment">// 此处给 `tabsRouter` 赋值</span></span><br><span class="line">      (navigator <span class="keyword">as</span> AppNavigatorImpl).tabsRouter = tabsRouter;</span><br><span class="line">      <span class="keyword">return</span> ...;</span><br><span class="line">    &#125;,</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过 <code>tabsRouter</code>  获取当前的正在显示的 <code>_currentTabRouter</code> 可将子页面回退到栈底的 <code>tab</code> 页，如 <code>popUntilRootOfCurrentBottomTab</code>  操作。</p>
+<p>那 <code>AppNavigatorImpl</code>  注入的这个 <code>BaseRouteInfoMapper</code> 又是干什么用的呢？<code>BaseRouteInfoMapper</code> 是一个抽象类，其实现类是 <code>AppRouteInfoMapper</code> ，也是通过依赖注入的方式将两者绑定。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseRouteInfoMapper</span> </span>&#123;</span><br><span class="line">  PageRouteInfo map(AppRouteInfo appRouteInfo);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@LazySingleton</span>(<span class="keyword">as</span>: BaseRouteInfoMapper)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppRouteInfoMapper</span> <span class="keyword">extends</span> <span class="title">BaseRouteInfoMapper</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  PageRouteInfo map(AppRouteInfo appRouteInfo) &#123;</span><br><span class="line">	 <span class="comment">// </span></span><br><span class="line">    <span class="keyword">return</span> appRouteInfo.<span class="keyword">when</span>(</span><br><span class="line">      login: () =&gt; <span class="keyword">const</span> LoginRoute(),</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重写父类的 <code>map</code> 方法中会根据 <code>AppRouteInfo</code> 不同的工厂方法返回具体的 <code>PageRouteInfo</code> 对象，这里的是 <code>LoginRoute</code>，而 <code>LoginRoute</code> 是使用 <code>auto_router</code> 生成器来自动生成的，指向具体的路由。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:freezed_annotation/freezed_annotation.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">part</span> <span class="string">&#x27;app_route_info.freezed.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@freezed</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppRouteInfo</span> <span class="title">with</span> <span class="title">_</span>$<span class="title">AppRouteInfo</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">factory</span> AppRouteInfo.login() = _Login;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码的作用是定义了一个不可变类 <code>AppRouteInfo</code>，并使用 <code>@freezed</code> 注解。这个类有一个工厂构造函数 <code>login</code>，当我们调用 <code>AppRouteInfo.login()</code> 时，它会创建一个 <code>_Login</code> 类型的实例，当然还可以定义更多的工厂构造函数并隐藏具体的实现类。所以在 <code>AppRouteInfoMapper</code> 的 <code>map</code> 函数中使用 <code>when</code> 可工具不同工厂方法返回不同类型的 <code>PageRouteInfo</code> 实例。</p>
+<p>那么再回到 <code>AppNavigatorImpl</code> 看看 <code>push</code> 方法的实现。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line">Future&lt;T?&gt; push&lt;T <span class="keyword">extends</span> <span class="built_in">Object?</span>&gt;(AppRouteInfo appRouteInfo) &#123;</span><br><span class="line">  <span class="keyword">return</span> _appRouter.push&lt;T&gt;(_appRouteInfoMapper.map(appRouteInfo));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的 <code>appRouteInfo</code> 就是传 <code>AppRouteInfo.login()</code> 来实现路由跳转，具体的页面调用就一句代码 <code>navigator.push(const AppRouteInfo.login());</code> </p>
+<p>上面的 <code>navigator</code> 是在哪里实例化的呢？在这里是将 <code>AppNavigator</code> 的实例挂在自定义的 <code>State</code> 基类中，这样方便在所有的子页面使用 <code>navigator</code> 做页面跳转。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 自定义的 State 基类</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BasePageState</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span>,</span></span><br><span class="line"><span class="class">    <span class="title">B</span> <span class="keyword">extends</span> <span class="title">BaseBloc</span>&gt; <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">  <span class="comment">// 导航器对象</span></span><br><span class="line">  <span class="keyword">late</span> <span class="keyword">final</span> AppNavigator navigator = GetIt.instance.<span class="keyword">get</span>&lt;AppNavigator&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="bloc-中使用-navigator-跳转页面"><a href="#bloc-中使用-navigator-跳转页面" class="headerlink" title="bloc 中使用 navigator 跳转页面"></a><code>bloc</code> 中使用 <code>navigator</code> 跳转页面</h2><p>使用 <code>bloc</code> 进行状态管理时，当某些业务逻辑处理完成时，需要根据结果进行页面跳转。例如，用户登录成功后跳转到主页，或者表单提交成功后跳转到成功页面。这种情况下，跳转逻辑通常位于 <code>Bloc</code> 内，以保业务逻辑和跳转逻辑的统一。那么这种情况改如何实现呢？</p>
+<p>首先我们可以在 <code>bloc</code> 的基类中声明一个 <code>navigator</code> ，<code>BaseBloc</code> 的实现如下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseBloc</span>&lt;<span class="title">E</span> <span class="keyword">extends</span> <span class="title">BaseBlocEvent</span>, <span class="title">S</span> <span class="keyword">extends</span> <span class="title">BaseBlocState</span>&gt;</span></span><br><span class="line"><span class="class">    <span class="keyword">extends</span> <span class="title">BaseBlocDelegate</span>&lt;<span class="title">E</span>, <span class="title">S</span>&gt; </span>&#123;</span><br><span class="line">  BaseBloc(S initialState) : <span class="keyword">super</span>(initialState);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseBlocDelegate</span>&lt;<span class="title">E</span> <span class="keyword">extends</span> <span class="title">BaseBlocEvent</span>,</span></span><br><span class="line"><span class="class">    <span class="title">S</span> <span class="keyword">extends</span> <span class="title">BaseBlocState</span>&gt; <span class="keyword">extends</span> <span class="title">Bloc</span>&lt;<span class="title">E</span>, <span class="title">S</span>&gt; </span>&#123;</span><br><span class="line">  BaseBlocDelegate(S initialState) : <span class="keyword">super</span>(initialState);</span><br><span class="line">	</span><br><span class="line">   <span class="comment">// 导航器对象</span></span><br><span class="line">  <span class="keyword">late</span> <span class="keyword">final</span> AppNavigator navigator;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后在 <code>BasePageState</code> 中给当前页面绑定的 <code>bloc</code> 的 <code>navigator</code> 赋值。那么 <code>BasePageState</code>  修改后的代码如下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 自定义的 State 基类</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BasePageState</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span>,</span></span><br><span class="line"><span class="class">    <span class="title">B</span> <span class="keyword">extends</span> <span class="title">BaseBloc</span>&gt; <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">  <span class="comment">// 导航器对象</span></span><br><span class="line">  <span class="keyword">late</span> <span class="keyword">final</span> AppNavigator navigator = GetIt.instance.<span class="keyword">get</span>&lt;AppNavigator&gt;();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 给当前页面绑定的 `bloc` 的 `navigator` 赋值</span></span><br><span class="line">  <span class="keyword">late</span> <span class="keyword">final</span> B bloc = GetIt.instance.<span class="keyword">get</span>&lt;B&gt;()</span><br><span class="line">  	..navigator = navigator;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样任何继承自 <code>BaseBloc</code> 的子类都可以使用 <code>navigator</code> 来实现页面跳转逻辑。在 <code>bloc</code> 处理完事件和状态变化后直接决定何时以及如何进行页面跳转，从而保持应用的逻辑一致性。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本篇文章有的地方描述的比较抽象，加上大量的代码，还有前面该系列文章的内容做基础，阅读起来是有一定的难度，感兴趣的同学强烈建议直接去看项目的 <a target="_blank" rel="noopener" href="https://github.com/joedrm/jianyue_music_player">demo</a>，里面有更加详细的实现，结合本文的介绍更好理解。好了，今天就分享到这里，感谢您的阅读，记得关注加点赞。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2024/05/18/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E8%B7%AF%E7%94%B1%E7%AE%A1%E7%90%86%E7%AF%87/" title="Flutter大型项目架构：路由管理篇">http://www.nnxkcloud.com/2024/05/18/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E8%B7%AF%E7%94%B1%E7%AE%A1%E7%90%86%E7%AF%87/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2024/04/28/%E5%BC%80%E5%A7%8B%E6%95%B4%E6%B4%BB%E5%84%BF%E4%BA%86%EF%BC%8C%E5%AE%9E%E6%88%98%E9%9F%B3%E4%B9%90%E6%92%AD%E6%94%BE%E5%99%A8%E9%A1%B9%E7%9B%AE/" rel="next" title="开始整活儿了，实战音乐播放器项目">
+                  <i class="fa fa-chevron-left"></i> 开始整活儿了，实战音乐播放器项目
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" rel="prev" title="Flutter设计模式全面解析：单例模式">
+                  Flutter设计模式全面解析：单例模式 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Flutter%E5%8E%9F%E7%94%9F%E8%B7%AF%E7%94%B1"><span class="nav-number">1.</span> <span class="nav-text">Flutter原生路由</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AppNavigator-%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">AppNavigator 的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bloc-%E4%B8%AD%E4%BD%BF%E7%94%A8-navigator-%E8%B7%B3%E8%BD%AC%E9%A1%B5%E9%9D%A2"><span class="nav-number">3.</span> <span class="nav-text">bloc 中使用 navigator 跳转页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">小结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="有没有一种感觉，就我自己而言，Flutter 项目开发了好几个了，但是对这个 isolates 印象依旧很陌生，日常开发中好像很少见到它身影或者用到它，但真实情况是这样的吗？今天就来聊一聊它。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈 Flutter 的并发和 isolates">
+<meta property="og:url" content="http://www.nnxkcloud.com/2024/03/29/%E6%B5%85%E8%B0%88-Flutter-%E7%9A%84%E5%B9%B6%E5%8F%91%E5%92%8C-isolates/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="有没有一种感觉，就我自己而言，Flutter 项目开发了好几个了，但是对这个 isolates 印象依旧很陌生，日常开发中好像很少见到它身影或者用到它，但真实情况是这样的吗？今天就来聊一聊它。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/03/29/CDvIZky73nROsKx.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/29/AIBKfoWXlGns43k.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/29/aC5WXrNBL4kvV9l.webp">
+<meta property="og:image" content="https://s2.loli.net/2024/03/29/qmSskpNbYcWAygE.webp">
+<meta property="og:image" content="https://s2.loli.net/2022/11/09/fNBn2gWw8tVazkr.jpg">
+<meta property="article:published_time" content="2024-03-29T12:34:25.000Z">
+<meta property="article:modified_time" content="2024-10-15T03:05:34.692Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/03/29/CDvIZky73nROsKx.png">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2024/03/29/%E6%B5%85%E8%B0%88-Flutter-%E7%9A%84%E5%B9%B6%E5%8F%91%E5%92%8C-isolates/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>浅谈 Flutter 的并发和 isolates | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/03/29/%E6%B5%85%E8%B0%88-Flutter-%E7%9A%84%E5%B9%B6%E5%8F%91%E5%92%8C-isolates/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          浅谈 Flutter 的并发和 isolates
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-03-29 20:34:25" itemprop="dateCreated datePublished" datetime="2024-03-29T20:34:25+08:00">2024-03-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-15 11:05:34" itemprop="dateModified" datetime="2024-10-15T11:05:34+08:00">2024-10-15</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2024/03/29/%E6%B5%85%E8%B0%88-Flutter-%E7%9A%84%E5%B9%B6%E5%8F%91%E5%92%8C-isolates/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/29/%E6%B5%85%E8%B0%88-Flutter-%E7%9A%84%E5%B9%B6%E5%8F%91%E5%92%8C-isolates/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>有没有一种感觉，就我自己而言，<code>Flutter</code> 项目开发了好几个了，但是对这个 <code>isolates</code> 印象依旧很陌生，日常开发中好像很少见到它身影或者用到它，但真实情况是这样的吗？今天就来聊一聊它。</p>
+<span id="more"></span>
+
+<h2 id="Flutter-中的-isolates-是什么？"><a href="#Flutter-中的-isolates-是什么？" class="headerlink" title="Flutter 中的 isolates 是什么？"></a><code>Flutter</code> 中的 <code>isolates</code> 是什么？</h2><p>在 <code>Flutter</code> 中，<code>Isolates</code>（隔离区）是一种轻量级的并发执行单元，用于在单个进程中执行代码。与线程有点儿像，但是每个 <code>Isolates</code> 之间又是完全独立的，彼此之间没有共享内存。每个 <code>Isolates</code> 都有自己的内存堆，可以独立执行代码，处理任务，而不会受到其他 <code>Isolates</code> 的影响。它们之间只能通过消息传递进行通信。</p>
+<p>我们可以通过 <code>Isolate.current</code> 来查看当前正在执行的 <code>Isolate</code></p>
+<p><img src="https://s2.loli.net/2024/03/29/CDvIZky73nROsKx.png" alt="正在执行的 Isolate"></p>
+<h2 id="Flutter-中有哪些-isolates-？"><a href="#Flutter-中有哪些-isolates-？" class="headerlink" title="Flutter 中有哪些 isolates ？"></a><code>Flutter</code> 中有哪些 <code>isolates</code> ？</h2><p>在 <code>Flutter</code> 中，主要有两种类型的 <code>Isolates</code> </p>
+<ul>
+<li><code>Main Isolates</code>: 也称为 <code>UI</code> 线程或 <code>UI Isolate</code>，启动应用程序时，<code>Dart VM</code> 会自动创建一个 <code>Isolate</code> 实例并在其上运行您的“主”代码，相当于是 <code>Flutter</code> 应用程序的主线程，负责处理用户界面和用户交互。在 <code>Main Isolate</code> 中执行的代码通常包括构建 <code>UI</code>、处理用户输入等任务。打印 <code>Isolate.current.debugName</code> 可以看到：<br><img src="https://s2.loli.net/2024/03/29/AIBKfoWXlGns43k.png" alt="Main Isolate"></li>
+<li><code>Background Isolates</code>：运行在后台，可以用于执行耗时操作，如网络请求、长的<code>JSON</code> 解析、文件读取、计算密集型任务等。通过后台 <code>Background Isolates</code>，可以避免在主 <code>Isolate</code> 中执行长时间运行的任务，从而保持应用程序的响应性。</li>
+</ul>
+<p>默认情况下，<code>Flutter</code> 应用程序会在 <code>Main Isolates</code> 上完成所有工作，切处理速度很快，不会出现 <code>UI</code> 卡顿，但执行异常大的计算的时候，会出现 <code>UI</code> 卡顿，和原生开发一样，在子线程执行耗时操作，在 <code>Flutter</code> 中就需要将耗时操作放在辅助的 <code>Isolates</code> 中，也就是 <code>Background Isolates</code>。</p>
+<h2 id="事件循环与页面卡顿"><a href="#事件循环与页面卡顿" class="headerlink" title="事件循环与页面卡顿"></a>事件循环与页面卡顿</h2><p>每个 <code>Isolates</code>  都有自己的内存和事件循环，事件循环是按照事件添加到事件队列的顺序来处理事件。在 <code>Main Isolates</code> 中，这些事件可以是用户的点击事件、函数执行和绘制视图到屏幕上等等。 为了更平滑的渲染视图，<code>Flutter</code> 底层会以 60次&#x2F;每秒 向事件队列添加“绘制帧”事件（对于 60Hz 设备）。 如果这些事件没有及时处理，就会出现 <code>UI</code> 卡顿或者没有响应。</p>
+<p><img src="https://s2.loli.net/2024/03/29/aC5WXrNBL4kvV9l.webp" alt="事件循环与页面卡顿"></p>
+<p>如果某个事件无法在两帧之间的时间（帧间隙）内完成时，最好将这个事件的执行放在其它的 <code>Isolates</code>，用来确保 <code>Main Isolates</code>  每秒可以生成 60 帧。 </p>
+<h2 id="Isolates-之间通信"><a href="#Isolates-之间通信" class="headerlink" title="Isolates 之间通信"></a><code>Isolates</code> 之间通信</h2><p>创建一个新的 <code>isolate</code> 有两种方式，构造方法 <code>Isolate(...)</code> 和 静态方法 <code> Isolate.spaw</code>。下面例子创建一个新的 <code>isolate</code>  每隔一秒向 <code>Main Isolates</code> 发送当前时间戳。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;<span class="keyword">void</span>&gt; main() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (kDebugMode) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Isolate.current = <span class="subst">$&#123;Isolate.current.debugName&#125;</span>&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Isolate timerIsolate;</span><br><span class="line">  <span class="keyword">final</span> mainControlPort = ReceivePort()..listen((message) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;sending back to MainIsolate: <span class="subst">$message</span>&quot;</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  timerIsolate = <span class="keyword">await</span> Isolate.spawn(</span><br><span class="line">    timerTick,</span><br><span class="line">    mainControlPort.sendPort,</span><br><span class="line">    debugName: <span class="string">&quot;TimerIsolate&quot;</span>,</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  runApp(App());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> timerTick(SendPort mainPort) <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&quot;<span class="subst">$&#123;Isolate.current.debugName&#125;</span> started&quot;</span>);</span><br><span class="line">  Timer.periodic(<span class="keyword">const</span> <span class="built_in">Duration</span>(seconds: <span class="number">1</span>), (timer) &#123;</span><br><span class="line">    <span class="keyword">final</span> ts = <span class="built_in">DateTime</span>.now().toIso8601String();</span><br><span class="line">    mainPort.send(ts);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行结果的 <code>log</code>：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Performing hot restart...</span><br><span class="line">Syncing files to device iphone...</span><br><span class="line">Restarted application in 886ms.</span><br><span class="line">flutter: Isolate.current = main</span><br><span class="line">flutter: TimerIsolate started</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:39.598746</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:40.594376</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:41.594763</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:42.594927</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:43.593959</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:44.594098</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:45.594441</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:46.594051</span><br><span class="line">flutter: sending back to MainIsolate: 2024-03-29T16:49:47.594242</span><br><span class="line">Application finished.</span><br></pre></td></tr></table></figure>
+
+<p><code>isolate</code>  消息传递的流程图如下：<br><img src="https://s2.loli.net/2024/03/29/qmSskpNbYcWAygE.webp" alt="Isolates 之间通信"></p>
+<p>实际上，<code>Flutter</code> 中<code>Isolates</code>  就是 <code>Actor model</code> 实现，<code>Isolates</code> 之间只能通过消息传递来相互通信，而且消息是通过复制的方式从发送 <code>Isolate</code> 传递到接收的 <code>Isolate</code>，也就是说，当这个数据消息在接收的 <code>Isolate</code> 上发生变化的时候，发送 <code>Isolate</code> 的原数据不受影响。</p>
+<p><code>SendPort.send</code>: 发送时生成可变消息的副本</p>
+<p>传递的消息是不可变对象时 <code>immutable objects</code>，如不可变的字符串，会发送对该对象的引用，而不是复制的对象，这样做也是为了获得更好的性能。不可变对象无法更新，也符合<code>Actor model</code> 的实现。</p>
+<p><code>Isolate.exit</code>：发送对消息的引用</p>
+<p>特殊情况就是当发送方<code>Isolate</code> 在发送完消息后就销毁了，会将消息的所有权传递给接收的 <code>Isolate</code>，以确保只有一个 <code>Isolate</code> 可以访问该消息。</p>
+<p>根据这些特性，所以我们在使用 <code>Isolate</code> 要注意这一点，当你在 <code>Isolates</code> 传递一个全局可变变量时，该全局变量会在其它 <code>Isolate</code> 复制一份，而在主隔离中却保持不变。</p>
+<p>还有一点，目前 <code>Web</code> 平台还不支持 <code>Isolate</code> 。</p>
+<p>本篇文章就到这里，感谢您的阅读，也希望您能关注我的公众号 <strong>Flutter技术实践</strong>，原创不易，您的关注是我更新下去最大的动力。</p>
+<p><img src="https://s2.loli.net/2022/11/09/fNBn2gWw8tVazkr.jpg" alt="Flutter技术实践"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2024/03/29/%E6%B5%85%E8%B0%88-Flutter-%E7%9A%84%E5%B9%B6%E5%8F%91%E5%92%8C-isolates/" title="浅谈 Flutter 的并发和 isolates">http://www.nnxkcloud.com/2024/03/29/%E6%B5%85%E8%B0%88-Flutter-%E7%9A%84%E5%B9%B6%E5%8F%91%E5%92%8C-isolates/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2024/03/26/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E7%AF%87/" rel="next" title="Flutter大型项目架构：分层设计篇">
+                  <i class="fa fa-chevron-left"></i> Flutter大型项目架构：分层设计篇
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2024/04/08/Flutter-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E5%B0%8F%E6%8A%80%E5%B7%A7/" rel="prev" title="Flutter 日常开发小技巧">
+                  Flutter 日常开发小技巧 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Flutter-%E4%B8%AD%E7%9A%84-isolates-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">Flutter 中的 isolates 是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flutter-%E4%B8%AD%E6%9C%89%E5%93%AA%E4%BA%9B-isolates-%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">Flutter 中有哪些 isolates ？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E4%B8%8E%E9%A1%B5%E9%9D%A2%E5%8D%A1%E9%A1%BF"><span class="nav-number">3.</span> <span class="nav-text">事件循环与页面卡顿</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Isolates-%E4%B9%8B%E9%97%B4%E9%80%9A%E4%BF%A1"><span class="nav-number">4.</span> <span class="nav-text">Isolates 之间通信</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

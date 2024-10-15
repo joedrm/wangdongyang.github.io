@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="最近将 Mac 系统和 Xcode 更新到了最新的版本，Mac 系统为 macOS Catalina 10.15.1，Xcode 最新版本为11.2.1。当我 pod install 后报错如下： 123 wdy  ~&#x2F;Desktop&#x2F;workspace&#x2F;peoject  pod installCould not find proper version of cocoapods (1.7.5)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bundle install 引发的报错问题">
+<meta property="og:url" content="http://www.nnxkcloud.com/2019/12/04/bundle-install-error/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="最近将 Mac 系统和 Xcode 更新到了最新的版本，Mac 系统为 macOS Catalina 10.15.1，Xcode 最新版本为11.2.1。当我 pod install 后报错如下： 123 wdy  ~&#x2F;Desktop&#x2F;workspace&#x2F;peoject  pod installCould not find proper version of cocoapods (1.7.5)">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-12-04T09:16:54.000Z">
+<meta property="article:modified_time" content="2024-10-15T03:05:34.690Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2019/12/04/bundle-install-error/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>bundle install 引发的报错问题 | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2019/12/04/bundle-install-error/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          bundle install 引发的报错问题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-04 17:16:54" itemprop="dateCreated datePublished" datetime="2019-12-04T17:16:54+08:00">2019-12-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-15 11:05:34" itemprop="dateModified" datetime="2024-10-15T11:05:34+08:00">2024-10-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2019/12/04/bundle-install-error/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/04/bundle-install-error/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近将 Mac 系统和 Xcode 更新到了最新的版本，Mac 系统为 macOS Catalina 10.15.1，Xcode 最新版本为11.2.1。当我 pod install 后报错如下：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> wdy  ~<span class="regexp">/Desktop/workspace</span><span class="regexp">/peoject  pod install</span></span><br><span class="line"><span class="regexp">Could not find proper version of cocoapods (1.7.5) in any of the sources</span></span><br><span class="line"><span class="regexp">Run `bundle install` to install missing gems.</span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p>再执行 bundle install</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> ✘ wdy  ~<span class="regexp">/Desktop/workspace</span><span class="regexp">/peoject  sudo bundle install</span></span><br><span class="line"><span class="regexp">Password:</span></span><br><span class="line"><span class="regexp">Don&#x27;t run Bundler as root. Bundler can ask for sudo if it is needed, and installing your bundle as root will break this</span></span><br><span class="line"><span class="regexp">application for all non-root users on this machine.</span></span><br><span class="line"><span class="regexp">Warning: the running version of Bundler (1.17.2) is older than the version that created the lockfile (1.17.3). We suggest you upgrade to the latest version of Bundler by running `gem install bundler`.</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">Fetching source index from https:/</span><span class="regexp">/gems.ruby-china.org/</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Retrying</span> fetcher due to error (<span class="number">2</span>/<span class="number">4</span>): <span class="title class_">Bundler</span><span class="symbol">:</span><span class="symbol">:HTTPError</span> <span class="title class_">Could</span> <span class="keyword">not</span> fetch specs from <span class="symbol">https:</span>/<span class="regexp">/gems.ruby-china.org/</span></span><br><span class="line"><span class="title class_">Retrying</span> fetcher due to error (<span class="number">3</span>/<span class="number">4</span>): <span class="title class_">Bundler</span><span class="symbol">:</span><span class="symbol">:HTTPError</span> <span class="title class_">Could</span> <span class="keyword">not</span> fetch specs from <span class="symbol">https:</span>/<span class="regexp">/gems.ruby-china.org/</span></span><br><span class="line"><span class="title class_">Retrying</span> fetcher due to error (<span class="number">4</span>/<span class="number">4</span>): <span class="title class_">Bundler</span><span class="symbol">:</span><span class="symbol">:HTTPError</span> <span class="title class_">Could</span> <span class="keyword">not</span> fetch specs from <span class="symbol">https:</span>/<span class="regexp">/gems.ruby-china.org/</span></span><br><span class="line"><span class="title class_">Could</span> <span class="keyword">not</span> fetch specs from <span class="symbol">https:</span>/<span class="regexp">/gems.ruby-china.org/</span></span><br></pre></td></tr></table></figure>
+
+<p>还是报错，难道我的 gem 源不对？去<a target="_blank" rel="noopener" href="https://gems.ruby-china.com/">官网</a>看了之后，发现已经由原来的 <code>https://gems.ruby-china.org/</code> 改成了 <code>https://gems.ruby-china.com/</code>，命令如下：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">✘ wdy  ~<span class="regexp">/Desktop/workspace</span><span class="regexp">/peoject  gem sources --add https:/</span><span class="regexp">/gems.ruby-china.com/</span> --remove <span class="symbol">https:</span>/<span class="regexp">/gems.ruby-china.org/</span></span><br><span class="line">source <span class="symbol">https:</span>/<span class="regexp">/gems.ruby-china.com/</span> already present <span class="keyword">in</span> the cache</span><br><span class="line">source <span class="symbol">https:</span>/<span class="regexp">/gems.ruby-china.org/</span> <span class="keyword">not</span> present <span class="keyword">in</span> cache</span><br><span class="line"> wdy  ~<span class="regexp">/Desktop/workspace</span><span class="regexp">/peoject  gem sources -l</span></span><br><span class="line"><span class="regexp">*** CURRENT SOURCES ***</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">https:/</span><span class="regexp">/gems.ruby-china.com/</span></span><br></pre></td></tr></table></figure>
+
+<p>再执行 bundle install 还是报同样的错，忘了还需要设置 bundle config</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bundle config mirror.<span class="symbol">https:</span>/<span class="regexp">/gems.ruby-china.org https:/</span><span class="regexp">/gems.ruby-china.com</span></span><br></pre></td></tr></table></figure>
+
+<p>以上配置好了之后，执行 bundle install 会报另外一个错，</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"> wdy  ~<span class="regexp">/Desktop/workspace</span><span class="regexp">/peoject  sudo bundle install</span></span><br><span class="line"><span class="regexp">Don&#x27;t run Bundler as root. Bundler can ask for sudo if it is needed, and installing your bundle as root will break</span></span><br><span class="line"><span class="regexp">this application for all non-root users on this machine.</span></span><br><span class="line"><span class="regexp">Warning: the running version of Bundler (1.17.2) is older than the version that created the lockfile (1.17.3). We suggest you upgrade to the latest version of Bundler by running `gem install bundler`.</span></span><br><span class="line"><span class="regexp">Fetching gem metadata from https:/</span><span class="regexp">/gems.ruby-china.com/</span>........</span><br><span class="line"><span class="title class_">Fetching</span> <span class="title class_">CFPropertyList</span> <span class="number">3.0</span>.<span class="number">1</span></span><br><span class="line"><span class="title class_">Installing</span> <span class="title class_">CFPropertyList</span> <span class="number">3.0</span>.<span class="number">1</span></span><br><span class="line"><span class="title class_">Using</span> concurrent-ruby <span class="number">1.1</span>.<span class="number">5</span></span><br><span class="line"><span class="title class_">Using</span> i18n <span class="number">0.9</span>.<span class="number">5</span></span><br><span class="line"><span class="title class_">Fetching</span> minitest <span class="number">5.8</span>.<span class="number">5</span></span><br><span class="line"><span class="title class_">Installing</span> minitest <span class="number">5.8</span>.<span class="number">5</span></span><br><span class="line"><span class="title class_">Using</span> thread_safe <span class="number">0.3</span>.<span class="number">6</span></span><br><span class="line"><span class="title class_">Using</span> tzinfo <span class="number">1.2</span>.<span class="number">5</span></span><br><span class="line"><span class="title class_">Using</span> activesupport <span class="number">4.2</span>.<span class="number">11.1</span></span><br><span class="line"><span class="title class_">Using</span> public_suffix <span class="number">2.0</span>.<span class="number">5</span></span><br><span class="line"><span class="title class_">Using</span> addressable <span class="number">2.7</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Using</span> atomos <span class="number">0.1</span>.<span class="number">3</span></span><br><span class="line"><span class="title class_">Fetching</span> babosa <span class="number">1.0</span>.<span class="number">3</span></span><br><span class="line"><span class="title class_">Installing</span> babosa <span class="number">1.0</span>.<span class="number">3</span></span><br><span class="line"><span class="title class_">Using</span> bundler <span class="number">1.17</span>.<span class="number">2</span></span><br><span class="line"><span class="title class_">Fetching</span> claide <span class="number">1.0</span>.<span class="number">3</span></span><br><span class="line"><span class="title class_">Installing</span> claide <span class="number">1.0</span>.<span class="number">3</span></span><br><span class="line"><span class="title class_">Using</span> fuzzy_match <span class="number">2.0</span>.<span class="number">4</span></span><br><span class="line"><span class="title class_">Using</span> nap <span class="number">1.1</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Fetching</span> cocoapods-core <span class="number">1.7</span>.<span class="number">5</span></span><br><span class="line"><span class="title class_">Installing</span> cocoapods-core <span class="number">1.7</span>.<span class="number">5</span></span><br><span class="line"><span class="title class_">Using</span> cocoapods-deintegrate <span class="number">1.0</span>.<span class="number">4</span></span><br><span class="line"><span class="title class_">Using</span> cocoapods-downloader <span class="number">1.2</span>.<span class="number">2</span></span><br><span class="line"><span class="title class_">Using</span> cocoapods-plugins <span class="number">1.0</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Using</span> cocoapods-search <span class="number">1.0</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Using</span> cocoapods-stats <span class="number">1.1</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Using</span> netrc <span class="number">0.11</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Fetching</span> cocoapods-trunk <span class="number">1.4</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Installing</span> cocoapods-trunk <span class="number">1.4</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Using</span> cocoapods-try <span class="number">1.1</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Using</span> colored2 <span class="number">3.1</span>.<span class="number">2</span></span><br><span class="line"><span class="title class_">Using</span> escape <span class="number">0.0</span>.<span class="number">4</span></span><br><span class="line"><span class="title class_">Using</span> fourflusher <span class="number">2.3</span>.<span class="number">1</span></span><br><span class="line"><span class="title class_">Using</span> gh_inspector <span class="number">1.1</span>.<span class="number">3</span></span><br><span class="line"><span class="title class_">Using</span> molinillo <span class="number">0.6</span>.<span class="number">6</span></span><br><span class="line"><span class="title class_">Using</span> ruby-macho <span class="number">1.4</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Using</span> nanaimo <span class="number">0.2</span>.<span class="number">6</span></span><br><span class="line"><span class="title class_">Fetching</span> xcodeproj <span class="number">1.12</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Installing</span> xcodeproj <span class="number">1.12</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Fetching</span> cocoapods <span class="number">1.7</span>.<span class="number">5</span></span><br><span class="line"><span class="title class_">Installing</span> cocoapods <span class="number">1.7</span>.<span class="number">5</span></span><br><span class="line"><span class="title class_">Using</span> colored <span class="number">1.2</span></span><br><span class="line"><span class="title class_">Using</span> highline <span class="number">1.7</span>.<span class="number">10</span></span><br><span class="line"><span class="title class_">Using</span> commander-fastlane <span class="number">4.4</span>.<span class="number">6</span></span><br><span class="line"><span class="title class_">Using</span> declarative <span class="number">0.0</span>.<span class="number">10</span></span><br><span class="line"><span class="title class_">Using</span> declarative-option <span class="number">0.1</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Using</span> digest-crc <span class="number">0.4</span>.<span class="number">1</span></span><br><span class="line"><span class="title class_">Using</span> unf_ext <span class="number">0.0</span>.<span class="number">7.6</span></span><br><span class="line"><span class="title class_">Using</span> unf <span class="number">0.1</span>.<span class="number">4</span></span><br><span class="line"><span class="title class_">Using</span> domain_name <span class="number">0.5</span>.<span class="number">20190701</span></span><br><span class="line"><span class="title class_">Using</span> dotenv <span class="number">2.7</span>.<span class="number">5</span></span><br><span class="line"><span class="title class_">Using</span> emoji_regex <span class="number">1.0</span>.<span class="number">1</span></span><br><span class="line"><span class="title class_">Fetching</span> excon <span class="number">0.67</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Installing</span> excon <span class="number">0.67</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Using</span> multipart-post <span class="number">2.0</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Using</span> faraday <span class="number">0.15</span>.<span class="number">4</span></span><br><span class="line"><span class="title class_">Using</span> http-cookie <span class="number">1.0</span>.<span class="number">3</span></span><br><span class="line"><span class="title class_">Using</span> faraday-cookie_jar <span class="number">0.0</span>.<span class="number">6</span></span><br><span class="line"><span class="title class_">Using</span> faraday_middleware <span class="number">0.13</span>.<span class="number">1</span></span><br><span class="line"><span class="title class_">Fetching</span> fastimage <span class="number">2.1</span>.<span class="number">7</span></span><br><span class="line"><span class="title class_">Installing</span> fastimage <span class="number">2.1</span>.<span class="number">7</span></span><br><span class="line"><span class="title class_">Using</span> jwt <span class="number">2.1</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Using</span> memoist <span class="number">0.16</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Using</span> multi_json <span class="number">1.13</span>.<span class="number">1</span></span><br><span class="line"><span class="title class_">Using</span> os <span class="number">1.0</span>.<span class="number">1</span></span><br><span class="line"><span class="title class_">Using</span> signet <span class="number">0.11</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Using</span> googleauth <span class="number">0.6</span>.<span class="number">7</span></span><br><span class="line"><span class="title class_">Using</span> httpclient <span class="number">2.8</span>.<span class="number">3</span></span><br><span class="line"><span class="title class_">Using</span> mime-types-data <span class="number">3.2019</span>.0904</span><br><span class="line"><span class="title class_">Using</span> mime-types <span class="number">3.3</span></span><br><span class="line"><span class="title class_">Using</span> uber <span class="number">0.1</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Using</span> representable <span class="number">3.0</span>.<span class="number">4</span></span><br><span class="line"><span class="title class_">Using</span> retriable <span class="number">3.1</span>.<span class="number">2</span></span><br><span class="line"><span class="title class_">Using</span> google-api-client <span class="number">0.23</span>.<span class="number">9</span></span><br><span class="line"><span class="title class_">Using</span> google-cloud-env <span class="number">1.2</span>.<span class="number">1</span></span><br><span class="line"><span class="title class_">Using</span> google-cloud-core <span class="number">1.3</span>.<span class="number">1</span></span><br><span class="line"><span class="title class_">Using</span> google-cloud-storage <span class="number">1.16</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Fetching</span> json <span class="number">2.2</span>.<span class="number">0</span></span><br><span class="line"><span class="title class_">Installing</span> json <span class="number">2.2</span>.<span class="number">0</span> with native extensions</span><br><span class="line"><span class="title class_">Gem</span><span class="symbol">:</span><span class="symbol">:Ext</span><span class="symbol">:</span><span class="symbol">:BuildError</span>: <span class="variable constant_">ERROR</span>: <span class="title class_">Failed</span> to build gem native extension.</span><br><span class="line"></span><br><span class="line">    current <span class="symbol">directory:</span> /<span class="title class_">Users</span>/wdy/.rvm/rubies/ruby-<span class="number">2.6</span>.<span class="number">0</span>/lib/ruby/gems/<span class="number">2.6</span>.<span class="number">0</span>/gems/json-<span class="number">2.2</span>.<span class="number">0</span>/ext/json/ext/generator</span><br><span class="line">/<span class="title class_">Users</span>/wdy/.rvm/rubies/ruby-<span class="number">2.6</span>.<span class="number">0</span>/bin/ruby -I /<span class="title class_">Users</span>/wdy/.rvm/rubies/ruby-<span class="number">2.6</span>.<span class="number">0</span>/lib/ruby/<span class="number">2.6</span>.<span class="number">0</span> -r</span><br><span class="line">./siteconf20191204-<span class="number">12343</span>-1w3gnyc.rb extconf.rb</span><br><span class="line">creating <span class="title class_">Makefile</span></span><br><span class="line"></span><br><span class="line">current <span class="symbol">directory:</span> /<span class="title class_">Users</span>/wdy/.rvm/rubies/ruby-<span class="number">2.6</span>.<span class="number">0</span>/lib/ruby/gems/<span class="number">2.6</span>.<span class="number">0</span>/gems/json-<span class="number">2.2</span>.<span class="number">0</span>/ext/json/ext/generator</span><br><span class="line">make <span class="string">&quot;DESTDIR=&quot;</span> clean</span><br><span class="line"></span><br><span class="line">current <span class="symbol">directory:</span> /<span class="title class_">Users</span>/wdy/.rvm/rubies/ruby-<span class="number">2.6</span>.<span class="number">0</span>/lib/ruby/gems/<span class="number">2.6</span>.<span class="number">0</span>/gems/json-<span class="number">2.2</span>.<span class="number">0</span>/ext/json/ext/generator</span><br><span class="line">make <span class="string">&quot;DESTDIR=&quot;</span></span><br><span class="line">compiling generator.c</span><br><span class="line">linking shared-object json/ext/generator.bundle</span><br><span class="line"><span class="symbol">ld:</span> <span class="symbol">warning:</span> directory <span class="keyword">not</span> found <span class="keyword">for</span> option <span class="string">&#x27;-L/usr/local/opt/libksba/lib&#x27;</span></span><br><span class="line"><span class="symbol">ld:</span> <span class="symbol">warning:</span> directory <span class="keyword">not</span> found <span class="keyword">for</span> option <span class="string">&#x27;-L/usr/local/opt/libksba/lib&#x27;</span></span><br><span class="line"><span class="symbol">ld:</span> <span class="symbol">warning:</span> directory <span class="keyword">not</span> found <span class="keyword">for</span> option <span class="string">&#x27;-L/usr/local/opt/libksba/lib&#x27;</span></span><br><span class="line"></span><br><span class="line">current <span class="symbol">directory:</span> /<span class="title class_">Users</span>/wdy/.rvm/rubies/ruby-<span class="number">2.6</span>.<span class="number">0</span>/lib/ruby/gems/<span class="number">2.6</span>.<span class="number">0</span>/gems/json-<span class="number">2.2</span>.<span class="number">0</span>/ext/json/ext/generator</span><br><span class="line">make <span class="string">&quot;DESTDIR=&quot;</span> install</span><br><span class="line"><span class="symbol">make:</span> /usr/local/opt/coreutils/bin/<span class="symbol">gmkdir:</span> <span class="title class_">No</span> such file <span class="keyword">or</span> directory</span><br><span class="line"><span class="symbol">make:</span> *** [.sitearchdir.-.json.-.ext.time] <span class="title class_">Error</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line">make install failed, exit code <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Gem</span> files will remain installed <span class="keyword">in</span> /<span class="title class_">Users</span>/wdy/.rvm/rubies/ruby-<span class="number">2.6</span>.<span class="number">0</span>/lib/ruby/gems/<span class="number">2.6</span>.<span class="number">0</span>/gems/json-<span class="number">2.2</span>.<span class="number">0</span> <span class="keyword">for</span></span><br><span class="line">inspection.</span><br><span class="line"><span class="title class_">Results</span> logged to</span><br><span class="line">/<span class="title class_">Users</span>/wdy/.rvm/rubies/ruby-<span class="number">2.6</span>.<span class="number">0</span>/lib/ruby/gems/<span class="number">2.6</span>.<span class="number">0</span>/extensions/x86_64-darwin-<span class="number">18</span>/<span class="number">2.6</span>.<span class="number">0</span>/json-<span class="number">2.2</span>.<span class="number">0</span>/gem_make.out</span><br><span class="line"></span><br><span class="line"><span class="title class_">An</span> error occurred <span class="keyword">while</span> installing json (<span class="number">2.2</span>.<span class="number">0</span>), <span class="keyword">and</span> <span class="title class_">Bundler</span> cannot continue.</span><br><span class="line"><span class="title class_">Make</span> sure that <span class="string">`gem install json -v &#x27;2.2.0&#x27; --source &#x27;https://rubygems.org/&#x27;`</span> succeeds before bundling.</span><br><span class="line"></span><br><span class="line"><span class="title class_">In</span> <span class="title class_">Gemfile</span>:</span><br><span class="line">  fastlane-plugin-firim was resolved to <span class="number">0.2</span>.<span class="number">0</span>, which depends on</span><br><span class="line">    firim was resolved to <span class="number">0.2</span>.<span class="number">1</span>, which depends on</span><br><span class="line">      fastlane was resolved to <span class="number">2.131</span>.<span class="number">0</span>, which depends on</span><br><span class="line">        json</span><br></pre></td></tr></table></figure>
+
+<p>好像是安装 <code>json 2.2.0</code> 的时候失败了，需要单独安装一下，那就按提示来，执行命令如下：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">  wdy  ~<span class="regexp">/Desktop/workspace</span><span class="regexp">/peoject  sudo gem install json -v &#x27;2.2.0&#x27; --source &#x27;https:/</span><span class="regexp">/rubygems.org/</span><span class="string">&#x27;</span></span><br><span class="line"><span class="string">Building native extensions. This could take a while...</span></span><br><span class="line"><span class="string">ERROR:  Error installing json:</span></span><br><span class="line"><span class="string">	ERROR: Failed to build gem native extension.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    current directory: /Users/wdy/.rvm/rubies/ruby-2.6.0/lib/ruby/gems/2.6.0/gems/json-2.2.0/ext/json/ext/generator</span></span><br><span class="line"><span class="string">/Users/wdy/.rvm/rubies/ruby-2.6.0/bin/ruby -I /Users/wdy/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0 -r ./siteconf20191204-12556-140ytz4.rb extconf.rb</span></span><br><span class="line"><span class="string">creating Makefile</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">current directory: /Users/wdy/.rvm/rubies/ruby-2.6.0/lib/ruby/gems/2.6.0/gems/json-2.2.0/ext/json/ext/generator</span></span><br><span class="line"><span class="string">make &quot;DESTDIR=&quot; clean</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">current directory: /Users/wdy/.rvm/rubies/ruby-2.6.0/lib/ruby/gems/2.6.0/gems/json-2.2.0/ext/json/ext/generator</span></span><br><span class="line"><span class="string">make &quot;DESTDIR=&quot;</span></span><br><span class="line"><span class="string">compiling generator.c</span></span><br><span class="line"><span class="string">linking shared-object json/ext/generator.bundle</span></span><br><span class="line"><span class="string">ld: warning: directory not found for option &#x27;</span>-L/usr/local/opt/libksba/lib<span class="string">&#x27;</span></span><br><span class="line"><span class="string">ld: warning: directory not found for option &#x27;</span>-L/usr/local/opt/libksba/lib<span class="string">&#x27;</span></span><br><span class="line"><span class="string">ld: warning: directory not found for option &#x27;</span>-L/usr/local/opt/libksba/lib<span class="string">&#x27;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">current directory: /Users/wdy/.rvm/rubies/ruby-2.6.0/lib/ruby/gems/2.6.0/gems/json-2.2.0/ext/json/ext/generator</span></span><br><span class="line"><span class="string">make &quot;DESTDIR=&quot; install</span></span><br><span class="line"><span class="string">make: /usr/local/opt/coreutils/bin/gmkdir: No such file or directory</span></span><br><span class="line"><span class="string">make: *** [.sitearchdir.-.json.-.ext.time] Error 1</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">make install failed, exit code 2</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Gem files will remain installed in /Users/wdy/.rvm/rubies/ruby-2.6.0/lib/ruby/gems/2.6.0/gems/json-2.2.0 for inspection.</span></span><br><span class="line"><span class="string">Results logged to /Users/wdy/.rvm/rubies/ruby-2.6.0/lib/ruby/gems/2.6.0/extensions/x86_64-darwin-18/2.6.0/json-2.2.0/gem_make.out</span></span><br></pre></td></tr></table></figure>
+
+<p>还是失败，在第23行给的错误提示 <code>/usr/local/opt/coreutils/bin/gmkdir</code> 这个目录找不到，网上查了之后，需要用 brew 安装 <code>coreutils</code>，执行命令：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">  wdy  ~<span class="regexp">/Desktop/workspace</span><span class="regexp">/peoject  brew install coreutils</span></span><br><span class="line"><span class="regexp">Updating Homebrew...</span></span><br><span class="line"><span class="regexp">==&gt; Downloading https:/</span><span class="regexp">/homebrew.bintray.com/bottles</span><span class="regexp">/coreutils-8.31.catalina.bottle.1.tar.gz</span></span><br><span class="line"><span class="regexp">==&gt; Downloading from https:/</span><span class="regexp">/akamai.bintray.com/</span><span class="number">72</span>/7262e4c76483ea796454db828c25955be1e6b2bc8e056ba1dd6e92bfe1118da5?_</span><br><span class="line"><span class="comment">######################################################################## 100.0%</span></span><br><span class="line">==&gt; <span class="title class_">Pouring</span> coreutils-<span class="number">8.31</span>.catalina.bottle.<span class="number">1</span>.tar.gz</span><br><span class="line">==&gt; <span class="title class_">Caveats</span></span><br><span class="line"><span class="title class_">Commands</span> also provided by macOS have been installed with the prefix <span class="string">&quot;g&quot;</span>.</span><br><span class="line"><span class="title class_">If</span> you need to use these commands with their normal names, you</span><br><span class="line">can add a <span class="string">&quot;gnubin&quot;</span> directory to your <span class="variable constant_">PATH</span> from your bashrc <span class="symbol">like:</span></span><br><span class="line">  <span class="variable constant_">PATH</span>=<span class="string">&quot;/usr/local/opt/coreutils/libexec/gnubin:$PATH&quot;</span></span><br><span class="line">==&gt; <span class="title class_">Summary</span></span><br><span class="line">🍺  /usr/local/<span class="title class_">Cellar</span>/coreutils/<span class="number">8.31</span>: <span class="number">476</span> files, <span class="number">9</span>.2MB</span><br><span class="line">==&gt; <span class="string">`brew cleanup`</span> has <span class="keyword">not</span> been run <span class="keyword">in</span> <span class="number">30</span> days, running now...</span><br></pre></td></tr></table></figure>
+
+<p>成功之后再去安装那个 <code>json</code>，完整的命令如下：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> wdy  ~<span class="regexp">/Desktop/workspace</span><span class="regexp">/peoject  sudo gem install json -v &#x27;2.2.0&#x27; -n /usr</span><span class="regexp">/local/bin</span><span class="regexp">/</span></span><br><span class="line"><span class="regexp">Password:</span></span><br><span class="line"><span class="regexp">Building native extensions. This could take a while...</span></span><br><span class="line"><span class="regexp">Successfully installed json-2.2.0</span></span><br><span class="line"><span class="regexp">Parsing documentation for json-2.2.0</span></span><br><span class="line"><span class="regexp">Installing ri documentation for json-2.2.0</span></span><br><span class="line"><span class="regexp">Done installing documentation for json after 1 seconds</span></span><br><span class="line"><span class="regexp">1 gem installed</span></span><br></pre></td></tr></table></figure>
+
+<p>最后再去执行 <code>bundle install</code> 就没有报错了。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2019/12/04/bundle-install-error/" title="bundle install 引发的报错问题">http://www.nnxkcloud.com/2019/12/04/bundle-install-error/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2019/11/18/encrypt-and-decrypt/" rel="next" title="iOS签名机制">
+                  <i class="fa fa-chevron-left"></i> iOS签名机制
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2020/04/03/Flutter-%E5%AE%9E%E8%B7%B5%E5%B0%8F%E7%BB%93/" rel="prev" title="Flutter 实践小结">
+                  Flutter 实践小结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="将 Flutter 中常用到或者见到的关键字做一个收集和介绍。 1.show 、hide 和 as当 import 文件的时候，使用 show 关键字可以仅导入库中的某个特定部分，而不是整个库。在你只需要库中的一部分内容的时候非常有用，避免不必要的命名冲突，也能明确哪些部分被使用。而 hide 关键字可以导入库的大部分内容，但排除特定的部分。这在你需要库的几乎所有内容，但想要避免特定部分的命名冲突">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解锁 Flutter 的神秘关键字，快来一探究竟！">
+<meta property="og:url" content="http://www.nnxkcloud.com/2024/05/26/%E8%A7%A3%E9%94%81-Flutter-%E7%9A%84%E7%A5%9E%E7%A7%98%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%8C%E5%BF%AB%E6%9D%A5%E4%B8%80%E6%8E%A2%E7%A9%B6%E7%AB%9F%EF%BC%81/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="将 Flutter 中常用到或者见到的关键字做一个收集和介绍。 1.show 、hide 和 as当 import 文件的时候，使用 show 关键字可以仅导入库中的某个特定部分，而不是整个库。在你只需要库中的一部分内容的时候非常有用，避免不必要的命名冲突，也能明确哪些部分被使用。而 hide 关键字可以导入库的大部分内容，但排除特定的部分。这在你需要库的几乎所有内容，但想要避免特定部分的命名冲突">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/05/26/iAZQ1fyWCoDndJU.png">
+<meta property="og:image" content="https://s2.loli.net/2024/05/26/k4vlsLnuxyNfptD.png">
+<meta property="article:published_time" content="2024-05-26T08:45:32.000Z">
+<meta property="article:modified_time" content="2024-10-15T03:05:34.692Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/05/26/iAZQ1fyWCoDndJU.png">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2024/05/26/%E8%A7%A3%E9%94%81-Flutter-%E7%9A%84%E7%A5%9E%E7%A7%98%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%8C%E5%BF%AB%E6%9D%A5%E4%B8%80%E6%8E%A2%E7%A9%B6%E7%AB%9F%EF%BC%81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>解锁 Flutter 的神秘关键字，快来一探究竟！ | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/05/26/%E8%A7%A3%E9%94%81-Flutter-%E7%9A%84%E7%A5%9E%E7%A7%98%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%8C%E5%BF%AB%E6%9D%A5%E4%B8%80%E6%8E%A2%E7%A9%B6%E7%AB%9F%EF%BC%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          解锁 Flutter 的神秘关键字，快来一探究竟！
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-05-26 16:45:32" itemprop="dateCreated datePublished" datetime="2024-05-26T16:45:32+08:00">2024-05-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-15 11:05:34" itemprop="dateModified" datetime="2024-10-15T11:05:34+08:00">2024-10-15</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2024/05/26/%E8%A7%A3%E9%94%81-Flutter-%E7%9A%84%E7%A5%9E%E7%A7%98%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%8C%E5%BF%AB%E6%9D%A5%E4%B8%80%E6%8E%A2%E7%A9%B6%E7%AB%9F%EF%BC%81/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/26/%E8%A7%A3%E9%94%81-Flutter-%E7%9A%84%E7%A5%9E%E7%A7%98%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%8C%E5%BF%AB%E6%9D%A5%E4%B8%80%E6%8E%A2%E7%A9%B6%E7%AB%9F%EF%BC%81/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>将 <code>Flutter</code> 中常用到或者见到的关键字做一个收集和介绍。</p>
+<h2 id="1-show-、hide-和-as"><a href="#1-show-、hide-和-as" class="headerlink" title="1.show 、hide 和 as"></a>1.<code>show</code> 、<code>hide</code> 和 <code>as</code></h2><p>当 <code>import</code> 文件的时候，使用 <code>show</code> 关键字可以仅导入库中的某个特定部分，而不是整个库。在你只需要库中的一部分内容的时候非常有用，避免不必要的命名冲突，也能明确哪些部分被使用。而 <code>hide</code> 关键字可以导入库的大部分内容，但排除特定的部分。这在你需要库的几乎所有内容，但想要避免特定部分的命名冲突时非常有用。<code>as</code> 则为导入的库起个别名，避免类名冲突。</p>
+<span id="more"></span>
+
+<p>如：<code>provider</code> 和 <code>flutter_riverpod</code> 都提供类似的功能用于状态管理，并且有一些类名是相同的，其中 <code>Provider</code> 类本身，在两个插件库中都有。还有 <code>flutter_intl</code> 和 <code>intl</code> 也有相似类名 <code>DateFormat</code>。</p>
+<p><img src="https://s2.loli.net/2024/05/26/iAZQ1fyWCoDndJU.png" alt="4701716695159_.pic.png"></p>
+<p>以 <code>Provider</code> 类为例，使用 <code>show</code>  和 <code>hide</code> 关键字来解决命名冲突。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:provider/provider.dart&#x27;</span> <span class="keyword">show</span> ChangeNotifierProvider, Consumer;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter_riverpod/flutter_riverpod.dart&#x27;</span> <span class="keyword">hide</span> ChangeNotifierProvider, Consumer;</span><br></pre></td></tr></table></figure>
+
+<p>也可以给冲突的类名起个别名。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:provider/provider.dart&#x27;</span> <span class="keyword">as</span> provider;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter_riverpod/flutter_riverpod.dart&#x27;</span> <span class="keyword">as</span> riverpod;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_ProviderWidgetState</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">ChangeNotifier</span>&gt;</span></span><br><span class="line"><span class="class">    <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">ProviderWidget</span>&lt;<span class="title">T</span>&gt;&gt; </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> provider.ChangeNotifierProvider&lt;T&gt;(</span><br><span class="line">      create: (_) =&gt; widget.model,</span><br><span class="line">      child: provider.Consumer&lt;T&gt;(</span><br><span class="line">        builder: widget.builder,</span><br><span class="line">        child: widget.child,</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-part-和-part-of"><a href="#2-part-和-part-of" class="headerlink" title="2.part 和 part of"></a>2.<code>part</code> 和 <code>part of</code></h2><p><code>part</code> 和 <code>part of</code> 是 <code>Dart</code> 语言中用于管理分割文件的关键字。如我们常使用 <code>@freezed</code> 注解生成 <code>xxx.freezed.dart</code> 文件，下面以 <code>HomeEvent</code> 类来举例：</p>
+<p><code>home_event.dart</code> ：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 表示 home_event.freezed.dart 是 home_event.dart 文件的一部分， </span></span><br><span class="line"><span class="comment">// 通常用于将大的类或功能拆分成多个文件</span></span><br><span class="line"><span class="keyword">part</span> <span class="string">&#x27;home_event.freezed.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">HomeEvent</span> <span class="keyword">extends</span> <span class="title">BaseBlocEvent</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> HomeEvent();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@freezed</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomePageInitiated</span> <span class="keyword">extends</span> <span class="title">HomeEvent</span> <span class="title">with</span> <span class="title">_</span>$<span class="title">HomePageInitiated</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">factory</span> HomePageInitiated() = _HomePageInitiated;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>freezed</code> 生成<code> home_event.freezed.dart</code>：<br><img src="https://s2.loli.net/2024/05/26/k4vlsLnuxyNfptD.png" alt="4711716706149_.pic.png"></p>
+<p>上图中的 <code>part of &#39;home_event.dart&#39;;</code> 也是表示 <code>home_event.freezed.dart</code> 是 <code>home_event.dart</code> 文件的一部分。<code>part of</code> 关键字后面跟着所属文件，其作用就是将多个文件组合在一起，使它们共同构成一个完整的 <code>Dart</code> 文件。</p>
+<h2 id="3-deferred"><a href="#3-deferred" class="headerlink" title="3.deferred"></a>3.<code>deferred</code></h2><p>做延迟加载的，将库的加载推迟到第一次访问该库时才进行，而不是在应用程序启动时就加载。对于减少应用启动时间和减小应用包大小非常有用。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/foundation.dart&#x27;</span> <span class="keyword">deferred</span> <span class="keyword">as</span> mylib;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  runApp(MyApp());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      home: Scaffold(</span><br><span class="line">        appBar: AppBar(</span><br><span class="line">          title: Text(<span class="string">&#x27;Deferred Loading Example&#x27;</span>),</span><br><span class="line">        ),</span><br><span class="line">        body: Center(</span><br><span class="line">          child: ElevatedButton(</span><br><span class="line">            onPressed: () &#123;</span><br><span class="line">              loadLibrary(context);</span><br><span class="line">            &#125;,</span><br><span class="line">            child: Text(<span class="string">&#x27;Load Library&#x27;</span>),</span><br><span class="line">          ),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; loadLibrary(BuildContext context) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> mylib.loadLibrary(); <span class="comment">// 加载延迟加载库</span></span><br><span class="line">    Navigator.push(</span><br><span class="line">      context,</span><br><span class="line">      MaterialPageRoute(builder: (context) =&gt; DeferredPage()),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DeferredPage</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: AppBar(</span><br><span class="line">        title: Text(<span class="string">&#x27;Deferred Page&#x27;</span>),</span><br><span class="line">      ),</span><br><span class="line">      body: Center(</span><br><span class="line">        child: FutureBuilder(</span><br><span class="line">          future: mylib.myFunction(), <span class="comment">// 使用延迟加载库中的函数</span></span><br><span class="line">          builder: (context, snapshot) &#123;</span><br><span class="line">            <span class="keyword">if</span> (snapshot.connectionState == ConnectionState.waiting) &#123;</span><br><span class="line">              <span class="keyword">return</span> CircularProgressIndicator();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">              <span class="keyword">return</span> Text(snapshot.data.toString());</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;,</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的 <code>mylib</code> 是一个延迟加载的库。 <code>deferred as mylib</code> 关键字将延迟加载库导入为 <code>mylib</code>。在 <code>main</code> 函数中，我们通过 <code>mylib.loadLibrary() </code> 方法加载延迟加载库。加载完成后，我们可以像使用普通库一样使用 <code>mylib</code> 中的类、函数。</p>
+<p>当然延迟加载库的实现需要去配置 <code>Android</code> 原生的 <code>build.gradle</code> 文件和 <code>Flutter</code> 的<code>pubspec.yaml</code> 文件等操作，还对 <code>Dart</code> 版本有要求，具体细节大家感兴趣的话可以尝试实现一下。</p>
+<p>这几个是和类、文件导入相关相关的，下面介绍几个和 <code>dart</code> 语法相关的关键字。</p>
+<h2 id="4-typedef"><a href="#4-typedef" class="headerlink" title="4.typedef"></a>4.<code>typedef</code></h2><p>使用 <code>typedef</code> 关键字为现有类型创建别名（类型别名 <code>Type Alias</code>），其常用于函数类型，可以简化其定义和使用。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> Compare&lt;T&gt; = <span class="built_in">int</span> <span class="built_in">Function</span>(T a, T b);</span><br><span class="line"></span><br><span class="line"><span class="built_in">int</span> compareInt(<span class="built_in">int</span> a, <span class="built_in">int</span> b) &#123;</span><br><span class="line">  <span class="keyword">return</span> a - b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  Compare&lt;<span class="built_in">int</span>&gt; comp = compareInt;</span><br><span class="line">  <span class="built_in">print</span>(comp(<span class="number">3</span>, <span class="number">2</span>));  <span class="comment">// 输出 1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还常用于给类型起一个一眼就能看得懂的名字，提高代码可读性。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> UserInfo = <span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">String</span>&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> printUserInfo(UserInfo user) &#123;</span><br><span class="line">  <span class="comment">//这里使用 UserInfo 比直接是 Map 更好理解吧</span></span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;Name: <span class="subst">$&#123;user[<span class="string">&#x27;name&#x27;</span>]&#125;</span>, Email: <span class="subst">$&#123;user[<span class="string">&#x27;email&#x27;</span>]&#125;</span>&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  UserInfo user = &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;John Doe&#x27;</span>, <span class="string">&#x27;email&#x27;</span>: <span class="string">&#x27;john.doe@example.com&#x27;</span>&#125;;</span><br><span class="line">  printUserInfo(user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-yield"><a href="#5-yield" class="headerlink" title="5.yield"></a>5.<code>yield</code></h2><p><code>yield</code> 关键字用于在 <code>Dart</code> 中创建生成器函数。生成器函数是一种特殊的函数，它可以在需要时逐步生成一系列值，而不是一次性生成并返回所有值，通常在迭代器中（<code>for...in</code>）使用。下面以生成斐波那契数列算法为例来看看 <code>yield</code> 关键字的用法：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Iterable</span>&lt;<span class="built_in">int</span>&gt; fibonacciSequence(<span class="built_in">int</span> count) <span class="keyword">sync</span>* &#123;</span><br><span class="line">  <span class="built_in">int</span> a = <span class="number">0</span>;</span><br><span class="line">  <span class="built_in">int</span> b = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; count; i++) &#123;</span><br><span class="line">    <span class="keyword">yield</span> a; <span class="comment">// 生成斐波那契数列中的当前值</span></span><br><span class="line">    <span class="built_in">int</span> temp = a + b;</span><br><span class="line">    a = b;</span><br><span class="line">    b = temp;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="comment">// 生成前 10 个值</span></span><br><span class="line">  <span class="built_in">Iterable</span>&lt;<span class="built_in">int</span>&gt; fibonacciNumbers = fibonacciSequence(<span class="number">10</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="built_in">int</span> number <span class="keyword">in</span> fibonacciNumbers) &#123;</span><br><span class="line">    <span class="built_in">print</span>(number);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">///<span class="language-markdown">输出结果：0 1 1 2 3 5 8 13 21 34</span></span></span><br></pre></td></tr></table></figure>
+
+<p>函数 <code>fibonacciSequence</code> 就是一个生成指定数量的斐波那契数列的生成器函数。在每次迭代中使用<code>yield a</code> 生成斐波那契数列中的当前值，并把这个当前值 <code>a</code>  返回给调用者，然后这个生成过程先暂停下来，等待下次调用（下一次 <code>for</code> 循环），再去执行生成斐波那契数列中的当前值，就是这么个意思。</p>
+<h2 id="6-mixin"><a href="#6-mixin" class="headerlink" title="6.mixin"></a>6.<code>mixin</code></h2><p><code>mixin</code> 我们平时见得很多，就是 <code>Dart</code> 用于解决多继承的问题，使用 <code>mixin</code> 可以将一组通用的方法和属性封装在一个独立的类中，然后在需要的类中混入这个 <code>mixin</code> ，从而使得这些类都具有相同的行为。本质上就是通过组合类的方式来重用代码的机制。</p>
+<p><code>mixin</code>  的特点：一个类可以混入多个 <code>mixin</code> ，不能被实例化，只包含方法和属性的定义，没有状态或构造函数。</p>
+<p>如我们比较常用的 <code>LogMixin</code> 类，通常将 <code>LogMixin</code> 混入到项目 <code>bloc</code> 的基类 <code>BaseBloc</code>，方便在业务逻辑中打印和调试。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">mixin</span> LogMixin <span class="keyword">on</span> <span class="built_in">Object</span> &#123;</span><br><span class="line">  <span class="keyword">void</span> logD(<span class="built_in">String</span> message, &#123;<span class="built_in">DateTime?</span> time&#125;) &#123;</span><br><span class="line">    Log.d(message, name: runtimeType.toString(), time: time);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseBloc</span>&lt;<span class="title">E</span> <span class="keyword">extends</span> <span class="title">BaseBlocEvent</span>, <span class="title">S</span> <span class="keyword">extends</span> <span class="title">BaseBlocState</span>&gt;</span></span><br><span class="line"><span class="class">    <span class="keyword">extends</span> <span class="title">Bloc</span>&lt;<span class="title">E</span>, <span class="title">S</span>&gt; <span class="title">with</span> <span class="title">LogMixin</span> </span>&#123;</span><br><span class="line">  BaseBloc(S initialState) : <span class="keyword">super</span>(initialState);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomeBloc</span> <span class="keyword">extends</span> <span class="title">BaseBloc</span>&lt;<span class="title">HomeEvent</span>, <span class="title">HomeState</span>&gt; </span>&#123;</span><br><span class="line">  HomeBloc(<span class="keyword">this</span>._repository) : <span class="keyword">super</span>(HomeState()) &#123;</span><br><span class="line">    <span class="keyword">on</span>&lt;HomePageInitiated&gt;(</span><br><span class="line">      _onHomePageInitiated</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> Repository _repository;</span><br><span class="line"></span><br><span class="line">  FutureOr&lt;<span class="keyword">void</span>&gt; _onHomePageInitiated(</span><br><span class="line">      HomePageInitiated event, Emitter&lt;HomeState&gt; emit) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">// 直接使用 LogMixin 的 logD 函数</span></span><br><span class="line">    logD(<span class="string">&quot;HomePageInitiated: <span class="subst">$event</span>&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上关键字介绍都是基于个人理解，总结的或许不够全面和准确，那么在日常开发中有遇到哪些你理解起来比较费劲的关键字呢？欢迎留言交流，感谢您的阅读！</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2024/05/26/%E8%A7%A3%E9%94%81-Flutter-%E7%9A%84%E7%A5%9E%E7%A7%98%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%8C%E5%BF%AB%E6%9D%A5%E4%B8%80%E6%8E%A2%E7%A9%B6%E7%AB%9F%EF%BC%81/" title="解锁 Flutter 的神秘关键字，快来一探究竟！">http://www.nnxkcloud.com/2024/05/26/%E8%A7%A3%E9%94%81-Flutter-%E7%9A%84%E7%A5%9E%E7%A7%98%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%8C%E5%BF%AB%E6%9D%A5%E4%B8%80%E6%8E%A2%E7%A9%B6%E7%AB%9F%EF%BC%81/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2024/05/24/Flutter%E4%B8%AD%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E4%BD%BF%E7%94%A8%E5%BC%B9%E6%A1%86/" rel="next" title="Flutter中如何优雅地使用弹框">
+                  <i class="fa fa-chevron-left"></i> Flutter中如何优雅地使用弹框
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2024/05/28/Flutter-%E5%9B%BE%E8%A1%A8%E6%9F%A5%E7%9C%8B%E5%9B%BD%E5%AE%B6%E7%BB%9F%E8%AE%A1%E5%B1%80%E7%9A%84%E6%88%BF%E4%BB%B7%E6%8C%87%E6%95%B0/" rel="prev" title="Flutter 图表查看国家统计局的房价指数">
+                  Flutter 图表查看国家统计局的房价指数 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-show-%E3%80%81hide-%E5%92%8C-as"><span class="nav-number">1.</span> <span class="nav-text">1.show 、hide 和 as</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-part-%E5%92%8C-part-of"><span class="nav-number">2.</span> <span class="nav-text">2.part 和 part of</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-deferred"><span class="nav-number">3.</span> <span class="nav-text">3.deferred</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-typedef"><span class="nav-number">4.</span> <span class="nav-text">4.typedef</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-yield"><span class="nav-number">5.</span> <span class="nav-text">5.yield</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-mixin"><span class="nav-number">6.</span> <span class="nav-text">6.mixin</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

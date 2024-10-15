@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="近期尝试将自己的Flutter运行在Web页面上，可谓是一波三折，不过最终还是运行成功，在这里记录一下遇到的问题。  Platform兼容问题报错：Unsupported operation: Platform._operatingSystem。 原因：应该是Platform.isIOS、Platform.isAndroid等不支持Web。 解决：搜索后最终在Github上这个 flutter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你的Flutter在Web端跑起来了吗?">
+<meta property="og:url" content="http://www.nnxkcloud.com/2022/08/19/%E4%BD%A0%E7%9A%84Flutter%E5%9C%A8Web%E7%AB%AF%E8%B7%91%E8%B5%B7%E6%9D%A5%E4%BA%86%E5%90%97/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="近期尝试将自己的Flutter运行在Web页面上，可谓是一波三折，不过最终还是运行成功，在这里记录一下遇到的问题。  Platform兼容问题报错：Unsupported operation: Platform._operatingSystem。 原因：应该是Platform.isIOS、Platform.isAndroid等不支持Web。 解决：搜索后最终在Github上这个 flutter">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/d49a5d235d48d556b8518688e18ff2ac.jpeg">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/2eb696d7b7e7458bf18976e633e90509.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/d38d02898a590d238beb97c5497cf925.png">
+<meta property="og:image" content="https://s2.loli.net/2022/12/12/EWvyFX2LgiaeZ3d.jpg">
+<meta property="article:published_time" content="2022-08-19T05:47:46.000Z">
+<meta property="article:modified_time" content="2024-10-15T03:05:34.691Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/img_convert/d49a5d235d48d556b8518688e18ff2ac.jpeg">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2022/08/19/%E4%BD%A0%E7%9A%84Flutter%E5%9C%A8Web%E7%AB%AF%E8%B7%91%E8%B5%B7%E6%9D%A5%E4%BA%86%E5%90%97/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>你的Flutter在Web端跑起来了吗? | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2022/08/19/%E4%BD%A0%E7%9A%84Flutter%E5%9C%A8Web%E7%AB%AF%E8%B7%91%E8%B5%B7%E6%9D%A5%E4%BA%86%E5%90%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          你的Flutter在Web端跑起来了吗?
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-08-19 13:47:46" itemprop="dateCreated datePublished" datetime="2022-08-19T13:47:46+08:00">2022-08-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-15 11:05:34" itemprop="dateModified" datetime="2024-10-15T11:05:34+08:00">2024-10-15</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2022/08/19/%E4%BD%A0%E7%9A%84Flutter%E5%9C%A8Web%E7%AB%AF%E8%B7%91%E8%B5%B7%E6%9D%A5%E4%BA%86%E5%90%97/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/08/19/%E4%BD%A0%E7%9A%84Flutter%E5%9C%A8Web%E7%AB%AF%E8%B7%91%E8%B5%B7%E6%9D%A5%E4%BA%86%E5%90%97/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://img-blog.csdnimg.cn/img_convert/d49a5d235d48d556b8518688e18ff2ac.jpeg" alt="istockphoto-1201654139-612x612"></p>
+<p>近期尝试将自己的Flutter运行在Web页面上，可谓是一波三折，不过最终还是运行成功，在这里记录一下遇到的问题。</p>
+<ol>
+<li><p><code>Platform</code>兼容问题报错：<code>Unsupported operation: Platform._operatingSystem</code>。<br> 原因：应该是<code>Platform.isIOS</code>、<code>Platform.isAndroid</code>等不支持Web。<br> 解决：搜索后最终在Github上这个 <a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/issues/36126#issuecomment-596215587">flutter issue</a> 找到了解决办法。</p>
+<p>在<code>pubspec.yaml</code>引入这个依赖：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">universal_platform:</span> <span class="string">^1.0.0+1</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<span id="more"></span>
+
+<p>   在用到<code>Platform.isIOS</code>等地方替换成<code>UniversalPlatform.isIOS</code>,或者用自定义的类包装一下供全局使用。</p>
+   <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:universal_platform/universal_platform.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DeviceUtil</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">get</span> isDesktop =&gt; !isWeb &amp;&amp; (isWindows || isLinux || isMacOS);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">get</span> isMobile =&gt; isAndroid || isIOS;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">get</span> isWeb =&gt; UniversalPlatform.isWeb;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">get</span> isWindows =&gt; UniversalPlatform.isWindows;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">get</span> isLinux =&gt; UniversalPlatform.isLinux;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">get</span> isMacOS =&gt; UniversalPlatform.isMacOS;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">get</span> isAndroid =&gt; UniversalPlatform.isAndroid;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">get</span> isFuchsia =&gt; UniversalPlatform.isFuchsia;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> <span class="keyword">get</span> isIOS =&gt; UniversalPlatform.isIOS;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>   使用：</p>
+   <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bool</span> isMobile = DeviceUtil.isMobile</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="2">
+<li><p>跨域问题：<code>DioError [DioErrorType.response]: XMLHttpRequest error.</code>。<br> 原因：Flutter运行在浏览器上是<code>localhost:xxxx</code>，而我们的API接口是<code>xxxx.com</code>，两个不在同一个域名下不能直接访问跨域资源，关于为什么会存在跨域问题，网上有很多的资料，感兴趣的可以看看<a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2016/04/cors.html">这篇文章</a>。</p>
+<p> 解决方法分两种：</p>
+<ol>
+<li><p>本地解决办法，参考 <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/65630743/how-to-solve-flutter-web-api-cors-error-only-with-dart-code/66879350#66879350">stackoverflow</a> 上的。<br>  a. 删除<code>flutter\bin\cache</code>目录下的<code>flutter_tools.stamp</code>文件。<br>  b. 打开<code>flutter\packages\flutter_tools\lib\src\web</code>目录下的<code>chrome.dart</code>文件。<br>  c. 在<code>chrome.dart</code>中找到<code>--disable-extensions</code>一行，在其下方添加<code>--disable-web-security</code>。</p>
+<p>   改好运行后的结果如下：</p>
+<p> <img src="https://img-blog.csdnimg.cn/img_convert/2eb696d7b7e7458bf18976e633e90509.png">         </p>
+</li>
+<li><p>服务端解决方法，如果Web端需要上线，这种也是最终解决方案，当然需要和后端的兄弟沟通好。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;Access-Control-Allow-Origin&#x27;</span>: <span class="string">&#x27;*&#x27;</span></span><br><span class="line"><span class="string">&#x27;Access-Control-Allow-Methods&#x27;</span>: <span class="string">&#x27;GET, POST, OPTIONS, PUT, PATCH, DELETE&#x27;</span> <span class="comment">// If needed</span></span><br><span class="line"><span class="string">&#x27;Access-Control-Allow-Headers&#x27;</span>: <span class="string">&#x27;X-Requested-With,content-type&#x27;</span> <span class="comment">// If needed</span></span><br><span class="line"><span class="string">&#x27;Access-Control-Allow-Credentials&#x27;</span>: <span class="keyword">true</span> <span class="comment">// If  needed</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>报错：<code>The provided ScrollController is currently attached to more than one ScrollPosition.</code></p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/d38d02898a590d238beb97c5497cf925.png" alt="801660727683_.pic">解决：在<code>ListView</code>等<code>Widget</code>上加<code>controller: ScrollController()</code>解决。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ListView.separated(</span><br><span class="line">        shrinkWrap: <span class="keyword">true</span>,</span><br><span class="line">        controller: ScrollController(),</span><br><span class="line">        itemCount: ..,</span><br><span class="line">        itemBuilder: (context, index) &#123;</span><br><span class="line">          <span class="keyword">return</span> ...;</span><br><span class="line">        &#125;,</span><br><span class="line">        separatorBuilder: (BuildContext context, <span class="built_in">int</span> index) &#123;</span><br><span class="line">          <span class="keyword">return</span> ...;</span><br><span class="line">        &#125;,</span><br><span class="line">      )</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>你的<code>Flutter</code>代码在Web端运行遇到过哪些问题呢？欢迎👏🏻在评论区交流一下！</p>
+<p>欢迎关注公众号：<em><strong>flutter_todo</strong></em>，有更多技术干货和学习资源教程分享。</p>
+<img src="https://s2.loli.net/2022/12/12/EWvyFX2LgiaeZ3d.jpg" alt="qrcode_for_gh_a1ca9094adfb_430" style="zoom:67%;">
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2022/08/19/%E4%BD%A0%E7%9A%84Flutter%E5%9C%A8Web%E7%AB%AF%E8%B7%91%E8%B5%B7%E6%9D%A5%E4%BA%86%E5%90%97/" title="你的Flutter在Web端跑起来了吗?">http://www.nnxkcloud.com/2022/08/19/%E4%BD%A0%E7%9A%84Flutter%E5%9C%A8Web%E7%AB%AF%E8%B7%91%E8%B5%B7%E6%9D%A5%E4%BA%86%E5%90%97/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2022/08/04/Flutter%E5%BC%80%E5%8F%91%E8%B5%84%E6%BA%90%E6%95%B4%E7%90%86%E4%B8%8E%E5%88%86%E4%BA%AB/" rel="next" title="Flutter开发资源整理与分享">
+                  <i class="fa fa-chevron-left"></i> Flutter开发资源整理与分享
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2022/08/24/%E5%86%99%E4%BD%9C%E8%AF%BE%E7%AC%94%E8%AE%B0/" rel="prev" title="写作课笔记">
+                  写作课笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

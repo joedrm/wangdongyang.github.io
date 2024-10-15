@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="前面几篇讲了很多关于分层设计、状态管理和依赖管理，但是作为前端开发，设计资源怎么去管理、设计系统如何去实现其实在日常开发中接触是最多的，每个开发者或者项目都有一套自己的管理方式或实现方式，今天来分享一下我在大型项目中是如何做设计和实现资源管理的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter大型项目架构：UI设计系统实现（一）">
+<meta property="og:url" content="http://www.nnxkcloud.com/2024/04/21/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9AUI%E8%AE%BE%E8%AE%A1%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="前面几篇讲了很多关于分层设计、状态管理和依赖管理，但是作为前端开发，设计资源怎么去管理、设计系统如何去实现其实在日常开发中接触是最多的，每个开发者或者项目都有一套自己的管理方式或实现方式，今天来分享一下我在大型项目中是如何做设计和实现资源管理的。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/04/26/phrXKsvEDQwTHl1.png">
+<meta property="og:image" content="https://s2.loli.net/2024/04/21/7oCVc96UkvN2bI5.png">
+<meta property="og:image" content="https://s2.loli.net/2024/04/21/R39magV4F1pHLAW.png">
+<meta property="og:image" content="https://s2.loli.net/2022/11/09/fNBn2gWw8tVazkr.jpg">
+<meta property="article:published_time" content="2024-04-21T09:07:56.000Z">
+<meta property="article:modified_time" content="2024-10-15T03:05:34.688Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/04/26/phrXKsvEDQwTHl1.png">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2024/04/21/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9AUI%E8%AE%BE%E8%AE%A1%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Flutter大型项目架构：UI设计系统实现（一） | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/04/21/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9AUI%E8%AE%BE%E8%AE%A1%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter大型项目架构：UI设计系统实现（一）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-21 17:07:56" itemprop="dateCreated datePublished" datetime="2024-04-21T17:07:56+08:00">2024-04-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-15 11:05:34" itemprop="dateModified" datetime="2024-10-15T11:05:34+08:00">2024-10-15</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2024/04/21/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9AUI%E8%AE%BE%E8%AE%A1%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%B8%80%EF%BC%89/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/21/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9AUI%E8%AE%BE%E8%AE%A1%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%B8%80%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://s2.loli.net/2024/04/26/phrXKsvEDQwTHl1.png"></p>
+<p>前面几篇讲了很多关于分层设计、状态管理和依赖管理，但是作为前端开发，设计资源怎么去管理、设计系统如何去实现其实在日常开发中接触是最多的，每个开发者或者项目都有一套自己的管理方式或实现方式，今天来分享一下我在大型项目中是如何做设计和实现资源管理的。</p>
+<span id="more"></span>
+
+<h2 id="Flutter-默认的设计系统"><a href="#Flutter-默认的设计系统" class="headerlink" title="Flutter 默认的设计系统"></a><code>Flutter</code> 默认的设计系统</h2><p>在 <code>Flutter</code>  写页面的时候通常会用到 <code>package:flutter/material.dart</code> 和 <code>package:flutter/cupertino.dart</code> ，主要是为了使用 <code>Flutter SDK</code> 提供的 <code>Material/Cupertino Design</code> 风格的UI组件和工具，这其中它的默认主题。虽然您可以自定义默认文本主题的标题样式，但被严格限制为 3 个级别：<code>Large</code>, <code>Medium</code>, <code>Small</code>， <code>Color</code> 的命名的变量个数也是有限制的。 </p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  runApp(MyApp());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      title: <span class="string">&#x27;Flutter技术实践&#x27;</span>,</span><br><span class="line">      theme: ThemeData(</span><br><span class="line">        <span class="comment">// 设置主色为蓝色</span></span><br><span class="line">        primaryColor: Colors.blue,</span><br><span class="line">        <span class="comment">// 设置强调色为绿色</span></span><br><span class="line">        accentColor: Colors.green,</span><br><span class="line">        <span class="comment">// 设置默认字体为Roboto</span></span><br><span class="line">        fontFamily: <span class="string">&#x27;Roboto&#x27;</span>,</span><br><span class="line">        <span class="comment">// 设置默认文本样式</span></span><br><span class="line">        textTheme: TextTheme(</span><br><span class="line">            <span class="comment">// 设置标题文本样式</span></span><br><span class="line">            displayMedium:</span><br><span class="line">                TextStyle(fontSize: <span class="number">24</span>, fontWeight: FontWeight.bold),</span><br><span class="line">            <span class="comment">// 设置正文文本样式</span></span><br><span class="line">            bodyMedium: TextStyle(fontSize: <span class="number">16</span>),</span><br><span class="line">        ),</span><br><span class="line">        <span class="comment">// 设置按钮的样式</span></span><br><span class="line">        buttonTheme: ButtonThemeData(</span><br><span class="line">          buttonColor: Colors.blue, <span class="comment">// 按钮颜色</span></span><br><span class="line">          shape: RoundedRectangleBorder(</span><br><span class="line">            borderRadius: BorderRadius.circular(<span class="number">8</span>), <span class="comment">// 圆角半径</span></span><br><span class="line">          ),</span><br><span class="line">          textTheme: ButtonTextTheme.primary, <span class="comment">// 按钮文本颜色</span></span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">      home: HomePage(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这些原生的设计资源看起来好像是够用的，但是当我们需要给 <code>ListView</code> 一个背景颜色时，没用合适字段去表示。而在大型的 <code>Flutter</code> 项目中这种情况加太多了，又该如何做呢？</p>
+<h2 id="定制自己的设计系统"><a href="#定制自己的设计系统" class="headerlink" title="定制自己的设计系统"></a>定制自己的设计系统</h2><p>设计系统是一套用于管理和共享设计资源的方法和工具集合。它包含了一系列的设计准则、组件、样式、布局规范等，将可重复使用的组件、样式指南（包括字体、颜色、尺寸等）和使用标准集合在一起集中去管理，旨在确保应用程序的视觉和交互一致性，并提高开发效率和设计协作能力。</p>
+<p>对应到 <code>App</code> 中，将设计系统通常分为 3 类：</p>
+<ul>
+<li>原子级别：如 <code>color</code>、<code>font</code>、<code>padding</code>、<code>radius</code> 等等，这是构成设计系统的基础。</li>
+<li>分子级别：如 <code>button</code>、<code>checkboxes</code>、<code>radio boxes</code>、<code>dividers</code>、<code>input fields</code>，是一些最基本和常见的 <code>widget</code>。</li>
+<li>细胞级别：如 <code>appbars</code>、<code>complex card</code>，甚至自定义 <code>widget</code>（如 <code>CustomPainter</code>），一些更复杂的 <code>widget</code>。</li>
+</ul>
+<p>下面来实现一套自己的设计系统。</p>
+<h2 id="Theme-Extension"><a href="#Theme-Extension" class="headerlink" title="Theme Extension"></a><code>Theme Extension</code></h2><p>通常自定义一些常用的主题样式属性，会将其封装在 <code>ThemeExtension</code> 中，<code>ThemeExtension</code> 是对 <code>ThemeData</code> 类的扩展，用于简化主题样式的设置和访问，使用 <code>ThemeExtension</code> 轻松地定义和管理我们自己的主题样式，并在整个项目中访问和应用。</p>
+<h3 id="Color-Theme"><a href="#Color-Theme" class="headerlink" title="Color Theme"></a><code>Color Theme</code></h3><p>我们先以 <code>Colors</code> 为例，创建一个名为 <code>AppColorsTheme</code> 的类，继承自 <code>ThemeExtension</code>，如下面代码:</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppColorsTheme</span> <span class="keyword">extends</span> <span class="title">ThemeExtension</span>&lt;<span class="title">AppColorsTheme</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> _colorB0B0B0 = Color(<span class="number">0xFFB0B0B0</span>);</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> _colorEFEFEF = Color(<span class="number">0xFFEFEFEF</span>);</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> _color333333 = Color(<span class="number">0xFF333333</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> _color6C6C6C = Color(<span class="number">0xFF6C6C6C</span>);</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> _color7D7D7D = Color(<span class="number">0xFF7d7d7d</span>);</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> _color676767 = Color(<span class="number">0xFF676767</span>);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 页面中真正使用的颜色名称</span></span><br><span class="line">  <span class="keyword">final</span> Color backgroundDefault;</span><br><span class="line">  <span class="keyword">final</span> Color backgroundInput;</span><br><span class="line">  <span class="keyword">final</span> Color textDefault;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 私有的构造函数</span></span><br><span class="line">  <span class="keyword">const</span> AppColorsTheme._internal(&#123;</span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">this</span>.backgroundDefault,</span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">this</span>.backgroundInput,</span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">this</span>.textDefault,</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 浅色主题工厂方法</span></span><br><span class="line">  <span class="keyword">factory</span> AppColorsTheme.light() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">const</span> AppColorsTheme._internal(</span><br><span class="line">        backgroundDefault: _colorB0B0B0,</span><br><span class="line">        backgroundInput: _colorEFEFEF,</span><br><span class="line">        textDefault: _color333333);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 暗色主题工厂方法</span></span><br><span class="line">  <span class="keyword">factory</span> AppColorsTheme.dark() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">const</span> AppColorsTheme._internal(</span><br><span class="line">        backgroundDefault: _color6C6C6C,</span><br><span class="line">        backgroundInput: _color7D7D7D,</span><br><span class="line">        textDefault: _color676767);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  ThemeExtension&lt;AppColorsTheme&gt; copyWith(&#123;<span class="built_in">bool?</span> lightMode&#125;) &#123;</span><br><span class="line">    <span class="keyword">if</span> (lightMode == <span class="keyword">null</span> || lightMode == <span class="keyword">true</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> AppColorsTheme.light();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> AppColorsTheme.dark();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  ThemeExtension&lt;AppColorsTheme&gt; lerp(</span><br><span class="line">          <span class="keyword">covariant</span> ThemeExtension&lt;AppColorsTheme&gt;? other, <span class="built_in">double</span> t) =&gt;</span><br><span class="line">      <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里将<code>color name</code>  与页面中实际使用的颜色变量名称分开，因为很多时候 <code>color name</code> 在不同的主题模式下是不一样的，虽然只提供了 <code>light</code> 和 <code>dark</code>，当然我还可以添加更多其它的主题颜色。</p>
+<h3 id="Text-Theme"><a href="#Text-Theme" class="headerlink" title="Text Theme"></a><code>Text Theme</code></h3><p>创建文本样式主题，命名为 <code>AppTextsTheme</code>，同样继承自 <code>ThemeExtension</code>。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppTextsTheme</span> <span class="keyword">extends</span> <span class="title">ThemeExtension</span>&lt;<span class="title">AppTextsTheme</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> _baseFamily = <span class="string">&quot;Roboto&quot;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> TextStyle labelH1;</span><br><span class="line">  <span class="keyword">final</span> TextStyle labelH2;</span><br><span class="line">  <span class="keyword">final</span> TextStyle labelTextDefault;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> AppTextsTheme._internal(</span><br><span class="line">      &#123;<span class="keyword">required</span> <span class="keyword">this</span>.labelH1,</span><br><span class="line">      <span class="keyword">required</span> <span class="keyword">this</span>.labelH2,</span><br><span class="line">      <span class="keyword">required</span> <span class="keyword">this</span>.labelTextDefault&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">factory</span> AppTextsTheme.main() =&gt; <span class="keyword">const</span> AppTextsTheme._internal(</span><br><span class="line">      labelH1: TextStyle(</span><br><span class="line">        fontFamily: _baseFamily,</span><br><span class="line">        fontWeight: FontWeight.w400,</span><br><span class="line">        fontSize: <span class="number">18</span>,</span><br><span class="line">        height: <span class="number">1.4</span>,</span><br><span class="line">      ),</span><br><span class="line">      labelH2: TextStyle(</span><br><span class="line">        fontFamily: _baseFamily,</span><br><span class="line">        fontWeight: FontWeight.w300,</span><br><span class="line">        fontSize: <span class="number">16</span>,</span><br><span class="line">        height: <span class="number">1.4</span>,</span><br><span class="line">      ),</span><br><span class="line">      labelTextDefault: TextStyle(</span><br><span class="line">        fontFamily: _baseFamily,</span><br><span class="line">        fontWeight: FontWeight.w400,</span><br><span class="line">        fontSize: <span class="number">16</span>,</span><br><span class="line">        height: <span class="number">1.2</span>,</span><br><span class="line">      ));</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  ThemeExtension&lt;AppTextsTheme&gt; copyWith() &#123;</span><br><span class="line">    <span class="keyword">return</span> AppTextsTheme._internal(</span><br><span class="line">      labelH1: labelH1,</span><br><span class="line">      labelH2: labelH2,</span><br><span class="line">      labelTextDefault: labelTextDefault,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  ThemeExtension&lt;AppTextsTheme&gt; lerp(</span><br><span class="line">          <span class="keyword">covariant</span> ThemeExtension&lt;AppTextsTheme&gt;? other, <span class="built_in">double</span> t) =&gt;</span><br><span class="line">      <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的字体等文本样式需要和 <code>UI</code> 设计人员沟通好，而且最好命名也和他们设计稿的名称保持一致，这样在后期重复使用的时候能最大的降低沟通成本。</p>
+<h3 id="Dimension-Theme"><a href="#Dimension-Theme" class="headerlink" title="Dimension Theme"></a><code>Dimension Theme</code></h3><p><code>AppDimensionsTheme</code> 主要存放项目中的尺寸相关的主题数据，例如间距、大小、边框宽度等。这些尺寸数据通常用于保持应用程序中的视觉一致性和布局稳定性。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppDimensionsTheme</span> <span class="keyword">extends</span> <span class="title">ThemeExtension</span>&lt;<span class="title">AppDimensionsTheme</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">double</span> radiusCommitButton;</span><br><span class="line">  <span class="keyword">final</span> EdgeInsets paddingOrderList;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> AppDimensionsTheme._internal(&#123;</span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">this</span>.radiusCommitButton,</span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">this</span>.paddingOrderList,</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">factory</span> AppDimensionsTheme.main() =&gt; <span class="keyword">const</span> AppDimensionsTheme._internal(</span><br><span class="line">        radiusCommitButton: <span class="number">8</span>,</span><br><span class="line">        paddingOrderList: EdgeInsets.symmetric(horizontal: <span class="number">12</span>, vertical: <span class="number">10</span>),</span><br><span class="line">      );</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  ThemeExtension&lt;AppDimensionsTheme&gt; copyWith() &#123;</span><br><span class="line">    <span class="keyword">return</span> AppDimensionsTheme._internal(</span><br><span class="line">      radiusCommitButton: radiusCommitButton,</span><br><span class="line">      paddingOrderList: paddingOrderList,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  ThemeExtension&lt;AppDimensionsTheme&gt; lerp(</span><br><span class="line">          <span class="keyword">covariant</span> ThemeExtension&lt;AppDimensionsTheme&gt;? other, <span class="built_in">double</span> t) =&gt;</span><br><span class="line">      <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里一般是放一些比较通用的尺寸，而不是将所有的和尺寸相关的都放在这里。你可能会问，尺寸都写死在这里，那如何做响应式 <code>UI</code> 呢？</p>
+<h3 id="响应式-UI"><a href="#响应式-UI" class="headerlink" title="响应式 UI"></a>响应式 <code>UI</code></h3><p>为 <code>FlutterView</code> 创建一个 <code>extension</code>，命名为 <code>FlutterViewExtension</code>。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/gestures.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extension</span> FlutterViewExtension <span class="keyword">on</span> FlutterView &#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">double</span> responsive360 = <span class="number">360</span>;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">double</span> responsive480 = <span class="number">480</span>;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">double</span> responsive600 = <span class="number">600</span>;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">double</span> responsive800 = <span class="number">800</span>;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">double</span> responsive900 = <span class="number">900</span>;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">double</span> responsive1200 = <span class="number">1200</span>;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">double</span> <span class="keyword">get</span> logicalWidth =&gt; physicalSize.width / devicePixelRatio;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">double</span> <span class="keyword">get</span> logicalHeight =&gt; physicalSize.height / devicePixelRatio;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">double</span> <span class="keyword">get</span> logicalWidthSA =&gt;</span><br><span class="line">      (physicalSize.width - padding.left - padding.right) / devicePixelRatio;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">double</span> <span class="keyword">get</span> logicalHeightSA =&gt;</span><br><span class="line">      (physicalSize.height - padding.top - padding.bottom) / devicePixelRatio;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">bool</span> <span class="keyword">get</span> isSmallSmartphone &#123;</span><br><span class="line">    <span class="keyword">if</span> (logicalWidthSA &lt; logicalHeightSA) &#123;</span><br><span class="line">      <span class="keyword">return</span> (logicalWidthSA &lt;= responsive360 ||</span><br><span class="line">          logicalHeightSA &lt;= responsive600);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> (logicalWidthSA &lt;= responsive600 ||</span><br><span class="line">          logicalHeightSA &lt;= responsive360);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">bool</span> <span class="keyword">get</span> isRegularSmartphoneOrLess &#123;</span><br><span class="line">    <span class="keyword">if</span> (logicalWidthSA &lt; logicalHeightSA) &#123;</span><br><span class="line">      <span class="keyword">return</span> (logicalWidthSA &lt;= responsive480 ||</span><br><span class="line">          logicalHeightSA &lt;= responsive800);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> (logicalWidthSA &lt;= responsive800 ||</span><br><span class="line">          logicalHeightSA &lt;= responsive480);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">bool</span> <span class="keyword">get</span> isSmallTabletOrLess &#123;</span><br><span class="line">    <span class="keyword">if</span> (logicalWidthSA &lt; logicalHeightSA) &#123;</span><br><span class="line">      <span class="keyword">return</span> (logicalWidthSA &lt;= responsive600 ||</span><br><span class="line">          logicalHeightSA &lt;= responsive900);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> (logicalWidthSA &lt;= responsive900 ||</span><br><span class="line">          logicalHeightSA &lt;= responsive600);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">bool</span> <span class="keyword">get</span> isRegularTabletOrLess &#123;</span><br><span class="line">    <span class="keyword">if</span> (logicalWidthSA &lt; logicalHeightSA) &#123;</span><br><span class="line">      <span class="keyword">return</span> (logicalWidthSA &lt;= responsive800 ||</span><br><span class="line">          logicalHeightSA &lt;= responsive1200);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> (logicalWidthSA &lt;= responsive1200 ||</span><br><span class="line">          logicalHeightSA &lt;= responsive800);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在 <code>AppDimensionsTheme</code> 中使用，只需要在这里加上判断就可以了。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">factory</span> AppDimensionsTheme.main(FlutterView flutterView) =&gt;</span><br><span class="line">  AppDimensionsTheme._internal(</span><br><span class="line">    radiusCommitButton: flutterView.isSmallSmartphone ? <span class="number">8</span> : <span class="number">16</span>,</span><br><span class="line">    paddingOrderList:</span><br><span class="line">        <span class="keyword">const</span> EdgeInsets.symmetric(horizontal: <span class="number">16</span>, vertical: <span class="number">12</span>),</span><br><span class="line">  );</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="如何使用-Theme-Extension"><a href="#如何使用-Theme-Extension" class="headerlink" title="如何使用 Theme Extension"></a>如何使用 <code>Theme Extension</code></h3><p>第一步：在 <code>main.dart</code> 文件，将以下代码放在程序入口 <code>Widget</code> 的 <code>MaterialApp</code> 下面。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">MaterialApp(</span><br><span class="line">  title: <span class="string">&#x27;Flutter技术实践&#x27;</span>,</span><br><span class="line">  theme: Theme.of(context).copyWith(</span><br><span class="line">    extensions: [</span><br><span class="line">      AppTextsTheme.main(),</span><br><span class="line">      AppColorsTheme.light(),</span><br><span class="line">      AppDimensionsTheme.main(View.of(context)),</span><br><span class="line">    ],</span><br><span class="line">  )</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>第二步：为 <code>ThemeData</code> 创建一个 <code>extension</code>，目的是简化了调用代码。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter_todo/resources/app_colors_theme.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter_todo/resources/app_dimensions_theme.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter_todo/resources/app_texts_theme.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extension</span> ThemeDataExtension <span class="keyword">on</span> ThemeData &#123;</span><br><span class="line">  AppDimensionsTheme <span class="keyword">get</span> appDimensions =&gt; <span class="keyword">extension</span>&lt;AppDimensionsTheme&gt;()!;</span><br><span class="line"></span><br><span class="line">  AppColorsTheme <span class="keyword">get</span> appColors =&gt; <span class="keyword">extension</span>&lt;AppColorsTheme&gt;()!;</span><br><span class="line"></span><br><span class="line">  AppTextsTheme <span class="keyword">get</span> appTexts =&gt; <span class="keyword">extension</span>&lt;AppTextsTheme&gt;()!;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第三步：开始调用，这里显示文本样式为 <code>labelTextDefault</code>，颜色为 <code>textDefault</code>。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Text(</span><br><span class="line">  <span class="string">&quot;Flutter&quot;</span>,</span><br><span class="line">  style: Theme.of(context).appTexts.labelTextDefault.copyWith(</span><br><span class="line">    color: Theme.of(context).appColors.textDefault,</span><br><span class="line">  ),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+
+<h2 id="分层架构中去管理设计系统"><a href="#分层架构中去管理设计系统" class="headerlink" title="分层架构中去管理设计系统"></a>分层架构中去管理设计系统</h2><p><img src="https://s2.loli.net/2024/04/21/7oCVc96UkvN2bI5.png" alt="架构分层"></p>
+<p>从上面的分层设计架构图可以到，把与 <code>Theme Extension</code> 相关的划分到 <code>resources</code> 的组件包（在上图红框内），<code>resources</code>  组件包的目录结构如下：</p>
+<p><img src="https://s2.loli.net/2024/04/21/R39magV4F1pHLAW.png" alt="resources 组件包目录结构"></p>
+<p>而<code>resources</code> 的组件包在整个架构中是作为基础组件包，不需要依赖任何其它组件包，这样在使用 <code>ThemeExtension</code> 时可以确保整个应用程序中使用的主题样式保持一致，从而提高用户体验和视觉一致性。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本篇介绍了 <code>Flutter</code> 大型项目分层架构中的UI设计系统实现，主要是原子级别的，如 <code>color</code>、<code>font</code>、<code>padding</code>、<code>radius</code> 等等设计系统的基础，下一篇来介绍设计系统中分子级别和细胞级别，感谢您的阅读，更多该系列干货文章请关注我关注号：<strong>Flutter技术实践</strong>，记得关注加点赞哦！</p>
+<p><img src="https://s2.loli.net/2022/11/09/fNBn2gWw8tVazkr.jpg" alt="Flutter技术实践"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2024/04/21/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9AUI%E8%AE%BE%E8%AE%A1%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%B8%80%EF%BC%89/" title="Flutter大型项目架构：UI设计系统实现（一）">http://www.nnxkcloud.com/2024/04/21/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9AUI%E8%AE%BE%E8%AE%A1%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%B8%80%EF%BC%89/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2024/04/18/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3-Flutter-%E4%B8%AD%E7%9A%84-BuildContext/" rel="next" title="深入了解 Flutter 中的 BuildContext">
+                  <i class="fa fa-chevron-left"></i> 深入了解 Flutter 中的 BuildContext
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2024/04/24/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF/" rel="prev" title="Dart 语法原来这么好玩儿">
+                  Dart 语法原来这么好玩儿 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Flutter-%E9%BB%98%E8%AE%A4%E7%9A%84%E8%AE%BE%E8%AE%A1%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">Flutter 默认的设计系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E5%88%B6%E8%87%AA%E5%B7%B1%E7%9A%84%E8%AE%BE%E8%AE%A1%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.</span> <span class="nav-text">定制自己的设计系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Theme-Extension"><span class="nav-number">3.</span> <span class="nav-text">Theme Extension</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Color-Theme"><span class="nav-number">3.1.</span> <span class="nav-text">Color Theme</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Text-Theme"><span class="nav-number">3.2.</span> <span class="nav-text">Text Theme</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dimension-Theme"><span class="nav-number">3.3.</span> <span class="nav-text">Dimension Theme</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%93%8D%E5%BA%94%E5%BC%8F-UI"><span class="nav-number">3.4.</span> <span class="nav-text">响应式 UI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Theme-Extension"><span class="nav-number">3.5.</span> <span class="nav-text">如何使用 Theme Extension</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84%E4%B8%AD%E5%8E%BB%E7%AE%A1%E7%90%86%E8%AE%BE%E8%AE%A1%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.</span> <span class="nav-text">分层架构中去管理设计系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">小结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

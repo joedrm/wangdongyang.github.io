@@ -1,0 +1,75 @@
+{
+    "name": "王方",
+    "email": "wf_pinbo@163.com",
+    "address": "中国 · 上海",
+    "intro_myself": [
+        "工作认真负责，认真对待工作上每一件事情，每一个技术点，及时反馈；",
+        "专注于 iOS 原生开发，从业过教育、金融、社交、电商、智能物联网、音视频多媒体等相关行业的应用开发",
+        "有独立解决问题能力，提出并实现与业务相匹配各个阶段技术架构；",
+        "自我驱动力强，勤于思考归纳总结，始终保持着对新技术的热忱。"
+    ],
+    "skill_intro": [
+        "精通Objective-C语言，熟练掌握iOS平台各类API，熟悉Swift语言及其特性以及SDK等。",
+        "熟悉iOS内存管理机制、复杂页面的布局和适配、iOS动画、多线程等。",
+        "熟练使用Weex、React Native、微信小程序等做跨平台开发。",
+        "熟练使用Flutter开发App，Flutter插件开发，以及以Module形式嵌入原生做混合开发。",
+        "熟练使用HTML、JS、CSS等开发前端Web页面，熟悉Vue、React等前端框架。",
+        "熟练Hybird混编，JS注入等做混合开发。",
+        "精通MVC、MVVM等架构，熟练项目基础架构搭建、技术选型、项目组件化开发、功能模块化开发以及模块之间相互通信等。",
+        "熟练的使用Instruments下的等调试工具进行内存消耗分析作出相应的性能优化方案。",
+        "熟练各种App相关的优化，包括复杂的界面、网络请求、iPA包体积、电量、App启动等相关的优化。",
+        "熟练线上问题的监控、追踪、定位和修复。",
+        "熟悉iOS上架相关的各种问题并给出解决方案，熟悉iOS签名机制，了解iOS逆向。",
+        "熟悉Cocoapods依赖库工具，熟悉Git、SVN等代码管理工具，崇尚使用Git。",
+        "熟悉存储技术，FMDB、Realm、 NSUserDefaults、Core Data等。",
+        "熟悉常用的设计模式，并运用到实际项目中。",
+        "熟悉JavaWeb开发，包括Spring、SpringMVC、MyBatis、SpringBoot、MySQL、Redis、Nginx等相关技术。",
+        "熟练使用设计软件，如Sketch、PS、Ai等，并实现设计的效果。"
+    ],
+    "social": [
+        {
+            "icon": "../images/blog.png",
+            "title": "博客",
+            "url": "https://nnxk.netlify.app/"
+        },
+        {
+            "icon": "../images/github.png",
+            "title": "Github",
+            "url": "https://github.com/wangdongyang"
+        }
+    ],
+    "portrait": "https://ftp.bmp.ovh/imgs/2021/03/87f872d7d12c1e10.jpg",
+    "qr_code_img": "https://ftp.bmp.ovh/imgs/2020/11/3a6b059b79ce72d8.png",
+    "languages": [
+        {
+            "title": "OBJECT-C",
+            "color": "#FF8282",
+            "persent": "80%"
+        },
+        {
+            "title": "SWIFT",
+            "color": "#5FB8FF",
+            "persent": "70%"
+        },
+        {
+            "title": "FLUTTER",
+            "color": "#5BDC8E",
+            "persent": "80%"
+        },
+        {
+            "title": "H5",
+            "color": "#F5905F",
+            "persent": "70%"
+        },
+        {
+            "title": "REACT NATIVE / WEEX",
+            "color": "#F0D72D",
+            "persent": "68%"
+        },
+        {
+            "title": "JAVA",
+            "color": "#E359DC",
+            "persent": "70%"
+        }
+    ]
+}

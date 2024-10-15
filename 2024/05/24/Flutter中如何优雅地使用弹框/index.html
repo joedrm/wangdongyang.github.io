@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="日常开发中，Flutter 弹框（Dialog）是我们使用频率非常高的控件。无论是提示用户信息、确认用户操作，还是表单填写，弹框都能派上用场。然而，看似简单的弹框，实际使用起来却有不少坑和使用的技巧。今天，我们就来聊聊这些弹框的使用技巧，文末还有关于在 bloc 如何使用弹框的内容，保证你看完之后干货满满，下面直接开始吧。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter中如何优雅地使用弹框">
+<meta property="og:url" content="http://www.nnxkcloud.com/2024/05/24/Flutter%E4%B8%AD%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E4%BD%BF%E7%94%A8%E5%BC%B9%E6%A1%86/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="日常开发中，Flutter 弹框（Dialog）是我们使用频率非常高的控件。无论是提示用户信息、确认用户操作，还是表单填写，弹框都能派上用场。然而，看似简单的弹框，实际使用起来却有不少坑和使用的技巧。今天，我们就来聊聊这些弹框的使用技巧，文末还有关于在 bloc 如何使用弹框的内容，保证你看完之后干货满满，下面直接开始吧。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/05/24/SL5gnJfYyhr4NvM.png">
+<meta property="article:published_time" content="2024-05-24T10:31:22.000Z">
+<meta property="article:modified_time" content="2024-10-15T03:05:34.688Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/05/24/SL5gnJfYyhr4NvM.png">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2024/05/24/Flutter%E4%B8%AD%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E4%BD%BF%E7%94%A8%E5%BC%B9%E6%A1%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Flutter中如何优雅地使用弹框 | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/05/24/Flutter%E4%B8%AD%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E4%BD%BF%E7%94%A8%E5%BC%B9%E6%A1%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter中如何优雅地使用弹框
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-05-24 18:31:22" itemprop="dateCreated datePublished" datetime="2024-05-24T18:31:22+08:00">2024-05-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-15 11:05:34" itemprop="dateModified" datetime="2024-10-15T11:05:34+08:00">2024-10-15</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2024/05/24/Flutter%E4%B8%AD%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E4%BD%BF%E7%94%A8%E5%BC%B9%E6%A1%86/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/24/Flutter%E4%B8%AD%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E4%BD%BF%E7%94%A8%E5%BC%B9%E6%A1%86/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://s2.loli.net/2024/05/24/SL5gnJfYyhr4NvM.png" alt=" _2_.png"></p>
+<p>日常开发中，<code>Flutter</code> 弹框（<code>Dialog</code>）是我们使用频率非常高的控件。无论是提示用户信息、确认用户操作，还是表单填写，弹框都能派上用场。然而，看似简单的弹框，实际使用起来却有不少坑和使用的技巧。今天，我们就来聊聊这些弹框的使用技巧，文末还有关于在 <code>bloc</code> 如何使用弹框的内容，保证你看完之后干货满满，下面直接开始吧。</p>
+<span id="more"></span>
+
+<h2 id="返回值的处理"><a href="#返回值的处理" class="headerlink" title="返回值的处理"></a>返回值的处理</h2><p>用户在点击退出登录时，通常的做法就是弹框用来确认是否退出登录，返回值是 <code>bool</code> 类型，为 <code>true</code> 表示退出登录，反之不需要退出，这个时候应该怎处理这个 <code>bool</code> 类型的返回值呢？我们先来看看最常见的写法。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">_showDialogWithCallBack(<span class="built_in">Function</span>(<span class="built_in">bool</span>) callBack)&#123;</span><br><span class="line">  showDialog(</span><br><span class="line">    context: context,</span><br><span class="line">    builder: (context) &#123;</span><br><span class="line">      <span class="keyword">return</span> AlertDialog(</span><br><span class="line">        title: <span class="keyword">const</span> Text(<span class="string">&quot;Logout&quot;</span>),</span><br><span class="line">        content: <span class="keyword">const</span> Text(<span class="string">&quot;Are you sure you want to logout?&quot;</span>),</span><br><span class="line">        actions: [</span><br><span class="line">          TextButton(</span><br><span class="line">            onPressed: () &#123;</span><br><span class="line">              callBack(<span class="keyword">false</span>);</span><br><span class="line">              Navigator.of(context).pop();</span><br><span class="line">            &#125;,</span><br><span class="line">            child: <span class="keyword">const</span> Text(<span class="string">&quot;Cancel&quot;</span>),</span><br><span class="line">          ),</span><br><span class="line">          TextButton(</span><br><span class="line">            onPressed: () &#123;</span><br><span class="line">              callBack(<span class="keyword">true</span>);</span><br><span class="line">              Navigator.of(context).pop();</span><br><span class="line">            &#125;,</span><br><span class="line">            child: <span class="keyword">const</span> Text(<span class="string">&quot;Sure&quot;</span>),</span><br><span class="line">          )</span><br><span class="line">        ],</span><br><span class="line">      );</span><br><span class="line">    &#125;,</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>点击按钮后调用 <code>_showDialogWithCallBack</code> 函数来显示弹框。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">TextButton(</span><br><span class="line">  onPressed: () &#123;</span><br><span class="line">    _showDialogWithCallBack((result) &#123;</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">&quot;Result: <span class="subst">$result</span>&quot;</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line">  child: Text(<span class="string">&#x27;Dialog with callBack&#x27;</span>),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>除了上面这种使用回调函数传递结果，还有没有其它更加优雅的写法呢？我们知道 <code>showDialog</code> 本身返回的就是 <code>Future</code> 对象，如果需要在 <code>Dialog</code> 关闭后继续执行一些其它逻辑，我们可以使用 <code>await</code> 和 <code>async</code> 关键字来接收返回数据处理异步操作，下面来看看该怎么实现。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;<span class="built_in">bool?</span>&gt; _showAsyncDialog() &#123;</span><br><span class="line">  <span class="keyword">return</span> showDialog&lt;<span class="built_in">bool</span>&gt;(</span><br><span class="line">    context: context,</span><br><span class="line">    builder: (context) &#123;</span><br><span class="line">      <span class="keyword">return</span> AlertDialog(</span><br><span class="line">        title: <span class="keyword">const</span> Text(<span class="string">&quot;Logout&quot;</span>),</span><br><span class="line">        content: <span class="keyword">const</span> Text(<span class="string">&quot;Are you sure you want to logout?&quot;</span>),</span><br><span class="line">        actions: [</span><br><span class="line">          TextButton(</span><br><span class="line">            onPressed: () &#123;</span><br><span class="line">              Navigator.of(context).pop(<span class="keyword">false</span>);</span><br><span class="line">            &#125;,</span><br><span class="line">            child: <span class="keyword">const</span> Text(<span class="string">&quot;Cancel&quot;</span>),</span><br><span class="line">          ),</span><br><span class="line">          TextButton(</span><br><span class="line">            onPressed: () &#123;</span><br><span class="line">              Navigator.of(context).pop(<span class="keyword">true</span>);</span><br><span class="line">            &#125;,</span><br><span class="line">            child: <span class="keyword">const</span> Text(<span class="string">&quot;Sure&quot;</span>),</span><br><span class="line">          )</span><br><span class="line">        ],</span><br><span class="line">      );</span><br><span class="line">    &#125;,</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>利用 <code> Navigator.of(context).pop(true)</code> 方法来关闭对话框，并传递 <code>true</code> 或者 <code>false</code> 值作为对话框的返回结果，当点击按钮调用 <code>_showAsyncDialog</code> 弹出 <code>Dialog</code>。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">TextButton(</span><br><span class="line">  onPressed: () <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="built_in">bool?</span> result = <span class="keyword">await</span> _showAsyncDialog();</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Result: <span class="subst">$result</span>&quot;</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">  child: Text(<span class="string">&#x27;Async Dialog&#x27;</span>),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>在返回 <code>result</code> 之后再去处理其它的逻辑，相对于使用回调函数来处理结果，这种写法是不是更加的简洁，避免了回调函数那种代码嵌套，代码看起来也更清晰易懂吧。</p>
+<p>如果 <code>Dialog</code> 中带有表单（如：<code>TextField</code>）该如何处理返回数据呢？其实和上面的处理方式是一样的，也可使用 <code>async</code> 和 <code>await</code> 来处理 <code>showDialog</code> 返回的 <code>Future</code> 对象，以返回用户输入的年龄（<code>int</code> 类型）为例，其实现如下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;<span class="built_in">int?</span>&gt; _getAge(BuildContext context) &#123;</span><br><span class="line">  <span class="keyword">final</span> controller = TextEditingController();</span><br><span class="line">  <span class="keyword">return</span> showDialog(</span><br><span class="line">      context: context,</span><br><span class="line">      builder: (context) &#123;</span><br><span class="line">        <span class="keyword">return</span> AlertDialog(</span><br><span class="line">          title: <span class="keyword">const</span> Text(<span class="string">&quot;How old are you?&quot;</span>),</span><br><span class="line">          content: TextField(</span><br><span class="line">              decoration: <span class="keyword">const</span> InputDecoration(hintText: <span class="string">&quot;e.g：22&quot;</span>),</span><br><span class="line">              keyboardType: TextInputType.number,</span><br><span class="line">              autofocus: <span class="keyword">true</span>,</span><br><span class="line">              maxLength: <span class="number">3</span>,</span><br><span class="line">              controller: controller,</span><br><span class="line">              inputFormatters: [</span><br><span class="line">                TextInputFormatter.withFunction((oldValue, newValue) &#123;</span><br><span class="line">                  <span class="keyword">if</span> (newValue.text.isEmpty) <span class="keyword">return</span> newValue;</span><br><span class="line">                  <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">final</span> age = <span class="built_in">int</span>.parse(newValue.text);</span><br><span class="line">                    <span class="keyword">if</span> (age &gt; <span class="number">120</span>) <span class="keyword">return</span> oldValue;</span><br><span class="line">                    <span class="keyword">return</span> newValue;</span><br><span class="line">                  &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">                    <span class="keyword">return</span> oldValue;</span><br><span class="line">                  &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">              ]),</span><br><span class="line">          actions: [</span><br><span class="line">            TextButton(</span><br><span class="line">                onPressed: () &#123;</span><br><span class="line">                  Navigator.pop(context);</span><br><span class="line">                &#125;,</span><br><span class="line">                child: <span class="keyword">const</span> Text(<span class="string">&quot;Cancel&quot;</span>)),</span><br><span class="line">            TextButton(</span><br><span class="line">                onPressed: () &#123;</span><br><span class="line">                  <span class="keyword">final</span> age = <span class="built_in">int</span>.parse(controller.text);</span><br><span class="line">                  Navigator.of(context).pop(age);</span><br><span class="line">                &#125;,</span><br><span class="line">                child: <span class="keyword">const</span> Text(<span class="string">&quot;Save&quot;</span>))</span><br><span class="line">          ],</span><br><span class="line">        );</span><br><span class="line">      &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>类似上面这种写法也同样适用于各种类型的 <code>ActionSheet</code>  返回值的处理。</p>
+<h2 id="自定义-Dialog-内容"><a href="#自定义-Dialog-内容" class="headerlink" title="自定义 Dialog 内容"></a>自定义 <code>Dialog</code> 内容</h2><p>上面的例子中 <code>showDialog</code> 的 <code>builder</code> 函数返回内容都使用的是 <code>AlertDialog</code> 类，它属于 <code>Material</code> 设计风格的，而在我们平时开发的时候往往需要根据设计稿定制自己的 <code>Dialog</code> ，这个时候就需要自定义 <code>Dialog</code> 的内容了，如直接在 <code>builder</code> 函数中返回自定义的 <code>widget</code> 类，但是这个时候需要自己处理圆角、边框和阴影，还有处理点击对话框外部自动关闭对话框等功能。如果想要快速的实现一个自定义内容的弹框可以使用 <code>Dialog</code> 组件。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dialog</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> Dialog(&#123;</span><br><span class="line">    <span class="keyword">super</span>.key,</span><br><span class="line">    <span class="keyword">this</span>.backgroundColor,</span><br><span class="line">    <span class="keyword">this</span>.elevation,</span><br><span class="line">    <span class="keyword">this</span>.shadowColor,</span><br><span class="line">    <span class="keyword">this</span>.surfaceTintColor,</span><br><span class="line">    <span class="keyword">this</span>.insetAnimationDuration = <span class="keyword">const</span> <span class="built_in">Duration</span>(milliseconds: <span class="number">100</span>),</span><br><span class="line">    <span class="keyword">this</span>.insetAnimationCurve = Curves.decelerate,</span><br><span class="line">    <span class="keyword">this</span>.insetPadding = _defaultInsetPadding,</span><br><span class="line">    <span class="keyword">this</span>.clipBehavior = Clip.none,</span><br><span class="line">    <span class="keyword">this</span>.shape,</span><br><span class="line">    <span class="keyword">this</span>.alignment,</span><br><span class="line">    <span class="keyword">this</span>.child,</span><br><span class="line">  &#125;) : <span class="keyword">assert</span>(clipBehavior != <span class="keyword">null</span>),</span><br><span class="line">       <span class="keyword">assert</span>(elevation == <span class="keyword">null</span> || elevation &gt;= <span class="number">0.0</span>),</span><br><span class="line">       _fullscreen = <span class="keyword">false</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// .....</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从 <code>Dialog</code> 小组价的构造函数可以看出来，其本身内置了背景色、阴影、边框、对其、边距和动画等属性，为对话框提供了默认样式和行为，定制自己的对话框时改起来也很方便。实现代码如下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">_showCustomDialog() &#123;</span><br><span class="line">  showDialog(</span><br><span class="line">    context: context,</span><br><span class="line">    <span class="comment">// 设置背景透明度</span></span><br><span class="line">    barrierColor: Colors.black.withOpacity(<span class="number">0.5</span>),</span><br><span class="line">    builder: (BuildContext context) &#123;</span><br><span class="line">      <span class="keyword">return</span> Dialog(</span><br><span class="line">        shape: RoundedRectangleBorder(</span><br><span class="line">          borderRadius: BorderRadius.circular(<span class="number">12.0</span>),</span><br><span class="line">        ),</span><br><span class="line">        child: Container(</span><br><span class="line">          padding: EdgeInsets.all(<span class="number">16.0</span>),</span><br><span class="line">          child: Column(</span><br><span class="line">            mainAxisSize: MainAxisSize.min,</span><br><span class="line">            children: &lt;Widget&gt;[</span><br><span class="line">              SizedBox(height: <span class="number">10</span>),</span><br><span class="line">              Text(<span class="string">&#x27;Custom Dialog Title&#x27;</span>, style: TextStyle(fontSize: <span class="number">20</span>)),</span><br><span class="line">              SizedBox(height: <span class="number">16</span>),</span><br><span class="line">              Text(<span class="string">&#x27;This is a custom dialog content.&#x27;</span>),</span><br><span class="line">              SizedBox(height: <span class="number">16</span>),</span><br><span class="line">              TextButton(</span><br><span class="line">                onPressed: () &#123;</span><br><span class="line">                  Navigator.of(context).pop();</span><br><span class="line">                &#125;,</span><br><span class="line">                child: Text(<span class="string">&#x27;OK&#x27;</span>),</span><br><span class="line">              ),</span><br><span class="line">              SizedBox(height: <span class="number">10</span>),</span><br><span class="line">            ],</span><br><span class="line">          ),</span><br><span class="line">        ),</span><br><span class="line">      );</span><br><span class="line">    &#125;,</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="bloc-中使用弹框"><a href="#bloc-中使用弹框" class="headerlink" title="bloc 中使用弹框"></a><code>bloc</code> 中使用弹框</h2><p>在使用 <code>bloc</code>（业务逻辑组件）进行状态管理时，很多的时候特定的业务逻辑执行过程中弹出对话框，如保存表单数据时，如果出现网络错误或验证错误，可以弹出对话框通知用户；执行删除操作时需要弹出对话框让用户确认操作是否继续；执行耗时操作弹出一个加载对话框，向用户展示操作正在进行，特别是在和硬件网关 <code>zigbee</code> 通信时，如查找设备，会有等待和重试的过程；以及完成某个操作时提示用户操作结果等等场景。但是我们在调用 <code>showDialog</code> 又需要传 <code>context</code> 参数，<code>context</code> 是用来标记 <code>widget</code> 在 <code>widget tree</code> 的位置，<code>bloc</code> 中获取不到 <code>context</code>，那么在<code>bloc</code> 中使用弹框改如何实现呢？</p>
+<p>还记得在《Flutter大型项目架构：路由管理篇》文章中实现的 <code>AppNavigatorImpl</code> 类吗？还有实现的 <code>push</code>、<code>pop</code>等操作，我们今天要实现在 <code>bloc</code>  弹框也是在 <code>AppNavigatorImpl</code> 类中实现。首先在其抽象类 <code>AppNavigator</code> 中添加如下代码：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AppNavigator</span> </span>&#123;</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">  Future&lt;T?&gt; showDialog&lt;T <span class="keyword">extends</span> <span class="built_in">Object?</span>&gt;(</span><br><span class="line">    AppPopupInfo appPopupInfo, &#123;</span><br><span class="line">    <span class="built_in">bool</span> barrierDismissible = <span class="keyword">true</span>,</span><br><span class="line">    <span class="built_in">bool</span> useSafeArea = <span class="keyword">false</span>,</span><br><span class="line">    <span class="built_in">bool</span> useRootNavigator = <span class="keyword">true</span>,</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>AppNavigatorImpl</code> 实现 <code>showDialog</code> 函数：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@LazySingleton</span>(<span class="keyword">as</span>: AppNavigator)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppNavigatorImpl</span> <span class="keyword">extends</span> <span class="title">AppNavigator</span> <span class="title">with</span> <span class="title">LogMixin</span> </span>&#123;</span><br><span class="line">  AppNavigatorImpl(</span><br><span class="line">    <span class="keyword">this</span>._appRouter,</span><br><span class="line">    <span class="comment">// 注入 PopupInfoMapper</span></span><br><span class="line">    <span class="keyword">this</span>._appPopupInfoMapper,</span><br><span class="line">    <span class="keyword">this</span>._appRouteInfoMapper,</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  TabsRouter? tabsRouter;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> AppRouter _appRouter;</span><br><span class="line">  <span class="comment">// BasePopupInfoMapper 是抽象类， PopupInfoMapper 的父类</span></span><br><span class="line">  <span class="keyword">final</span> BasePopupInfoMapper _appPopupInfoMapper;</span><br><span class="line">  <span class="keyword">final</span> BaseRouteInfoMapper _appRouteInfoMapper;</span><br><span class="line">  <span class="keyword">final</span> _popups = &lt;AppPopupInfo&gt;&#123;&#125;;</span><br><span class="line">  </span><br><span class="line">  StackRouter? <span class="keyword">get</span> _currentTabRouter =&gt;</span><br><span class="line">      tabsRouter?.stackRouterOfIndex(currentBottomTab);</span><br><span class="line"></span><br><span class="line">  StackRouter <span class="keyword">get</span> _currentTabRouterOrRootRouter =&gt;</span><br><span class="line">      _currentTabRouter ?? _appRouter;</span><br><span class="line"></span><br><span class="line">  BuildContext <span class="keyword">get</span> _rootRouterContext =&gt;</span><br><span class="line">      _appRouter.navigatorKey.currentContext!;</span><br><span class="line"></span><br><span class="line">  BuildContext? <span class="keyword">get</span> _currentTabRouterContext =&gt;</span><br><span class="line">      _currentTabRouter?.navigatorKey.currentContext;</span><br><span class="line"></span><br><span class="line">  BuildContext <span class="keyword">get</span> _currentTabContextOrRootContext =&gt;</span><br><span class="line">      _currentTabRouterContext ?? _rootRouterContext;</span><br><span class="line">  </span><br><span class="line">    <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">int</span> <span class="keyword">get</span> currentBottomTab &#123;</span><br><span class="line">    <span class="keyword">if</span> (tabsRouter == <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="string">&#x27;Not found any TabRouter&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> tabsRouter?.activeIndex ?? <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;T?&gt; showDialog&lt;T <span class="keyword">extends</span> <span class="built_in">Object?</span>&gt;(</span><br><span class="line">    AppPopupInfo appPopupInfo, &#123;</span><br><span class="line">    <span class="built_in">bool</span> barrierDismissible = <span class="keyword">true</span>,</span><br><span class="line">    <span class="built_in">bool</span> useSafeArea = <span class="keyword">false</span>,</span><br><span class="line">    <span class="built_in">bool</span> useRootNavigator = <span class="keyword">true</span>,</span><br><span class="line">  &#125;) &#123;</span><br><span class="line">    <span class="keyword">if</span> (_popups.contains(appPopupInfo)) &#123;</span><br><span class="line">      <span class="keyword">return</span> Future.value(<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    _popups.add(appPopupInfo);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> showDialog&lt;T&gt;(</span><br><span class="line">      context: useRootNavigator</span><br><span class="line">          ? _rootRouterContext</span><br><span class="line">          : _currentTabContextOrRootContext,</span><br><span class="line">      builder: (_) =&gt; m.WillPopScope(</span><br><span class="line">        onWillPop: () <span class="keyword">async</span> &#123;</span><br><span class="line">          _popups.remove(appPopupInfo);</span><br><span class="line">          <span class="keyword">return</span> Future.value(<span class="keyword">true</span>);</span><br><span class="line">        &#125;,</span><br><span class="line">        child: _appPopupInfoMapper.map(appPopupInfo, <span class="keyword">this</span>),</span><br><span class="line">      ),</span><br><span class="line">      useRootNavigator: useRootNavigator,</span><br><span class="line">      barrierDismissible: barrierDismissible,</span><br><span class="line">      useSafeArea: useSafeArea,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的 <code>_rootRouterContext</code> 是 <code>auto_route</code> 的根 <code>navigatorKey</code> 提供的，用于管理和控制导航操作，这样可以实现在整个应用程序的任何地方访问和操作导航堆栈。<code>auto_route</code> 库通过 <code>Navigator</code> 和 <code>GlobalKey</code> 的结合实现了对 <code>navigatorKey</code> 的支持。<code>_currentTabRouterContext</code> 是当前所显示的 <code>tab</code> 的<code>navigatorKey</code> 提供的，负责当前 <code>tab</code> 及子页面的导航操作。当调用 <code>showDialog</code> 时就可以使用 <code>_rootRouterContext</code> 或者 <code>_currentTabContextOrRootContext</code> 参数，这就解决了 <code>context</code> 参数的问题了。</p>
+<p><code>AppPopupInfo</code> 和 <code>AppRouteInfo</code> 的作用是一样的，实现了抽象类 <code>BasePopupInfoMapper</code>，使用 <code>@freezed</code> 注解，在 <code>AppPopupInfoMapper</code> 的 <code>map</code> 函数中使用 <code>when</code> 可根据不同工厂方法返回不同类型的 <code>AppPopupInfo</code> 实例。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@freezed</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppPopupInfo</span> <span class="title">with</span> <span class="title">_</span>$<span class="title">AppPopupInfo</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">factory</span> AppPopupInfo.confirmDialog(&#123;</span><br><span class="line">    <span class="meta">@Default</span>(<span class="string">&#x27;&#x27;</span>) <span class="built_in">String</span> message,</span><br><span class="line">    <span class="built_in">Function</span>&lt;<span class="keyword">void</span>&gt;? onPressed,</span><br><span class="line">  &#125;) = _ConfirmDialog;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BasePopupInfoMapper</span> </span>&#123;</span><br><span class="line">  Widget map(AppPopupInfo appRouteInfo, AppNavigator navigator);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@LazySingleton</span>(<span class="keyword">as</span>: BasePopupInfoMapper)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppPopupInfoMapper</span> <span class="keyword">extends</span> <span class="title">BasePopupInfoMapper</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget map(AppPopupInfo appPopupInfo, AppNavigator navigator) &#123;</span><br><span class="line">    <span class="keyword">return</span> appPopupInfo.<span class="keyword">when</span>(</span><br><span class="line">      confirmDialog: (message, onPressed) &#123;</span><br><span class="line">        <span class="comment">// 这里返回的是 Dialog 的内容</span></span><br><span class="line">        <span class="keyword">return</span> Dialog(</span><br><span class="line">          shape: RoundedRectangleBorder(</span><br><span class="line">            borderRadius: BorderRadius.circular(<span class="number">12.0</span>),</span><br><span class="line">          ),</span><br><span class="line">          child: Container(</span><br><span class="line">            padding: EdgeInsets.all(<span class="number">16.0</span>),</span><br><span class="line">            child: Column(</span><br><span class="line">              mainAxisSize: MainAxisSize.min,</span><br><span class="line">              children: &lt;Widget&gt;[</span><br><span class="line">                Text(message),</span><br><span class="line">                SizedBox(height: <span class="number">16</span>),</span><br><span class="line">                TextButton(</span><br><span class="line">                  onPressed: onPressed,</span><br><span class="line">                  child: Text(<span class="string">&#x27;OK&#x27;</span>),</span><br><span class="line">                ),</span><br><span class="line">                SizedBox(height: <span class="number">10</span>),</span><br><span class="line">              ],</span><br><span class="line">            ),</span><br><span class="line">          ),</span><br><span class="line">        );</span><br><span class="line">      &#125;,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 <code>bloc</code> 中或者页面中调用：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">navigator.showDialog(AppPopupInfo.confirmDialog(</span><br><span class="line">  message: <span class="string">&quot;显示弹框&quot;</span>,</span><br><span class="line">  onPressed: () &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">  &#125;));</span><br></pre></td></tr></table></figure>
+
+<p>这里的 <code>navigator</code> 是从哪里来的呢？在《Flutter大型项目架构：路由管理篇》文章中最后一部分<code>bloc</code> 中使用 <code>navigator</code> 跳转页面介绍了将 <code>navigator</code> 注入到 <code>BaseBloc</code> 和 <code>BasePageState</code>，感兴趣的可以去看看，这样无论是在 <code>bloc</code> 层还是 <code>page</code> 页面都能使用 <code>navigator</code> 跳转页面和弹出 <code>Dialog</code> 等操作，在 <code>bloc</code> 层使用 <code>ActionSheet</code>、<code>Toast</code> 等和 <code>Dialog</code> 一样的逻辑。</p>
+<p>在 <code>bloc</code> 层使用弹框的实现过程其实也是路由管理的一部分，本篇文章是单独把弹框的使用做一个集锦，也希望能够帮到你。那么，在项目中你是如何使用弹框的呢，关于弹框的使用有什么好的建议和想法欢迎留言，感谢您的阅读，记得关注加点赞哦！</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2024/05/24/Flutter%E4%B8%AD%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E4%BD%BF%E7%94%A8%E5%BC%B9%E6%A1%86/" title="Flutter中如何优雅地使用弹框">http://www.nnxkcloud.com/2024/05/24/Flutter%E4%B8%AD%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E4%BD%BF%E7%94%A8%E5%BC%B9%E6%A1%86/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" rel="next" title="Flutter设计模式全面解析：单例模式">
+                  <i class="fa fa-chevron-left"></i> Flutter设计模式全面解析：单例模式
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2024/05/26/%E8%A7%A3%E9%94%81-Flutter-%E7%9A%84%E7%A5%9E%E7%A7%98%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%8C%E5%BF%AB%E6%9D%A5%E4%B8%80%E6%8E%A2%E7%A9%B6%E7%AB%9F%EF%BC%81/" rel="prev" title="解锁 Flutter 的神秘关键字，快来一探究竟！">
+                  解锁 Flutter 的神秘关键字，快来一探究竟！ <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%94%E5%9B%9E%E5%80%BC%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">返回值的处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89-Dialog-%E5%86%85%E5%AE%B9"><span class="nav-number">2.</span> <span class="nav-text">自定义 Dialog 内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bloc-%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BC%B9%E6%A1%86"><span class="nav-number">3.</span> <span class="nav-text">bloc 中使用弹框</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

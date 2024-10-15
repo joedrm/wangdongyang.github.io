@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="说到到某个语言的语法可能大家会觉得很枯燥、乏味，而日常开发中我们往往更加注重的是业务逻辑和页面开发，语法的使用大多也停留在满足基本的需求。其实 Dart 语法有很多有意思的地方的，仔细探究一下你会发现，它的简洁清晰、灵活多样的语法会让人爱不释手。在本文中，我们将探索 Dart 语法的各种奇妙之处吧。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dart 语法原来这么好玩儿">
+<meta property="og:url" content="http://www.nnxkcloud.com/2024/04/24/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="说到到某个语言的语法可能大家会觉得很枯燥、乏味，而日常开发中我们往往更加注重的是业务逻辑和页面开发，语法的使用大多也停留在满足基本的需求。其实 Dart 语法有很多有意思的地方的，仔细探究一下你会发现，它的简洁清晰、灵活多样的语法会让人爱不释手。在本文中，我们将探索 Dart 语法的各种奇妙之处吧。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/04/24/owI1VJfX4ZtOcKY.png">
+<meta property="og:image" content="https://s2.loli.net/2022/11/09/fNBn2gWw8tVazkr.jpg">
+<meta property="article:published_time" content="2024-04-24T05:46:02.000Z">
+<meta property="article:modified_time" content="2024-10-15T03:05:34.687Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/04/24/owI1VJfX4ZtOcKY.png">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2024/04/24/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Dart 语法原来这么好玩儿 | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/04/24/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Dart 语法原来这么好玩儿
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-24 13:46:02" itemprop="dateCreated datePublished" datetime="2024-04-24T13:46:02+08:00">2024-04-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-15 11:05:34" itemprop="dateModified" datetime="2024-10-15T11:05:34+08:00">2024-10-15</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2024/04/24/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/24/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://s2.loli.net/2024/04/24/owI1VJfX4ZtOcKY.png"></p>
+<p>说到到某个语言的语法可能大家会觉得很枯燥、乏味，而日常开发中我们往往更加注重的是业务逻辑和页面开发，语法的使用大多也停留在满足基本的需求。其实 <code>Dart</code> 语法有很多有意思的地方的，仔细探究一下你会发现，它的简洁清晰、灵活多样的语法会让人爱不释手。在本文中，我们将探索 Dart 语法的各种奇妙之处吧。</p>
+<span id="more"></span>
+
+<h2 id="unwrap-操作"><a href="#unwrap-操作" class="headerlink" title="unwrap 操作"></a><code>unwrap</code> 操作</h2><p>在 <code>Flutter</code> 中，<code>unwrap</code> 操作常常用于处理可能为空的数据，以便过滤掉空值并只保留非空值。其使用场景也相当广泛，例如 为 <code>Future</code> 和 <code>Streams</code> 添加 <code>unwrap</code> 来处理掉非空数据，或者从网络请求或其他异步操作中获取数据，并在数据流中处理结果等等，如下面这段代码：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> Unwrap&lt;T&gt; <span class="keyword">on</span> Future&lt;T?&gt; &#123;</span><br><span class="line">  Future&lt;T&gt; unwrap() =&gt; then(</span><br><span class="line">        (value) =&gt; value != <span class="keyword">null</span></span><br><span class="line">        ? Future&lt;T&gt;.value(value)</span><br><span class="line">        : Future.any([]),</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>unwrap</code> 函数将可能为空的 <code>Future</code> 解包，如果 <code>Future</code> 返回的值不为 <code>null</code>，则将值包装在一个新的 <code>Future</code> 中返回，否则返回一个空的 <code>Future</code>。调用示例：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ImagePickerHelper</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">final</span> ImagePicker _imagePicker = ImagePicker();</span><br><span class="line">  <span class="keyword">static</span> Future&lt;File&gt; pickImageFromGallery() =&gt; _imagePicker</span><br><span class="line">      .pickImage(source: ImageSource.gallery)</span><br><span class="line">      .unwrap()</span><br><span class="line">      .then((xFile) =&gt; xFile.path)</span><br><span class="line">      .then((filePath) =&gt; File(filePath));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里用到图片选择器插件 <code>image_picker</code>，只有当返回的 <code>xFile</code> 不为空时才进行后续操作。如果不调用 <code>unwrap</code> 函数，此时这里返回的 <code>xFile</code> 为 <code>optional</code> 类型，要使用之前需要判断是否为 <code>null</code>。日常开发中这种情况还不少，给 <code>Future</code> 添加 <code>Unwrap</code> 函数之后这样非空判断集中在这一个函数里面处理。</p>
+<p><code>unwrap</code> 不仅在 <code>Future</code> 中使用，还可以为 <code>Streams</code> 添加 <code>unwrap</code> 操作，代码如下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> Unwrap&lt;T&gt; <span class="keyword">on</span> Stream&lt;T?&gt; &#123;</span><br><span class="line">  Stream&lt;T&gt; unwrap() =&gt; where((event) =&gt; event != <span class="keyword">null</span>).cast();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>unwrap</code> 方法，通过 <code>where</code> 过滤掉了 <code>null</code> 的事件，并使用 <code>cast() </code> 方法将结果转换为 <code>Stream&lt;T&gt; </code> 类型，将可空的事件转换为非空的事件流，下面是调用代码：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  Stream&lt;<span class="built_in">int?</span>&gt;.periodic(</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">Duration</span>(seconds: <span class="number">1</span>),</span><br><span class="line">    (value) =&gt; value % <span class="number">2</span> == <span class="number">0</span> ? value : <span class="keyword">null</span>,</span><br><span class="line">  ).unwrap().listen((evenValue) &#123;</span><br><span class="line">    <span class="built_in">print</span>(evenValue);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">/* 输出结果</span></span><br><span class="line"><span class="comment">    0</span></span><br><span class="line"><span class="comment">    2</span></span><br><span class="line"><span class="comment">    4</span></span><br><span class="line"><span class="comment">    6</span></span><br><span class="line"><span class="comment">    ...</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过 <code>extension</code> 给 <code>Future</code> 和 <code>Streams</code> 添加 <code>unwrap</code> 函数后让我们的代码看起来清晰简洁多了，有没有？</p>
+<h2 id="数组的展开、合并和过滤"><a href="#数组的展开、合并和过滤" class="headerlink" title="数组的展开、合并和过滤"></a>数组的展开、合并和过滤</h2><p>下面代码为任意类型的可迭代对象（<code>Iterable</code>）添加名为 <code>Flatten</code> 的扩展。在这个扩展中，函数 <code>flatten</code> 使用了递归算法将多层嵌套的 <code>Iterable</code> 里面的所有元素扁平化为单层 <code>Iterable</code>。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> Flatten&lt;T <span class="keyword">extends</span> <span class="built_in">Object</span>&gt; <span class="keyword">on</span> <span class="built_in">Iterable</span>&lt;T&gt; &#123;</span><br><span class="line">  <span class="built_in">Iterable</span>&lt;T&gt; flatten() &#123;</span><br><span class="line">    <span class="built_in">Iterable</span>&lt;T&gt; _flatten(<span class="built_in">Iterable</span>&lt;T&gt; list) <span class="keyword">sync</span>* &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">final</span> value <span class="keyword">in</span> list) &#123;</span><br><span class="line">        <span class="keyword">if</span> (value <span class="keyword">is</span> <span class="built_in">List</span>&lt;T&gt;) &#123;</span><br><span class="line">          <span class="keyword">yield</span>* _flatten(value);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="keyword">yield</span> value;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> _flatten(<span class="keyword">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意了上面代码中使用了 <code>yield</code> 关键字，在 <code>Flutter</code> 中，<code>yield</code> 关键字用于生成迭代器，通常与<code>sync*</code> 或 <code>async*</code> 一起使用。它允许您在处理某些数据时逐步生成数据，而不是在内存中一次性处理所有数据。对于处理大量数据或执行长时间运行的操作非常有用，因为它可以节省内存并提高性能。</p>
+<p>这个和 <code>ES6</code> 中使用 <code>function*</code> 语法和 <code>yield</code> 关键字来生成值一个东西，也是逐个生成值，而不需要一次性生成所有值。以下是 <code>JS</code> 写法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span>* <span class="title function_">generateNumbers</span>(<span class="params">n</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">yield</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> numbers = <span class="title function_">generateNumbers</span>(<span class="number">5</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> number <span class="keyword">of</span> numbers) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(number);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们来看看 <code>Dart</code> 中的 <code>flatten()</code> 函数的调用：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;<span class="keyword">void</span>&gt; main() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="keyword">final</span> flat = [</span><br><span class="line">    [[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="number">4</span>, <span class="number">5</span>],</span><br><span class="line">    [<span class="number">6</span>, [<span class="number">7</span>, [<span class="number">8</span>, <span class="number">9</span>]], <span class="number">10</span>],</span><br><span class="line">    <span class="number">11</span>,<span class="number">12</span></span><br><span class="line">  ].flatten();</span><br><span class="line">  <span class="built_in">print</span>(flat); <span class="comment">// (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>嵌套的集合可能在数据处理、转换或展示中经常遇到，而将这些嵌套的集合扁平化可以简化数据处理过程，使代码更加简洁和易于理解。另外一点，递归展多维数组在面试中经常会出现，说不定哪天就用上了哈。</p>
+<p>如果将两个数组合并成一个数组该怎么操作呢？其实和 <code>Map</code> 的合并相似，也是用到了自定义操作符 <code>operator</code> ，来看看怎么实现的。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> InlineAdd&lt;T&gt; <span class="keyword">on</span> <span class="built_in">Iterable</span>&lt;T&gt; &#123;</span><br><span class="line">  <span class="built_in">Iterable</span>&lt;T&gt; <span class="keyword">operator</span> +(T other) =&gt; followedBy([other]);</span><br><span class="line">  <span class="built_in">Iterable</span>&lt;T&gt; <span class="keyword">operator</span> &amp;(<span class="built_in">Iterable</span>&lt;T&gt; other) =&gt; followedBy(other);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="built_in">Iterable</span>&lt;<span class="built_in">int</span>&gt; values = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>];</span><br><span class="line">  <span class="built_in">print</span>((values &amp; [<span class="number">40</span>, <span class="number">50</span>]));</span><br><span class="line">  <span class="comment">// 输出结果：(10, 20, 30, 40, 50)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>添加了两个操作符：<code>+</code> 和 <code>&amp;</code>。将一个元素或者另一个可迭代对象添加到当前的可迭代对象中，然后返回一个新的可迭代对象，让可迭代对象 <code>terable</code> 有了合并数组的功能。</p>
+<p>当数组中有一个为 <code>null</code> 的对象时，该如何过滤掉这个 <code>null</code> 对象呢，很简单可以这样做：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> CompactMap&lt;T&gt; <span class="keyword">on</span> <span class="built_in">Iterable</span>&lt;T?&gt; &#123;</span><br><span class="line">  <span class="built_in">Iterable</span>&lt;T&gt; compactMap&lt;E&gt;([</span><br><span class="line">    E? <span class="built_in">Function</span>(T?)? transform,</span><br><span class="line">  ]) =&gt;</span><br><span class="line">      map(transform ?? (e) =&gt; e).where((e) =&gt; e != <span class="keyword">null</span>).cast();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="keyword">const</span> list = [<span class="string">&#x27;Hello&#x27;</span>, <span class="keyword">null</span>, <span class="string">&#x27;World&#x27;</span>];</span><br><span class="line">  <span class="built_in">print</span>(list); <span class="comment">// [Hello, null, World]</span></span><br><span class="line">  <span class="built_in">print</span>(list.compactMap()); <span class="comment">// [Hello, World]</span></span><br><span class="line">  <span class="built_in">print</span>(list.compactMap((e) =&gt; e?.toUpperCase())); <span class="comment">// [HELLO, WORLD]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Map-的过滤和合并"><a href="#Map-的过滤和合并" class="headerlink" title="Map 的过滤和合并"></a><code>Map</code> 的过滤和合并</h2><p>下面代码是 <code>Map</code> 类型的 <code>extension</code>，为 <code>Map</code> 类型添加了查找过滤的函数。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> DetailedWhere&lt;K, V&gt; <span class="keyword">on</span> <span class="built_in">Map</span>&lt;K, V&gt; &#123;</span><br><span class="line">  <span class="built_in">Map</span>&lt;K, V&gt; where(<span class="built_in">bool</span> <span class="built_in">Function</span>(K key, V value) f) =&gt; <span class="built_in">Map</span>&lt;K, V&gt;.fromEntries(</span><br><span class="line">        entries.where((entry) =&gt; f(entry.key, entry.value)),</span><br><span class="line">      );</span><br><span class="line"></span><br><span class="line">  <span class="built_in">Map</span>&lt;K, V&gt; whereKey(<span class="built_in">bool</span> <span class="built_in">Function</span>(K key) f) =&gt;</span><br><span class="line">      &#123;...where((key, value) =&gt; f(key))&#125;;</span><br><span class="line">  <span class="built_in">Map</span>&lt;K, V&gt; whereValue(<span class="built_in">bool</span> <span class="built_in">Function</span>(V value) f) =&gt;</span><br><span class="line">      &#123;...where((key, value) =&gt; f(value))&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>where</code> : 接受一个函数作为参数，该函数接受 <code>Map</code> 的键和值作为参数，并返回一个布尔值。</li>
+<li><code>whereKey</code> : 接受一个只接受键作为参数的函数。</li>
+<li><code>whereValue</code> : 这个方法接受一个只接受值作为参数的函数。</li>
+</ul>
+<p>下面是调用：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main()&#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">int</span>&gt; people = &#123;<span class="string">&#x27;John&#x27;</span>: <span class="number">20</span>, <span class="string">&#x27;Mary&#x27;</span>: <span class="number">21</span>, <span class="string">&#x27;Peter&#x27;</span>: <span class="number">22</span>&#125;;</span><br><span class="line">  <span class="built_in">print</span>(people.where((key, value) =&gt; key.length &gt; <span class="number">4</span> &amp;&amp; value &gt; <span class="number">20</span>)); <span class="comment">// &#123;Peter: 22&#125;</span></span><br><span class="line">  <span class="built_in">print</span>(people.whereKey((key) =&gt; key.length &lt; <span class="number">5</span>)); <span class="comment">// &#123;John: 20, Mary: 21&#125;</span></span><br><span class="line">  <span class="built_in">print</span>(people.whereValue((value) =&gt; value.isEven)); <span class="comment">// &#123;John: 20, Peter: 22&#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>where</code> 方法先使用 <code>entries</code> 获取 <code>Map</code> 的键值对列表，然后使用 <code>entries.where</code> 方法对列表中的每个键值对进行过滤，最后使用 <code>fromEntries</code> 方法将过滤后的键值对列表转换回 <code>Map</code>，最后返回的新的 <code>Map</code> 中只包含满足条件的键值对，达到对 <code>Map</code> 中键值过滤的效果，也让代码更加简洁和易读。</p>
+<p><code>Map</code> 过滤还有另外一种写法</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> Filter&lt;K, V&gt; <span class="keyword">on</span> <span class="built_in">Map</span>&lt;K, V&gt; &#123;</span><br><span class="line">  <span class="built_in">Iterable</span>&lt;MapEntry&lt;K, V&gt;&gt; filter(</span><br><span class="line">    <span class="built_in">bool</span> <span class="built_in">Function</span>(MapEntry&lt;K, V&gt; entry) f,</span><br><span class="line">  ) <span class="keyword">sync</span>* &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">final</span> entry <span class="keyword">in</span> entries) &#123;</span><br><span class="line">      <span class="keyword">if</span> (f(entry)) &#123;</span><br><span class="line">        <span class="keyword">yield</span> entry;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main()&#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">int</span>&gt; people = &#123;</span><br><span class="line">    <span class="string">&#x27;foo&#x27;</span>: <span class="number">20</span>,</span><br><span class="line">    <span class="string">&#x27;bar&#x27;</span>: <span class="number">31</span>,</span><br><span class="line">    <span class="string">&#x27;baz&#x27;</span>: <span class="number">25</span>,</span><br><span class="line">    <span class="string">&#x27;qux&#x27;</span>: <span class="number">32</span>,</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">final</span> peopleOver30 = people.filter((e) =&gt; e.value &gt; <span class="number">30</span>);</span><br><span class="line">  <span class="built_in">print</span>(peopleOver30); <span class="comment">// 输出结果：(MapEntry(bar: 31), MapEntry(qux: 32))</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Map</code>  其它一些更有趣的 <code>extension</code>，如 <code>Merge</code> 功能，将两个 <code>Map</code> 合并成一个，代码如下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> Merge&lt;K, V&gt; <span class="keyword">on</span> <span class="built_in">Map</span>&lt;K, V&gt; &#123;</span><br><span class="line">  <span class="built_in">Map</span>&lt;K, V&gt; <span class="keyword">operator</span> |(<span class="built_in">Map</span>&lt;K, V&gt; other) =&gt; &#123;...<span class="keyword">this</span>&#125;..addEntries(</span><br><span class="line">      other.entries,</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码用到了 <code>operator</code> 关键字，在 <code>Dart</code> 中，<code>operator</code> 关键字用于定义自定义操作符或者重载现有的操作符。通过 <code>operator</code> 关键字，我们可以为自定义类定义各种操作符的行为，使得我们的类可以像内置类型一样使用操作符。</p>
+<p>如 <code>operator +</code> 来定义两个对象相加的行为，<code>operator []</code> 来实现索引操作，<code>operator ==</code> 来定义相等性比较。这种语义式的也更加符合直觉、清晰易懂。</p>
+<p>下面来看看 <code>Map</code> 的 <code>Merge</code> 功能调用代码例子：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> userInfo = &#123;</span><br><span class="line">  <span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;StellarRemi&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;age&#x27;</span>: <span class="number">28</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> address = &#123;</span><br><span class="line">  <span class="string">&#x27;address&#x27;</span>: <span class="string">&#x27;shanghai&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;post_code&#x27;</span>: <span class="string">&#x27;200000&#x27;</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="keyword">final</span> allInfo = userInfo | address;</span><br><span class="line">  <span class="built_in">print</span>(allInfo);</span><br><span class="line">  <span class="comment">// 输出结果：&#123;name: StellarRemi, age: 28, address: shanghai, post_code: 200000&#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用的时候也很简单直接 <code>userInfo | address;</code>，这种操作在处理数据更新或合并配置等情况下特别有用。使用的时候需要注意的是，如果两个 <code>Map</code> 中有重复的键，那么上述操作会保留第一个 <code>Map</code> 中的值。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>怎么样，上面的这些 <code>Dart</code> 的语法是不是很有意思，有没有函数式编程那味儿，后面还会单独一篇来分享 <code>Dart</code> 语言面向对象的设计。好了，今天就到这里，也希望通过本文的分享，能够激发大家对 <code>Dart</code> 语言的兴趣，感谢您的阅读，更多干货文章扫描下方的二维码关注我的公众号“Flutter技术实践”。</p>
+<p><img src="https://s2.loli.net/2022/11/09/fNBn2gWw8tVazkr.jpg" alt="Flutter技术实践"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2024/04/24/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF/" title="Dart 语法原来这么好玩儿">http://www.nnxkcloud.com/2024/04/24/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2024/04/21/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9AUI%E8%AE%BE%E8%AE%A1%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%B8%80%EF%BC%89/" rel="next" title="Flutter大型项目架构：UI设计系统实现（一）">
+                  <i class="fa fa-chevron-left"></i> Flutter大型项目架构：UI设计系统实现（一）
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2024/04/26/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9AUI%E8%AE%BE%E8%AE%A1%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="prev" title="Flutter大型项目架构：UI设计系统实现（二）">
+                  Flutter大型项目架构：UI设计系统实现（二） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#unwrap-%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">unwrap 操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E5%B1%95%E5%BC%80%E3%80%81%E5%90%88%E5%B9%B6%E5%92%8C%E8%BF%87%E6%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">数组的展开、合并和过滤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Map-%E7%9A%84%E8%BF%87%E6%BB%A4%E5%92%8C%E5%90%88%E5%B9%B6"><span class="nav-number">3.</span> <span class="nav-text">Map 的过滤和合并</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">小结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

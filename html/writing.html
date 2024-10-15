@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>读书笔记</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    #mindmap {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+      background-color: black;
+      font-style: normal;
+      color: white;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.13.5/dist/style.css">
+</head>
+
+<body>
+  <svg id="mindmap"></svg>
+  <script src="https://cdn.jsdelivr.net/npm/d3@6.7.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.13.5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.13.5/dist/index.umd.min.js"></script>
+  <script>(r => {
+      setTimeout(r);
+    })(() => {
+      const {
+        markmap,
+        mm
+      } = window;
+      const toolbar = new markmap.Toolbar();
+      toolbar.attach(mm);
+      const el = toolbar.render();
+      // el.setAttribute('style', 'position:absolute;bottom:20px;right:20px');
+      // document.body.append(el);
+    })</script>
+  <script>((getMarkmap, getOptions, root, jsonOptions) => {
+              const markmap = getMarkmap();
+              window.mm = markmap.Markmap.create('svg#mindmap', (getOptions || markmap.deriveOptions)(jsonOptions), root);
+            })(() => window.markmap, null, { "type": "heading", "depth": 0, "payload": { "lines": [0, 1] }, "content": "写作课笔记", "children": [{ "type": "heading", "depth": 1, "payload": { "lines": [2, 3] }, "content": "一、阅读怎样帮助写作", "children": [{ "type": "heading", "depth": 2, "payload": { "lines": [4, 5] }, "content": "阅读量是写作的首要前提" }, { "type": "heading", "depth": 2, "payload": { "lines": [5, 6] }, "content": "读什么", "children": [{ "type": "heading", "depth": 3, "payload": { "lines": [7, 8] }, "content": "把阅读看作一棵树：", "children": [{ "type": "list_item", "depth": 4, "payload": { "lines": [8, 9], "index": 1 }, "content": "1. 树根：先读基本原理，再读通史，可以帮助你迅速 找到一条基准线，了解这个领域最基本的观点和概念是什么，然后用他们的观点帮着你去理解复杂的社会现象。" }, { "type": "list_item", "depth": 4, "payload": { "lines": [9, 10], "index": 2 }, "content": "2. 枝干：与你写作主题相关的书籍文章，分为：专业期刊、行业新闻、分析报告、政府机构发布的信息。" }, { "type": "list_item", "depth": 4, "payload": { "lines": [10, 11], "index": 3 }, "content": "3. 枝叶：主要由资讯组成，Twitter、微博、博客、知乎、抖音等等，写作上的启发。" }] }] }, { "type": "heading", "depth": 2, "payload": { "lines": [12, 13] }, "content": "怎么读", "children": [{ "type": "heading", "depth": 3, "payload": { "lines": [13, 14] }, "content": "区分式阅读", "children": [{ "type": "list_item", "depth": 4, "payload": { "lines": [14, 15], "index": 1 }, "content": "1. 深度阅读：经典要深读，没有捷径可言，要下笨功夫。多和专 业人士、感兴趣的朋友边讨论边读" }, { "type": "list_item", "depth": 4, "payload": { "lines": [15, 16], "index": 2 }, "content": "2. 浏览：大部分阅读材料，", "children": [{ "type": "list_item", "depth": 5, "payload": { "lines": [16, 17], "index": 1 }, "content": "1. 看目录，了解整本书的文本架构。" }, { "type": "list_item", "depth": 5, "payload": { "lines": [17, 18], "index": 2 }, "content": "2. 正文后，根据<a href=\"\">5W1H</a>原则，找到书的主题和线索，把那些无关的内容跳过去。" }, { "type": "list_item", "depth": 5, "payload": { "lines": [18, 19], "index": 3 }, "content": "3. 专著的阅读，一个例子明白了作者的意思，剩下的例子就没必要再看了。" }, { "type": "list_item", "depth": 5, "payload": { "lines": [19, 20], "index": 4 }, "content": "4. 单篇的文章，按照“是什么、为什么、怎么办”的结构来写的，找对自己有用的部分。" }] }] }, { "type": "heading", "depth": 3, "payload": { "lines": [21, 22] }, "content": "提炼观点", "children": [{ "type": "ordered_list", "depth": 4, "payload": { "lines": [22, 27], "startIndex": 1 }, "content": "", "children": [{ "type": "list_item", "depth": 5, "payload": { "lines": [22, 23], "index": 1 }, "content": "1. 先要理解别人的观点", "children": [{ "type": "list_item", "depth": 6, "payload": { "lines": [23, 24], "index": 1 }, "content": "1. 边读边划重点，一是帮助理解，二是方便回头再来仔细阅读，重点内容做内容索引" }, { "type": "list_item", "depth": 6, "payload": { "lines": [24, 25], "index": 2 }, "content": "2. 学习作者给你带来启示的表达手法。" }] }, { "type": "list_item", "depth": 5, "payload": { "lines": [26, 27], "index": 2 }, "content": "2. 提出问题，如：问题点是什么、提到了哪些重要的事实、比较有特点的部分是什么，写在纸上读完后自问自答。" }] }, { "type": "ordered_list", "depth": 4, "payload": { "lines": [29, 43], "startIndex": 3 }, "content": "", "children": [{ "type": "list_item", "depth": 5, "payload": { "lines": [29, 30], "index": 3 }, "content": "3. 学会联想，阅读一本书或者一 则材料时，把自己所知的事和阅读文本联系起来。", "children": [{ "type": "list_item", "depth": 6, "payload": { "lines": [31, 32], "index": 1 }, "content": "1. 过去读过的书或材料。" }, { "type": "list_item", "depth": 6, "payload": { "lines": [32, 33], "index": 2 }, "content": "2. 自己曾经的体验和感悟。" }, { "type": "list_item", "depth": 6, "payload": { "lines": [33, 34], "index": 3 }, "content": "3. 正在发生的事。" }] }, { "type": "list_item", "depth": 5, "payload": { "lines": [35, 36], "index": 4 }, "content": "4. 随时记录，记录有意思的点和看过的重要资料，章法分三类：", "children": [{ "type": "list_item", "depth": 6, "payload": { "lines": [37, 38], "index": 1 }, "content": "1. 观点类，把有意思的观点记录下来，记录时一定要标明出处，方便查找。" }, { "type": "list_item", "depth": 6, "payload": { "lines": [39, 40], "index": 2 }, "content": "2. 表现手法类，记录手法的时候，你可以联想一下这个手法可以用在什么地方。《两个刘翔的跨越》记录对比的修辞手法，又联想到撒贝宁。" }, { "type": "list_item", "depth": 6, "payload": { "lines": [41, 42], "index": 3 }, "content": "3. 自我感想类，把自己突然迸发的感想用文字表达出来。阅读《灾后北川残酷一面》后有感触，就用文字把这些场景、感觉记录了下来。" }] }] }] }] }] }, { "type": "heading", "depth": 1, "payload": { "lines": [43, 44] }, "content": "二、什么是好文章", "children": [{ "type": "heading", "depth": 2, "payload": { "lines": [45, 46] }, "content": "行文节奏：简单即美" }, { "type": "heading", "depth": 2, "payload": { "lines": [48, 49] }, "content": "文字表述：确保准确，再看词藻" }, { "type": "heading", "depth": 2, "payload": { "lines": [51, 52] }, "content": "主题刻画：鲜明与否？突出与否？" }, { "type": "heading", "depth": 2, "payload": { "lines": [54, 55] }, "content": "好文章的几个特质:", "children": [{ "type": "list_item", "depth": 3, "payload": { "lines": [56, 57], "index": 1 }, "content": "1. 文字简单清晰。" }, { "type": "list_item", "depth": 3, "payload": { "lines": [57, 58], "index": 2 }, "content": "2. 用词恰如其分。" }, { "type": "list_item", "depth": 3, "payload": { "lines": [58, 59], "index": 3 }, "content": "3. 描写精准、服务主题。" }] }, { "type": "heading", "depth": 2, "payload": { "lines": [60, 61] }, "content": "以正合，以奇胜" }] }, { "type": "heading", "depth": 1, "payload": { "lines": [67, 68] }, "content": "三、避开的4大写作误区", "children": [{ "type": "heading", "depth": 2, "payload": { "lines": [69, 70] }, "content": "误区1：滥用形容词和连词", "children": [{ "type": "heading", "depth": 3, "payload": { "lines": [71, 72] }, "content": "包括使用形容词不准确和堆砌形容词" }, { "type": "heading", "depth": 3, "payload": { "lines": [72, 73] }, "content": "基本原则：<strong><code>想不出来精准的形容词，就不要用</code></strong>" }, { "type": "heading", "depth": 3, "payload": { "lines": [73, 74] }, "content": "连词用得过多，会影响句子的节奏和美感" }] }, { "type": "heading", "depth": 2, "payload": { "lines": [75, 76] }, "content": "误区2：中文西化", "children": [{ "type": "heading", "depth": 3, "payload": { "lines": [76, 77] }, "content": "滥用被字句，强调主语的不如意、出乎意料时，可以用被字句。" }, { "type": "heading", "depth": 3, "payload": { "lines": [77, 78] }, "content": "喜欢用弱动词，所谓弱动词就是“万能动词”，如“造成”、“进行”等。" }, { "type": "heading", "depth": 3, "payload": { "lines": [78, 79] }, "content": "喜欢用从句，特别是在修饰一个名词的时候，用一个很长的句式来表达。" }] }, { "type": "heading", "depth": 2, "payload": { "lines": [80, 81] }, "content": "误区3：随意堆砌段落" }, { "type": "heading", "depth": 2, "payload": { "lines": [82, 83] }, "content": "误区4：缺乏逻辑思维", "children": [{ "type": "heading", "depth": 3, "payload": { "lines": [84, 85] }, "content": "根据不同的文本，使用不同的信息。" }, { "type": "heading", "depth": 3, "payload": { "lines": [85, 86] }, "content": "对专业论文来讲，多用记述信息。" }, { "type": "heading", "depth": 3, "payload": { "lines": [86, 87] }, "content": "对科普文章，就要多用些评价信息，方便理解。", "children": [{ "type": "heading", "depth": 4, "payload": { "lines": [87, 88] }, "content": "一、在论证方式上下功夫，比如对比论证;" }, { "type": "heading", "depth": 4, "payload": { "lines": [88, 89] }, "content": "第二、用权威的数据;" }, { "type": "heading", "depth": 4, "payload": { "lines": [89, 90] }, "content": "第三、用最有代表性的权威言论" }] }] }] }, { "type": "heading", "depth": 1, "payload": { "lines": [91, 92] }, "content": "四、如何确定写作主题", "children": [{ "type": "heading", "depth": 2, "payload": { "lines": [93, 94] }, "content": "你这篇文章想要表达什么？" }, { "type": "heading", "depth": 2, "payload": { "lines": [94, 95] }, "content": "怎么从一个现象或者人物拎出来一个好主题或者找到一个好的角度呢?", "children": [{ "type": "heading", "depth": 3, "payload": { "lines": [95, 96] }, "content": "一种情感，比如爱、孤独" }, { "type": "heading", "depth": 3, "payload": { "lines": [96, 97] }, "content": "一种观念，比如自由、平等" }, { "type": "heading", "depth": 3, "payload": { "lines": [97, 98] }, "content": "一种反思，比如对公共安全的拷问" }] }, { "type": "heading", "depth": 2, "payload": { "lines": [99, 100] }, "content": "如何找到这个更大的东西呢？", "children": [{ "type": "heading", "depth": 3, "payload": { "lines": [100, 101] }, "content": "打开宽度：跨领域思考，也称之为发散思维", "children": [{ "type": "heading", "depth": 4, "payload": { "lines": [101, 102] }, "content": "适用于开放性话题" }, { "type": "heading", "depth": 4, "payload": { "lines": [103, 104] }, "content": "“散装卫生巾”的话题", "children": [{ "type": "heading", "depth": 5, "payload": { "lines": [104, 105] }, "content": "政治角度：地方政策当中经期女工的权利保护" }, { "type": "heading", "depth": 5, "payload": { "lines": [105, 106] }, "content": "经济角度：女性摆脱“月经贫困”的 阻力在哪?" }, { "type": "heading", "depth": 5, "payload": { "lines": [106, 107] }, "content": "文化角度：地方政策当中经期女工的权利保护" }] }, { "type": "heading", "depth": 4, "payload": { "lines": [107, 108] }, "content": "要锻炼发散思维" }] }, { "type": "heading", "depth": 3, "payload": { "lines": [108, 109] }, "content": "挖掘深度：由表及里", "children": [{ "type": "heading", "depth": 4, "payload": { "lines": [109, 110] }, "content": "适用于对某一个现象的分析" }, { "type": "heading", "depth": 4, "payload": { "lines": [111, 112] }, "content": "高速出口的例子，提炼出新主题：高速路上的避险车道难题:有意回避还是无意忽视" }, { "type": "heading", "depth": 4, "payload": { "lines": [112, 113] }, "content": "关键的点就是细致观察" }] }] }] }] }, {})</script>
+</body>
+
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="最近刚把公司项目的国际化搞完，顺便记录下Flutter项目国际化的几个步骤，来供大家参考。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于 Flutter 项目的国际化，只需要做对这几步">
+<meta property="og:url" content="http://www.nnxkcloud.com/2024/03/20/%E5%85%B3%E4%BA%8E-Flutter-%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%9B%BD%E9%99%85%E5%8C%96%EF%BC%8C%E5%8F%AA%E9%9C%80%E8%A6%81%E5%81%9A%E5%AF%B9%E8%BF%99%E5%87%A0%E6%AD%A5/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="最近刚把公司项目的国际化搞完，顺便记录下Flutter项目国际化的几个步骤，来供大家参考。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/03/20/8wV97IriecRA2Jv.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/20/RwDTA3ytLoP7ZQS.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/20/w98gprAVBNHWdLE.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/20/TLZd1wh5Sact9UR.gif">
+<meta property="og:image" content="https://s2.loli.net/2022/12/12/EWvyFX2LgiaeZ3d.jpg">
+<meta property="article:published_time" content="2024-03-20T10:03:49.000Z">
+<meta property="article:modified_time" content="2024-10-15T03:05:34.691Z">
+<meta property="article:author" content="joe">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/03/20/8wV97IriecRA2Jv.png">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2024/03/20/%E5%85%B3%E4%BA%8E-Flutter-%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%9B%BD%E9%99%85%E5%8C%96%EF%BC%8C%E5%8F%AA%E9%9C%80%E8%A6%81%E5%81%9A%E5%AF%B9%E8%BF%99%E5%87%A0%E6%AD%A5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>关于 Flutter 项目的国际化，只需要做对这几步 | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/03/20/%E5%85%B3%E4%BA%8E-Flutter-%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%9B%BD%E9%99%85%E5%8C%96%EF%BC%8C%E5%8F%AA%E9%9C%80%E8%A6%81%E5%81%9A%E5%AF%B9%E8%BF%99%E5%87%A0%E6%AD%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          关于 Flutter 项目的国际化，只需要做对这几步
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-03-20 18:03:49" itemprop="dateCreated datePublished" datetime="2024-03-20T18:03:49+08:00">2024-03-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-15 11:05:34" itemprop="dateModified" datetime="2024-10-15T11:05:34+08:00">2024-10-15</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2024/03/20/%E5%85%B3%E4%BA%8E-Flutter-%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%9B%BD%E9%99%85%E5%8C%96%EF%BC%8C%E5%8F%AA%E9%9C%80%E8%A6%81%E5%81%9A%E5%AF%B9%E8%BF%99%E5%87%A0%E6%AD%A5/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/20/%E5%85%B3%E4%BA%8E-Flutter-%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%9B%BD%E9%99%85%E5%8C%96%EF%BC%8C%E5%8F%AA%E9%9C%80%E8%A6%81%E5%81%9A%E5%AF%B9%E8%BF%99%E5%87%A0%E6%AD%A5/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近刚把公司项目的国际化搞完，顺便记录下Flutter项目国际化的几个步骤，来供大家参考。</p>
+<span id="more"></span>
+
+<h2 id="App-项目为什么需要国际化？"><a href="#App-项目为什么需要国际化？" class="headerlink" title="App 项目为什么需要国际化？"></a>App 项目为什么需要国际化？</h2><p>公司项目的国际化需求来得很突然，就是因为要参加国外的展会，方便展示给客户使用App的操作步骤。正常情况下国际化无非是通过将应用程序本地化为不同的语言和地区，可以使应用在全球范围内更具吸引力，从而扩大市场覆盖范围。当你的应用能够以用户熟悉和舒适的语言呈现时，吸引更多的用户成为可能，同时也提升用户的使用体验，或者是遵守当地法律法规及政策的要求。</p>
+<h2 id="国际化需要做哪些准备？"><a href="#国际化需要做哪些准备？" class="headerlink" title="国际化需要做哪些准备？"></a>国际化需要做哪些准备？</h2><p>以下是示例项目所在的电脑的开发环境。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">joe@wf ~ % flutter doctor</span><br><span class="line">Doctor summary (to see all details, run flutter doctor -v):</span><br><span class="line">[!] Flutter (Channel unknown, 3.7.1, on macOS 13.6 22G120 darwin-arm64 (Rosetta), locale zh-Hans-CN)</span><br></pre></td></tr></table></figure>
+<p>Dart SDK</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">joe@wf ~ % dart --version</span><br><span class="line">Dart SDK version: 2.19.1 (stable) (Tue Jan 31 12:25:35 2023 +0000) on &quot;macos_arm64</span><br></pre></td></tr></table></figure>
+<p>示例项目的 <code>pubspec.yaml</code> 中的 <code>environment</code> 配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">environment:</span></span><br><span class="line">  <span class="attr">sdk:</span> <span class="string">&quot;&gt;=2.17.0 &lt;3.0.0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>在你的 <code>pubspec.yaml</code> 文件中添加 <code>intl</code> 和 <code>intl_utils</code> 依赖：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dev_dependencies:</span></span><br><span class="line">  <span class="attr">intl:</span> <span class="string">^0.17.0</span></span><br><span class="line">  <span class="attr">intl_utils:</span> <span class="string">^2.4.0</span></span><br></pre></td></tr></table></figure>
+<p>使用 <code>intl_utils</code> 第三方工具的目的是给官方 <code>Dart Intl</code> 库生成样板代码，并为 <code>Dart</code> 代码中的键添加自动完成的功能。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">flutter_intl:</span></span><br><span class="line">  <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">class_name:</span> <span class="string">S</span></span><br><span class="line">  <span class="attr">main_locale:</span> <span class="string">en</span></span><br><span class="line">  <span class="attr">output_dir:</span> <span class="string">lib/language/generated</span></span><br><span class="line">  <span class="attr">arb_dir:</span> <span class="string">lib/language/l10n</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>output_dir</code>：模板代码生成路径；</li>
+<li><code>arb_dir</code>：是 <code>.arb</code> 文件存放的路径。</li>
+</ul>
+<p>每次编辑 <code>.arb</code> 文件保存后会自动生成模板代码保存到 <code>output_dir</code> 路径下面。</p>
+<p>运行 <code>flutter pub get</code> 指令后，自动生成的文件目录如下：</p>
+<p><img src="https://s2.loli.net/2024/03/20/8wV97IriecRA2Jv.png" alt="image.png"></p>
+<p>根据需要创建 <code>.arb</code> 文件编辑好内容后，保存文件就会在 <code>lib/language/generated</code> 目录下自动生成模板代码，下面以 <code>intl_zh.arb</code> 和 <code>intl_en.arb</code> 为例来修改。<br><img src="https://s2.loli.net/2024/03/20/RwDTA3ytLoP7ZQS.png" alt="image.png"></p>
+<h2 id="修改项目入口的Widget"><a href="#修改项目入口的Widget" class="headerlink" title="修改项目入口的Widget"></a>修改项目入口的Widget</h2><p>在 <code>mian()</code> 中的第一个 <code>Widget</code> -&gt; <code>build</code> 函数中添加如下3个地方。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  runApp(App());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  App(&#123;Key? key&#125;) : <span class="keyword">super</span>(key: key)</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">     <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      title: <span class="string">&#x27;Flutter 技术实践&#x27;</span>,</span><br><span class="line">      theme: lightTheme,</span><br><span class="line">      darkTheme: darkTheme,</span><br><span class="line">      themeMode: ThemeMode.system,</span><br><span class="line">      onGenerateRoute: MyRoutes.router.generator,</span><br><span class="line">      initialRoute: MyRoutes.root,</span><br><span class="line">      debugShowCheckedModeBanner: <span class="keyword">false</span>,</span><br><span class="line">      supportedLocales: S.delegate.supportedLocales, <span class="comment">// 1</span></span><br><span class="line">      localizationsDelegates: <span class="keyword">const</span> [ <span class="comment">// 2</span></span><br><span class="line">        S.delegate,</span><br><span class="line">        GlobalMaterialLocalizations.delegate,</span><br><span class="line">        GlobalWidgetsLocalizations.delegate,</span><br><span class="line">        GlobalCupertinoLocalizations.delegate,</span><br><span class="line">      ],</span><br><span class="line">      localeResolutionCallback:</span><br><span class="line">          (Locale? locale, <span class="built_in">Iterable</span>&lt;Locale&gt; supportedLocales) &#123; <span class="comment">// 3</span></span><br><span class="line">        Locale currentLocale =</span><br><span class="line">            Locale.fromSubtags(languageCode: locale?.languageCode ?? <span class="string">&quot;zh&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> supportedLocales.contains(currentLocale)</span><br><span class="line">            ? currentLocale</span><br><span class="line">            : <span class="keyword">const</span> Locale.fromSubtags(languageCode: <span class="string">&quot;zh&quot;</span>);</span><br><span class="line">      &#125;,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的<code>localeResolutionCallback: (Locale? locale, Iterable&lt;Locale&gt; supportedLocales)</code>函数是设备系统或者浏览器语言环境发生改变的时候的回调，其中 <code>locale</code> 参数是改变后的语言，<code>supportedLocales</code> 是项目中所有支持的语言环境，如果本地未找到支持的语言就默认显示中文，也就是 <code>languageCode: &quot;zh&quot;</code>。</p>
+<h2 id="使用-S-of-context-key-替换项目中文案"><a href="#使用-S-of-context-key-替换项目中文案" class="headerlink" title="使用 S.of(context).{key} 替换项目中文案"></a>使用 S.of(context).{key} 替换项目中文案</h2><p>这里的 key 就是我们在 .arb 的文件定义的 key。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;nav_tab&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Tab Pages&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;nav_news&quot;</span><span class="punctuation">:</span> <span class="string">&quot;News List&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;nav_route&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Route Navigation And Parameter Transfer&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;nav_completer&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Use Completer And Compute in Flutter&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;nav_extension&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Chrome Extension&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;tab_home&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Home&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;tab_search&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Search&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;tab_favor&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Favor&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;tab_setting&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Setting&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p><code>intl_utils</code> 帮我们生成了模板代码，使用的时候有代码提示。<br><img src="https://s2.loli.net/2024/03/20/w98gprAVBNHWdLE.png" alt="image.png"></p>
+<h2 id="如何在应用内部切换语言"><a href="#如何在应用内部切换语言" class="headerlink" title="如何在应用内部切换语言"></a>如何在应用内部切换语言</h2><p>在应用内部切换语言的时候，就需要用到全局的状态管理，如Provider，当应用内部收到切换语言的操作后，会通知所有依赖它的 Widget 进行刷新，达到显示更换后的语言，我们也来实现一下。</p>
+<p>在 <code>pubspec.yaml</code> 中引入 <code>provider</code> 依赖：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dependencies:</span></span><br><span class="line">  <span class="attr">provider:</span> <span class="string">^6.1.2</span></span><br></pre></td></tr></table></figure>
+
+<p>创建类 <code>AppLanguageProvider</code> 继承自 <code>ChangeNotifier</code>，用来记录当前的应用内的语言，以及当执行切换语言的操作时，调用 <code>notifyListeners()</code> 来刷新。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/cupertino.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> LanguageCode &#123; zh, en &#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppLanguageProvider</span> <span class="keyword">extends</span> <span class="title">ChangeNotifier</span> </span>&#123;</span><br><span class="line">  LanguageCode languageCode = LanguageCode.zh;</span><br><span class="line"></span><br><span class="line">  changeLanguage(LanguageCode languageCode) &#123;</span><br><span class="line">    <span class="keyword">this</span>.languageCode = languageCode;</span><br><span class="line">    notifyListeners();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>将 <code>AppLanguageProvider</code> 挂在项目入口的 <code>Widget</code> 来作为管理全局语言环境状态，并在 <code>Builder</code> 回调中监听当前的 <code>languageCode</code> 的值（<code>context.watch&lt;AppLanguageProvider&gt;().languageCode</code>），再根据当前的 <code>languageCode</code> 值获得到的 <code>Locale</code> 赋值给 <code>MaterialApp -&gt; locale</code> 属性。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:provider/provider.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">   <span class="keyword">return</span> MultiProvider(</span><br><span class="line">      providers: [</span><br><span class="line">        <span class="comment">// 第一步</span></span><br><span class="line">        ChangeNotifierProvider(create: (_) &#123;</span><br><span class="line">          <span class="keyword">return</span> AppLanguageProvider();</span><br><span class="line">        &#125;),</span><br><span class="line">      ],</span><br><span class="line">      builder: (BuildContext context, Widget? child) &#123;</span><br><span class="line">        <span class="comment">// 第二步</span></span><br><span class="line">        LanguageCode languageCode =</span><br><span class="line">            context.watch&lt;AppLanguageProvider&gt;().languageCode;</span><br><span class="line">        <span class="keyword">return</span> MaterialApp(</span><br><span class="line">          title: <span class="string">&#x27;Flutter 技术实践&#x27;</span>,</span><br><span class="line">          theme: lightTheme,</span><br><span class="line">          darkTheme: darkTheme,</span><br><span class="line">          themeMode: ThemeMode.system,</span><br><span class="line">          onGenerateRoute: MyRoutes.router.generator,</span><br><span class="line">          initialRoute: MyRoutes.root,</span><br><span class="line">          debugShowCheckedModeBanner: <span class="keyword">false</span>,</span><br><span class="line">          supportedLocales: S.delegate.supportedLocales,</span><br><span class="line">          <span class="comment">// 第三步</span></span><br><span class="line">          locale: Locale.fromSubtags(languageCode: languageCode.name),</span><br><span class="line">          localizationsDelegates: <span class="keyword">const</span> [</span><br><span class="line">            S.delegate,</span><br><span class="line">            GlobalMaterialLocalizations.delegate,</span><br><span class="line">            GlobalWidgetsLocalizations.delegate,</span><br><span class="line">            GlobalCupertinoLocalizations.delegate,</span><br><span class="line">          ],</span><br><span class="line">          localeResolutionCallback:</span><br><span class="line">              (Locale? locale, <span class="built_in">Iterable</span>&lt;Locale&gt; supportedLocales) &#123;</span><br><span class="line">            Locale currentLocale =</span><br><span class="line">            Locale.fromSubtags(languageCode: locale?.languageCode ?? <span class="string">&quot;zh&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> supportedLocales.contains(currentLocale)</span><br><span class="line">                ? currentLocale</span><br><span class="line">                : <span class="keyword">const</span> Locale.fromSubtags(languageCode: <span class="string">&quot;zh&quot;</span>);</span><br><span class="line">          &#125;,</span><br><span class="line">        );</span><br><span class="line">      &#125;,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后，在切换语言操作的地方执行如下代码：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Provider.of&lt;AppLanguageProvider&gt;(context, listen: <span class="keyword">false</span>).changeLanguage(LanguageCode.zh);</span><br></pre></td></tr></table></figure>
+
+<p>最终效果：<br><img src="https://s2.loli.net/2024/03/20/TLZd1wh5Sact9UR.gif" alt="ezgif-5-b8ef0d45fe.gif"></p>
+<p>好了，以上就是Flutter项目国际化的全部实现过程，示例代码和查看效果在 <a target="_blank" rel="noopener" href="https://flutter.nnxkcloud.com/">https://flutter.nnxkcloud.com</a> 上，另外，如果有更好的实现方式，也欢迎留言交流一下。</p>
+<p>欢迎关注我的公众号“<strong>Flutter技术实践</strong>”，原创技术文章第一时间推送。</p>
+<p><img src="https://s2.loli.net/2022/12/12/EWvyFX2LgiaeZ3d.jpg"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2024/03/20/%E5%85%B3%E4%BA%8E-Flutter-%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%9B%BD%E9%99%85%E5%8C%96%EF%BC%8C%E5%8F%AA%E9%9C%80%E8%A6%81%E5%81%9A%E5%AF%B9%E8%BF%99%E5%87%A0%E6%AD%A5/" title="关于 Flutter 项目的国际化，只需要做对这几步">http://www.nnxkcloud.com/2024/03/20/%E5%85%B3%E4%BA%8E-Flutter-%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%9B%BD%E9%99%85%E5%8C%96%EF%BC%8C%E5%8F%AA%E9%9C%80%E8%A6%81%E5%81%9A%E5%AF%B9%E8%BF%99%E5%87%A0%E6%AD%A5/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Flutter/" rel="tag"><i class="fa fa-tag"></i> Flutter</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/" rel="next" title="Flutter 大型项目架构：状态管理篇">
+                  <i class="fa fa-chevron-left"></i> Flutter 大型项目架构：状态管理篇
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2024/03/22/%E6%92%B8%E4%BA%86%E4%B8%80%E4%B8%AA%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7-%E6%AC%A2%E8%BF%8E%E4%BD%BF%E7%94%A8/" rel="prev" title="撸了一个轻量级在线工具，欢迎使用！">
+                  撸了一个轻量级在线工具，欢迎使用！ <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#App-%E9%A1%B9%E7%9B%AE%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%9B%BD%E9%99%85%E5%8C%96%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">App 项目为什么需要国际化？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BD%E9%99%85%E5%8C%96%E9%9C%80%E8%A6%81%E5%81%9A%E5%93%AA%E4%BA%9B%E5%87%86%E5%A4%87%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">国际化需要做哪些准备？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E9%A1%B9%E7%9B%AE%E5%85%A5%E5%8F%A3%E7%9A%84Widget"><span class="nav-number">3.</span> <span class="nav-text">修改项目入口的Widget</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-S-of-context-key-%E6%9B%BF%E6%8D%A2%E9%A1%B9%E7%9B%AE%E4%B8%AD%E6%96%87%E6%A1%88"><span class="nav-number">4.</span> <span class="nav-text">使用 S.of(context).{key} 替换项目中文案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%9C%A8%E5%BA%94%E7%94%A8%E5%86%85%E9%83%A8%E5%88%87%E6%8D%A2%E8%AF%AD%E8%A8%80"><span class="nav-number">5.</span> <span class="nav-text">如何在应用内部切换语言</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

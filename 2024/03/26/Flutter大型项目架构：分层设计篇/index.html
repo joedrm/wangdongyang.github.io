@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="上篇文章讲的是状态管理，提到了 Flutter BLoC ，相比与原生的 setState() 及Provider等有哪些优缺点，并结合实际项目写了一个简单的使用，接下来本篇文章来讲 Flutter 大型项目是如何进行分层设计的，费话不多说，直接进入正题哈。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter大型项目架构：分层设计篇">
+<meta property="og:url" content="http://www.nnxkcloud.com/2024/03/26/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E7%AF%87/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="上篇文章讲的是状态管理，提到了 Flutter BLoC ，相比与原生的 setState() 及Provider等有哪些优缺点，并结合实际项目写了一个简单的使用，接下来本篇文章来讲 Flutter 大型项目是如何进行分层设计的，费话不多说，直接进入正题哈。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/03/27/RvQMhaPd8p4cOf5.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/26/JeSiB7lAUKF69zg.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/26/r4lYmkcz7WX9sDG.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/26/wKE4U3AncJN1XHy.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/26/hMzWOpvum4jetRy.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/26/H1YMksuT5fyQBXo.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/26/pBbWe9kSX67xHnR.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/26/UnmYS4u1hlGaOX2.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/26/CtvHznscBp31xOl.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/26/Ls2BmZ98flTNu6X.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/27/RvQMhaPd8p4cOf5.png">
+<meta property="og:image" content="https://s2.loli.net/2022/11/09/fNBn2gWw8tVazkr.jpg">
+<meta property="article:published_time" content="2024-03-26T06:34:10.000Z">
+<meta property="article:modified_time" content="2024-10-15T03:05:34.689Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/03/27/RvQMhaPd8p4cOf5.png">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2024/03/26/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E7%AF%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Flutter大型项目架构：分层设计篇 | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/03/26/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter大型项目架构：分层设计篇
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-03-26 14:34:10" itemprop="dateCreated datePublished" datetime="2024-03-26T14:34:10+08:00">2024-03-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-15 11:05:34" itemprop="dateModified" datetime="2024-10-15T11:05:34+08:00">2024-10-15</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2024/03/26/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E7%AF%87/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/26/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E7%AF%87/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://s2.loli.net/2024/03/27/RvQMhaPd8p4cOf5.png" alt="Flutter App Architecture Design"></p>
+<p>上篇文章讲的是状态管理，提到了 <code>Flutter BLoC</code> ，相比与原生的 <code>setState()</code> 及<code>Provider</code>等有哪些优缺点，并结合实际项目写了一个简单的使用，接下来本篇文章来讲 <code>Flutter</code> 大型项目是如何进行分层设计的，费话不多说，直接进入正题哈。</p>
+<span id="more"></span>
+
+<h2 id="为啥需要分层设计"><a href="#为啥需要分层设计" class="headerlink" title="为啥需要分层设计"></a>为啥需要分层设计</h2><p>其实这个没有啥固定答案，也许只是因为某一天看到手里的代码如同屎山一样，如下图，而随着业务功能的增加，不停的往这上面堆，这个屎山也会愈发庞大和混乱，如果这样继续下去，直到某一天因为一个小小的Bug，你需要花半天的时间来排查问题出在哪里，最后当你觉得问题终于改好了的时候，却不料碰了不该碰的地方，结果就是 <code>fixing 1 bug will create 10 new bugs</code>，甚至程序的崩溃。</p>
+<p><img src="https://s2.loli.net/2024/03/26/JeSiB7lAUKF69zg.png"></p>
+<p>随着这种问题的凸显，于是团队里的显眼包A提出了要求团队里的每个人都必须负责完成给自己写的代码添加注释和文档，规范命名等措施，一段时间后，发现代码是规范了，但问题依然存在，这时候才发现如果工程的架构分层没有做好，再规范的代码和注释也只是在屎山上雕花，治标不治本而已。</p>
+<p><img src="https://s2.loli.net/2024/03/26/r4lYmkcz7WX9sDG.png"></p>
+<p>请原谅我打了一个这么俗的比方，但话糙理不糙，那么啥是应用的分层设计呢？</p>
+<p>简单的来说，应用的分层设计是一种将应用程序划分为不同层级的方法，每个层级负责特定的功能或责任。其中表示层（<code>Presentation Layer</code>）负责用户界面和用户交互，将数据呈现给用户并接收用户输入；业务逻辑层（<code>Business Logic Layer</code>）处理应用程序的业务逻辑，包括数据验证、处理和转换；数据访问层（<code>Data Access Layer</code>）负责与数据存储交互，包括数据库或文件系统的读取和写入操作。</p>
+<p><img src="https://s2.loli.net/2024/03/26/wKE4U3AncJN1XHy.png"></p>
+<p>这样做有什么好处呢？一句话总结就是为了让代码层级责任清晰，维护、扩展和重用方便，每个模块能独立开发、测试和修改。</p>
+<h2 id="App-原生开发的分层设计"><a href="#App-原生开发的分层设计" class="headerlink" title="App 原生开发的分层设计"></a><code>App</code> 原生开发的分层设计</h2><p>说到 <code>iOS</code>、<code>Android</code> 的分层设计，就会想到如 <code>MVC</code>、<code>MVVM</code> 等，它们主要是围绕着控制器层（<code>Controller</code>）、视图层（<code>View</code>）、和数据层（<code>Model</code>），还有连接 <code>View</code> 和 <code>Model</code> 之间的模型视图层（<code>ViewModel</code>）这些来讲的。</p>
+<p><img src="https://s2.loli.net/2024/03/26/hMzWOpvum4jetRy.png" alt="MVVM"></p>
+<p>然而，<code>MVC</code>、<code>MVVM</code> 概念还不算完整的分层架构，它们只是关注的 <code>App</code> 分层设计当中的应用层（<code>Applicaiton Layer</code>）组织方式，对于一个简单规模较小的App来说，可能单单一个应用层就能搞定，不用担心业务增量和复杂度上升对后期开发的压力，而一旦 <code>App</code> 上了规模之后就有点应付不过来了。</p>
+<p>当 <code>App</code> 有了一定规模之后，必然会涉及到分层的设计，还有模块化、<code>Hybrid</code> 机制、数据库、跨项目开发等等，拿 <code>iOS</code> 的原生分层设计落地实践来说，通常会将工程拆分成多个<code>Pod</code>私有库组件，拆分的标准视情况而定，每一个分层组件是独立的开发和测试，再在主工程添加<code> Pod</code> 私有库依赖来做分层设计开发。</p>
+<p>此处应该有 <code>Pod</code> 分层组件化设计的配图，但是太懒了，就没有一个个的去搭建新项目和 <code>Pod</code> 私有库，不过 <code>iOS</code> 原生分层设计不是本篇文章的重点，本篇主要谈论的是 <code>Flutter App</code> 的分层设计。</p>
+<h2 id="Flutter-的分层设计"><a href="#Flutter-的分层设计" class="headerlink" title="Flutter 的分层设计"></a><code>Flutter</code> 的分层设计</h2><p>分层架构设计的理念其实是相通的，差别在于语言的特性和具体项目实施上，<code>Flutter</code> 项目也是如此。试想一下，当各种逻辑混合在一次的时候，即便是选择了像 <code>Bloc</code> 这样的状态管理框架来隔离视图层和逻辑实现层，也很难轻松的增强代码的拓展性，这时候选择采用一个干净的分层架构就显得尤为重要，怎样做到这一点呢，就需要<strong>将代码分成独立的层，并依赖于抽象而不是具体的实现。</strong></p>
+<p><img src="https://s2.loli.net/2024/03/26/H1YMksuT5fyQBXo.png" alt="分层架构设计"></p>
+<p><code>Flutter App</code> 想要实现分层设计，就不得不提到包管理工具，如果在将所有分层组件代码放在主工程里面，那样并不能达到每个组件单独开发、维护和测试的目的，而如果放在新建的 <code>Dart Package</code> 中，没发跨多个组件改代码和测试，无法实现本地包链接和安装。使用 <a target="_blank" rel="noopener" href="https://melos.invertase.dev/">melos</a> 就能解决这个问题，类似于 <code>iOS</code> 包管理工具 <code>Pod</code>, 而 <code>melos</code>  是 <code>Flutter</code> 项目的包管理工具。</p>
+<h2 id="组件包管理工具"><a href="#组件包管理工具" class="headerlink" title="组件包管理工具"></a>组件包管理工具</h2><ol>
+<li><p>安装 <code>Melos</code>，将 <code>Melos</code> 安装为全局包，这样整个系统环境都可以使用：</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dart pub global activate melos</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建 <code>workspace</code> 文件夹，我这里命名为 <code>flutter_architecture_design</code>，添加 <code>melos</code>  的配置文件<code>melos.yaml</code> 和 <code>pubspec.yaml</code>，其目录结构大概是这样的：</p>
+ <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">flutter_architecture_design</span><br><span class="line">├── melos.yaml</span><br><span class="line">├── pubspec.yaml</span><br><span class="line">└── README.md</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新建组件，以开发工具 <code>Android Studio</code> 为例，选择 <code>File</code> -&gt; <code>New</code> -&gt; <code>New Flutter Project</code>，根据需要创建组件包，需要注意的是组件包存放的位置要放在 <code>workspace</code> 目录中。<br> <img src="https://s2.loli.net/2024/03/26/pBbWe9kSX67xHnR.png" alt="新建组件"></p>
+</li>
+<li><p>编辑 <code>melos.yaml</code> 配置文件，将上一步新建的组件包名放在 <code>packages</code> 之下，添加 <code>scripts</code> 相关命令，其目的请看下一步：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">flutter_architecture_design</span></span><br><span class="line"></span><br><span class="line"><span class="attr">packages:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">widgets/**</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">shared/**</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">data/**</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">initializer/**</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">domain/**</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">resources/**</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">app/**</span></span><br><span class="line"></span><br><span class="line"><span class="attr">command:</span></span><br><span class="line">  <span class="attr">bootstrap:</span></span><br><span class="line">    <span class="attr">usePubspecOverrides:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="attr">scripts:</span></span><br><span class="line">  <span class="attr">analyze:</span></span><br><span class="line">    <span class="attr">run:</span> <span class="string">dart</span> <span class="string">pub</span> <span class="string">global</span> <span class="string">run</span> <span class="string">melos</span> <span class="string">exec</span> <span class="string">--flutter</span> <span class="string">&quot;flutter analyze --no-pub --suppress-analytics&quot;</span></span><br><span class="line">    <span class="attr">description:</span> <span class="string">Run</span> <span class="string">analyze.</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">pub_get:</span></span><br><span class="line">    <span class="attr">run:</span> <span class="string">dart</span> <span class="string">pub</span> <span class="string">global</span> <span class="string">run</span> <span class="string">melos</span> <span class="string">exec</span> <span class="string">--flutter</span> <span class="string">&quot;flutter pub get&quot;</span></span><br><span class="line">    <span class="attr">description:</span> <span class="string">pub</span> <span class="string">get</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">build_all:</span></span><br><span class="line">    <span class="attr">run:</span> <span class="string">dart</span> <span class="string">pub</span> <span class="string">global</span> <span class="string">run</span> <span class="string">melos</span> <span class="string">exec</span> <span class="string">--depends-on=&quot;build_runner&quot;</span> <span class="string">&quot;flutter packages pub run build_runner build --delete-conflicting-outputs&quot;</span></span><br><span class="line">    <span class="attr">description:</span> <span class="string">build_runner</span> <span class="string">build</span> <span class="string">all</span> <span class="string">modules.</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">build_data:</span></span><br><span class="line">    <span class="attr">run:</span> <span class="string">dart</span> <span class="string">pub</span> <span class="string">global</span> <span class="string">run</span> <span class="string">melos</span> <span class="string">exec</span> <span class="string">--fail-fast</span> <span class="string">--scope=&quot;*data*&quot;</span> <span class="string">--depends-on=&quot;build_runner&quot;</span> <span class="string">&quot;flutter packages pub run build_runner build --delete-conflicting-outputs&quot;</span></span><br><span class="line">    <span class="attr">description:</span> <span class="string">build_runner</span> <span class="string">build</span> <span class="string">data</span> <span class="string">module.</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">build_domain:</span></span><br><span class="line">    <span class="attr">run:</span> <span class="string">dart</span> <span class="string">pub</span> <span class="string">global</span> <span class="string">run</span> <span class="string">melos</span> <span class="string">exec</span> <span class="string">--fail-fast</span> <span class="string">--scope=&quot;*domain*&quot;</span> <span class="string">--depends-on=&quot;build_runner&quot;</span> <span class="string">&quot;flutter packages pub run build_runner build --delete-conflicting-outputs&quot;</span></span><br><span class="line">    <span class="attr">description:</span> <span class="string">build_runner</span> <span class="string">build</span> <span class="string">domain</span> <span class="string">module.</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">build_app:</span></span><br><span class="line">    <span class="attr">run:</span> <span class="string">dart</span> <span class="string">pub</span> <span class="string">global</span> <span class="string">run</span> <span class="string">melos</span> <span class="string">exec</span> <span class="string">--fail-fast</span> <span class="string">--scope=&quot;*app*&quot;</span> <span class="string">--depends-on=&quot;build_runner&quot;</span> <span class="string">&quot;flutter packages pub run build_runner build --delete-conflicting-outputs&quot;</span></span><br><span class="line">    <span class="attr">description:</span> <span class="string">build_runner</span> <span class="string">build</span> <span class="string">app</span> <span class="string">module.</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">build_shared:</span></span><br><span class="line">    <span class="attr">run:</span> <span class="string">dart</span> <span class="string">pub</span> <span class="string">global</span> <span class="string">run</span> <span class="string">melos</span> <span class="string">exec</span> <span class="string">--fail-fast</span> <span class="string">--scope=&quot;*shared*&quot;</span> <span class="string">--depends-on=&quot;build_runner&quot;</span> <span class="string">&quot;flutter packages pub run build_runner build --delete-conflicting-outputs&quot;</span></span><br><span class="line">    <span class="attr">description:</span> <span class="string">build_runner</span> <span class="string">build</span> <span class="string">shared</span> <span class="string">module.</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">build_widgets:</span></span><br><span class="line">    <span class="attr">run:</span> <span class="string">dart</span> <span class="string">pub</span> <span class="string">global</span> <span class="string">run</span> <span class="string">melos</span> <span class="string">exec</span> <span class="string">--fail-fast</span> <span class="string">--scope=&quot;*widgets*&quot;</span> <span class="string">--depends-on=&quot;build_runner&quot;</span> <span class="string">&quot;flutter packages pub run build_runner build --delete-conflicting-outputs&quot;</span></span><br><span class="line">    <span class="attr">description:</span> <span class="string">build_runner</span> <span class="string">build</span> <span class="string">shared</span> <span class="string">module.</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打开命令行，切换到 <code>workspace</code> 目录，也就是 <code>flutter_architecture_design</code> 目录，执行命令。</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">melos bootstrap</span><br></pre></td></tr></table></figure>
+<p> 出现 <code>SUCCESS</code> 之后，现在的目录结构是这样的：<br> <img src="https://s2.loli.net/2024/03/26/UnmYS4u1hlGaOX2.png" alt="目录结构"></p>
+</li>
+<li><p>点击<code> Android Studio</code> 的 <code>add configuration</code>，将下图中的 <code>Shell Scripts</code> 选中后点击 <code>OK</code>。<br>  <img src="https://s2.loli.net/2024/03/26/CtvHznscBp31xOl.png" alt="Add Shell Scripts"><br>  以上的 <code>Scripts</code> 添加完后就可以在这里看到了，操作起来也很方便，不需要去命令行那里执行命令。<br>  <img src="https://s2.loli.net/2024/03/26/Ls2BmZ98flTNu6X.png" alt="Shell Scripts"></p>
+</li>
+</ol>
+<h2 id="Flutter-分层设计实践"><a href="#Flutter-分层设计实践" class="headerlink" title="Flutter 分层设计实践"></a><code>Flutter</code> 分层设计实践</h2><p>接下来介绍一下上面创建的几个组件库。</p>
+<ul>
+<li><code>app</code>：项目的主工程，存放业务逻辑代码、 <code>UI</code> 页面和 <code>Bloc</code>，还有 <code>styles</code>、<code>colors</code> 等等。</li>
+<li><code>domain</code>：实体类（<code>entity</code>）组件包，还有一些接口类，如 <code>repository</code>、<code>usercase</code>等。</li>
+<li><code>data</code>：数据提供组件包，主要有：<code>api_request</code>，<code>database</code>、<code>shared_preference</code>等，该组件包所有的调用实现都在 <code>domain</code> 中接口 <code>repository</code> 的实现类 <code>repository_impl</code> 中。</li>
+<li><code>shared</code>：工具类组件包，包括：<code>util</code>、<code>helper</code>、<code>enum</code>、<code>constants</code>、<code>exception</code>、<code>mixins</code>等等。</li>
+<li><code>resources</code>：资源类组件包，有<code>intl</code>、公共的<code>images</code>等</li>
+<li><code>initializer</code>：模块初始化组件包。</li>
+<li><code>widgets</code>：公共的 <code>UI</code> 组件包，如常用的：<code>alert</code>、<code>button</code>、<code>toast</code>、<code>slider</code> 等等。</li>
+</ul>
+<p>它们之间的调用关系如下图：</p>
+<p><img src="https://s2.loli.net/2024/03/27/RvQMhaPd8p4cOf5.png" alt="Flutter App Architecture Design"></p>
+<p>其中 <code>shared</code> 和 <code>resources</code> 作为基础组件包，本身不依赖任何组件，而是给其它组件包提供支持。</p>
+<p>作为主工程 <code>App</code> 也不会直接依赖 <code>data</code> 组件包，其调用是通过 <code>domain</code> 组件包中 <code>UseCase</code> 来实现，在 <code>UseCase</code>  会获取数据、处理列表数据的分页、参数校验、异常处理等等，获取数据是通过调用抽象类 <code>repository</code> 中相关函数，而不是直接调用具体实现类，此时<code>App</code> 的 <code>pubspec.yaml</code> 中配置是这样的：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">app</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">A</span> <span class="string">new</span> <span class="string">Flutter</span> <span class="string">project.</span></span><br><span class="line"><span class="attr">publish_to:</span> <span class="string">&#x27;none&#x27;</span> <span class="comment"># Remove this line if you wish to publish to pub.dev</span></span><br><span class="line"><span class="attr">version:</span> <span class="number">1.0</span><span class="number">.0</span><span class="string">+1</span></span><br><span class="line"></span><br><span class="line"><span class="attr">environment:</span></span><br><span class="line">  <span class="attr">sdk:</span> <span class="string">&quot;&gt;=2.17.0 &lt;3.0.0&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">dependencies:</span></span><br><span class="line">  <span class="attr">flutter:</span></span><br><span class="line">    <span class="attr">sdk:</span> <span class="string">flutter</span></span><br><span class="line">  <span class="attr">cupertino_icons:</span> <span class="string">^1.0.2</span></span><br><span class="line">  <span class="attr">widgets:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">../widgets</span></span><br><span class="line">  <span class="attr">shared:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">../shared</span></span><br><span class="line">  <span class="attr">domain:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">../domain</span></span><br><span class="line">  <span class="attr">resources:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">../resources</span></span><br><span class="line">  <span class="attr">initializer:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">../initializer</span></span><br><span class="line"></span><br><span class="line"><span class="attr">dev_dependencies:</span></span><br><span class="line">  <span class="attr">flutter_test:</span></span><br><span class="line">    <span class="attr">sdk:</span> <span class="string">flutter</span></span><br><span class="line"></span><br><span class="line"><span class="attr">flutter:</span></span><br><span class="line">  <span class="attr">uses-material-design:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">generate:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">assets:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">assets/images/</span></span><br></pre></td></tr></table></figure>
+
+<p>提供的数据组件包 <code>data</code> 实现了抽象类 <code>repository</code> 中相关函数，只负责调用 Api 接口获取数据，或者从数据库获取数据。当上层调用的时候不需要关心数据是从哪里来的，全部交给 <code>data</code> 组件包负责。</p>
+<p><code>initializer</code> 作为模块初始化组件包，仅有一个 <code>AppInitializer</code> 类，其主要目的是将其它的模块的初始化收集起来放在 <code>AppInitializer</code> 类中 <code>init()</code> 函数中，然后在主工程入口函数：<code>main()</code> 调用这个 <code>init()</code> 函数，常见的初始化如：<code>GetIt</code> 初始化、数据库 <code>objectbox</code> 初始化、<code>SharedPreferences</code>初始化，这些相关的初始会分布在各自的组件包中。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppInitializer</span> </span>&#123;</span><br><span class="line">  AppInitializer();</span><br><span class="line"></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; init() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> SharedConfig.getInstance().init();</span><br><span class="line">    <span class="keyword">await</span> DataConfig.getInstance().init();</span><br><span class="line">    <span class="keyword">await</span> DomainConfig.getInstance().init();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>widgets</code> 作为公共的 UI 组件库，不处理业务逻辑，在多项目开发时经常会使用到。上图中的 <code>Other Plugin Module</code> 指的的是其它组件包，特别是需要单独开发与原生交互的插件时会用到，</p>
+<p>这种分层设计出来的架构或许在开发过程中带来一下不便，如调用一个接口，第一步：需要先在抽象类 <code>repository</code> 写好函数声明；第二步：然后再去<code>Api Service</code> 写具体请求代码，并在<code>repository_impl</code> 实现类中调用；第三步：还需要在 <code>UserCase</code> 去做业务调用，错误处理等；最后一步：在<code>bloc</code>的<code>event</code>中调用。这么一趟下来，确实有些繁琐或者说是过度设计。但是如果维度设定在大的项目中多人合作开发的时候，却能规避很多问题，每个分层组件都有自己的职责互不干扰，都支持单独的开发测试，尽可能的做到依赖于抽象而不是具体的实现。</p>
+<p>本篇文章就到这里，源码会在后面这个系列的文章里放出来，感谢您的阅读，也希望您能关注我的公众号“Flutter技术实践”，原创不易，您的关注是我更新下去最大的动力。</p>
+<p><img src="https://s2.loli.net/2022/11/09/fNBn2gWw8tVazkr.jpg" alt="Flutter技术实践"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2024/03/26/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E7%AF%87/" title="Flutter大型项目架构：分层设计篇">http://www.nnxkcloud.com/2024/03/26/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E7%AF%87/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2024/03/22/%E6%92%B8%E4%BA%86%E4%B8%80%E4%B8%AA%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7-%E6%AC%A2%E8%BF%8E%E4%BD%BF%E7%94%A8/" rel="next" title="撸了一个轻量级在线工具，欢迎使用！">
+                  <i class="fa fa-chevron-left"></i> 撸了一个轻量级在线工具，欢迎使用！
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2024/03/29/%E6%B5%85%E8%B0%88-Flutter-%E7%9A%84%E5%B9%B6%E5%8F%91%E5%92%8C-isolates/" rel="prev" title="浅谈 Flutter 的并发和 isolates">
+                  浅谈 Flutter 的并发和 isolates <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E5%95%A5%E9%9C%80%E8%A6%81%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text">为啥需要分层设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#App-%E5%8E%9F%E7%94%9F%E5%BC%80%E5%8F%91%E7%9A%84%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.</span> <span class="nav-text">App 原生开发的分层设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flutter-%E7%9A%84%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.</span> <span class="nav-text">Flutter 的分层设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7"><span class="nav-number">4.</span> <span class="nav-text">组件包管理工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flutter-%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5"><span class="nav-number">5.</span> <span class="nav-text">Flutter 分层设计实践</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

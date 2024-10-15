@@ -1,0 +1,128 @@
+[
+    {
+        "category": "design",
+        "name": "设计",
+        "items": [
+            {
+                "title": "dribbble",
+                "url": "https://dribbble.com",
+                "icon": "https://dribbble.com/images/404-logo.png",
+                "desc": "UI UE设计"
+            },
+            {
+                "title": "behance",
+                "url": "https://www.behance.net",
+                "icon": "https://www.behance.net/favicon.ico",
+                "desc": "UI UE设计"
+            },
+            {
+                "title": "pexels",
+                "url": "https://www.pexels.com/zh-cn/",
+                "icon": "https://images.pexels.com/users/avatars/1535772/-176.jpeg",
+                "desc": "免费高清图片"
+            },
+            {
+                "title": "pinterest",
+                "url": "https://www.pinterest.com/",
+                "icon": "https://gitee.com/mzxj/blog_pic/raw/master/imgs/pinterest.png",
+                "desc": "设计资源"
+            },
+            {
+                "title": "huaban",
+                "url": "https://huaban.com/",
+                "icon": "https://huaban.com/favicon.ico",
+                "desc": "免费图片资源"
+            },
+            {
+                "title": "zcool",
+                "url": "https://www.zcool.com.cn/",
+                "icon": "https://gitee.com/mzxj/blog_pic/raw/master/imgs/zoool.png",
+                "desc": "国内设计资源论坛"
+            },
+            {
+                "title": "manypixels",
+                "url": "https://www.manypixels.co/gallery",
+                "icon": "https://m2.getsitecontrol.com/images/33401/0f0f0c5a46a6c82cb8ac07eeff325982_223661653.png",
+                "desc": "免费矢量素材，需梯子"
+            },
+            {
+                "title": "shejidaren",
+                "url": "http://hao.shejidaren.com/",
+                "icon": "https://hao.shejidaren.com/images/favicon.ico",
+                "desc": "国内设计导航，Web/UI设计、建筑/室内设计，设计资源、免费字体。"
+            }
+        ]
+    },
+    {
+        "category": "bbs",
+        "name": "论坛",
+        "items": [
+            {
+                "title": "v2ex",
+                "url": "https://www.v2ex.com/",
+                "icon": "https://www.v2ex.com/static/img/v2ex@2x.png",
+                "desc": "一个关于分享和探索的地方"
+            },
+            {
+                "title": "chongbuluo",
+                "url": "https://www.chongbuluo.com/",
+                "icon": "https://www.chongbuluo.com/favicon.ico",
+                "desc": "话题偏小清新，读书交流等"
+            },
+            {
+                "title": "w2solo",
+                "url": "https://w2solo.com/",
+                "icon": "https://img.w2solo.com/user/avatar/1/7bd245.png",
+                "desc": "个人开发者论坛"
+            }
+        ]
+    },
+    {
+        "category": "music",
+        "name": "影音",
+        "items": [
+            {
+                "title": "listen1",
+                "url": "https://listen1.github.io/listen1/",
+                "icon": "L",
+                "desc": "一个可以在Windows版和Mac版上运行的免费播放器"
+            }
+        ]
+    },
+    {
+        "category": "tool",
+        "name": "工具",
+        "items": [
+            {
+                "title": "markmap",
+                "url": "https://markmap.js.org/",
+                "icon": "M",
+                "desc": "markdown 生成思维导图"
+            }
+        ]
+    },
+    {
+        "category": "develop",
+        "name": "开发者",
+        "items": [
+            {
+                "title": "dribbble",
+                "url": "https://dribbble.com",
+                "icon": "https://dribbble.com/images/404-logo.png",
+                "desc": "UI UE设计"
+            }
+        ]
+    },
+    {
+        "category": "project",
+        "name": "开源项目",
+        "items": [
+            {
+                "title": "dribbble",
+                "url": "https://dribbble.com",
+                "icon": "https://dribbble.com/images/404-logo.png",
+                "desc": "UI UE设计"
+            }
+        ]
+    }
+]

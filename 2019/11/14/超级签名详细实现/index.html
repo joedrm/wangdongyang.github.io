@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Because you have never seen the miracle. - 《银翼杀手2049》 超级签名是什么？所谓的超级签名，其实一句话就能说清楚：使用了苹果提供给开发者的Ad-Hoc分发通道，把安装设备当做开发设备进行分发。 优势：直接分发，安装即可运行，不需要用户做企业证书的信任操作，不会有证书吊销导致的风险劣势：成本昂贵，单开发者账号的iPhone设备数量只有100个，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="超级签名详细实现">
+<meta property="og:url" content="http://www.nnxkcloud.com/2019/11/14/%E8%B6%85%E7%BA%A7%E7%AD%BE%E5%90%8D%E8%AF%A6%E7%BB%86%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="Because you have never seen the miracle. - 《银翼杀手2049》 超级签名是什么？所谓的超级签名，其实一句话就能说清楚：使用了苹果提供给开发者的Ad-Hoc分发通道，把安装设备当做开发设备进行分发。 优势：直接分发，安装即可运行，不需要用户做企业证书的信任操作，不会有证书吊销导致的风险劣势：成本昂贵，单开发者账号的iPhone设备数量只有100个，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191114_06.jpg">
+<meta property="og:image" content="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191114_05.jpg?40">
+<meta property="og:image" content="https://gitee.com/mzxj/blog_pic/raw/master/imgs/super-sign_08.png">
+<meta property="og:image" content="https://gitee.com/mzxj/blog_pic/raw/master/imgs/super-sign_07.png">
+<meta property="og:image" content="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191114_03.png">
+<meta property="og:image" content="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191114_02.png">
+<meta property="og:image" content="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191114_01.png">
+<meta property="og:image" content="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191114_04.png">
+<meta property="article:published_time" content="2019-11-14T10:06:54.000Z">
+<meta property="article:modified_time" content="2024-10-15T03:05:34.692Z">
+<meta property="article:author" content="joe">
+<meta property="article:tag" content="超级签名">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191114_06.jpg">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2019/11/14/%E8%B6%85%E7%BA%A7%E7%AD%BE%E5%90%8D%E8%AF%A6%E7%BB%86%E5%AE%9E%E7%8E%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>超级签名详细实现 | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2019/11/14/%E8%B6%85%E7%BA%A7%E7%AD%BE%E5%90%8D%E8%AF%A6%E7%BB%86%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          超级签名详细实现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-14 18:06:54" itemprop="dateCreated datePublished" datetime="2019-11-14T18:06:54+08:00">2019-11-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-15 11:05:34" itemprop="dateModified" datetime="2024-10-15T11:05:34+08:00">2024-10-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2019/11/14/%E8%B6%85%E7%BA%A7%E7%AD%BE%E5%90%8D%E8%AF%A6%E7%BB%86%E5%AE%9E%E7%8E%B0/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/11/14/%E8%B6%85%E7%BA%A7%E7%AD%BE%E5%90%8D%E8%AF%A6%E7%BB%86%E5%AE%9E%E7%8E%B0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191114_06.jpg"></p>
+<p>Because you have never seen the miracle. - 《银翼杀手2049》</p>
+<h2 id="超级签名是什么？"><a href="#超级签名是什么？" class="headerlink" title="超级签名是什么？"></a>超级签名是什么？</h2><p>所谓的超级签名，其实一句话就能说清楚：使用了苹果提供给开发者的Ad-Hoc分发通道，把安装设备当做开发设备进行分发。</p>
+<p>优势：直接分发，安装即可运行，不需要用户做企业证书的信任操作，不会有证书吊销导致的风险<br>劣势：成本昂贵，单开发者账号的iPhone设备数量只有100个，</p>
+<span id="more"></span>
+
+<h3 id="实现流程"><a href="#实现流程" class="headerlink" title="实现流程"></a>实现流程</h3><p><img src="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191114_05.jpg?40"></p>
+<ol>
+<li>手机安装<code>.mobileconf</code>文件，将UDID发给服务器</li>
+<li>服务器将收到的UDID注册到苹果开发者账号中，并更新描述文件</li>
+<li>将更新后的描述文件来重签App</li>
+<li>最后将重签的App上传至cdn，利用<code>itms-services</code>方式做分发下载</li>
+</ol>
+<h3 id="详细实现细节"><a href="#详细实现细节" class="headerlink" title="详细实现细节"></a>详细实现细节</h3><ol>
+<li><p>准备好获取UDID的配置文件，也就是<code>.mobileconf</code>文件，文件内容大致如下:</p>
+ <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">plist</span> <span class="keyword">PUBLIC</span> <span class="string">&quot;-//Apple//DTD PLIST 1.0//EN&quot;</span> <span class="string">&quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadContent<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">key</span>&gt;</span>URL<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">            &lt;!– 接收数据的接口地址 –&gt;</span><br><span class="line">            <span class="tag">&lt;<span class="name">string</span>&gt;</span>http://106.54.214.191:443/udid/receive<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">key</span>&gt;</span>DeviceAttributes<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">string</span>&gt;</span>UDID<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">string</span>&gt;</span>IMEI<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">string</span>&gt;</span>ICCID<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">string</span>&gt;</span>VERSION<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">string</span>&gt;</span>PRODUCT<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadOrganization<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">string</span>&gt;</span>www.qianniuniu.com<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadDisplayName<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">string</span>&gt;</span>Test<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadVersion<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">integer</span>&gt;</span>1<span class="tag">&lt;/<span class="name">integer</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadUUID<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">string</span>&gt;</span>8C7AD0B8-3900-44DF-A52F-3C4F92921807<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadIdentifier<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">string</span>&gt;</span>com.super.signature<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadDescription<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">string</span>&gt;</span>该配置文件将帮助用户获取当前iOS设备的UDID号码。This temporary profile will be used to find and display your current device&#x27;s UDID.<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadType<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">string</span>&gt;</span>Profile Service<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plist</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用服务器https证书对配置文件签名</p>
+<p> <img src="https://gitee.com/mzxj/blog_pic/raw/master/imgs/super-sign_08.png"></p>
+<p> 上图是服务器端生成的证书文件，这里使用的是Apache文件夹下面的</p>
+<p> <img src="https://gitee.com/mzxj/blog_pic/raw/master/imgs/super-sign_07.png"></p>
+<p> <code>mbaike.crt</code>：https服务器端使用证书文件。<br> <code>mbaike.key</code>：https服务器端使用证书对应的密钥。<br> <code>root_bundle.pem</code>：与SSL证书对应的证书链（中级证书）。<br> <code>unsigned.mobilecofig</code> 文件：IOS端生成的未签名的配置描述文件。</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 再使用通过openssl命令生成签名后的signed.mobileconfig文件</span><br><span class="line">openssl smime -sign -in unsigned.mobileconfig -out signed.mobileconfig -signer mbaike.crt -inkey mbaike.key -certfile root_bundle.pem -outform der -nodetach</span><br><span class="line"></span><br><span class="line"># 也可以把key文件的密码写入到key文件中</span><br><span class="line">openssl rsa -in mbaike.key -out mbaikenopass.key</span><br><span class="line"></span><br><span class="line"># 第二步的命令就应该是</span><br><span class="line">openssl smime -sign -in unsigned.mobileconfig -out signed.mobileconfig -signer mbaike.crt -inkey mbaikenopass.key -certfile root_bundle.pem -outform der -nodetach</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p> 这样就完成了对 <code>mobileconfig</code> 的签名工作了</p>
+<p> <img src="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191114_03.png"></p>
+</li>
+<li><p>上图是中点击 “获取UDID” ，就会跳到设置 -&gt; 通用 -&gt; 描述文件 去安装已经签名的描述文件</p>
+<p> <img src="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191114_02.png"></p>
+<p> 如图显示已签名，说明第二步对 <code>.mobilecofig</code> 的签名是OK的，安装成功后，返回下载页面并调用<code>http://106.54.214.191:443/udid/receive</code>这个地址，服务器端就会收到UDID等信息</p>
+</li>
+<li><p>利用开源工具Spaceship，注册新的开发者设备到苹果开发者中心，并更新 Provisioning Profile，服务器端使用的是 ruby 脚本来完成这个功能：</p>
+ <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/ruby -w</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">&quot;spaceship&quot;</span></span><br><span class="line">   </span><br><span class="line">puts <span class="string">&quot;======Hello, Write Start======&quot;</span></span><br><span class="line">   </span><br><span class="line"><span class="comment"># 先登录</span></span><br><span class="line"><span class="title class_">Spaceship</span>::<span class="variable constant_">Portal</span>.<span class="title function_ invoke__">login</span>(<span class="string">&quot;1711218908@qq.com&quot;</span>, <span class="string">&quot;密码&quot;</span>)</span><br><span class="line">   </span><br><span class="line">is_bundle = Spaceship.app.<span class="title function_ invoke__">find</span>(<span class="string">&quot;com.super01.signature&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> !is_bundle</span><br><span class="line">Spaceship.app.create!(bundle_id: <span class="string">&quot;com.super01.signature&quot;</span>, name: <span class="string">&#x27;iosudid&#x27;</span>)</span><br><span class="line">end</span><br><span class="line">   </span><br><span class="line"><span class="comment">#group权限</span></span><br><span class="line">app = <span class="title class_">Spaceship</span>::<span class="variable constant_">Portal</span>.app.<span class="title function_ invoke__">find</span>(<span class="string">&quot;com.super01.signature&quot;</span>)</span><br><span class="line">   </span><br><span class="line">group = <span class="title class_">Spaceship</span>::<span class="variable constant_">Portal</span>.app_group.<span class="title function_ invoke__">find</span>(<span class="string">&quot;group.com.super01.signature&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> !group</span><br><span class="line">    group = <span class="title class_">Spaceship</span>::<span class="variable constant_">Portal</span>.app_group.create!(group_id: <span class="string">&quot;group.com.super01.signature&quot;</span>,name: <span class="string">&quot;Another group&quot;</span>)</span><br><span class="line">end</span><br><span class="line">app = app.<span class="title function_ invoke__">associate_groups</span>([group])</span><br><span class="line">app.<span class="title function_ invoke__">update_service</span>(<span class="title class_">Spaceship</span>::<span class="variable constant_">Portal</span>.app_service.network_extension.on)</span><br><span class="line">app.<span class="title function_ invoke__">update_service</span>(<span class="title class_">Spaceship</span>::<span class="variable constant_">Portal</span>.app_service.access_wifi.on)</span><br><span class="line">app.<span class="title function_ invoke__">update_service</span>(<span class="title class_">Spaceship</span>::<span class="variable constant_">Portal</span>.app_service.push_notification.on)</span><br><span class="line">app.<span class="title function_ invoke__">update_service</span>(<span class="title class_">Spaceship</span>::<span class="variable constant_">Portal</span>.app_service.game_center.on)</span><br><span class="line">   </span><br><span class="line"><span class="comment"># 新增设备的UDID</span></span><br><span class="line"><span class="title class_">Spaceship</span>::<span class="variable constant_">Portal</span>.device.create!(name: <span class="string">&quot;那年星空&quot;</span>, udid: <span class="string">&quot;***&quot;</span>)</span><br><span class="line">   </span><br><span class="line"><span class="comment">#更新设备</span></span><br><span class="line">allDevices = Spaceship.device.all</span><br><span class="line">device_profiles = <span class="title class_">Spaceship</span>::<span class="variable constant_">Portal</span>.provisioning_profile.ad_hoc.<span class="title function_ invoke__">find_by_bundle_id</span>(<span class="attr">bundle_id</span>: <span class="string">&quot;com.super01.signature&quot;</span>)</span><br><span class="line">device_profiles.each <span class="keyword">do</span> |profile|</span><br><span class="line">    profile.devices = allDevices</span><br><span class="line">    profile.update!</span><br><span class="line">end</span><br><span class="line">   </span><br><span class="line"><span class="comment">#下载描述文件</span></span><br><span class="line">matching_profiles = <span class="title class_">Spaceship</span>::<span class="variable constant_">Portal</span>.provisioning_profile.ad_hoc.<span class="title function_ invoke__">find_by_bundle_id</span>(<span class="attr">bundle_id</span>: <span class="string">&quot;com.super01.signature&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> matching_profiles.first</span><br><span class="line">File.<span class="title function_ invoke__">write</span>(<span class="string">&quot;SuperSignatureAdHocProfile.mobileprovision&quot;</span>, matching_profiles.first.download)</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    cert = <span class="title class_">Spaceship</span>::<span class="variable constant_">Portal</span>.certificate.production.all.first</span><br><span class="line">    profile=Spaceship.provisioning_profile.ad_hoc.create!(bundle_id: <span class="string">&quot;com.super01.signature&quot;</span>, certificate: cert, name: <span class="string">&quot;com.super01.signature adhoc&quot;</span>)</span><br><span class="line">    File.<span class="title function_ invoke__">write</span>(<span class="string">&quot;SuperSignatureAdHocProfile.mobileprovision&quot;</span>, profile.download)</span><br><span class="line">end</span><br><span class="line">                        </span><br><span class="line">puts <span class="string">&quot;====== Hello, Write End! ======&quot;</span></span><br><span class="line">   </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>制作.cer证书，这一步和我们平时做iOS开发一样，我就不多说了</p>
+</li>
+<li><p>重点来了，ipa包的重签，这里使用的是 <a target="_blank" rel="noopener" href="https://github.com/zhlynn/zsign">zsign</a>，将步骤3中更新后的描述文件和步骤4中的证书放在zsign项目的同一级目录下，如下图：</p>
+<p> <img src="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191114_01.png" alt="20191114_01.png"></p>
+<p> 使用命令如下：</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./zsign -k key.p12 -p 123 -m SuperSignatureAdHocProfile.prov -o output.ipa SASpecs.app</span><br></pre></td></tr></table></figure>
+<p> 将重签好的ipa包上传至cdn服务器拿到下载链接，下一步开始制作分发文件。</p>
+</li>
+<li><p>分发文件（<code>manifest.plist</code>）需要准备两张图片的下载地址，文件内容如下：</p>
+ <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">plist</span> <span class="keyword">PUBLIC</span> <span class="string">&quot;-//Apple//DTD PLIST 1.0//EN&quot;</span> <span class="string">&quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">key</span>&gt;</span>items<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">key</span>&gt;</span>assets<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">key</span>&gt;</span>kind<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">string</span>&gt;</span>software-package<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">key</span>&gt;</span>url<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">string</span>&gt;</span>https://qnnapk-1251122539.cos.ap-shanghai.myqcloud.com/SASpecs.ipa<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">key</span>&gt;</span>kind<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">string</span>&gt;</span>display-image<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">key</span>&gt;</span>url<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">string</span>&gt;</span>https://qnnapk-1251122539.cos.ap-shanghai.myqcloud.com/57.png<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">key</span>&gt;</span>kind<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">string</span>&gt;</span>full-size-image<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">key</span>&gt;</span>url<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">string</span>&gt;</span>https://qnnapk-1251122539.cos.ap-shanghai.myqcloud.com/512.png<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">key</span>&gt;</span>metadata<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">key</span>&gt;</span>bundle-identifier<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">string</span>&gt;</span>com.super.signature<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">key</span>&gt;</span>bundle-version<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">string</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">key</span>&gt;</span>kind<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">string</span>&gt;</span>software<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">key</span>&gt;</span>platform-identifier<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">string</span>&gt;</span>com.apple.platform.iphoneos<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">key</span>&gt;</span>title<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">string</span>&gt;</span>SASpecs<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plist</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当用户下载这个分发文件后就会安装对应的ipa包，</p>
+</li>
+</ol>
+<p><img src="https://gitee.com/mzxj/blog_pic/raw/master/imgs/20191114_04.png"></p>
+<h2 id="至此，大功告成"><a href="#至此，大功告成" class="headerlink" title="至此，大功告成"></a>至此，大功告成</h2>
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2019/11/14/%E8%B6%85%E7%BA%A7%E7%AD%BE%E5%90%8D%E8%AF%A6%E7%BB%86%E5%AE%9E%E7%8E%B0/" title="超级签名详细实现">http://www.nnxkcloud.com/2019/11/14/%E8%B6%85%E7%BA%A7%E7%AD%BE%E5%90%8D%E8%AF%A6%E7%BB%86%E5%AE%9E%E7%8E%B0/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E8%B6%85%E7%BA%A7%E7%AD%BE%E5%90%8D/" rel="tag"><i class="fa fa-tag"></i> 超级签名</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2019/11/13/next-theme-set-tags/" rel="next" title="Next主题设置分类和标签">
+                  <i class="fa fa-chevron-left"></i> Next主题设置分类和标签
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2019/11/18/encrypt-and-decrypt/" rel="prev" title="iOS签名机制">
+                  iOS签名机制 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B6%85%E7%BA%A7%E7%AD%BE%E5%90%8D%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">超级签名是什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">实现流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%A6%E7%BB%86%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82"><span class="nav-number">1.2.</span> <span class="nav-text">详细实现细节</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%B3%E6%AD%A4%EF%BC%8C%E5%A4%A7%E5%8A%9F%E5%91%8A%E6%88%90"><span class="nav-number">2.</span> <span class="nav-text">至此，大功告成</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

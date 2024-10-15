@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="在 Flutter 中 BuildContext 可太常见了，不管是 StatelessWidget 还是 StatefulWidget 的 build() 函数参数都会带有 BuildContext，好像随处可见，就像我们的一位老朋友，但似乎又对其知之甚少（熟悉的陌生人），今天我们再来了解一下这位老朋友 BuildContext，看看它在 Flutter 架构中扮演什么角色，我们该如何使用它及">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入了解 Flutter 中的 BuildContext">
+<meta property="og:url" content="http://www.nnxkcloud.com/2024/04/18/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3-Flutter-%E4%B8%AD%E7%9A%84-BuildContext/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="在 Flutter 中 BuildContext 可太常见了，不管是 StatelessWidget 还是 StatefulWidget 的 build() 函数参数都会带有 BuildContext，好像随处可见，就像我们的一位老朋友，但似乎又对其知之甚少（熟悉的陌生人），今天我们再来了解一下这位老朋友 BuildContext，看看它在 Flutter 架构中扮演什么角色，我们该如何使用它及">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/04/18/yD7IvSUXkAniB2M.png">
+<meta property="og:image" content="https://s2.loli.net/2022/11/09/fNBn2gWw8tVazkr.jpg">
+<meta property="article:published_time" content="2024-04-18T12:33:56.000Z">
+<meta property="article:modified_time" content="2024-10-15T03:05:34.692Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/04/18/yD7IvSUXkAniB2M.png">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2024/04/18/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3-Flutter-%E4%B8%AD%E7%9A%84-BuildContext/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>深入了解 Flutter 中的 BuildContext | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/04/18/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3-Flutter-%E4%B8%AD%E7%9A%84-BuildContext/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          深入了解 Flutter 中的 BuildContext
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-18 20:33:56" itemprop="dateCreated datePublished" datetime="2024-04-18T20:33:56+08:00">2024-04-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-15 11:05:34" itemprop="dateModified" datetime="2024-10-15T11:05:34+08:00">2024-10-15</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2024/04/18/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3-Flutter-%E4%B8%AD%E7%9A%84-BuildContext/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/18/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3-Flutter-%E4%B8%AD%E7%9A%84-BuildContext/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://s2.loli.net/2024/04/18/yD7IvSUXkAniB2M.png" alt="19.png"></p>
+<p>在 <code>Flutter</code> 中 <code>BuildContext</code> 可太常见了，不管是 <code>StatelessWidget</code> 还是 <code>StatefulWidget</code> 的 <code>build()</code> 函数参数都会带有 <code>BuildContext</code>，好像随处可见，就像我们的一位老朋友，但似乎又对其知之甚少（熟悉的陌生人），今天我们再来了解一下这位老朋友 <code>BuildContext</code>，看看它在 <code>Flutter</code> 架构中扮演什么角色，我们该如何使用它及使用的时候需要注意什么。</p>
+<span id="more"></span>
+
+<h2 id="BuildContext-是什么"><a href="#BuildContext-是什么" class="headerlink" title="BuildContext 是什么"></a><code>BuildContext</code> 是什么</h2><p>打开 <code>BuildContext</code> 所在的文档的看到的第一句话就是 <code>A handle to the location of a widget in the widget tree.</code> （翻译过来：小部件树中小部件位置的句柄），啥意思呢？ </p>
+<p>每一个 <code>Widget</code> 都有自己的 <code>BuildContext</code>，而 <strong><code>BuildContext</code>  代表了 <code>Widget</code> 在 <code>Widget Tree</code> 中的位置</strong>，常用于在 <code>Widget Tree</code> 中查找和定位 <code>Widget</code>，或者执行任务，例如导航到其他屏幕、显示对话框、访问主题数据等，如 <code>Theme.of(context)</code>、<code>Navigator.of(context)</code>。</p>
+<p><code>BuildContext</code> 提供对 <code>Widget</code> 和资源的访问，以及对当前 <code>Widget</code> 最近的祖先<code>Widget</code>的其他数据的访问。 如每个 <code>Widget</code> 的 <code>build()</code> 函数中使用的 <code>BuildContext</code> 参数，就是 <code>Flutter</code> 框架通过 <code>Widget Tree</code> 向下传递的 <code>BuildContext</code>。</p>
+<p>假设现在显示一个对话框。即使用 <code>showDialog()</code> 方法创建对话框，但同时 <code>showDialog()</code> 需要传一个 <code>BuildContext</code> 参数。此时就可以把当前 <code>Widget</code> 的 <code>BuildContext</code> 传递给此方法以显示对话框，如下面代码：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BuildContextPage</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> BuildContextPage(&#123;Key? key&#125;) : <span class="keyword">super</span>(key: key);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  State&lt;BuildContextPage&gt; createState() =&gt; _BuildContextPageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_BuildContextPageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">BuildContextPage</span>&gt; </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">        backgroundColor: <span class="keyword">const</span> Color(<span class="number">0xffffffff</span>),</span><br><span class="line">        body: Center(</span><br><span class="line">            child: Column(</span><br><span class="line">          children: [</span><br><span class="line">            TextButton(</span><br><span class="line">              child: <span class="keyword">const</span> Text(<span class="string">&#x27;ShowAlert&#x27;</span>),</span><br><span class="line">              onPressed: () &#123;</span><br><span class="line">                showDialog(</span><br><span class="line">                  context: context,</span><br><span class="line">                  builder: (BuildContext context) &#123;</span><br><span class="line">                    <span class="keyword">return</span> AlertDialog(</span><br><span class="line">                      title: <span class="keyword">const</span> Text(<span class="string">&#x27;Dialog Title&#x27;</span>),</span><br><span class="line">                      content: <span class="keyword">const</span> Text(<span class="string">&#x27;This is the content of the dialog.&#x27;</span>),</span><br><span class="line">                      actions: [</span><br><span class="line">                        TextButton(</span><br><span class="line">                          onPressed: () =&gt; Navigator.pop(context),</span><br><span class="line">                          child: <span class="keyword">const</span> Text(<span class="string">&#x27;Close&#x27;</span>),</span><br><span class="line">                        ),</span><br><span class="line">                      ],</span><br><span class="line">                    );</span><br><span class="line">                  &#125;,</span><br><span class="line">                );</span><br><span class="line">              &#125;,</span><br><span class="line">            ),</span><br><span class="line">          ],</span><br><span class="line">        )));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="如何使用-BuildContext"><a href="#如何使用-BuildContext" class="headerlink" title="如何使用 BuildContext"></a>如何使用 <code>BuildContext</code></h2><p>通常我们在使用 <code>BuildContext</code> 前会通过 <code>State</code> 的属性 <code>mounted</code> 来判断再使用，这是因为 <code>State</code> 是依附于 <code>Element</code> 创建，<code>Element</code> 的生命周期和 <code>State</code> 是同步的。如果 <code>Element</code> 销毁了，那此时的 <code>mounted</code> 则为 <code>false</code>，再去使用 <code>BuildContext</code> 就会报错，为 <code>true</code> 才可以继续使用，代码如下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">TextButton(</span><br><span class="line">  onPressed: () <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> Future.delayed(<span class="keyword">const</span> <span class="built_in">Duration</span>(seconds: <span class="number">3</span>));</span><br><span class="line">    <span class="keyword">if</span> (!mounted) <span class="keyword">return</span>;</span><br><span class="line">    Navigator.of(context).pop();</span><br><span class="line">  &#125;,</span><br><span class="line">  child: <span class="keyword">const</span> Text(<span class="string">&#x27;Close&#x27;</span>),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="在逻辑层使用-BuildContext"><a href="#在逻辑层使用-BuildContext" class="headerlink" title="在逻辑层使用 BuildContext"></a>在逻辑层使用 <code>BuildContext</code></h2><p>有时候我们在 <code>ViewModel</code> 或者 <code>Bloc</code> 异步执行完成一些操作后，再使用 <code>BuildContext</code> 返回页面或者弹出提示框，如下面的代码：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">TextButton(</span><br><span class="line">  onPressed: () <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> success = <span class="keyword">await</span> model.login(success: <span class="keyword">true</span>);</span><br><span class="line">    <span class="keyword">if</span> (success) &#123;</span><br><span class="line">      Navigator.of(context).pushNamed(<span class="string">&quot;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  child: <span class="keyword">const</span> Text(<span class="string">&#x27;Close&#x27;</span>),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p>而此时的 <code>ViewModel</code> 或者 <code>Bloc</code> 没有 <code>BuildContext</code>，同时，如上面代码需要在 <code>UI</code> 展示层来处理与功能相关的逻辑，随着 <code>App</code> 的需求和功能的扩展，有可能会在这里添加更多逻辑，造成视图层和逻辑层代码耦合在一起，不好维护。那要在 <code>ViewModel</code> 或者 <code>Bloc</code> 使用 <code>BuildContext</code> 该如何做呢？</p>
+<ol>
+<li>创建类 <code>NavigationService</code> ，并给添加一个 <code>GlobalKey</code> 属性。 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NavigationService</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> GlobalKey&lt;NavigatorState&gt; navigatorKey = GlobalKey&lt;NavigatorState&gt;();</span><br><span class="line">  Future&lt;<span class="built_in">dynamic</span>&gt;? navigateTo(<span class="built_in">String</span> routeName) &#123;</span><br><span class="line">    <span class="keyword">return</span> navigatorKey.currentState?.pushNamed(routeName);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> goBack() &#123;</span><br><span class="line">    <span class="keyword">return</span> navigatorKey.currentState?.pop();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>将 <code>NavigationService</code> 注册到 <code>get_it</code> 容器中。 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GetIt locator = GetIt.instance;</span><br><span class="line"><span class="keyword">void</span> setupLocator() &#123;</span><br><span class="line">  locator.registerLazySingleton(() =&gt; NavigationService());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>将 <code>navigatorKey</code> 赋值给程序入口 <code>Widget</code> 的 <code>key</code>， <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MultiProvider(</span><br><span class="line">      providers: [</span><br><span class="line">        ChangeNotifierProvider(create: (_) &#123;</span><br><span class="line">          <span class="keyword">return</span> AppLanguageProvider();</span><br><span class="line">        &#125;),</span><br><span class="line">      ],</span><br><span class="line">      builder: (BuildContext context, Widget? child) &#123;</span><br><span class="line">        <span class="keyword">return</span> MaterialApp(</span><br><span class="line">          ...</span><br><span class="line">          key: locator&lt;NavigationService&gt;().navigatorKey,</span><br><span class="line">          onGenerateRoute: MyRoutes.router.generator,</span><br><span class="line">          initialRoute: MyRoutes.root,</span><br><span class="line">          ...,</span><br><span class="line">        );</span><br><span class="line">      &#125;,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>修改 <code>LoginViewModel</code> 中的代码，异步操作完成后跳转页面。 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginViewModel</span> <span class="keyword">extends</span> <span class="title">ChangeNotifier</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> NavigationService _navigationService = locator&lt;NavigationService&gt;();</span><br><span class="line">  Future&lt;<span class="built_in">bool</span>&gt; login(&#123;<span class="built_in">bool</span> success = <span class="keyword">true</span>&#125;) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">/// <span class="language-markdown">模拟网络请求</span></span></span><br><span class="line">    <span class="keyword">await</span> Future.delayed(<span class="keyword">const</span> <span class="built_in">Duration</span>(seconds: <span class="number">1</span>));</span><br><span class="line">    <span class="keyword">if</span> (success) &#123;</span><br><span class="line">      _navigationService.navigateTo(<span class="string">&quot;&quot;</span>);</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>页面UI层调用，不再写逻辑判断了。 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">TextButton(</span><br><span class="line">  onPressed: () <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> model.login(success: <span class="keyword">true</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">  child: <span class="keyword">const</span> Text(<span class="string">&#x27;Close&#x27;</span>),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+这样达到了 <code>ViewModel</code> 层处理所有逻辑，视图应该只调用模型上的函数，然后在需要时使用新状态 <code>rebild</code> 或者其它操作，降低了彼此之间的耦合。</li>
+</ol>
+<h2 id="需要注意什么？"><a href="#需要注意什么？" class="headerlink" title="需要注意什么？"></a><code>需要注意什么？</code></h2><ol>
+<li>作用域问题，确保使用的 <code>BuildContext</code> 在正确的作用域内，即所在的 <code>Widget Tree</code> 中。避免在 <code>Widget Tree</code> 之外的地方使用 <code>BuildContext</code>，否则可能导致运行时错误.</li>
+<li>生命周期问题，<code>BuildContext</code> 的生命周期与相应的 <code>Widget</code> 相关联。当 <code>Widget</code> 被创建时，会创建一个新的 <code>BuildContext</code> 对象，并在 <code>Widget</code> 树中传递。当 <code>Widget</code> 被移除时，相关的 <code>BuildContext</code> 也会被销毁。因此，在保存<code>BuildContext</code> 时，要确保它的生命周期与所需的操作相匹配，避免出现空指针异常。</li>
+<li>尽量避免在 <code>build()</code> 函数中利用 <code>BuildContext</code> 获取 <code>MediaQuery</code> 的 <code>size</code> 和 <code>padding</code> 做大量计算的操作，如下面代码： <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line">Widget build(BuildContext context) &#123;</span><br><span class="line">  <span class="keyword">var</span> size = MediaQuery.of(context).size;</span><br><span class="line">  <span class="keyword">var</span> padding = MediaQuery.of(context).padding;</span><br><span class="line">  <span class="keyword">var</span> width = size.width / <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">var</span> height = size.width / size.height  *  (<span class="number">40</span> - padding.bottom);</span><br><span class="line">  <span class="keyword">return</span> Container(</span><br><span class="line">    color: Colors.amber,</span><br><span class="line">    width: width,</span><br><span class="line">    height: height,</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+上面这种用法可能会导致键盘在弹出的时候，虽然当前页面并没有完全展示，但是也会导致你的控件不断重新计算从而出现卡顿。</li>
+</ol>
+<p>好了，今天分享就到这里，感谢您的阅读，记得关注加点赞哦。</p>
+<p><img src="https://s2.loli.net/2022/11/09/fNBn2gWw8tVazkr.jpg" alt="Flutter技术实践"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2024/04/18/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3-Flutter-%E4%B8%AD%E7%9A%84-BuildContext/" title="深入了解 Flutter 中的 BuildContext">http://www.nnxkcloud.com/2024/04/18/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3-Flutter-%E4%B8%AD%E7%9A%84-BuildContext/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2024/04/17/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E7%AF%87/" rel="next" title="Flutter大型项目架构：依赖管理篇">
+                  <i class="fa fa-chevron-left"></i> Flutter大型项目架构：依赖管理篇
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2024/04/21/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9AUI%E8%AE%BE%E8%AE%A1%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%B8%80%EF%BC%89/" rel="prev" title="Flutter大型项目架构：UI设计系统实现（一）">
+                  Flutter大型项目架构：UI设计系统实现（一） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#BuildContext-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.</span> <span class="nav-text">BuildContext 是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-BuildContext"><span class="nav-number">2.</span> <span class="nav-text">如何使用 BuildContext</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E9%80%BB%E8%BE%91%E5%B1%82%E4%BD%BF%E7%94%A8-BuildContext"><span class="nav-number">3.</span> <span class="nav-text">在逻辑层使用 BuildContext</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">需要注意什么？</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>
