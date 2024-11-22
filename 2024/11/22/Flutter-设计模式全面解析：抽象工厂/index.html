@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="设计模式作为软件开发中的经典解决方案，在 Flutter 的开发中也能为我们提供强大的架构支持。本文来介绍一下如何在 Flutter 中来实现抽象工厂设计模式，以及如何创建一系列相关或依赖对象并优雅地管理它们之间的复杂依赖关系。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter 设计模式全面解析：抽象工厂">
+<meta property="og:url" content="http://www.nnxkcloud.com/2024/11/22/Flutter-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="设计模式作为软件开发中的经典解决方案，在 Flutter 的开发中也能为我们提供强大的架构支持。本文来介绍一下如何在 Flutter 中来实现抽象工厂设计模式，以及如何创建一系列相关或依赖对象并优雅地管理它们之间的复杂依赖关系。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/11/22/dGv5zCnOVfQrHpl.png">
+<meta property="og:image" content="https://s2.loli.net/2024/11/21/heUNEpaQmRv23tJ.png">
+<meta property="og:image" content="https://s2.loli.net/2024/11/21/EA8KDjiVRgYpmxL.png">
+<meta property="og:image" content="https://s2.loli.net/2024/11/21/r2B1wDQXOaoIk46.png">
+<meta property="og:image" content="https://s2.loli.net/2024/11/21/uXlaAb1LfkitqYQ.png">
+<meta property="article:published_time" content="2024-11-22T02:08:02.000Z">
+<meta property="article:modified_time" content="2024-11-22T02:09:22.034Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/11/22/dGv5zCnOVfQrHpl.png">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2024/11/22/Flutter-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Flutter 设计模式全面解析：抽象工厂 | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/11/22/Flutter-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter 设计模式全面解析：抽象工厂
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-11-22 10:08:02 / 修改时间：10:09:22" itemprop="dateCreated datePublished" datetime="2024-11-22T10:08:02+08:00">2024-11-22</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2024/11/22/Flutter-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/11/22/Flutter-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://s2.loli.net/2024/11/22/dGv5zCnOVfQrHpl.png" alt="181732186465_.pic.jpg"></p>
+<p>设计模式作为软件开发中的经典解决方案，在 <code>Flutter</code> 的开发中也能为我们提供强大的架构支持。本文来介绍一下如何在 <code>Flutter</code> 中来实现抽象工厂设计模式，以及如何创建一系列相关或依赖对象并优雅地管理它们之间的复杂依赖关系。</p>
+<span id="more"></span>
+
+<p>日常开发中我们也能经常看到 <code>Flutter</code> 中运用抽象工厂的身影。比如，当需要针对不同操作系统（如 <code>iOS</code> 和<code>Android</code> ）设计不同风格的按钮和文本框时，使用抽象工厂模式可以确保组件风格的一致性，同时大幅降低代码耦合度，抽象工厂模式非常适合构建跨平台的UI框架。还有在数据提供层，利用抽象工厂设计模式可以用于灵活管理多种数据提供的方案，例如有网络请求 <code>REST API</code>、<code>Shared preferences</code>或者 <code>Data base</code>，主工程通过构建不同的工厂来获取数据。接下来，我们将以实际代码的示例，深入解析这种模式的结构和应用场景。</p>
+<h3 id="什么是抽象工厂"><a href="#什么是抽象工厂" class="headerlink" title="什么是抽象工厂"></a>什么是抽象工厂</h3><p>网上搜索后是这么介绍它的，抽象工厂模式（<code>Abstract Factory Pattern</code>）是一种创建型设计模式，它提供一个接口来创建一系列相关或依赖的对象，而无需指定具体的实现类。主要目的是将创建对象系列封装在单独的工厂对象中，从而抽象对象创建过程。对于所有支持的对象系列，定义一个用于创建对象系列的通用接口，然后创建一个具体的工厂类来实现该接口。</p>
+<p><img src="https://s2.loli.net/2024/11/21/heUNEpaQmRv23tJ.png"></p>
+<p>参考上图，举个例子来说明一下，假设你有一家具公司，家具公司需要提供不同风格的家具套装（如现代风格、欧式风格）。每个套装包括沙发、桌子和椅子。为了便于扩展新的风格家具或修改现有产品，用抽象工厂模式实现家具的动态组合，其代码实现如下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1 产品接口：沙发</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Sofa</span> </span>&#123; <span class="keyword">void</span> describe(); &#125;</span><br><span class="line"><span class="comment">// 2 产品接口：桌子</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Table</span> </span>&#123; <span class="keyword">void</span> describe(); &#125;</span><br><span class="line"><span class="comment">// 3 产品接口：椅子</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Chair</span> </span>&#123; <span class="keyword">void</span> describe(); &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 4 抽象工厂：家具工厂</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">FurnitureFactory</span> </span>&#123;</span><br><span class="line">  Sofa createSofa();</span><br><span class="line">  Table createTable();</span><br><span class="line">  Chair createChair();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面位置1、2、3的代码是为每件产品明确声明接口 （沙发、桌子或椅子）。 然后，确保所有产品变体都继承这些接口。例如，所有风格的椅子都实现椅子接口；所有风格的桌子都实现桌子接口，以此类推。</p>
+<p>接下来，位置4代码声明抽象工厂，包含所有产品构造方法的接口。 例如 <code>createSofa</code> 创建沙发 、<code>createTable</code> 创建桌子和 <code>createChair</code> 创建椅子。 并且这些方法必须返回抽象产品类型， 即上面抽取的那些接口： 沙发、桌子和椅子等等。</p>
+<p>然后再基于抽象工厂接口创建不同的工厂类。 每个工厂类都只能返回特定类别的产品， 例如，现代家具工厂 <code>ModernFurnitureFactory</code> 只能创建现代沙发 <code>ModernSofa</code>、现代桌子 <code>ModernTable</code> 和现代椅子 <code>ModernChair</code> 对象；同理，欧式家具工厂 <code>EuropeanFurnitureFactory</code> 只能创建欧式沙发 <code>EuropeanSofaSofa</code> 、 欧式桌子 <code>EuropeanSofaTable</code> 和欧式椅子 <code>EuropeanSofaChair</code> 对象。</p>
+<p><img src="https://s2.loli.net/2024/11/21/EA8KDjiVRgYpmxL.png"></p>
+<p>下图中的代码是抽象产品接口的具体实现，包含了现代风格及欧式风格的沙发、桌子和椅子，</p>
+<p><img src="https://s2.loli.net/2024/11/21/r2B1wDQXOaoIk46.png"></p>
+<p>客户端代码实现：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> createFurniture(FurnitureFactory <span class="keyword">factory</span>) &#123;</span><br><span class="line">  <span class="keyword">final</span> sofa = <span class="keyword">factory</span>.createSofa();</span><br><span class="line">  <span class="keyword">final</span> table = <span class="keyword">factory</span>.createTable();</span><br><span class="line">  <span class="keyword">final</span> chair = <span class="keyword">factory</span>.createChair();</span><br><span class="line"></span><br><span class="line">  sofa.describe();</span><br><span class="line">  table.describe();</span><br><span class="line">  chair.describe();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样一来，如果我们还想新增一套家具风格（如：美式风格家具）也非常简单，实现抽象的产品接口<code>AmericanSofa</code>、<code>AmericanTable</code> 和 <code>AmericanChair</code>，然后建一个美式风格家具的工厂类 <code>AmericanFurnitureFactory</code> 并返回具体的产品就可以了。</p>
+<p>以下是调用并输出结果：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="comment">// 创建现代风格家具</span></span><br><span class="line">  createFurniture(ModernFurnitureFactory());</span><br><span class="line">  <span class="comment">//  A modern style sofa</span></span><br><span class="line">  <span class="comment">//  A modern style table</span></span><br><span class="line">  <span class="comment">//  A modern style chair</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 创建欧式风格家具</span></span><br><span class="line">  createFurniture(EuropeanFurnitureFactory());</span><br><span class="line">  <span class="comment">// A European style sofa</span></span><br><span class="line">  <span class="comment">// A European style table</span></span><br><span class="line">  <span class="comment">// A European style chair</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种模式能确保套装风格的统一，同时又能方便扩展新风格的家具组合。在实际的应用场景中，即可以支持用户根据房间风格选择成套家具，又方便快速配置不同风格的房间布局，还可以提供模块化的家具搭配方案。</p>
+<p>生活中能联想到类似的应用场景还有很多，如一家连锁快餐店提供不同风味的套餐（如亚洲风味、西式风味）。每个套餐包含主食、饮料和甜点。那么为了便于管理和扩展套餐，使用抽象工厂模式实现餐品的动态生成。</p>
+<h3 id="抽象工厂模式结构"><a href="#抽象工厂模式结构" class="headerlink" title="抽象工厂模式结构"></a>抽象工厂模式结构</h3><p><img src="https://s2.loli.net/2024/11/21/uXlaAb1LfkitqYQ.png"></p>
+<p>上图是抽象工厂模式的结构结构示意图，可以看出，抽象工厂模式一般分为5个部分。</p>
+<ul>
+<li>抽象工厂：接口声明了一组创建各种抽象产品的方法。</li>
+<li>具体工厂：实现抽象工厂的构建方法。 每个具体工厂都对应特定产品变体， 且仅创建此种产品变体。</li>
+<li>抽象产品：构成系列产品的一组不同但相关的产品声明接口。</li>
+<li>具体产品：是抽象产品的多种不同类型实现。 所有变体 （欧式&#x2F;现代） 都必须实现相应的抽象产品 （椅子&#x2F;沙发）。</li>
+<li>客户端：仅使用抽象工厂和产品类声明的接口。</li>
+</ul>
+<p>抽象工厂隐藏了对象的创建逻辑，提供了一个统一的入口点，能做到创建逻辑与使用逻辑解耦，这样，在调用的地方只需调用抽象工厂的接口，而不关心具体对象如何构建或组成。通过这种抽象，产品的创建方式、数据结构和表示方式可以独立变化，而不会影响高层模块的逻辑。还解决了不同产品族的一致性的问题，同一个工厂负责创建一个产品系列的所有对象，这就保证了系列中的产品能够正确地协同工作，避免了混用不同产品的问题。</p>
+<h3 id="与工厂模式的区别"><a href="#与工厂模式的区别" class="headerlink" title="与工厂模式的区别"></a>与工厂模式的区别</h3><p>抽象工厂模式和工厂方法模式都是创建型设计模式，抽象工厂模式处理的是产品族（多个相关产品），而工厂模式只处理的是单个产品的创建，也就是说可以将工厂方法设计模式视为抽象工厂模式的一个子集，即抽象工厂由几种工厂方法组成，其中每种方法仅创建一个特定对象。</p>
+<h3 id="项目中的应用"><a href="#项目中的应用" class="headerlink" title="项目中的应用"></a>项目中的应用</h3><p>除了上面说到的例子，在项目开发过程中，也会大量的用到抽象工厂模式。尤其是对于 <code>Flutter</code> 做跨平台的开发来说，是非常合适的应用场景，比如当我们需要同时适配 <code>Mac</code> 和 <code>Window</code> 风格的 <code>Widget</code> 时，可以做以下操作：</p>
+<p>定义抽象产品</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 抽象产品：按钮</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Button</span> </span>&#123;</span><br><span class="line">  <span class="keyword">void</span> render();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 抽象产品：文本框</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">TextBox</span> </span>&#123;</span><br><span class="line">  <span class="keyword">void</span> render();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>定义具体产品</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Windows 风格按钮</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WindowsButton</span> <span class="keyword">implements</span> <span class="title">Button</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> render() &#123; <span class="built_in">print</span>(<span class="string">&quot;Rendering a Windows button&quot;</span>); &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Windows 风格文本框</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WindowsTextBox</span> <span class="keyword">implements</span> <span class="title">TextBox</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> render() &#123; <span class="built_in">print</span>(<span class="string">&quot;Rendering a Windows text box&quot;</span>); &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// MacOS 风格按钮</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MacButton</span> <span class="keyword">implements</span> <span class="title">Button</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> render() &#123; <span class="built_in">print</span>(<span class="string">&quot;Rendering a MacOS button&quot;</span>); &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// MacOS 风格文本框</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MacTextBox</span> <span class="keyword">implements</span> <span class="title">TextBox</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> render() &#123; <span class="built_in">print</span>(<span class="string">&quot;Rendering a MacOS text box&quot;</span>); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>定义抽象工厂</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">UIFactory</span> </span>&#123;</span><br><span class="line">  Button createButton();</span><br><span class="line">  TextBox createTextBox();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>定义具体工厂</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WindowsFactory</span> <span class="keyword">implements</span> <span class="title">UIFactory</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Button createButton() =&gt; WindowsButton();</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  TextBox createTextBox() =&gt; WindowsTextBox();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MacFactory</span> <span class="keyword">implements</span> <span class="title">UIFactory</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Button createButton() =&gt; MacButton();</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  TextBox createTextBox() =&gt; MacTextBox();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>客户端及调用代码：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> renderUI(UIFactory <span class="keyword">factory</span>) &#123;</span><br><span class="line">  <span class="keyword">final</span> button = <span class="keyword">factory</span>.createButton();</span><br><span class="line">  <span class="keyword">final</span> textBox = <span class="keyword">factory</span>.createTextBox();</span><br><span class="line"></span><br><span class="line">  button.render();</span><br><span class="line">  textBox.render();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="comment">// 使用 Windows 工厂</span></span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&quot;Rendering Windows UI:&quot;</span>);</span><br><span class="line">  renderUI(WindowsFactory());</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 使用 MacOS 工厂</span></span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&quot;\nRendering MacOS UI:&quot;</span>);</span><br><span class="line">  renderUI(MacFactory());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>抽象工厂模式的应用非常广泛，包括文章开头提到在数据提供层的设计中也会用到它，其作用就是提供一个接口来创建一系列相关或依赖的对象，是创建和管理多个对象的优雅且高效的解决方案，合理的使用有利于代码拓展，减少因产品族不一致带来的问题。但抽象工厂也并非万能，如果用在对单一产品的灵活扩展或者简单需求场景，那就有点儿显得过于笨重。因此，在使用此模式时，我们还是需要根据项目的实际需求进行权衡。</p>
+<p>同时，任何设计模式的使用并是非硬性的框架约束，而是开发者应对复杂性和变化的一种工具。理解模式背后的设计思想，并将其灵活运用到项目中，才是提升代码质量的关键。也希望本篇能够帮到你，感谢您的阅读。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2024/11/22/Flutter-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82/" title="Flutter 设计模式全面解析：抽象工厂">http://www.nnxkcloud.com/2024/11/22/Flutter-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2024/11/06/Flutter-%E5%BC%80%E5%8F%91%E8%80%85%E5%BF%85%E7%9C%8B%EF%BC%81%E4%B8%83%E4%B8%AA%E8%B6%85%E5%AE%9E%E7%94%A8%E7%9A%84%E7%AC%AC%E4%B8%89%E6%96%B9-UI-%E5%BA%93%E6%8E%A8%E8%8D%90/" rel="next" title="Flutter 开发者必看！七个超实用的第三方 UI 库推荐">
+                  <i class="fa fa-chevron-left"></i> Flutter 开发者必看！七个超实用的第三方 UI 库推荐
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82"><span class="nav-number">1.</span> <span class="nav-text">什么是抽象工厂</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">抽象工厂模式结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">3.</span> <span class="nav-text">与工厂模式的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">项目中的应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">小结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>
