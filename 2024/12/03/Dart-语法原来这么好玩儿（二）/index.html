@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="上一篇 Dart 语法的文章中介绍了对 Future、Streams 的 unwrap 操作以及 List、Map的展开、合并和过滤等等，总觉得有点意犹未尽，还有很多有意思的并没有提到，本篇文章来介绍一下 Dart 语言中面向对象的内容——构造函数，在我们日常开发中，对象的初始化（构造函数）有哪些方式，它们之间的区别在哪里，不同的构造函数都适用于哪些场景呢，本篇文章来聊聊这些内容。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dart 语法原来这么好玩儿（二）">
+<meta property="og:url" content="http://www.nnxkcloud.com/2024/12/03/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%BA%8C%EF%BC%89/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="上一篇 Dart 语法的文章中介绍了对 Future、Streams 的 unwrap 操作以及 List、Map的展开、合并和过滤等等，总觉得有点意犹未尽，还有很多有意思的并没有提到，本篇文章来介绍一下 Dart 语言中面向对象的内容——构造函数，在我们日常开发中，对象的初始化（构造函数）有哪些方式，它们之间的区别在哪里，不同的构造函数都适用于哪些场景呢，本篇文章来聊聊这些内容。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/12/03/iqP1X5s6uKUrQJA.png">
+<meta property="og:image" content="https://s2.loli.net/2024/12/02/4VqcCwidvkpo3ZH.png">
+<meta property="og:image" content="https://s2.loli.net/2024/12/02/Grb7ingD1RFMXdJ.png">
+<meta property="og:image" content="https://s2.loli.net/2024/12/02/V9tQmuWvwJFhGAa.png">
+<meta property="og:image" content="https://s2.loli.net/2022/11/09/fNBn2gWw8tVazkr.jpg">
+<meta property="article:published_time" content="2024-12-03T02:29:31.000Z">
+<meta property="article:modified_time" content="2024-12-03T02:34:37.620Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/12/03/iqP1X5s6uKUrQJA.png">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2024/12/03/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%BA%8C%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Dart 语法原来这么好玩儿（二） | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/12/03/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%BA%8C%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Dart 语法原来这么好玩儿（二）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-12-03 10:29:31 / 修改时间：10:34:37" itemprop="dateCreated datePublished" datetime="2024-12-03T10:29:31+08:00">2024-12-03</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2024/12/03/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%BA%8C%EF%BC%89/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/12/03/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%BA%8C%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://s2.loli.net/2024/12/03/iqP1X5s6uKUrQJA.png"></p>
+<p>上一篇 <code>Dart</code> 语法的文章中介绍了对 <code>Future</code>、<code>Streams</code> 的 <code>unwrap</code> 操作以及 <code>List</code>、<code>Map</code>的展开、合并和过滤等等，总觉得有点意犹未尽，还有很多有意思的并没有提到，本篇文章来介绍一下 <code>Dart</code> 语言中面向对象的内容——构造函数，在我们日常开发中，对象的初始化（构造函数）有哪些方式，它们之间的区别在哪里，不同的构造函数都适用于哪些场景呢，本篇文章来聊聊这些内容。</p>
+<span id="more"></span>
+
+<h3 id="Named-构造函数"><a href="#Named-构造函数" class="headerlink" title="Named 构造函数"></a><code>Named</code> 构造函数</h3><p>如果没有定义构造函数，<code>Dart</code> 会默认创建一个不带参数的<strong>默认构造函数</strong>。它用于创建类的简单实例，通常不带参数或仅初始化对象的基本属性。<code>Dart</code> 还允许在同一类中定义多个构造函数，每个构造函数通过名称区分。命名构造函数提供了更多灵活性，适用于不同初始化需求。命名构造函数使用类名加点（<code>ClassName.constructorName</code>）的形式定义。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> </span>&#123;</span><br><span class="line">  <span class="built_in">double</span> width, height;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 常规构造函数</span></span><br><span class="line">  Rectangle(<span class="keyword">this</span>.width, <span class="keyword">this</span>.height);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 命名构造函数</span></span><br><span class="line">  Rectangle.square(<span class="built_in">double</span> size) : width = size, height = size;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里还可以使用重定向构造函数，简化代码逻辑，将多个构造函数重定向到同一个主构造函数，从而减少重复代码，修改 <code>Rectangle.square</code> 构造函数的代码：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 重定向构造函数</span></span><br><span class="line">Rectangle.square(<span class="built_in">double</span> size) : <span class="keyword">this</span>(size, size);</span><br></pre></td></tr></table></figure>
+
+<p><code>Flutter</code>源码中这种类似用法有很多，如 <code>EdgeInsets</code> 类，有<code>EdgeInsets.fromLTRB、EdgeInsets.all、EdgeInsets.only</code> 等等。</p>
+<h3 id="Factory-构造函数"><a href="#Factory-构造函数" class="headerlink" title="Factory 构造函数"></a><code>Factory</code> 构造函数</h3><p>工厂构造函数使用 <code>factory</code> 关键字，可以在每次调用构造函数时返回相同的实例，也可以根据逻辑返回不同的实例。它适用于需要缓存或复杂实例创建逻辑的情况，比如我们常见的单例模式（<code>Singleton Pattern</code>）。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Logger</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">final</span> Logger _instance = Logger._internal();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 私有命名构造函数</span></span><br><span class="line">  Logger._internal();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 工厂构造函数返回单例</span></span><br><span class="line">  <span class="keyword">factory</span> Logger() &#123;</span><br><span class="line">    <span class="keyword">return</span> _instance;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如下代码复杂一点的用法，利用 <code>Factory</code> 构造函数 来根据不同参数返回不同类型的形状对象（<code>Circle</code> 或 <code>Square</code>），可实现灵活的创建对象，不同于标准构造函数，<code>Factory</code> 构造函数可以返回子类，</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> ShapeType &#123; circle, square &#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> ShapeType type;</span><br><span class="line">  <span class="keyword">const</span> Shape(<span class="keyword">this</span>.type);</span><br><span class="line">  <span class="keyword">factory</span> Shape.fromRadius(<span class="built_in">double</span> radius) =&gt; Circle(radius);</span><br><span class="line">  <span class="keyword">factory</span> Shape.fromRect(Rect rect) =&gt; Square(rect);</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> toString() =&gt; <span class="string">&#x27;I am a shape of type <span class="subst">$type</span>&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Circle</span> <span class="keyword">extends</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">double</span> radius;</span><br><span class="line">  <span class="keyword">const</span> Circle(<span class="keyword">this</span>.radius) : <span class="keyword">super</span>(ShapeType.circle);</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> toString() =&gt; <span class="keyword">super</span>.toString() + <span class="string">&#x27; and I am a circle&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Square</span> <span class="keyword">extends</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> Rect rect;</span><br><span class="line">  <span class="keyword">const</span> Square(<span class="keyword">this</span>.rect) : <span class="keyword">super</span>(ShapeType.square);</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> toString() =&gt; <span class="keyword">super</span>.toString() + <span class="string">&quot;and I am a square&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Factory</code> 构造函数在对象创建的过程中提供了统一且灵活的接口，特别适用于需要根据不同条件创建不同子类实例的场景。实际项目中 <code>Factory</code> 构造函数的应用场景也很多，尤其在处理复杂对象创建和资源优化方面。</p>
+<p>以下是 <code>Factory</code> 构造函数和普通构造函数的区别。</p>
+<p><img src="https://s2.loli.net/2024/12/02/4VqcCwidvkpo3ZH.png"></p>
+<h3 id="Static-构造函数"><a href="#Static-构造函数" class="headerlink" title="Static 构造函数"></a><code>Static</code> 构造函数</h3><p>实际上在 <code>Dart</code> 中， <code>Static</code> 构造函数并不是像有的编程语言（如 C#）中那样的有内置特性。也就是说 <code>Dart</code> 中没有直接的静态构造函数概念，但可以通过静态方法来实现类似的功能。静态方法可以用于初始化类级别的共享资源、执行单例模式和延迟加载等场景。将上面的单例类（<code>Logger</code>）改成 <code>Static</code> 构造函数来实现。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Logger</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">final</span> Logger _instance = Logger._internal();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 私有构造函数</span></span><br><span class="line">  Logger._internal();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 静态构造函数：通过静态方法返回单例实例</span></span><br><span class="line">  <span class="keyword">static</span> Logger initialize() &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Logger initialized&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> _instance;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> log(<span class="built_in">String</span> message) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Log: <span class="subst">$message</span>&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="comment">// 调用静态构造函数</span></span><br><span class="line">  <span class="keyword">final</span> logger = Logger.initialize();</span><br><span class="line">  logger.log(<span class="string">&quot;This is a log message.&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>静态构造函数结合 late 变量可以达到也可以延迟加载的机制，例如，设计一个依赖初始化数据库的类，来看看是怎么实现的。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DatabaseConnection</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">late</span> DatabaseConnection _instance;</span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> _isInitialized = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">  DatabaseConnection._create();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 静态构造函数用于初始化</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">void</span> initialize() &#123;</span><br><span class="line">    <span class="keyword">if</span> (!_isInitialized) &#123;</span><br><span class="line">      _instance = DatabaseConnection._create();</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">&quot;Database connection initialized.&quot;</span>);</span><br><span class="line">      _isInitialized = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> DatabaseConnection <span class="keyword">get</span> instance =&gt; _instance;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> query(<span class="built_in">String</span> sql) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Executing query: <span class="subst">$sql</span>&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  DatabaseConnection.initialize();</span><br><span class="line">  DatabaseConnection.instance.query(<span class="string">&quot;SELECT * FROM users&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码中，<code>late</code> 关键字保证变量在第一次使用时才初始化，从而实现延迟加载， <code>_internal</code> 私有构造函数防止外部直接实例化。 <code>getInstance</code> 静态工厂方法是单例实例的全局访问入口。延迟加载常用于当初始化逻辑较为复杂，需要耗费大量资源时，例如，加载配置文件、初始化数据库连接等，或者不希望类在加载时就立即初始化，而是按需使用时才初始化。</p>
+<h3 id="Factory-和-Static-构造函数区别"><a href="#Factory-和-Static-构造函数区别" class="headerlink" title="Factory 和 Static 构造函数区别"></a><code>Factory</code> 和 <code>Static</code> 构造函数区别</h3><p>上面分别介绍了 <code>Factory</code> 构造函数和 <code>Static</code> 构造函数，那么它们之间有什么区别呢？<code>Factory</code> 构造函数返回已有实例或子类实例，控制具体对象的创建过程，而不是初始化与类绑定的静态资源；而 <code>Static</code> 构造函数用于初始化与类本身相关的资源，如设置静态变量或执行静态初始化逻辑，而不创建具体实例。</p>
+<p><img src="https://s2.loli.net/2024/12/02/Grb7ingD1RFMXdJ.png"></p>
+<p>还有需要补充的一点就是对泛型参数的支持，在工厂构造函数中可以直接使用该类泛型参数，而无需在其函数中重新定义它，而是静态构造函数，必须重新定义泛型参数，因为静态构造函数不能从其类中继承泛型参数，借助代码来理解一下。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@immutable</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>&lt;<span class="title">P</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> name;</span><br><span class="line">  <span class="keyword">final</span> P property;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">factory</span> Person(<span class="built_in">String</span> name, P property) = Person.fromProperties;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> Person.fromProperties(<span class="keyword">this</span>.name, <span class="keyword">this</span>.property);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 无需重新定义泛型 P，直接使用</span></span><br><span class="line">  <span class="keyword">factory</span> Person.fromPropertiesFactory(<span class="built_in">String</span> name, P property) =&gt;</span><br><span class="line">      Person.fromProperties(name, property);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 必须重新定义泛型参数 &lt;P&gt;</span></span><br><span class="line">  <span class="keyword">static</span> Person&lt;P&gt; fromPropertiesStatic&lt;P&gt;(<span class="built_in">String</span> name, P property) =&gt;</span><br><span class="line">      Person.fromProperties(name, property);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">factory</span> Person.fooBar(P property) =&gt;</span><br><span class="line">      Person.fromProperties(<span class="string">&#x27;Foo Bar&#x27;</span>, property);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> Person&lt;P&gt; bazQux&lt;P&gt;(P property) =&gt;</span><br><span class="line">      Person.fromProperties(<span class="string">&#x27;Baz Qux&#x27;</span>, property);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此外，工厂构造函数支持重定向等功能，而静态方法则无法提供这些功能。使用工厂构造函数创建对象有助于明确代码的目的和意图。</p>
+<h3 id="构造函数与抽象类"><a href="#构造函数与抽象类" class="headerlink" title="构造函数与抽象类"></a>构造函数与抽象类</h3><p>和其它语言中的抽象类一样，<code>Dart</code>的抽象类也是不能被实例化的，但抽象类构造函数可以用于初始化被继承的字段或逻辑，子类可以在构造函数中使用 <code>super</code> 调用父类的构造函数，这样方便为子类提供模板化的构造流程。在设计模式中，抽象类的构造函数常用于定义公共初始化逻辑，确保子类继承时遵循一致性。还有当一个类定义了 <code>final</code> 修饰的字段时，可以通过抽象类的构造函数初始化这些字段。也把二者之间的区别做个对比。</p>
+<p><img src="https://s2.loli.net/2024/12/02/V9tQmuWvwJFhGAa.png"></p>
+<p>结合代码来理解一下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="built_in">Type</span> &#123; dog, cat &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">Type</span> type;</span><br><span class="line">  <span class="comment">// 初始化被继承的字段或逻辑</span></span><br><span class="line">  <span class="keyword">const</span> Animal(&#123;<span class="keyword">required</span> <span class="keyword">this</span>.type&#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 使用 super 调用父类的构造函数</span></span><br><span class="line">  <span class="keyword">const</span> Cat() : <span class="keyword">super</span>(type: <span class="built_in">Type</span>.cat);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line"> <span class="comment">// 使用 super 调用父类的构造函数</span></span><br><span class="line">  <span class="keyword">const</span> Dog() : <span class="keyword">super</span>(type: <span class="built_in">Type</span>.dog);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>文章中介绍了命名构造函数、<code>Factory</code> 和 <code>Static</code> 构造函数、构造函数与抽象类以及它们之间的区别，也提到它们各自的应用场景，怎么样，这些构造函数的打开方式你 Get 到了吗？如有疑问，欢迎留言。</p>
+<p>关注公众号，第一时间看到更新内容：</p>
+<p><img src="https://s2.loli.net/2022/11/09/fNBn2gWw8tVazkr.jpg" alt="Flutter技术实践"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2024/12/03/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%BA%8C%EF%BC%89/" title="Dart 语法原来这么好玩儿（二）">http://www.nnxkcloud.com/2024/12/03/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%BA%8C%EF%BC%89/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2024/11/22/Flutter-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82/" rel="next" title="Flutter 设计模式全面解析：抽象工厂">
+                  <i class="fa fa-chevron-left"></i> Flutter 设计模式全面解析：抽象工厂
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Named-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">Named 构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Factory-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">Factory 构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Static-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">Static 构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Factory-%E5%92%8C-Static-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%8C%BA%E5%88%AB"><span class="nav-number">4.</span> <span class="nav-text">Factory 和 Static 构造函数区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%B8%8E%E6%8A%BD%E8%B1%A1%E7%B1%BB"><span class="nav-number">5.</span> <span class="nav-text">构造函数与抽象类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">小结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>
