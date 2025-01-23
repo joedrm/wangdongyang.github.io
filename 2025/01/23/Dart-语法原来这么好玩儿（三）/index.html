@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="今天来讲讲 Dart 中枚举（Enum），可能有的同学会说这个很常见也很简单，常把它用于定义一些状态、类型、级别等等，其用法一看就懂，直接 switch-case 一把梭哈到底，和其它的编程语言差别不大，没啥新鲜感，可是真的是这样吗？本篇文章结合实际项目开发中的场景来梳理一下 Dart 枚举的核心功能和使用技巧，尤其是在文章的末尾处对枚举的运用，为你在解决类似的实际业务场景提供了全新的思路。 Fl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dart 语法原来这么好玩儿（三）">
+<meta property="og:url" content="http://www.nnxkcloud.com/2025/01/23/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%B8%89%EF%BC%89/index.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="今天来讲讲 Dart 中枚举（Enum），可能有的同学会说这个很常见也很简单，常把它用于定义一些状态、类型、级别等等，其用法一看就懂，直接 switch-case 一把梭哈到底，和其它的编程语言差别不大，没啥新鲜感，可是真的是这样吗？本篇文章结合实际项目开发中的场景来梳理一下 Dart 枚举的核心功能和使用技巧，尤其是在文章的末尾处对枚举的运用，为你在解决类似的实际业务场景提供了全新的思路。 Fl">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/01/22/j56ZVRbaMCevrgX.jpg">
+<meta property="og:image" content="https://s2.loli.net/2025/01/22/KDFI2OSA7Mj8uxp.png">
+<meta property="article:published_time" content="2025-01-23T03:31:32.000Z">
+<meta property="article:modified_time" content="2025-01-23T03:32:26.704Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/01/22/j56ZVRbaMCevrgX.jpg">
+
+<link rel="canonical" href="http://www.nnxkcloud.com/2025/01/23/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%B8%89%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Dart 语法原来这么好玩儿（三） | 那年星空</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2025/01/23/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%B8%89%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="joe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="那年星空">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Dart 语法原来这么好玩儿（三）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-23 11:31:32 / 修改时间：11:32:26" itemprop="dateCreated datePublished" datetime="2025-01-23T11:31:32+08:00">2025-01-23</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2025/01/23/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%B8%89%EF%BC%89/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/01/23/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%B8%89%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <html><head></head><body></body></html><html><head></head><body><p>今天来讲讲 <code>Dart</code> 中枚举（<code>Enum</code>），可能有的同学会说这个很常见也很简单，常把它用于定义一些状态、类型、级别等等，其用法一看就懂，直接 <code>switch-case</code> 一把梭哈到底，和其它的编程语言差别不大，没啥新鲜感，可是真的是这样吗？本篇文章结合实际项目开发中的场景来梳理一下 <code>Dart</code> 枚举的核心功能和使用技巧，尤其是在文章的末尾处对枚举的运用，为你在解决类似的实际业务场景提供了全新的思路。</p>
+<h3 id="Flutter-2-x-x-的枚举"><a href="#Flutter-2-x-x-的枚举" class="headerlink" title="Flutter 2.x.x 的枚举"></a><code>Flutter</code> 2.x.x 的枚举</h3><p><code>Flutter</code> 2.x.x 的时候，<code>enum</code> 用起来确实很鸡肋，枚举值只能表示静态的常量集合，不能为每个枚举值附加额外的属性，如果想要添加额外的属性则需要借助 <code>Map</code> 映射来实现。其内部无法添加方法，需要借助 <code>Extension</code> 来实现。还有缺少编译时检查导致 <code>switch-case</code> 枚举时出现漏处理等问题。这些也是我前段时间刚结束的 <code>App</code> 项目中 <code>Flutter</code> 版本升级改造遇到和处理过的问题，借着这次也来分享一下。</p>
+<p><img src="https://s2.loli.net/2025/01/22/j56ZVRbaMCevrgX.jpg"></p>
+<p>在刚刚改造完的智能设备的项目中，常常需要区分不同的设备，代码中到处都要用到设备类型，此时使用枚举来罗列多个设备类型（<code>DeviceType</code>）就是很好的应用场景，下面是项目中定义的枚举：</p>
+<figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> DeviceType {</span><br><span class="line">  lamp,             <span class="comment">// 灯，1</span></span><br><span class="line">  airConditioner,   <span class="comment">// 空调，2</span></span><br><span class="line">  camera,           <span class="comment">// 摄像头，3</span></span><br><span class="line">  doorLock,         <span class="comment">// 智能门锁，4</span></span><br><span class="line">  gateway,		  <span class="comment">// 网关，5</span></span><br><span class="line">  fridge,		   <span class="comment">// 冰箱，6</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>这些设备类型只是项目中的一部分，此时和后端 <code>Api</code> 接口返回的设备类型编号对应，例如 <code>1</code> 表示 <code>lamp</code> 等，解析 <code>json</code> 数据的时候将数字转成枚举类型 <code>DeviceType</code>，方便在其它地方使用，但是如果我们需要用到和设备类型相关的更多参数的时候，如设备名称国际化、设备图标、是否可以被分组及枚举的嵌套，在 <code>Flutter</code> 2.x.x 的时候，只能单独定义一个 <code>Map</code> 来做映射，我在这里先定义了 <code>List</code>，再将它转成 <code>Map</code>。</p>
+<figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="built_in">List</span>&lt;<span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">dynamic</span>&gt;&gt; allDeviceTypes = </span><br><span class="line">[</span><br><span class="line">  {</span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"灯"</span>,</span><br><span class="line">    <span class="string">"value"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">"type"</span>: DeviceType.lamp,</span><br><span class="line">    <span class="string">"icon"</span>: <span class="string">"lamp_icon"</span>,</span><br><span class="line">    <span class="string">"is_group"</span>: <span class="keyword">true</span></span><br><span class="line">  },</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment">/// <span class="language-markdown">这里将上面的 List 转成 Map</span></span></span><br><span class="line"><span class="comment">/// <span class="language-markdown">其结构为：{"lamp": {"name":"灯","value":1,"type":DeviceType.lamp,"icon":"lamp<span class="emphasis">_icon","is_</span>group":true}}</span></span></span><br><span class="line"><span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">dynamic</span>&gt; <span class="keyword">get</span> allDeviceTypesMap =&gt; allDeviceTypes.asMap().map(</span><br><span class="line">    (key, value) =&gt; MapEntry((value[<span class="string">"type"</span>] <span class="keyword">as</span> DeviceType).typeName, value));</span><br></pre></td></tr></tbody></table></figure>
+
+<p>然后借助 <code>extension</code> 来实现，当用到设备名称文案的时候，可以直接 <code>DeviceType.lamp.name</code>来获取名称，实现代码如下。</p>
+<figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> DeviceTypeExtension <span class="keyword">on</span> DeviceType {</span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> typeName =&gt; toString().split(<span class="string">"."</span>).last;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">int</span> <span class="keyword">get</span> value =&gt; allDeviceTypesMap[typeName][<span class="string">"value"</span>];</span><br><span class="line"></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> name =&gt; allDeviceTypesMap[typeName][<span class="string">"name"</span>];</span><br><span class="line"></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> icon =&gt; allDeviceTypesMap[typeName][<span class="string">"icon"</span>];</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>Dart</code> 2.17 之前想要实现上述类似逻辑，除了上面这种写法之外，还可以使用类的静态构造函数来实现，具体写法以参考此系列的上一篇文章《Dart 语法原来这么好玩儿（二）》。</p>
+<h3 id="属性字段"><a href="#属性字段" class="headerlink" title="属性字段"></a>属性字段</h3><p>这么一套下来是不是着实有点麻烦，那会儿从 <code>Swift</code> 转到 <code>Dart</code> 的时候，很不适应，这也太鸡肋了，经常吐槽。但是将 <code>Flutter</code> 升级更新，<code>Dart</code> 2.17之后引入了 <code>Enhanced Enum Classes</code>，不再需要额外的 <code>Map</code> 映射和借助 <code>extension</code> 了，直接在 <code>enum</code> 内部定义其属性，并在构造函数中初始化其属性字段，这样修改后的代码瞬间看起来清爽多了，代码如下：</p>
+<figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> DeviceType {</span><br><span class="line">  lamp(<span class="string">"灯光"</span>, <span class="string">"lamp_icon"</span>, <span class="number">1</span>, <span class="keyword">true</span>), <span class="comment">// 灯光</span></span><br><span class="line">  airConditioner(<span class="string">"空调"</span>, <span class="string">"air_conditioner_icon"</span>, <span class="number">2</span>, <span class="keyword">true</span>), <span class="comment">// 空调</span></span><br><span class="line">  camera(<span class="string">"摄像头"</span>, <span class="string">"camera_icon"</span>, <span class="number">3</span>, <span class="keyword">false</span>), <span class="comment">// 摄像头</span></span><br><span class="line">  doorLock(<span class="string">"智能门锁"</span>, <span class="string">"door_lock_icon"</span>, <span class="number">4</span>, <span class="keyword">true</span>), <span class="comment">// 智能门锁</span></span><br><span class="line">  gateway(<span class="string">"网关"</span>, <span class="string">"gateway_icon"</span>, <span class="number">5</span>, <span class="keyword">false</span>), <span class="comment">// 网关</span></span><br><span class="line">  fridge(<span class="string">"冰箱"</span>, <span class="string">"fridge_icon"</span>, <span class="number">6</span>, <span class="keyword">true</span>); <span class="comment">// 冰箱，注意这里使用 ; 结尾</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 属性用 final 关键字修饰</span></span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> title;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> icon;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">int</span> value;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">bool</span> isGroup;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 构造方法前的加 const 关键字</span></span><br><span class="line">  <span class="keyword">const</span> DeviceType(<span class="keyword">this</span>.title, <span class="keyword">this</span>.icon, <span class="keyword">this</span>.value, <span class="keyword">this</span>.isGroup);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>值得注意的是定义的属性需要使用 <code>final</code> 关键字修饰，构造方法前的加 <code>const</code> 关键字，各个枚举成员之间使用逗号<code>,</code>分隔，最后一个成员使用分号<code>;</code>结尾。</p>
+<h3 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h3><p>除了上面代码中可以给枚举添加属性外，不同设备可能有特定的行为或交互方式，可以通过枚举实现这些行为的动态处理，即为枚举添加实例方法。</p>
+<figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> performCustomAction(<span class="built_in">String</span> command) {</span><br><span class="line">  <span class="keyword">switch</span> (<span class="keyword">this</span>) {</span><br><span class="line">    <span class="keyword">case</span> DeviceType.lamp:</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">'<span class="subst">$name</span>：<span class="subst">$command</span> 灯光已调整亮度。'</span>);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> DeviceType.airConditioner:</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">'<span class="subst">$name</span>：<span class="subst">$command</span> 温度设置成功。'</span>);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="comment">/// <span class="language-markdown">...</span></span></span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>调用枚举的实例方法：</p>
+<figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">main() {</span><br><span class="line">  DeviceType.lamp.performCustomAction(<span class="string">"brightness to 80%"</span>);</span><br><span class="line">  <span class="comment">/// <span class="language-markdown">灯：brightness to 80% 灯光已调整亮度。</span></span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="工厂构造函数"><a href="#工厂构造函数" class="headerlink" title="工厂构造函数"></a>工厂构造函数</h3><p>在 <code>Model</code> 中解析后端 <code>Api</code> 接口返回的设备类型编号，此时根据设备类型编号转成我们想要的设备枚举类型 <code>DeviceType</code>，该怎么操作呢？<code>Dart</code> 的增强枚举允许使用工厂构造函数，根据逻辑动态返回特定的枚举值，将如下代码添加到 <code>DeviceType</code> 枚举类中。</p>
+<figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">参数 value 为后端接口返回的设备类型编号。</span></span></span><br><span class="line"><span class="keyword">factory</span> DeviceType.fromValue(<span class="built_in">int</span> value) {</span><br><span class="line">  <span class="keyword">return</span> DeviceType.values.firstWhere((type) =&gt; type.value == value,</span><br><span class="line">      orElse: () =&gt; DeviceType.lamp);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>外部调用 <code>DeviceType</code> 的工厂构造函数：</p>
+<figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">main() {</span><br><span class="line">  <span class="built_in">print</span>(DeviceType.fromValue(<span class="number">2</span>));</span><br><span class="line">  <span class="comment">/// <span class="language-markdown">DeviceType.airConditioner</span></span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="静态字段和方法"><a href="#静态字段和方法" class="headerlink" title="静态字段和方法"></a>静态字段和方法</h3><p>增强枚举还支持在内部定义静态字段和方法，常用于在枚举层级上操作或存储数据，静态方法也可以实现上述工厂构造函数类似的功能，根据设备类型编号返回<code>DeviceType</code>类型，代码如下：</p>
+<figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> defaultDeviceType = DeviceType.unknown;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> DeviceType withValue(<span class="built_in">int</span> value) {</span><br><span class="line">  <span class="keyword">return</span> DeviceType.values.firstWhere((type) =&gt; type.value == value,</span><br><span class="line">      orElse: () =&gt; DeviceType.unknown);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="实现接口"><a href="#实现接口" class="headerlink" title="实现接口"></a>实现接口</h3><p>枚举还可以实现接口，用来统一设备的行为或规范设备的能力。例如，有多种智能设备（如灯、摄像头、门锁等），它们都需要实现某些通用功能，如设备开关、状态查询等。这可以通过枚举实现接口来设计，这里定义了一个设备行为接口类<code>SmartDevice</code>。</p>
+<figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义设备行为接口</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">SmartDevice</span> </span>{</span><br><span class="line">  <span class="keyword">void</span> turnOn();   <span class="comment">// 打开设备</span></span><br><span class="line">  <span class="keyword">void</span> turnOff();  <span class="comment">// 关闭设备</span></span><br><span class="line">  <span class="built_in">bool</span> getStatus(); <span class="comment">// 查询设备状态</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>在枚举 <code>DeviceType</code> 中实现上述接口。</p>
+<figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> DeviceType <span class="keyword">implements</span> SmartDevice {</span><br><span class="line">   <span class="comment">//...</span></span><br><span class="line">      </span><br><span class="line">  <span class="comment">// 设备状态存储在 Map 中</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">final</span> <span class="built_in">Map</span>&lt;DeviceType, <span class="built_in">bool</span>&gt; _deviceStates = {</span><br><span class="line">    DeviceType.lamp: <span class="keyword">false</span>,</span><br><span class="line">    DeviceType.airConditioner: <span class="keyword">false</span>,</span><br><span class="line">    DeviceType.camera: <span class="keyword">false</span>,</span><br><span class="line">    DeviceType.doorLock: <span class="keyword">false</span>,</span><br><span class="line">    DeviceType.gateway: <span class="keyword">false</span>,</span><br><span class="line">    DeviceType.fridge: <span class="keyword">false</span>,</span><br><span class="line">  };</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">bool</span> getStatus() =&gt; _deviceStates[<span class="keyword">this</span>] ?? <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> turnOff() {</span><br><span class="line">    _deviceStates[<span class="keyword">this</span>] = <span class="keyword">false</span>;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> turnOn() {</span><br><span class="line">    _deviceStates[<span class="keyword">this</span>] = <span class="keyword">true</span>;</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>调用示例：</p>
+<figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">main() {</span><br><span class="line">  DeviceType.lamp.turnOn();</span><br><span class="line">  <span class="built_in">print</span>(DeviceType.lamp.getStatus()); <span class="comment">// true</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>这里可能有人会有疑问了，这个和直接在内部定义函数或者借助外部的 <code>extension</code> 来实现有什么区别呢？这么做不是搞复杂了吗？其实这个就和接口的作用相一致的，通过接口定义一组行为或功能，使得枚举类型可以实现统一行为或约束，特别是有多个不同的枚举类型的复杂场景时，实现了相同的接口方法，有更大的复用性和灵活性。所以个人觉得二者并不冲突，怎么选择可以根据实际场景组合来使用。</p>
+<h3 id="与-mixin-结合使用"><a href="#与-mixin-结合使用" class="headerlink" title="与 mixin 结合使用"></a>与 <code>mixin</code> 结合使用</h3><p>通过 <code>mixin</code> 来为枚举值添加通用功能或扩展特定行为。这种组合方式适用于需要复用功能或为不同枚举提供一致操作的场景，达到动态增加功能的目的，而不破坏枚举原有的结构，如设备状态枚举，每个设备状态都有的日志记录等。</p>
+<figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">mixin</span> Loggable {</span><br><span class="line">  <span class="keyword">void</span> log(<span class="built_in">String</span> message) {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">'[Log] <span class="subst">$message</span>'</span>);</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> DeviceStatus <span class="keyword">with</span> Loggable {</span><br><span class="line">  active(<span class="string">'设备正在运行'</span>),</span><br><span class="line">  inactive(<span class="string">'设备未激活'</span>),</span><br><span class="line">  error(<span class="string">'设备出现故障'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> desc;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> DeviceStatus(<span class="keyword">this</span>.desc);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> performAction() {</span><br><span class="line">    log(<span class="string">'当前状态：<span class="subst">$desc</span>'</span>);</span><br><span class="line">    <span class="comment">/// <span class="language-markdown">处理其它逻辑</span></span></span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>在枚举中使用 <code>mixin</code> 和上面提到的实现接口，它们俩除了关键字不一样还有什么其它区别呢？其实从设计意图和应用场景上来讲区别还是挺大的。接口是定义了一组方法和属性来强制规定某些行为，并且这些行为必须由枚举具体实现，适合为不同枚举值提供不同的实现逻辑。而 <code>mixin</code> 是一种代码复用机制，也可以为为枚举添加方法和属性及提供通用的行为或功能，但没有强制性，不需要每个枚举值有独特的实现，适合为所有枚举值提供通用的扩展功能或工具方法。</p>
+<h3 id="与泛型结合使用"><a href="#与泛型结合使用" class="headerlink" title="与泛型结合使用"></a>与泛型结合使用</h3><p><img src="https://s2.loli.net/2025/01/22/KDFI2OSA7Mj8uxp.png"></p>
+<p>在实际的智能设备系统中，不同类型的设备类有不同的属性（<code>attribute</code>），如上图所示，灯有亮度和色温，冰箱有当前温度和目标温度，摄像头有是否正在录制及当前分辨率是多少等等，当然还有更多的设备和其它的属性，这里可以结合泛型来定义不同设备的属性和行为。</p>
+<figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> DeviceAttribute&lt;T&gt; {</span><br><span class="line">  <span class="comment">// 灯的属性，有亮度、色温</span></span><br><span class="line">  brightness&lt;<span class="built_in">int</span>&gt;(),</span><br><span class="line">  colorTemperature&lt;<span class="built_in">int</span>&gt;(),</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 冰箱的属性，有当前温度、目标温度</span></span><br><span class="line">  currentTemperature&lt;<span class="built_in">double</span>&gt;(),</span><br><span class="line">  targetTemperature&lt;<span class="built_in">double</span>&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> DeviceAttribute();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>声明 <code>Device</code> 类，一般用来接收 <code>Api</code> 接口返回的 <code>json</code> 数据，<code>json</code> 中有一个 <code>attribute</code> 对象。如果按照以前的做法，在 <code>Device</code> 类中为每一种设备类型创建一个 <code>Attribute</code> 类，如 <code>LampAttribute</code>、<code>FridgeAttribute</code>，依赖接收设备不同的属性。而在这里尝试用枚举结合泛型来实现，<code>type</code> 表示当前的设备类型，<code>properties</code> 表示存储当前设备的属性，这样做到了动态管理不同设备的属性，再也不用为每种设备编写单独的逻辑，实现代码如下：</p>
+<figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Device</span> </span>{</span><br><span class="line">  <span class="comment">/// <span class="language-markdown">设备类型</span></span></span><br><span class="line">  DeviceType? type;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/// <span class="language-markdown">存储不同设备类型的属性</span></span></span><br><span class="line">  <span class="built_in">Map</span>&lt;DeviceAttribute, <span class="built_in">dynamic</span>&gt;? properties;</span><br><span class="line"></span><br><span class="line">  Device(<span class="keyword">this</span>.type, <span class="keyword">this</span>.properties);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 获取设备属性</span></span><br><span class="line">  T? getProperty&lt;T&gt;(DeviceAttribute&lt;T&gt; property) {</span><br><span class="line">    <span class="keyword">return</span> properties?[property] <span class="keyword">as</span> T?;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 设置设备属性</span></span><br><span class="line">  <span class="keyword">void</span> setProperty&lt;T&gt;(DeviceAttribute&lt;T&gt; property, T value) {</span><br><span class="line">    properties?[property] = value;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  Device.fromJson(<span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">dynamic</span>&gt; json) {</span><br><span class="line">    type = DeviceType.fromValue(json[<span class="string">"value"</span>]);</span><br><span class="line">    <span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">dynamic</span>&gt; attribute = json[<span class="string">"attribute"</span>];</span><br><span class="line">    <span class="keyword">switch</span> (type) {</span><br><span class="line">      <span class="keyword">case</span> DeviceType.lamp:</span><br><span class="line">        setProperty&lt;<span class="built_in">int</span>&gt;(DeviceAttribute.brightness, attribute[<span class="string">"brightness"</span>]);</span><br><span class="line">        setProperty&lt;<span class="built_in">int</span>&gt;(</span><br><span class="line">            DeviceAttribute.colorTemperature, attribute[<span class="string">"colorTemperature"</span>]);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> DeviceType.fridge:</span><br><span class="line">        setProperty&lt;<span class="built_in">double</span>&gt;(DeviceAttribute.currentTemperature,</span><br><span class="line">            attribute[<span class="string">"currentTemperature"</span>]);</span><br><span class="line">        setProperty&lt;<span class="built_in">double</span>&gt;(</span><br><span class="line">            DeviceAttribute.targetTemperature, attribute[<span class="string">"targetTemperature"</span>]);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>在界面上使用的时候，通过<code>Device</code>对象的实例调用<code>getProperty</code>方法出入<code>DeviceAttribute</code>枚举类型，就能获取到当前设备的属性数据，其调用代码如下：</p>
+<figure class="highlight dart"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">main() {</span><br><span class="line">  <span class="comment">// 模拟从接口返回的数据</span></span><br><span class="line">  <span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">dynamic</span>&gt; json = {};</span><br><span class="line">  <span class="comment">// 创建一个灯设备</span></span><br><span class="line">  <span class="keyword">var</span> device = Device.fromJson(json);</span><br><span class="line">  <span class="keyword">var</span> brightness = device.getProperty&lt;<span class="built_in">int</span>&gt;(DeviceAttribute.brightness);</span><br><span class="line">  <span class="built_in">print</span>(brightness);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>直接通过 <code>DeviceAttribute.brightness</code> 枚举类型获取数据，不再需要判断这个 <code>device</code> 对象是什么类型，这样来实现有没有更加清晰明了呢。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>枚举类型在实际开发中使用非常广泛，如我们的网络请求中，请求的 <code>Method</code> 类型有 <code>Get</code>、<code>Post</code>等，处理 <code>API</code> 响应时，可以用枚举来定义可能出现的错误类型，有网络错误、网络超时、服务器错误等，还有响应的各种状态码也可以用到枚举等等使用场景，使得代码简单易读，有效减少出错的可能性。而通过结合 <code>mixin</code>、接口、泛型等特性，更是为开发者提供了极大的扩展能力。希望通过这篇文章帮助你获得新的启发，更好的利用这一语言特性，让你的代码更加优雅与高效。关于枚举的运用，如果你有什么疑问，欢迎在评论区交流和讨论。</p>
+</body></html>
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>joe
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.nnxkcloud.com/2025/01/23/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%B8%89%EF%BC%89/" title="Dart 语法原来这么好玩儿（三）">http://www.nnxkcloud.com/2025/01/23/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%B8%89%EF%BC%89/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2024/12/03/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="next" title="Dart 语法原来这么好玩儿（二）">
+                  <i class="fa fa-chevron-left"></i> Dart 语法原来这么好玩儿（二）
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Flutter-2-x-x-%E7%9A%84%E6%9E%9A%E4%B8%BE"><span class="nav-number">1.</span> <span class="nav-text">Flutter 2.x.x 的枚举</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E5%AD%97%E6%AE%B5"><span class="nav-number">2.</span> <span class="nav-text">属性字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">实例方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E5%8E%82%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">工厂构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%AD%97%E6%AE%B5%E5%92%8C%E6%96%B9%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">静态字段和方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%8E%A5%E5%8F%A3"><span class="nav-number">6.</span> <span class="nav-text">实现接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E-mixin-%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8"><span class="nav-number">7.</span> <span class="nav-text">与 mixin 结合使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E%E6%B3%9B%E5%9E%8B%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8"><span class="nav-number">8.</span> <span class="nav-text">与泛型结合使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">9.</span> <span class="nav-text">小结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>
