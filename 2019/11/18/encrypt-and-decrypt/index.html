@@ -54,31 +54,31 @@
   <meta name="description" content="前言最近一直在研究iOS重签名的一些东西，也是对苹果超级签名机制的一次重新学习（之前只是了解），而在这之前先来过一遍加密解密数字签名等知识，下图是整个学习过程：  密码学主要解决四个核心问题：机密性（隐私性）、完整性、身份验证、不可抵赖性，经典的密码学算法有对称加密算法 、公开密钥算法等，而每一个密码学算法是为了解决哪些问题，还有哪些不足，下面来逐个分析一下">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS签名机制">
-<meta property="og:url" content="http://www.nnxkcloud.com/2019/11/18/encrypt-and-decrypt/index.html">
+<meta property="og:url" content="https://wanflutter.netlify.app/2019/11/18/encrypt-and-decrypt/index.html">
 <meta property="og:site_name" content="那年星空">
 <meta property="og:description" content="前言最近一直在研究iOS重签名的一些东西，也是对苹果超级签名机制的一次重新学习（之前只是了解），而在这之前先来过一遍加密解密数字签名等知识，下图是整个学习过程：  密码学主要解决四个核心问题：机密性（隐私性）、完整性、身份验证、不可抵赖性，经典的密码学算法有对称加密算法 、公开密钥算法等，而每一个密码学算法是为了解决哪些问题，还有哪些不足，下面来逐个分析一下">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_01.png">
-<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_03.jpeg">
-<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_04.jpeg">
-<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_05.jpeg">
-<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_06.jpeg">
-<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_07.jpeg">
-<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_08.jpeg">
-<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_09.jpeg">
-<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_10.jpg">
-<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_11.jpeg">
-<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_12.jpeg">
-<meta property="og:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_02.png">
+<meta property="og:image" content="https://wanflutter.netlify.app/.com//encrypt-and-decrypt_01.png">
+<meta property="og:image" content="https://wanflutter.netlify.app/.com//encrypt-and-decrypt_03.jpeg">
+<meta property="og:image" content="https://wanflutter.netlify.app/.com//encrypt-and-decrypt_04.jpeg">
+<meta property="og:image" content="https://wanflutter.netlify.app/.com//encrypt-and-decrypt_05.jpeg">
+<meta property="og:image" content="https://wanflutter.netlify.app/.com//encrypt-and-decrypt_06.jpeg">
+<meta property="og:image" content="https://wanflutter.netlify.app/.com//encrypt-and-decrypt_07.jpeg">
+<meta property="og:image" content="https://wanflutter.netlify.app/.com//encrypt-and-decrypt_08.jpeg">
+<meta property="og:image" content="https://wanflutter.netlify.app/.com//encrypt-and-decrypt_09.jpeg">
+<meta property="og:image" content="https://wanflutter.netlify.app/.com//encrypt-and-decrypt_10.jpg">
+<meta property="og:image" content="https://wanflutter.netlify.app/.com//encrypt-and-decrypt_11.jpeg">
+<meta property="og:image" content="https://wanflutter.netlify.app/.com//encrypt-and-decrypt_12.jpeg">
+<meta property="og:image" content="https://wanflutter.netlify.app/.com//encrypt-and-decrypt_02.png">
 <meta property="article:published_time" content="2019-11-18T06:32:24.000Z">
 <meta property="article:modified_time" content="2024-10-15T03:05:34.690Z">
 <meta property="article:author" content="joe">
 <meta property="article:tag" content="超级签名">
 <meta property="article:tag" content="iOS">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.nnxkcloud.com/.com//encrypt-and-decrypt_01.png">
+<meta name="twitter:image" content="https://wanflutter.netlify.app/.com//encrypt-and-decrypt_01.png">
 
-<link rel="canonical" href="http://www.nnxkcloud.com/2019/11/18/encrypt-and-decrypt/">
+<link rel="canonical" href="https://wanflutter.netlify.app/2019/11/18/encrypt-and-decrypt/">
 
 
 <script id="page-configurations">
@@ -210,7 +210,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2019/11/18/encrypt-and-decrypt/">
+    <link itemprop="mainEntityOfPage" href="https://wanflutter.netlify.app/2019/11/18/encrypt-and-decrypt/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/me.png">
@@ -520,7 +520,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://www.nnxkcloud.com/2019/11/18/encrypt-and-decrypt/" title="iOS签名机制">http://www.nnxkcloud.com/2019/11/18/encrypt-and-decrypt/</a>
+    <a href="https://wanflutter.netlify.app/2019/11/18/encrypt-and-decrypt/" title="iOS签名机制">https://wanflutter.netlify.app/2019/11/18/encrypt-and-decrypt/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！

@@ -54,7 +54,7 @@
   <meta name="description" content="前两篇文章说到了 状态管理 和 分层设计 ，本篇换个角度来讲讲 Flutter 中的依赖管理，需要注意的是这里讲的依赖管理主要指项目内的代码，包括依赖注入、组件包之间的依赖关系，而不是第三方库的依赖管理，下面开始进入正题。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Flutter大型项目架构：依赖管理篇">
-<meta property="og:url" content="http://www.nnxkcloud.com/2024/04/17/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E7%AF%87/index.html">
+<meta property="og:url" content="https://wanflutter.netlify.app/2024/04/17/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E7%AF%87/index.html">
 <meta property="og:site_name" content="那年星空">
 <meta property="og:description" content="前两篇文章说到了 状态管理 和 分层设计 ，本篇换个角度来讲讲 Flutter 中的依赖管理，需要注意的是这里讲的依赖管理主要指项目内的代码，包括依赖注入、组件包之间的依赖关系，而不是第三方库的依赖管理，下面开始进入正题。">
 <meta property="og:locale" content="zh_CN">
@@ -67,7 +67,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s2.loli.net/2024/04/16/hkYiExGqXdo62Rw.png">
 
-<link rel="canonical" href="http://www.nnxkcloud.com/2024/04/17/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E7%AF%87/">
+<link rel="canonical" href="https://wanflutter.netlify.app/2024/04/17/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E7%AF%87/">
 
 
 <script id="page-configurations">
@@ -199,7 +199,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/04/17/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E7%AF%87/">
+    <link itemprop="mainEntityOfPage" href="https://wanflutter.netlify.app/2024/04/17/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E7%AF%87/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/me.png">
@@ -258,7 +258,7 @@
 
       
         <p><img src="https://s2.loli.net/2024/04/16/hkYiExGqXdo62Rw.png"></p>
-<p>前两篇文章说到了 <strong><a href="https://www.nnxkcloud.com/2023/08/09/flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/">状态管理</a></strong> 和 <strong><a href="https://www.nnxkcloud.com/2024/03/26/flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E7%AF%87/">分层设计</a></strong> ，本篇换个角度来讲讲 <code>Flutter</code> 中的依赖管理，需要注意的是这里讲的依赖管理主要指项目内的代码，包括依赖注入、组件包之间的依赖关系，而不是第三方库的依赖管理，下面开始进入正题。</p>
+<p>前两篇文章说到了 <strong><a target="_blank" rel="noopener" href="https://www.nnxkcloud.com/2023/08/09/flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/">状态管理</a></strong> 和 <strong><a target="_blank" rel="noopener" href="https://www.nnxkcloud.com/2024/03/26/flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E7%AF%87/">分层设计</a></strong> ，本篇换个角度来讲讲 <code>Flutter</code> 中的依赖管理，需要注意的是这里讲的依赖管理主要指项目内的代码，包括依赖注入、组件包之间的依赖关系，而不是第三方库的依赖管理，下面开始进入正题。</p>
 <span id="more"></span>
 
 <h2 id="为啥需要依赖管理"><a href="#为啥需要依赖管理" class="headerlink" title="为啥需要依赖管理"></a>为啥需要依赖管理</h2><p>你可能会问，为啥搞那么麻烦使用依赖管理？不就是实例化的时候多写几句代码嘛，没有用它照样能把功能完成，不是吗？这么说也没错，如果只是在项目的几个位置这样写，问题也不大，可是放大到大型的项目中呢，该如何应对呢？下面这段代码是没有使用依赖管理之前的：</p>
@@ -273,7 +273,7 @@
 <p>如下图体现出来的各个组件的依赖关系：</p>
 <p><img src="https://s2.loli.net/2024/03/27/RvQMhaPd8p4cOf5.png" alt="各个组件的依赖关系"></p>
 <p>在主工程 <code>App</code> 中的 <code>LoginPage</code> 发送登录请求，上图中是在 <code>Bloc</code> 调用抽象类 <code>Repository</code> 登录函数，<code>Repository</code> 是在 <code>domain</code> 组件包的，实际上登录操作的实现是在 <code>data</code> 组件包中的类 <code>RepositoryImpl</code> 的 <code>login</code> 函数。<code>App</code> 只需要依赖 <code>domain</code> 组件包，不直接依赖 <code>data</code>，而这之间的实现代码则是由<code>DI</code> 帮我们完成的。</p>
-<h2 id="Flutter-中依赖管理方案"><a href="#Flutter-中依赖管理方案" class="headerlink" title="Flutter 中依赖管理方案"></a>Flutter 中依赖管理方案</h2><p>具体该怎么操作呢？我在 <strong><a href="https://www.nnxkcloud.com/2024/04/13/flutter%E5%BC%80%E5%8F%917%E4%B8%AA%E5%BB%BA%E8%AE%AE%EF%BC%8C%E8%AE%A9%E4%BD%A0%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%95%88%E7%8E%87%E9%A3%99%E5%8D%87/">《Flutter开发7个建议，让你的工作效率飙升》</a></strong> 也提到了依赖注入，也是以 <code>Repository</code> 为例，通过 <code>get_it</code> 和 <code>injectable</code> 配合来使用，达到解耦<code>App</code>  和 <code>data</code> 组件之间的依赖关系。今天换一个，我们以 <code>AppNavigator</code> 为例，来看看怎样解耦业务调用 <code>AppNavigator</code>  和导航具体实现的之间关系。先来看看 <code>AppNavigator</code> 中的代码。</p>
+<h2 id="Flutter-中依赖管理方案"><a href="#Flutter-中依赖管理方案" class="headerlink" title="Flutter 中依赖管理方案"></a>Flutter 中依赖管理方案</h2><p>具体该怎么操作呢？我在 <strong><a target="_blank" rel="noopener" href="https://www.nnxkcloud.com/2024/04/13/flutter%E5%BC%80%E5%8F%917%E4%B8%AA%E5%BB%BA%E8%AE%AE%EF%BC%8C%E8%AE%A9%E4%BD%A0%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%95%88%E7%8E%87%E9%A3%99%E5%8D%87/">《Flutter开发7个建议，让你的工作效率飙升》</a></strong> 也提到了依赖注入，也是以 <code>Repository</code> 为例，通过 <code>get_it</code> 和 <code>injectable</code> 配合来使用，达到解耦<code>App</code>  和 <code>data</code> 组件之间的依赖关系。今天换一个，我们以 <code>AppNavigator</code> 为例，来看看怎样解耦业务调用 <code>AppNavigator</code>  和导航具体实现的之间关系。先来看看 <code>AppNavigator</code> 中的代码。</p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AppNavigator</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> AppNavigator();</span><br><span class="line"></span><br><span class="line">  <span class="built_in">int</span> <span class="keyword">get</span> currentBottomTab;</span><br><span class="line"></span><br><span class="line">  Future&lt;T?&gt; push&lt;T <span class="keyword">extends</span> <span class="built_in">Object?</span>&gt;(AppRouteInfo appRouteInfo);</span><br><span class="line">  </span><br><span class="line">  Future&lt;<span class="built_in">bool</span>&gt; pop&lt;T <span class="keyword">extends</span> <span class="built_in">Object?</span>&gt;(&#123;</span><br><span class="line">    T? result,</span><br><span class="line">    <span class="built_in">bool</span> useRootNavigator = <span class="keyword">false</span>,</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里的 <code>AppNavigator</code> 还是 <code>abstract</code> 类，和 <code>Repository</code> 一样，也是在 <code>domain</code> 组件包中，从上面的各个组件的依赖关系图看出，<code>AppNavigator</code>  实现类 <code>AppNavigatorImpl</code> 放在了主工程 <code>App</code> 组件包中的。</p>
 <p>类<code>AppNavigatorImpl</code> 实现代码如下：</p>
@@ -303,7 +303,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://www.nnxkcloud.com/2024/04/17/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E7%AF%87/" title="Flutter大型项目架构：依赖管理篇">http://www.nnxkcloud.com/2024/04/17/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E7%AF%87/</a>
+    <a href="https://wanflutter.netlify.app/2024/04/17/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E7%AF%87/" title="Flutter大型项目架构：依赖管理篇">https://wanflutter.netlify.app/2024/04/17/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E7%AF%87/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！

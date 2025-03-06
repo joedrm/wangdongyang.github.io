@@ -54,7 +54,7 @@
   <meta name="description" content="随着项目功能模块越来越多，怎么去管理这些私有组件包是一个不得不面对的问题，特别对于团队开发来讲，一些通用的公共组件往往会在多个项目间使用，多的有几十个，每个组件包都有有自己的版本，组件包之间还有依赖关系，那么如何在团队内部共享私有组件包，控制依赖私有组件包的版本和组件包的更新维护，而且要确保其安全环境，也就是没有公网无法访问的安全环境，这些都是需要考虑的，如何去管理这些组件对提升开发效率和代码质量">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Flutter大型项目架构：私有组件包管理">
-<meta property="og:url" content="http://www.nnxkcloud.com/2024/07/25/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%A7%81%E6%9C%89%E7%BB%84%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:url" content="https://wanflutter.netlify.app/2024/07/25/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%A7%81%E6%9C%89%E7%BB%84%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/index.html">
 <meta property="og:site_name" content="那年星空">
 <meta property="og:description" content="随着项目功能模块越来越多，怎么去管理这些私有组件包是一个不得不面对的问题，特别对于团队开发来讲，一些通用的公共组件往往会在多个项目间使用，多的有几十个，每个组件包都有有自己的版本，组件包之间还有依赖关系，那么如何在团队内部共享私有组件包，控制依赖私有组件包的版本和组件包的更新维护，而且要确保其安全环境，也就是没有公网无法访问的安全环境，这些都是需要考虑的，如何去管理这些组件对提升开发效率和代码质量">
 <meta property="og:locale" content="zh_CN">
@@ -67,7 +67,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s2.loli.net/2024/06/15/X6OpUV7PEcLM8hB.png">
 
-<link rel="canonical" href="http://www.nnxkcloud.com/2024/07/25/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%A7%81%E6%9C%89%E7%BB%84%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/">
+<link rel="canonical" href="https://wanflutter.netlify.app/2024/07/25/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%A7%81%E6%9C%89%E7%BB%84%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/">
 
 
 <script id="page-configurations">
@@ -199,7 +199,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/07/25/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%A7%81%E6%9C%89%E7%BB%84%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/">
+    <link itemprop="mainEntityOfPage" href="https://wanflutter.netlify.app/2024/07/25/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%A7%81%E6%9C%89%E7%BB%84%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/me.png">
@@ -297,7 +297,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://www.nnxkcloud.com/2024/07/25/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%A7%81%E6%9C%89%E7%BB%84%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/" title="Flutter大型项目架构：私有组件包管理">http://www.nnxkcloud.com/2024/07/25/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%A7%81%E6%9C%89%E7%BB%84%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/</a>
+    <a href="https://wanflutter.netlify.app/2024/07/25/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%A7%81%E6%9C%89%E7%BB%84%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/" title="Flutter大型项目架构：私有组件包管理">https://wanflutter.netlify.app/2024/07/25/Flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%A7%81%E6%9C%89%E7%BB%84%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！

@@ -54,7 +54,7 @@
   <meta name="description" content="最近对手头上的项目进行重构，总结了有以下几个痛点：  状态管理混乱虽然用了 provider 来做状态管理，但一些代码如：异步请求、事件响应等还是会掺杂在UI页面的代码里面，一旦页面的各种 Widget 多了起来之后，显得非常严重，而且对业务逻辑的测试也不方便，多个组件可能需要共享相同的数据或状态，需要在每个组件中分别创建 Provider 实例，容易导致代码冗余，如果只需要更新页面的部分 Wid">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Flutter 大型项目架构：状态管理篇">
-<meta property="og:url" content="http://www.nnxkcloud.com/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/index.html">
+<meta property="og:url" content="https://wanflutter.netlify.app/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/index.html">
 <meta property="og:site_name" content="那年星空">
 <meta property="og:description" content="最近对手头上的项目进行重构，总结了有以下几个痛点：  状态管理混乱虽然用了 provider 来做状态管理，但一些代码如：异步请求、事件响应等还是会掺杂在UI页面的代码里面，一旦页面的各种 Widget 多了起来之后，显得非常严重，而且对业务逻辑的测试也不方便，多个组件可能需要共享相同的数据或状态，需要在每个组件中分别创建 Provider 实例，容易导致代码冗余，如果只需要更新页面的部分 Wid">
 <meta property="og:locale" content="zh_CN">
@@ -68,7 +68,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s2.loli.net/2023/08/07/5LW24hRuAZ1c9p3.png">
 
-<link rel="canonical" href="http://www.nnxkcloud.com/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/">
+<link rel="canonical" href="https://wanflutter.netlify.app/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/">
 
 
 <script id="page-configurations">
@@ -200,7 +200,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/">
+    <link itemprop="mainEntityOfPage" href="https://wanflutter.netlify.app/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/me.png">
@@ -335,7 +335,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://www.nnxkcloud.com/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/" title="Flutter 大型项目架构：状态管理篇">http://www.nnxkcloud.com/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/</a>
+    <a href="https://wanflutter.netlify.app/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/" title="Flutter 大型项目架构：状态管理篇">https://wanflutter.netlify.app/2023/08/09/Flutter-%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9A%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%AF%87/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！

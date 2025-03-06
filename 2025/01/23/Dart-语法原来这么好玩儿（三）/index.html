@@ -54,7 +54,7 @@
   <meta name="description" content="今天来讲讲 Dart 中枚举（Enum），可能有的同学会说这个很常见也很简单，常把它用于定义一些状态、类型、级别等等，其用法一看就懂，直接 switch-case 一把梭哈到底，和其它的编程语言差别不大，没啥新鲜感，可是真的是这样吗？本篇文章结合实际项目开发中的场景来梳理一下 Dart 枚举的核心功能和使用技巧，尤其是在文章的末尾处对枚举的运用，为你在解决类似的实际业务场景提供了全新的思路。 Fl">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Dart 语法原来这么好玩儿（三）">
-<meta property="og:url" content="http://www.nnxkcloud.com/2025/01/23/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%B8%89%EF%BC%89/index.html">
+<meta property="og:url" content="https://wanflutter.netlify.app/2025/01/23/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%B8%89%EF%BC%89/index.html">
 <meta property="og:site_name" content="那年星空">
 <meta property="og:description" content="今天来讲讲 Dart 中枚举（Enum），可能有的同学会说这个很常见也很简单，常把它用于定义一些状态、类型、级别等等，其用法一看就懂，直接 switch-case 一把梭哈到底，和其它的编程语言差别不大，没啥新鲜感，可是真的是这样吗？本篇文章结合实际项目开发中的场景来梳理一下 Dart 枚举的核心功能和使用技巧，尤其是在文章的末尾处对枚举的运用，为你在解决类似的实际业务场景提供了全新的思路。 Fl">
 <meta property="og:locale" content="zh_CN">
@@ -66,7 +66,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s2.loli.net/2025/01/22/j56ZVRbaMCevrgX.jpg">
 
-<link rel="canonical" href="http://www.nnxkcloud.com/2025/01/23/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%B8%89%EF%BC%89/">
+<link rel="canonical" href="https://wanflutter.netlify.app/2025/01/23/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%B8%89%EF%BC%89/">
 
 
 <script id="page-configurations">
@@ -198,7 +198,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2025/01/23/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%B8%89%EF%BC%89/">
+    <link itemprop="mainEntityOfPage" href="https://wanflutter.netlify.app/2025/01/23/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%B8%89%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/me.png">
@@ -322,7 +322,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://www.nnxkcloud.com/2025/01/23/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%B8%89%EF%BC%89/" title="Dart 语法原来这么好玩儿（三）">http://www.nnxkcloud.com/2025/01/23/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%B8%89%EF%BC%89/</a>
+    <a href="https://wanflutter.netlify.app/2025/01/23/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%B8%89%EF%BC%89/" title="Dart 语法原来这么好玩儿（三）">https://wanflutter.netlify.app/2025/01/23/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%B8%89%EF%BC%89/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！

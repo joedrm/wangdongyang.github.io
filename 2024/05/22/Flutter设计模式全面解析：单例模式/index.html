@@ -54,7 +54,7 @@
   <meta name="description" content="谈到设计模式这个“古老”的话题，大家先别急着划走哈，虽然对它再熟悉不过，几乎是最初开始学习编程到现在伴随着我们整个编程生涯，最早 Java、C++ 语言实现的各种设计模式到现在还会经常有所接触，面试中也是必问的环节，在开发 Flutter 项目的时候，也会多少借鉴了其它语言设计模式的实现，但始终觉得dart 语言实现的设计模式理解不够系统，有的实现还缺点儿 dart 语言本身的语法特性。加上最近">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Flutter设计模式全面解析：单例模式">
-<meta property="og:url" content="http://www.nnxkcloud.com/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:url" content="https://wanflutter.netlify.app/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="那年星空">
 <meta property="og:description" content="谈到设计模式这个“古老”的话题，大家先别急着划走哈，虽然对它再熟悉不过，几乎是最初开始学习编程到现在伴随着我们整个编程生涯，最早 Java、C++ 语言实现的各种设计模式到现在还会经常有所接触，面试中也是必问的环节，在开发 Flutter 项目的时候，也会多少借鉴了其它语言设计模式的实现，但始终觉得dart 语言实现的设计模式理解不够系统，有的实现还缺点儿 dart 语言本身的语法特性。加上最近">
 <meta property="og:locale" content="zh_CN">
@@ -65,7 +65,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s2.loli.net/2024/05/22/tswSPnaY25B4Eie.png">
 
-<link rel="canonical" href="http://www.nnxkcloud.com/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">
+<link rel="canonical" href="https://wanflutter.netlify.app/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">
 
 
 <script id="page-configurations">
@@ -197,7 +197,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">
+    <link itemprop="mainEntityOfPage" href="https://wanflutter.netlify.app/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/me.png">
@@ -320,7 +320,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://www.nnxkcloud.com/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" title="Flutter设计模式全面解析：单例模式">http://www.nnxkcloud.com/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</a>
+    <a href="https://wanflutter.netlify.app/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" title="Flutter设计模式全面解析：单例模式">https://wanflutter.netlify.app/2024/05/22/Flutter%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90%EF%BC%9A%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！

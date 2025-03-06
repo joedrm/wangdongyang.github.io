@@ -54,7 +54,7 @@
   <meta name="description" content="上一篇 Dart 语法的文章中介绍了对 Future、Streams 的 unwrap 操作以及 List、Map的展开、合并和过滤等等，总觉得有点意犹未尽，还有很多有意思的并没有提到，本篇文章来介绍一下 Dart 语言中面向对象的内容——构造函数，在我们日常开发中，对象的初始化（构造函数）有哪些方式，它们之间的区别在哪里，不同的构造函数都适用于哪些场景呢，本篇文章来聊聊这些内容。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Dart 语法原来这么好玩儿（二）">
-<meta property="og:url" content="http://www.nnxkcloud.com/2024/12/03/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%BA%8C%EF%BC%89/index.html">
+<meta property="og:url" content="https://wanflutter.netlify.app/2024/12/03/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%BA%8C%EF%BC%89/index.html">
 <meta property="og:site_name" content="那年星空">
 <meta property="og:description" content="上一篇 Dart 语法的文章中介绍了对 Future、Streams 的 unwrap 操作以及 List、Map的展开、合并和过滤等等，总觉得有点意犹未尽，还有很多有意思的并没有提到，本篇文章来介绍一下 Dart 语言中面向对象的内容——构造函数，在我们日常开发中，对象的初始化（构造函数）有哪些方式，它们之间的区别在哪里，不同的构造函数都适用于哪些场景呢，本篇文章来聊聊这些内容。">
 <meta property="og:locale" content="zh_CN">
@@ -69,7 +69,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s2.loli.net/2024/12/03/iqP1X5s6uKUrQJA.png">
 
-<link rel="canonical" href="http://www.nnxkcloud.com/2024/12/03/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%BA%8C%EF%BC%89/">
+<link rel="canonical" href="https://wanflutter.netlify.app/2024/12/03/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%BA%8C%EF%BC%89/">
 
 
 <script id="page-configurations">
@@ -201,7 +201,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.nnxkcloud.com/2024/12/03/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%BA%8C%EF%BC%89/">
+    <link itemprop="mainEntityOfPage" href="https://wanflutter.netlify.app/2024/12/03/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%BA%8C%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/me.png">
@@ -254,7 +254,7 @@
 
       
         <p><img src="https://s2.loli.net/2024/12/03/iqP1X5s6uKUrQJA.png"></p>
-<p><a href="https://www.nnxkcloud.com/2024/04/24/dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF/">上一篇</a> <code>Dart</code> 语法的文章中介绍了对 <code>Future</code>、<code>Streams</code> 的 <code>unwrap</code> 操作以及 <code>List</code>、<code>Map</code>的展开、合并和过滤等等，总觉得有点意犹未尽，还有很多有意思的并没有提到，本篇文章来介绍一下 <code>Dart</code> 语言中面向对象的内容——构造函数，在我们日常开发中，对象的初始化（构造函数）有哪些方式，它们之间的区别在哪里，不同的构造函数都适用于哪些场景呢，本篇文章来聊聊这些内容。</p>
+<p><a target="_blank" rel="noopener" href="https://www.nnxkcloud.com/2024/04/24/dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF/">上一篇</a> <code>Dart</code> 语法的文章中介绍了对 <code>Future</code>、<code>Streams</code> 的 <code>unwrap</code> 操作以及 <code>List</code>、<code>Map</code>的展开、合并和过滤等等，总觉得有点意犹未尽，还有很多有意思的并没有提到，本篇文章来介绍一下 <code>Dart</code> 语言中面向对象的内容——构造函数，在我们日常开发中，对象的初始化（构造函数）有哪些方式，它们之间的区别在哪里，不同的构造函数都适用于哪些场景呢，本篇文章来聊聊这些内容。</p>
 <span id="more"></span>
 
 <h3 id="Named-构造函数"><a href="#Named-构造函数" class="headerlink" title="Named 构造函数"></a><code>Named</code> 构造函数</h3><p>如果没有定义构造函数，<code>Dart</code> 会默认创建一个不带参数的<strong>默认构造函数</strong>。它用于创建类的简单实例，通常不带参数或仅初始化对象的基本属性。<code>Dart</code> 还允许在同一类中定义多个构造函数，每个构造函数通过名称区分。命名构造函数提供了更多灵活性，适用于不同初始化需求。命名构造函数使用类名加点（<code>ClassName.constructorName</code>）的形式定义。</p>
@@ -309,7 +309,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://www.nnxkcloud.com/2024/12/03/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%BA%8C%EF%BC%89/" title="Dart 语法原来这么好玩儿（二）">http://www.nnxkcloud.com/2024/12/03/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%BA%8C%EF%BC%89/</a>
+    <a href="https://wanflutter.netlify.app/2024/12/03/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%BA%8C%EF%BC%89/" title="Dart 语法原来这么好玩儿（二）">https://wanflutter.netlify.app/2024/12/03/Dart-%E8%AF%AD%E6%B3%95%E5%8E%9F%E6%9D%A5%E8%BF%99%E4%B9%88%E5%A5%BD%E7%8E%A9%E5%84%BF%EF%BC%88%E4%BA%8C%EF%BC%89/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
