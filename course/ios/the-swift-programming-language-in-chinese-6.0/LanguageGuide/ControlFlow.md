@@ -245,7 +245,7 @@ while <#condition#> {
 
 <!-- Apple Books screenshot begins here. -->
 
-![](snakesAndLadders)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/snakesAndLadders)
 
 游戏的规则如下：
 
@@ -939,7 +939,7 @@ default:
   ```
 -->
 
-![](coordinateGraphSimple)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/coordinateGraphSimple)
 
 在上面的例子中，`switch` 语句会判断某个点是否是原点 (0, 0)，是否在红色的 x 轴上，是否在绿色的 y 轴上，是否在一个以原点为中心的4x4的蓝色矩形里，或者在这个矩形外面。
 
@@ -981,7 +981,7 @@ case let (x, y):
   ```
 -->
 
-![](coordinateGraphMedium)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/coordinateGraphMedium)
 
 在上面的例子中，`switch` 语句会判断某个点是否在红色的 x 轴上，是否在绿色的 y 轴上，或者不在坐标轴上。
 
@@ -1027,7 +1027,7 @@ case let (x, y):
   ```
 -->
 
-![](coordinateGraphComplex)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/coordinateGraphComplex)
 
 在上面的例子中，`switch` 语句会判断某个点是否在绿色的对角线 `x == y` 上，是否在紫色的对角线 `x == -y` 上，或者不在对角线上。
 
@@ -1305,7 +1305,7 @@ print(description)
 
 游戏的棋盘和之前一样：
 
-![](snakesAndLadders)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/snakesAndLadders)
 
 `finalSquare`、`board`、`square` 和 `diceRoll` 值使用和之前一样的方式初始化：
 

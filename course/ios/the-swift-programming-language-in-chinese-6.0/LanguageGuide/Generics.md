@@ -216,7 +216,7 @@ swapTwoValues(&someString, &anotherString)
 
 下图展示了入栈（push）和出栈（pop）的行为：
 
-![](stackPushPop)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/stackPushPop)
 
 1. 现在有三个值在栈中。
 2. 第四个值被压入到栈的顶部。
@@ -331,7 +331,7 @@ stackOfStrings.push("cuatro")
 
 下图展示了 `stackOfStrings` 如何将这四个值压栈：
 
-![](stackPushedFourStrings)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/stackPushedFourStrings)
 
 从栈中移除并返回栈顶部的值，例如 `"cuatro"`：
 
@@ -352,7 +352,7 @@ let fromTheTop = stackOfStrings.pop()
 
 下图展示了栈顶部的 `"cuatro"` 出栈的过程：
 
-![](stackPoppedOneString)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/stackPoppedOneString)
 
 ## 泛型扩展
 

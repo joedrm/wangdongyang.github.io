@@ -4,7 +4,7 @@
 
 Swift 提供了三种主要的 **集合类型**，分别是数组、集合和字典，用于存储值集合。数组是有序的值集合。集合是无序的唯一值集合。字典是无序的键值对关联集合。
 
-![](CollectionTypes_intro)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/CollectionTypes_intro)
 
 Swift 中的数组、集合和字典对于它们可以存储的值和键的类型始终是明确的。这意味着你不能错误地将一个类型不匹配的值插入到集合中。同时，这也意味着你可以放心地知道从集合中取出的值的类型。
 
@@ -754,7 +754,7 @@ for genre in favoriteGenres.sorted() {
 
 下图描绘了 --- `a` 和 `b` --- 两个集合，其中各种集合操作的结果由阴影区域表示。
 
-![](setVennDiagram)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/setVennDiagram)
 
 - 使用 `intersection(_:)` 方法创建一个只包含两个集合共有值的新集合。
 - 使用 `symmetricDifference(_:)` 方法创建一个包含两个集合中存在但不同时存在的值的新集合。
@@ -812,7 +812,7 @@ oddDigits.symmetricDifference(singleDigitPrimeNumbers).sorted()
 
 下图描述了三个集合 --- `a`、`b` 和 `c`，其中重叠区域表示集合间共享的元素。集合 `a` 是集合 `b` 的 **超集**，因为 `a` 包含了 `b` 中的所有元素。相反，集合 `b` 是集合 `a` 的 **子集**，因为 `b` 中的所有元素都包含在 `a` 中。集合 `b` 和集合 `c` 是 **不相交的**，因为它们没有任何共同的元素。
 
-![](setEulerDiagram)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/setEulerDiagram)
 
 - 使用 “等于” 运算符 （`==`）判断两个集合是否包含相同的所有值。
 - 使用 `isSubset(of:)` 方法判断一个集合的所有值是否包含在指定集合中。
