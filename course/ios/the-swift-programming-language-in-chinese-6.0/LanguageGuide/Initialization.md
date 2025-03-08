@@ -460,7 +460,7 @@ var item = ShoppingListItem()
 
 由于 `ShoppingListItem` 类的所有属性都有默认值，并且它是一个没有超类的基类。因此，`ShoppingListItem` 会自动获得一个默认构造器实现，该实现会创建一个新实例，并将其所有属性设置为默认值。（`name` 属性是一个可选的 `String` 属性，因此它会自动接收一个默认值 `nil`，即使这个值没有在代码中写出。）上面的示例使用 `ShoppingListItem` 类的默认构造器来创建一个类的新实例（ `ShoppingListItem()`形式的构造语法），并将其赋值给变量 `item` 。
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/initializersExample03)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/initializersExample03@2x.png)
 
 ### 结构体类型的成员逐一构造器
 
@@ -730,7 +730,7 @@ convenience init(<#parameters#>) {
 
 这些规则可以通过下面图例来说明:
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/initializerDelegation01)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/initializerDelegation01@2x.png)
 
 如图所示，父类中包含一个指定构造器和两个便利构造器。其中一个便利构造器调用了另外一个便利构造器，而后者又调用了唯一的指定构造器。这满足了上面提到的规则 2 和 3。这个父类没有自己的父类，所以规则 1 没有用到。
 
@@ -740,7 +740,7 @@ convenience init(<#parameters#>) {
 
 下面图例中展示了一种涉及四个类的更复杂的类层级结构。它演示了指定构造器是如何在类层级中充当“漏斗”的作用，在类的构造器链上简化了类之间的相互关系。
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/initializerDelegation02)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/initializerDelegation02@2x.png)
 
 ### 两段式构造过程
 
@@ -787,7 +787,7 @@ Swift 编译器将执行 4 种有效的安全检查，以确保两段式构造�
 
 下图展示了在假定的子类和父类之间的构造阶段 1:
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/twoPhaseInitialization01)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/twoPhaseInitialization01@2x.png)
 
 在这个示例中，构造过程从对子类中一个便利构造器的调用开始。这个便利构造器此时还不能修改任何属性，它会代理到该类中的指定构造器。
 
@@ -799,7 +799,7 @@ Swift 编译器将执行 4 种有效的安全检查，以确保两段式构造�
 
 以下展示了相同构造过程的阶段 2：
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/twoPhaseInitialization02)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/twoPhaseInitialization02@2x.png)
 
 父类中的指定构造器现在有机会进一步自定义实例（尽管这不是必须的）。
 
@@ -1159,7 +1159,7 @@ class Food {
 
 下图展示了 `Food` 的构造链路:
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/initializersExample01)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/initializersExample01@2x.png)
 
 类类型没有默认的逐一成员构造器，所以 `Food` 类提供了一个接受单一参数 `name` 的指定构造器。这个构造器可以使用一个特定的名字来创建新的 `Food` 实例:
 
@@ -1231,7 +1231,7 @@ class RecipeIngredient: Food {
 
 下图中展示了 `RecipeIngredient` 类的构造器链:
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/initializersExample02)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/initializersExample02@2x.png)
 
 `RecipeIngredient` 类拥有一个指定构造器 `init(name: String, quantity: Int)`, 它可以用来填充 `RecipeIngredient` 的所有属性值。 这个构造器一开始先将传入的 `quantity` 实参赋值给 `quantity` 属性，这个属性也是唯一在 `RecipeIngredient` 中新引入的属性。随后，构造器向上代理到父类 `Food` 的 `init(name: String)` 。这个过程满足 两段式构造过程> 中的安全检查 1。
 
@@ -1298,7 +1298,7 @@ class ShoppingListItem: RecipeIngredient {
 
 下图展示了这三个类的构造器链:
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/initializersExample03)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/initializersExample03@2x.png)
 
 你可以使用三个继承来的构造器来创建 `ShoppingListItem` 的新实例:
 
@@ -2315,7 +2315,7 @@ class SomeClass {
 
 下面的示例中定义了一个 `Chessboard` 结构体，它构建了西洋跳棋游戏的棋盘。西洋跳棋游戏在一副黑白格交替的 8 x 8 的棋盘中进行的：
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/chessBoard)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/chessBoard@2x.png)
 
 为了呈现这副游戏棋盘， `Chessboard` 结构体定义了一个属性 `boardColors` ，它是一个包含64个 `Bool` 值的数组。数组中值为 `true` 表示为一个黑格，值为 `false` 表示为一个白格。数组中第一个元素代表棋盘上左上角的格子，最后一个元素代表棋盘上右下角的格子。 .
 

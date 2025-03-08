@@ -336,7 +336,7 @@ print("square.origin is now at (\(square.origin.x), \(square.origin.y))")
 
 <!-- Apple Books screenshot begins here. -->
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/computedProperties)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/computedProperties@2x.png)
 
 ### 简化 Setter 声明
 
@@ -1550,7 +1550,7 @@ print(SomeClass.computedTypeProperty)
 
 下图展示了如何将这两个音频通道组合在一起，以模拟一个立体声音频电平仪。当某个通道的音频电平为 `0` 时，该通道的指示灯全部熄灭；当音频电平为 `10` 时，该通道的指示灯全部点亮。在这个图中，左通道的当前电平为 `9`，右通道的当前电平为 `7`：
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/staticPropertiesVUMeter)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/staticPropertiesVUMeter@2x.png)
 
 上述音频通道由 `AudioChannel` 结构体的实例表示：
 

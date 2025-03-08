@@ -20,7 +20,7 @@ Swift 支持 C 中的所有位运算符，如下所述。
 
 **按位取反运算符** （ `~` ）对一个数字中的所有位进行取反：
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitwiseNOT)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitwiseNOT@2x.png)
 
 按位取反运算符是一个前缀运算符，它出现在其操作的值之前，中间没有任何空格：
 
@@ -50,7 +50,7 @@ let invertedBits = ~initialBits  // equals 11110000
 
 **按位与运算符** (`&` ）组合两个数字的位。它返回一个新数字，只有在两个输入数字中相应的位都等于 1 时，新数字的相应位才设置为 1:
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitwiseAND)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitwiseAND@2x.png)
 
 在下面的例子中，`firstSixBits` 和 `lastSixBits` 的值在中间四位都等于 `1` 。按位与运算符将它们组合成数字 `00111100` ，等于无符号十进制值 `60` ：
 
@@ -75,7 +75,7 @@ let middleFourBits = firstSixBits & lastSixBits  // equals 00111100
 
 **按位或运算符** （ `|` ）比较两个数字的位。如果 **任一** 输入数字中的位等于 `1` ，则运算符返回一个新数字，其相应位设置为 `1` ：
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitwiseOR)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitwiseOR@2x.png)
 
 <!-- Apple Books screenshot ends here. -->
 
@@ -102,7 +102,7 @@ let combinedbits = someBits | moreBits  // equals 11111110
 
 **按位异或运算符** ，或 "异或运算符" （ `^` ），比较两个数字的位。运算符返回一个新数字，在输入位不同的地方，新数字的相应位设置为 `1` ，在输入位相同的地方，新数字的相应位设置为 `0` :
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitwiseXOR)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitwiseXOR@2x.png)
 
 在下面的例子中， `firstBits` 和 `otherBits` 的值在对方没有的位置各有一位设置为 `1` 。按位异或运算符在其输出值中将这两位都设置为 `1` 。`firstBits` 和 `otherBits` 中的所有其他位都匹配，在输出值中设置为 `0` ：
 
@@ -145,7 +145,7 @@ let outputBits = firstBits ^ otherBits  // equals 00010001
 
 下图显示了 `11111111 << 1` (即 `11111111` 向左移动 1 位）和 `11111111 >> 1` (即 `11111111` 向右移动 1 位）的结果。绿色数字是移位的，灰色数字被丢弃，插入的粉色零：
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitshiftUnsigned)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitshiftUnsigned@2x.png)
 
 以下是 Swift 代码中位移的样子：
 
@@ -227,7 +227,7 @@ let blueComponent = pink & 0x0000FF           // blueComponent is 0x99, or 153
 
 剩余的位（称为 **值位** ）存储实际值。正数的存储方式与无符号整数完全相同，从 0 开始向上计数。以下是 `Int8` 中数字 4 的位的样子：
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitshiftSignedFour)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitshiftSignedFour@2x.png)
 
 符号位是 0(表示"正"),七个值位只是数字 4 的二进制表示。
 
@@ -235,21 +235,21 @@ let blueComponent = pink & 0x0000FF           // blueComponent is 0x99, or 153
 
 以下是数字 -4 在 Int8 类型中的二进制表示形式：
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitshiftSignedMinusFour)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitshiftSignedMinusFour@2x.png)
 
 这次，符号位是 `1`(表示"负数"),七个值位的二进制值是 `124`(即 `128 - 4`):
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitshiftSignedMinusFourValue)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitshiftSignedMinusFourValue@2x.png)
 
 这种编码负数的方法被称为 **二进制补码** 表示。虽然这看起来是一种不寻常的表示负数的方式，但它有几个优点。
 
 首先，你可以将 `-1` 加到 `-4` 上，只需对所有八个位（包括符号位）执行标准的二进制加法，并在完成后丢弃任何不适合八位的内容：
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitshiftSignedAddition)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitshiftSignedAddition@2x.png)
 
 其次，二进制补码表示还允许你像正数一样将负数的位向左和向右移动，并且每向左移动一位仍然会使其加倍，每向右移动一位则会将其减半。为了实现这一点，在对有符号整数进行右移时使用了一个额外的规则：当你将有符号整数向右移动时，应用与无符号整数相同的规则，但用 **符号位** 填充左侧的任何空位，而不是用零填充。
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitshiftSigned)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/bitshiftSigned@2x.png)
 
 这个操作确保了有符号整数在向右移动后保持相同的符号，这被称为 **算术移位**。
 
@@ -317,7 +317,7 @@ unsignedOverflow = unsignedOverflow &+ 1
 
 变量 `unsignedOverflow` 被初始化为 `UInt8` 可以容纳的最大值(`255` ，或二进制的 `11111111`)。然后使用溢出加法运算符（ `&+` ）将其加 1。这将其二进制表示推到了 `UInt8` 可以容纳的大小之外，导致它溢出超出其边界，如下图所示。溢出加法后留在 `UInt8` 边界内的值是 `00000000` ，或零。
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/overflowAddition)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/overflowAddition@2x.png)
 
 当允许无符号整数在负方向上溢出时，也会发生类似的情况。这里有一个使用溢出减法运算符（ `&-` ）的例子：
 
@@ -343,7 +343,7 @@ unsignedOverflow = unsignedOverflow &- 1
 
 `UInt8` 可以容纳的最小值是零，或二进制的 `00000000` 。如果你使用溢出减法运算符（ `&-` ）从 `00000000` 中减去 1,这个数字将会溢出并绕回到 `11111111` ，或十进制的 `255` 。
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/overflowUnsignedSubtraction)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/overflowUnsignedSubtraction@2x.png)
 
 有符号整数也会发生溢出。所有有符号整数的加法和减法都以按位方式执行，符号位作为被加或被减数字的一部分包含在内，如 AdvancedOperators#按位左移和右移运算符> 中所述。
 
@@ -369,7 +369,7 @@ signedOverflow = signedOverflow &- 1
 
 `Int8` 可以容纳的最小值是 `-128` ，或二进制的 `10000000` 。使用溢出运算符从这个二进制数中减去 1 得到二进制值 `01111111` ，这会切换符号位并得到正 `127` ，这是 `Int8` 可以容纳的最大正值。
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/overflowSignedSubtraction)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/overflowSignedSubtraction@2x.png)
 
 对于有符号和无符号整数，正方向的溢出会从最大有效整数值绕回到最小值，而负方向的溢出会从最小值绕回到最大值。
 
@@ -544,7 +544,7 @@ let combinedVector = vector + anotherVector
 
 这个例子将向量 `(3.0, 1.0)` 和 `(2.0, 4.0)` 相加，得到向量 `(5.0, 5.0)` ，如下图所示。
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/vectorAddition)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/vectorAddition@2x.png)
 
 ### 前缀和后缀运算符
 

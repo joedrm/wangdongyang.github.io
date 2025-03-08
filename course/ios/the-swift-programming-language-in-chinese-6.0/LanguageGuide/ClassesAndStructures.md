@@ -362,7 +362,7 @@ print("hd is still \(hd.width) pixels wide")
 然而，由于它们是独立的实例，将 `cinema` 的宽度设置为 `2048` 
 并不会影响存储在 `hd` 中的宽度，如下图所示：
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/sharedStateStruct)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/sharedStateStruct@2x.png)
 
 枚举的行为也是一样的：
 
@@ -468,7 +468,7 @@ alsoTenEighty.frameRate = 30.0
 指向的是同一个 `VideoMode` 实例。
 换句话说，它们只是同一个实例的两个不同名称，如下图所示：
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/sharedStateClass)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/sharedStateClass@2x.png)
 
 通过检查 `tenEighty` 的 `frameRate`，
 可以看到它正确地显示了 `VideoMode` 实例的新帧率 `30.0`。

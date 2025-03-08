@@ -152,7 +152,7 @@ It also ends with a line break.
 
 一个多行字符串字面量能够缩进来匹配周围的代码。关闭引号（`"""`）之前的空白字符串告诉 Swift 编译器其他各行多少空白字符串需要忽略。然而，如果你在某行的前面写的空白字符串超出了关闭引号（`"""`）之前的空白字符串，则超出部分将被包含在多行字符串字面量中。
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/multilineStringWhitespace)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/multilineStringWhitespace@2x.png)
 
 <!--
   Using an image here is a little clearer than a code listing,
@@ -985,7 +985,7 @@ let newString = String(beginning)
   would be clearer if the variable names appeared in the figure.
 -->
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/stringSubstring)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/stringSubstring@2x.png)
 
 > 注意:
 > `String` 和 `Substring` 都遵循
@@ -1300,7 +1300,7 @@ let dogString = "Dog‼🐶"
 
 你可以通过遍历 `String` 的 `utf8` 属性来访问它的 `UTF-8` 表示。其为 `String.UTF8View` 类型的属性，`UTF8View` 是无符号 8 位（`UInt8`）值的集合，每一个 `UInt8` 值都是一个字符的 UTF-8 表示：
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/UTF8)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/UTF8@2x.png)
 
 ```swift
 for codeUnit in dogString.utf8 {
@@ -1342,7 +1342,7 @@ print("")
 
 你可以通过遍历 `String` 的 `utf16` 属性来访问它的 `UTF-16` 表示。其为 `String.UTF16View` 类型的属性，`UTF16View` 是无符号16位（`UInt16`）值的集合，每一个 `UInt16` 都是一个字符的 UTF-16 表示：
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/UTF16)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/UTF16@2x.png)
 
 ```swift
 for codeUnit in dogString.utf16 {
@@ -1381,7 +1381,7 @@ print("")
 
 每一个 `UnicodeScalar` 拥有一个 `value` 属性，可以返回对应的 21 位数值，用 `UInt32` 来表示：
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/UnicodeScalar)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/UnicodeScalar@2x.png)
 
 ```swift
 for scalar in dogString.unicodeScalars {

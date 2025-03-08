@@ -230,7 +230,7 @@ unit4A = Apartment(unit: "4A")
 
 以下是创建并分配这两个实例后强引用的样子。`john` 变量现在对新的 `Person` 实例有一个强引用，而 `unit4A` 变量对新的 `Apartment` 实例有一个强引用:
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/referenceCycle01)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/referenceCycle01@2x.png)
 
 现在你可以将这两个实例链接在一起，使这个人有一个公寓，而这个公寓有一个租户。注意使用感叹号（ `!` ）来解包和访问存储在 `john` 和 `unit4A` 可选变量中的实例，以便可以设置这些实例的属性:
 
@@ -250,7 +250,7 @@ unit4A!.tenant = john
 
 以下是你将两个实例链接在一起后强引用的样子:
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/referenceCycle02)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/referenceCycle02@2x.png)
 
 不幸的是，链接这两个实例在它们之间创建了一个强引用循环。`Person` 实例现在对 `Apartment` 实例有一个强引用，而 `Apartment` 实例对 `Person` 实例有一个强引用。因此，当你打破 `john` 和 `unit4A` 变量持有的强引用时，引用计数不会降到零，实例不会被 ARC 释放:
 
@@ -272,7 +272,7 @@ unit4A = nil
 
 以下是你将 `john` 和 `unit4A` 变量设置为 `nil` 后强引用的样子:
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/referenceCycle03)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/referenceCycle03@2x.png)
 
 `Person` 实例和 `Apartment` 实例之间的强引用仍然存在，无法被打破。
 
@@ -388,7 +388,7 @@ unit4A!.tenant = john
 
 现在你已经将两个实例链接在一起，引用看起来是这样的:
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/weakReference01)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/weakReference01@2x.png)
 
 `Person` 实例仍然对 `Apartment` 实例有一个强引用，但 `Apartment` 实例现在对 `Person` 实例有一个 *弱* 引用。这意味着当你通过将 `john` 变量设置为 `nil` 来打破它所持有的强引用时，不再有对 `Person` 实例的强引用:
 
@@ -408,7 +408,7 @@ john = nil
 
 因为不再有对 `Person` 实例的强引用，它被释放，`tenant` 属性被设置为 `nil`:
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/weakReference02)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/weakReference02@2x.png)
 
 唯一剩下的对 `Apartment` 实例的强引用来自 `unit4A` 变量。如果你打破 *那个* 强引用，就不再有对 `Apartment` 实例的强引用:
 
@@ -428,7 +428,7 @@ unit4A = nil
 
 因为不再有对 `Apartment` 实例的强引用，它也被释放:
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/weakReference03)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/weakReference03@2x.png)
 
 > 注意：在使用垃圾回收的系统中，弱指针有时被用来实现简单的缓存机制，因为没有强引用的对象只有在内存压力触发垃圾收集时才会被释放。然而，对于 ARC，值会在它们的最后一个强引用被移除时立即被释放，使得弱引用不适合这种目的。
 
@@ -546,13 +546,13 @@ john!.card = CreditCard(number: 1234_5678_9012_3456, customer: john!)
 
 现在你已经链接了两个实例，引用看起来是这样的:
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/unownedReference01)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/unownedReference01@2x.png)
 
 `Customer` 实例现在对 `CreditCard` 实例有一个强引用，而 `CreditCard` 实例对 `Customer` 实例有一个无主引用。
 
 由于无主的 `customer` 引用，当你打破 `john` 变量持有的强引用时，不再有对 `Customer` 实例的强引用:
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/unownedReference02)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/unownedReference02@2x.png)
 
 因为不再有对 `Customer` 实例的强引用，它被释放。在这之后，不再有对 `CreditCard` 实例的强引用，它也被释放:
 
@@ -673,7 +673,7 @@ department.courses = [intro, intermediate, advanced]
 上面的代码创建了一个系和它的三门课程。入门和中级课程都在它们的 `nextCourse` 属性中
 存储了一个建议的下一门课程，这个属性维护了一个无主可选引用，指向学生完成这门课程后应该学习的课程。
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/unownedOptionalReference)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/unownedOptionalReference@2x.png)
 
 无主可选引用不会对它包装的类实例保持强持有，因此它不会阻止 ARC 释放该实例。它在 ARC 下的行为与无主引用相同，除了无主可选引用可以是 `nil`。
 
@@ -924,7 +924,7 @@ print(paragraph!.asHTML())
 
 不幸的是，上面编写的 `HTMLElement` 类在 `HTMLElement` 实例和用于其默认 `asHTML` 值的闭包之间创建了一个强引用循环。循环看起来是这样的:
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/closureReferenceCycle01)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/closureReferenceCycle01@2x.png)
 
 实例的 `asHTML` 属性持有对其闭包的强引用。然而，因为闭包在其主体内引用了 `self`(作为引用 `self.name` 和 `self.text` 的方式)，闭包 *捕获* 了 self，这意味着它持有对 `HTMLElement` 实例的强引用。两者之间创建了一个强引用循环。(关于在闭包中捕获值的更多信息，请参见Closures#值捕获>。)
 
@@ -1100,7 +1100,7 @@ print(paragraph!.asHTML())
 
 这是有捕获列表时引用的样子:
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/closureReferenceCycle02)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/closureReferenceCycle02@2x.png)
 
 这次，闭包对 `self` 的捕获是一个无主引用，并且不会对它捕获的 `HTMLElement` 实例保持强引用。如果你将 `paragraph` 变量的强引用设置为 `nil`，`HTMLElement` 实例就会被释放，从下面示例中打印的析构器消息可以看出这一点:
 

@@ -48,7 +48,7 @@ print("We're number \(one)!")
 
 要理解这个问题，你可以尝试想象一下在纸上更新一个预算表的流程。更新预算表分为两步：第一步你需要先添加每个预算项目的名字和数额，第二步才是更新预算总额。在整个更新流程的之前及之后，你可以从预算中读取任何信息，而这些信息都是正确的，就像下图所示一样。
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/memory_shopping)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/memory_shopping@2x.png)
 
 但是，在你向预算表添加项目的过程中，它会短暂地处于一个临时、不合法的状态，因为预算总额此时还没有被更新以反映这些新添加的项目。在项目添加的过程中读取到的总额是不正确的。
 
@@ -158,7 +158,7 @@ increment(&stepSize)
 
 在上面的代码里，`stepSize` 是一个全局变量，并且它可以通常可以在 `increment(_:)` 里被访问。然而，对于 `stepSize` 的读访问与 `number` 的写访问重叠了。就像下面展示的那样，`number` 和 `stepSize` 都指向了同一个内存区域。针对同一块内存区域的读和写访问重叠了，因此产生了冲突。
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/memory_increment)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/memory_increment@2x.png)
 
 其中一个解决冲突的方式是显式地复制一份 `stepSize`：
 
@@ -328,7 +328,7 @@ oscar.shareHealth(with: &maria)  // OK
 
 在上面的例子中，通过调用 `shareHealth(with:)` 方法来将 Oscar 的生命值分享给 Maria 并不会造成冲突。因为 `oscar` 是变值方法中 `self` 所对应的值，所以方法执行过程存在对于 `oscar` 的写访问；在相同的时间窗口内，方法对于 `maria` 也会有写访问，因为 `maria` 是作为 in-out 参数传入的。尽管这两次写访问在时间上发生了重叠，它们并不冲突。 
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/memory_share_health_maria)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/memory_share_health_maria@2x.png)
 
 然而，如果你将 `oscar` 所谓参数传入 `shareHealth(with:)`，就会产生冲突了：
 
@@ -360,7 +360,7 @@ oscar.shareHealth(with: &oscar)
 
 在整个变值方法执行期间，方法不仅需要对保持对 `self` 的写访问，其 in-out 参数还需要对 `teammate` 保持相同时长的写访问。在方法内，`self` 和 `teammate` 都指向了内存中的同一位置（如下图所示）。因为两次写访问不仅在时间上重叠，访问的内存区域也重叠了，所以产生了冲突。
 
-![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/memory_share_health_oscar)
+![](https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/Assets/memory_share_health_oscar@2x.png)
 
 ## 属性访问冲突
 
