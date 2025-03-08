@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="可选链式调用（Optional Chaining）在不解包的情况下访问可选值的成员。 可选链式调用（Optional Chaining）是一种可以在当前值可能为 nil 的可选值上请求和调用属性、方法及下标的方法。如果可选值有值，那么调用就会成功；如果可选值是 nil，那么调用将返回 nil。多个调用可以连接在一起形成一个调用链，如果其中任何一个节点为 nil，整个调用链都会失败，即返回 nil。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/OptionalChaining.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="可选链式调用（Optional Chaining）在不解包的情况下访问可选值的成员。 可选链式调用（Optional Chaining）是一种可以在当前值可能为 nil 的可选值上请求和调用属性、方法及下标的方法。如果可选值有值，那么调用就会成功；如果可选值是 nil，那么调用将返回 nil。多个调用可以连接在一起形成一个调用链，如果其中任何一个节点为 nil，整个调用链都会失败，即返回 nil。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-08T08:32:48.703Z">
+<meta property="article:modified_time" content="2025-03-08T08:32:48.703Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/OptionalChaining">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>OPTIONALCHAINING</li>
+          
+  </ul>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h1 id="可选链式调用（Optional-Chaining）"><a href="#可选链式调用（Optional-Chaining）" class="headerlink" title="可选链式调用（Optional Chaining）"></a>可选链式调用（Optional Chaining）</h1><p>在不解包的情况下访问可选值的成员。</p>
+<p>可选链式调用（Optional Chaining）是一种可以在当前值可能为 <code>nil</code> 的可选值上请求和调用属性、方法及下标的方法。如果可选值有值，那么调用就会成功；如果可选值是 <code>nil</code>，那么调用将返回 <code>nil</code>。多个调用可以连接在一起形成一个调用链，如果其中任何一个节点为 <code>nil</code>，整个调用链都会失败，即返回 <code>nil</code>。</p>
+<blockquote>
+<p>注意<br>Swift 的可选链式调用和 Objective-C 中向 <code>nil</code> 发送消息有些相像，但是 Swift 的可选链式调用可以应用于任意类型，并且能检查调用是否成功。</p>
+</blockquote>
+<p><a name="optional_chaining_as_an_alternative_to_forced_unwrapping"></a></p>
+<h2 id="使用可选链式调用代替强制展开"><a href="#使用可选链式调用代替强制展开" class="headerlink" title="使用可选链式调用代替强制展开"></a>使用可选链式调用代替强制展开</h2><p>通过在想调用的属性、方法、或下标的可选值（optional value）后面放一个问号（<code>?</code>），可以定义一个可选链。这一点很像在可选值后面放一个叹号（<code>!</code>）来强制展开它的值。它们的主要区别在于当可选值为空时可选链式调用只会调用失败，然而强制展开将会触发运行时错误。</p>
+<p>为了反映可选链式调用可以在空值（<code>nil</code>）上调用的事实，不论这个调用的属性、方法及下标返回的值是不是可选值，它的返回结果都是一个可选值。你可以利用这个返回值来判断你的可选链式调用是否调用成功，如果调用有返回值则说明调用成功，返回 <code>nil</code> 则说明调用失败。</p>
+<p>具体来说，可选链调用的结果，除了被包装成了一个可选值外，类型与预期的返回值类型是相同的。例如，正常情况下返回 <code>Int</code> 的属性，在通过可选链访问时，返回的是 <code>Int?</code>。</p>
+<p>下面几段代码将演示可选链式调用和强制展开的不同，以及如何判断可选链是否调用成功。</p>
+<p>首先定义两个类 <code>Person</code> 和 <code>Residence</code>：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> {</span><br><span class="line">    <span class="keyword">var</span> residence: <span class="type">Residence</span>?</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Residence</span> {</span><br><span class="line">    <span class="keyword">var</span> numberOfRooms <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>Residence</code> 有一个 <code>Int</code> 类型的属性 <code>numberOfRooms</code>，其默认值为 <code>1</code>。<code>Person</code> 具有一个可选的 <code>residence</code> 属性，其类型为 <code>Residence?</code>。  </p>
+<p>假如你创建了一个新的 <code>Person</code> 实例，由于 <code>residence</code> 属性是可选型，所以初始值是 <code>nil</code>。就像下面的代码中，<code>john</code> 有一个值为 <code>nil</code> 的 <code>residence</code> 属性：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> john <span class="operator">=</span> <span class="type">Person</span>()</span><br></pre></td></tr></tbody></table></figure>
+
+<p>如果使用叹号（<code>!</code>）对 <code>john</code> 的 <code>residence</code> 属性中的 <code>numberOfRooms</code> 值强制解包，会触发运行时错误，因为这时 <code>residence</code> 没有可以解包的值：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> roomCount <span class="operator">=</span> john.residence<span class="operator">!</span>.numberOfRooms</span><br><span class="line"><span class="comment">// 这会引发运行时错误</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>john.residence</code> 为非 <code>nil</code> 值的时候，上面的调用会成功，并且把 <code>roomCount</code> 设置为 <code>Int</code> 类型的房间数量。正如上面提到的，当 <code>residence</code> 为 <code>nil</code> 的时候上面这段代码会触发运行时错误。</p>
+<p>可选链式调用提供了另一种访问 <code>numberOfRooms</code> 的方式，使用问号（<code>?</code>）来替代原来的叹号（<code>!</code>）：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> roomCount <span class="operator">=</span> john.residence<span class="operator">?</span>.numberOfRooms {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"John's residence has <span class="subst">\(roomCount)</span> room(s)."</span>)</span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Unable to retrieve the number of rooms."</span>)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 打印 “Unable to retrieve the number of rooms.”</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>在 <code>residence</code> 后面添加问号之后，Swift 就会在 <code>residence</code> 不为 <code>nil</code> 的情况下访问 <code>numberOfRooms</code>。</p>
+<p>因为访问 <code>numberOfRooms</code> 有可能失败，可选链式调用会返回 <code>Int?</code> 类型，或称为“可选的 <code>Int</code>”。如上例所示，当 <code>residence</code> 为 <code>nil</code> 的时候，可选的 <code>Int</code> 将会为 <code>nil</code>，表明无法访问 <code>numberOfRooms</code>。访问成功时，可选的 <code>Int</code> 值会通过可选绑定展开，并赋值给非可选类型的 <code>roomCount</code> 常量。</p>
+<p>要注意的是，即使 <code>numberOfRooms</code> 是非可选的 <code>Int</code> 时，这一点也成立。只要使用可选链式调用就意味着 <code>numberOfRooms</code> 会返回一个 <code>Int?</code> 而不是 <code>Int</code>。</p>
+<p>可以将一个 <code>Residence</code> 的实例赋给 <code>john.residence</code>，这样它就不再是 <code>nil</code> 了：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">john.residence <span class="operator">=</span> <span class="type">Residence</span>()</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>john.residence</code> 现在包含一个实际的 <code>Residence</code> 实例，而不再是 <code>nil</code>。如果你试图使用先前的可选链式调用访问 <code>numberOfRooms</code>，它现在将返回值为 <code>1</code> 的 <code>Int?</code> 类型的值：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> roomCount <span class="operator">=</span> john.residence<span class="operator">?</span>.numberOfRooms {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"John's residence has <span class="subst">\(roomCount)</span> room(s)."</span>)</span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Unable to retrieve the number of rooms."</span>)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 打印 “John's residence has 1 room(s).”</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><a name="defining_model_classes_for_optional_chaining"></a></p>
+<h2 id="为可选链式调用定义模型类"><a href="#为可选链式调用定义模型类" class="headerlink" title="为可选链式调用定义模型类"></a>为可选链式调用定义模型类</h2><p>通过使用可选链式调用可以调用多层属性、方法和下标。这样可以在复杂的模型中向下访问各种子属性，并且判断能否访问子属性的属性、方法或下标。</p>
+<p>下面这段代码定义了四个模型类，这些例子包括多层可选链式调用。为了方便说明，在 <code>Person</code> 和 <code>Residence</code> 的基础上增加了 <code>Room</code> 类和 <code>Address</code> 类，以及相关的属性、方法以及下标。</p>
+<p><code>Person</code> 类的定义基本保持不变：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> {</span><br><span class="line">    <span class="keyword">var</span> residence: <span class="type">Residence</span>?</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>Residence</code> 类比之前复杂些，增加了一个名为 <code>rooms</code> 的变量属性，该属性被初始化为 <code>[Room]</code> 类型的空数组：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Residence</span> {</span><br><span class="line">    <span class="keyword">var</span> rooms: [<span class="type">Room</span>] <span class="operator">=</span> []</span><br><span class="line">    <span class="keyword">var</span> numberOfRooms: <span class="type">Int</span> {</span><br><span class="line">        <span class="keyword">return</span> rooms.count</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">subscript</span>(<span class="params">i</span>: <span class="type">Int</span>) -&gt; <span class="type">Room</span> {</span><br><span class="line">        <span class="keyword">get</span> {</span><br><span class="line">            <span class="keyword">return</span> rooms[i]</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">set</span> {</span><br><span class="line">            rooms[i] <span class="operator">=</span> newValue</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">printNumberOfRooms</span>() {</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"The number of rooms is <span class="subst">\(numberOfRooms)</span>"</span>)</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">var</span> address: <span class="type">Address</span>?</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>现在 <code>Residence</code> 有了一个存储 <code>Room</code> 实例的数组，<code>numberOfRooms</code> 属性被实现为计算型属性，而不是存储型属性。<code>numberOfRooms</code> 属性简单地返回 <code>rooms</code> 数组的 <code>count</code>属 性的值。</p>
+<p><code>Residence</code> 还提供了访问 <code>rooms</code> 数组的快捷方式，即提供可读写的下标来访问 <code>rooms</code> 数组中指定位置的元素。</p>
+<p>此外，<code>Residence</code> 还提供了 <code>printNumberOfRooms()</code> 方法，这个方法的作用是打印 <code>numberOfRooms</code> 的值。</p>
+<p>最后，<code>Residence</code> 还定义了一个可选属性 <code>address</code>，其类型为 <code>Address?</code>。<code>Address</code> 类的定义在下面会说明。</p>
+<p><code>Room</code> 类是一个简单类，其实例被存储在 <code>rooms</code> 数组中。该类只包含一个属性 <code>name</code>，以及一个用于将该属性设置为适当的房间名的初始化函数：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Room</span> {</span><br><span class="line">    <span class="keyword">let</span> name: <span class="type">String</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">name</span>: <span class="type">String</span>) { <span class="keyword">self</span>.name <span class="operator">=</span> name }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>最后一个类是 <code>Address</code>，这个类有三个 <code>String?</code> 类型的可选属性。<code>buildingName</code> 以及 <code>buildingNumber</code> 属性分别表示某个大厦的名称和号码，第三个属性 <code>street</code> 表示大厦所在街道的名称：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Address</span> {</span><br><span class="line">    <span class="keyword">var</span> buildingName: <span class="type">String</span>?</span><br><span class="line">    <span class="keyword">var</span> buildingNumber: <span class="type">String</span>?</span><br><span class="line">    <span class="keyword">var</span> street: <span class="type">String</span>?</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">buildingIdentifier</span>() -&gt; <span class="type">String</span>? {</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> buildingNumber <span class="operator">=</span> buildingNumber, <span class="keyword">let</span> street <span class="operator">=</span> street {</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"<span class="subst">\(buildingNumber)</span> <span class="subst">\(street)</span>"</span></span><br><span class="line">        } <span class="keyword">else</span> <span class="keyword">if</span> buildingName <span class="operator">!=</span> <span class="literal">nil</span> {</span><br><span class="line">            <span class="keyword">return</span> buildingName</span><br><span class="line">        } <span class="keyword">else</span> {</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>Address</code> 类提供了 <code>buildingIdentifier()</code> 方法，返回值为 <code>String?</code>。 如果 <code>buildingName</code> 有值则返回 <code>buildingName</code>。或者，如果 <code>buildingNumber</code> 和 <code>street</code> 均有值则返回 <code>buildingNumber</code>。否则，返回 <code>nil</code>。</p>
+<p><a name="accessing_properties_through_optional_chaining"></a></p>
+<h2 id="通过可选链式调用访问属性"><a href="#通过可选链式调用访问属性" class="headerlink" title="通过可选链式调用访问属性"></a>通过可选链式调用访问属性</h2><p>正如<a href="#optional_chaining_as_an_alternative_to_forced_unwrapping">使用可选链式调用代替强制展开</a>中所述，可以通过可选链式调用在一个可选值上访问它的属性，并判断访问是否成功。</p>
+<p>下面的代码创建了一个 <code>Person</code> 实例，然后像之前一样，尝试访问 <code>numberOfRooms</code> 属性：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> john <span class="operator">=</span> <span class="type">Person</span>()</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> roomCount <span class="operator">=</span> john.residence<span class="operator">?</span>.numberOfRooms {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"John's residence has <span class="subst">\(roomCount)</span> room(s)."</span>)</span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Unable to retrieve the number of rooms."</span>)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 打印 “Unable to retrieve the number of rooms.”</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>因为 <code>john.residence</code> 为 <code>nil</code>，所以这个可选链式调用依旧会像先前一样失败。</p>
+<p>还可以通过可选链式调用来设置属性值：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> someAddress <span class="operator">=</span> <span class="type">Address</span>()</span><br><span class="line">someAddress.buildingNumber <span class="operator">=</span> <span class="string">"29"</span></span><br><span class="line">someAddress.street <span class="operator">=</span> <span class="string">"Acacia Road"</span></span><br><span class="line">john.residence<span class="operator">?</span>.address <span class="operator">=</span> someAddress</span><br></pre></td></tr></tbody></table></figure>
+
+<p>在这个例子中，通过 <code>john.residence</code> 来设定 <code>address</code> 属性也会失败，因为 <code>john.residence</code> 当前为 <code>nil</code>。</p>
+<p>上面代码中的赋值过程是可选链式调用的一部分，这意味着可选链式调用失败时，等号右侧的代码不会被执行。对于上面的代码来说，很难验证这一点，因为像这样赋值一个常量没有任何副作用。下面的代码完成了同样的事情，但是它使用一个函数来创建 <code>Address</code> 实例，然后将该实例返回用于赋值。该函数会在返回前打印“Function was called”，这使你能验证等号右侧的代码是否被执行。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">createAddress</span>() -&gt; <span class="type">Address</span> {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Function was called."</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> someAddress <span class="operator">=</span> <span class="type">Address</span>()</span><br><span class="line">    someAddress.buildingNumber <span class="operator">=</span> <span class="string">"29"</span></span><br><span class="line">    someAddress.street <span class="operator">=</span> <span class="string">"Acacia Road"</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> someAddress</span><br><span class="line">}</span><br><span class="line">john.residence<span class="operator">?</span>.address <span class="operator">=</span> createAddress()</span><br></pre></td></tr></tbody></table></figure>
+
+<p>没有任何打印消息，可以看出 <code>createAddress()</code> 函数并未被执行。</p>
+<p><a name="calling_methods_through_optional_chaining"></a></p>
+<h2 id="通过可选链式调用调用方法"><a href="#通过可选链式调用调用方法" class="headerlink" title="通过可选链式调用调用方法"></a>通过可选链式调用调用方法</h2><p>可以通过可选链式调用来调用方法，并判断是否调用成功，即使这个方法没有返回值。</p>
+<p><code>Residence</code> 类中的 <code>printNumberOfRooms()</code> 方法打印当前的 <code>numberOfRooms</code> 值，如下所示：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">printNumberOfRooms</span>() {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"The number of rooms is <span class="subst">\(numberOfRooms)</span>"</span>)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>这个方法没有返回值。然而，没有返回值的方法具有隐式的返回类型 <code>Void</code>，如<a href="./06_Functions.html#functions_without_return_values">无返回值函数</a>中所述。这意味着没有返回值的方法也会返回 <code>()</code>，或者说空的元组。</p>
+<p>如果在可选值上通过可选链式调用来调用这个方法，该方法的返回类型会是 <code>Void?</code>，而不是 <code>Void</code>，因为通过可选链式调用得到的返回值都是可选的。这样我们就可以使用 <code>if</code> 语句来判断能否成功调用 <code>printNumberOfRooms()</code> 方法，即使方法本身没有定义返回值。通过判断返回值是否为 <code>nil</code> 可以判断调用是否成功：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> john.residence<span class="operator">?</span>.printNumberOfRooms() <span class="operator">!=</span> <span class="literal">nil</span> {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"It was possible to print the number of rooms."</span>)</span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"It was not possible to print the number of rooms."</span>)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 打印 “It was not possible to print the number of rooms.”</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>同样的，可以据此判断通过可选链式调用为属性赋值是否成功。在上面的<a href="#accessing_properties_through_optional_chaining">通过可选链式调用访问属性</a>的例子中，我们尝试给 <code>john.residence </code>中的 <code>address</code> 属性赋值，即使 <code>residence</code> 为 <code>nil</code> 。通过可选链式调用给属性赋值会返回 <code>Void?</code>，通过判断返回值是否为 <code>nil</code> 就可以知道赋值是否成功：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (john.residence<span class="operator">?</span>.address <span class="operator">=</span> someAddress) <span class="operator">!=</span> <span class="literal">nil</span> {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"It was possible to set the address."</span>)</span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"It was not possible to set the address."</span>)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 打印 “It was not possible to set the address.”</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><a name="accessing_subscripts_through_optional_chaining"></a></p>
+<h2 id="通过可选链式调用访问下标"><a href="#通过可选链式调用访问下标" class="headerlink" title="通过可选链式调用访问下标"></a>通过可选链式调用访问下标</h2><p>通过可选链式调用，我们可以在一个可选值上访问下标，并且判断下标调用是否成功。</p>
+<blockquote>
+<p>注意<br>通过可选链式调用访问可选值的下标时，应该将问号放在下标方括号的前面而不是后面。可选链式调用的问号一般直接跟在可选表达式的后面。</p>
+</blockquote>
+<p>下面这个例子用下标访问 <code>john.residence</code> 属性存储的 <code>Residence</code> 实例的 <code>rooms</code> 数组中的第一个房间的名称，因为 <code>john.residence</code> 为 <code>nil</code>，所以下标调用失败了：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> firstRoomName <span class="operator">=</span> john.residence<span class="operator">?</span>[<span class="number">0</span>].name {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"The first room name is <span class="subst">\(firstRoomName)</span>."</span>)</span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Unable to retrieve the first room name."</span>)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 打印 “Unable to retrieve the first room name.”</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>在这个例子中，问号直接放在 <code>john.residence</code> 的后面，并且在方括号的前面，因为 <code>john.residence</code> 是可选值。</p>
+<p>类似的，可以通过下标，用可选链式调用来赋值：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">john.residence<span class="operator">?</span>[<span class="number">0</span>] <span class="operator">=</span> <span class="type">Room</span>(name: <span class="string">"Bathroom"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>这次赋值同样会失败，因为 <code>residence</code> 目前是 <code>nil</code>。</p>
+<p>如果你创建一个 <code>Residence</code> 实例，并为其 <code>rooms</code> 数组添加一些 <code>Room</code> 实例，然后将 <code>Residence</code> 实例赋值给 <code>john.residence</code>，那就可以通过可选链和下标来访问数组中的元素：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> johnsHouse <span class="operator">=</span> <span class="type">Residence</span>()</span><br><span class="line">johnsHouse.rooms.append(<span class="type">Room</span>(name: <span class="string">"Living Room"</span>))</span><br><span class="line">johnsHouse.rooms.append(<span class="type">Room</span>(name: <span class="string">"Kitchen"</span>))</span><br><span class="line">john.residence <span class="operator">=</span> johnsHouse</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> firstRoomName <span class="operator">=</span> john.residence<span class="operator">?</span>[<span class="number">0</span>].name {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"The first room name is <span class="subst">\(firstRoomName)</span>."</span>)</span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Unable to retrieve the first room name."</span>)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 打印 “The first room name is Living Room.”</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><a name="accessing_subscripts_of_optional_type"></a></p>
+<h3 id="访问可选类型的下标"><a href="#访问可选类型的下标" class="headerlink" title="访问可选类型的下标"></a>访问可选类型的下标</h3><p>如果下标返回可选类型值，比如 Swift 中 <code>Dictionary</code> 类型的键的下标，可以在下标的结尾括号后面放一个问号来在其可选返回值上进行可选链式调用：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> testScores <span class="operator">=</span> [<span class="string">"Dave"</span>: [<span class="number">86</span>, <span class="number">82</span>, <span class="number">84</span>], <span class="string">"Bev"</span>: [<span class="number">79</span>, <span class="number">94</span>, <span class="number">81</span>]]</span><br><span class="line">testScores[<span class="string">"Dave"</span>]<span class="operator">?</span>[<span class="number">0</span>] <span class="operator">=</span> <span class="number">91</span></span><br><span class="line">testScores[<span class="string">"Bev"</span>]<span class="operator">?</span>[<span class="number">0</span>] <span class="operator">+=</span> <span class="number">1</span></span><br><span class="line">testScores[<span class="string">"Brian"</span>]<span class="operator">?</span>[<span class="number">0</span>] <span class="operator">=</span> <span class="number">72</span></span><br><span class="line"><span class="comment">// "Dave" 数组现在是 [91, 82, 84]，"Bev" 数组现在是 [80, 94, 81]</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>上面的例子中定义了一个 <code>testScores</code> 数组，包含了两个键值对，把 <code>String</code> 类型的键映射到一个 <code>Int</code> 值的数组。这个例子用可选链式调用把 <code>"Dave"</code>数组中第一个元素设为 <code>91</code>，把 <code>"Bev"</code> 数组的第一个元素 <code>+1</code>，然后尝试把 <code>"Brian"</code> 数组中的第一个元素设为 <code>72</code>。前两个调用成功，因为 <code>testScores</code> 字典中包含 <code>"Dave"</code> 和 <code>"Bev"</code> 这两个键。但是 <code>testScores</code> 字典中没有 <code>"Brian"</code> 这个键，所以第三个调用失败。</p>
+<p><a name="linking_multiple_levels_of_chaining"></a></p>
+<h2 id="连接多层可选链式调用"><a href="#连接多层可选链式调用" class="headerlink" title="连接多层可选链式调用"></a>连接多层可选链式调用</h2><p>可以通过连接多个可选链式调用在更深的模型层级中访问属性、方法以及下标。然而，多层可选链式调用不会增加返回值的可选层级。</p>
+<p>也就是说：</p>
+<ul>
+<li>如果你访问的值不是可选的，可选链式调用将会返回可选值。</li>
+<li>如果你访问的值就是可选的，可选链式调用不会让可选返回值变得“更可选”。</li>
+</ul>
+<p>因此：</p>
+<ul>
+<li>通过可选链式调用访问一个 <code>Int</code> 值，将会返回 <code>Int?</code>，无论使用了多少层可选链式调用。</li>
+<li>类似的，通过可选链式调用访问 <code>Int?</code> 值，依旧会返回 <code>Int?</code> 值，并不会返回 <code>Int??</code>。</li>
+</ul>
+<p>下面的例子尝试访问 <code>john</code> 中的 <code>residence</code> 属性中的 <code>address</code> 属性中的 <code>street</code> 属性。这里使用了两层可选链式调用，<code>residence</code> 以及 <code>address</code> 都是可选值：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> johnsStreet <span class="operator">=</span> john.residence<span class="operator">?</span>.address<span class="operator">?</span>.street {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"John's street name is <span class="subst">\(johnsStreet)</span>."</span>)</span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Unable to retrieve the address."</span>)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 打印 “Unable to retrieve the address.”</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>john.residence</code> 现在包含一个有效的 <code>Residence</code> 实例。然而，<code>john.residence.address</code> 的值当前为 <code>nil</code>。因此，调用 <code>john.residence?.address?.street</code> 会失败。</p>
+<p>需要注意的是，上面的例子中，<code>street</code> 的属性为 <code>String?</code>。<code>john.residence?.address?.street</code> 的返回值也依然是 <code>String?</code>，即使已经使用了两层可选链式调用。</p>
+<p>如果为 <code>john.residence.address</code> 赋值一个 <code>Address</code> 实例，并且为 <code>address</code> 中的 <code>street</code> 属性设置一个有效值，我们就能过通过可选链式调用来访问 <code>street</code> 属性：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> johnsAddress <span class="operator">=</span> <span class="type">Address</span>()</span><br><span class="line">johnsAddress.buildingName <span class="operator">=</span> <span class="string">"The Larches"</span></span><br><span class="line">johnsAddress.street <span class="operator">=</span> <span class="string">"Laurel Street"</span></span><br><span class="line">john.residence<span class="operator">?</span>.address <span class="operator">=</span> johnsAddress</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> johnsStreet <span class="operator">=</span> john.residence<span class="operator">?</span>.address<span class="operator">?</span>.street {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"John's street name is <span class="subst">\(johnsStreet)</span>."</span>)</span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Unable to retrieve the address."</span>)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 打印 “John's street name is Laurel Street.”</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>在上面的例子中，因为 <code>john.residence</code> 包含一个有效的 <code>Residence</code> 实例，所以对 <code>john.residence</code> 的 <code>address</code> 属性赋值将会成功。</p>
+<p><a name="chaining_on_methods_with_optional_return_values"></a></p>
+<h2 id="在方法的可选返回值上进行可选链式调用"><a href="#在方法的可选返回值上进行可选链式调用" class="headerlink" title="在方法的可选返回值上进行可选链式调用"></a>在方法的可选返回值上进行可选链式调用</h2><p>上面的例子展示了如何在一个可选值上通过可选链式调用来获取它的属性值。我们还可以在一个可选值上通过可选链式调用来调用方法，并且可以根据需要继续在方法的可选返回值上进行可选链式调用。</p>
+<p>在下面的例子中，通过可选链式调用来调用 <code>Address</code> 的 <code>buildingIdentifier()</code> 方法。这个方法返回 <code>String?</code> 类型的值。如上所述，通过可选链式调用来调用该方法，最终的返回值依旧会是 <code>String?</code> 类型：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> buildingIdentifier <span class="operator">=</span> john.residence<span class="operator">?</span>.address<span class="operator">?</span>.buildingIdentifier() {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"John's building identifier is <span class="subst">\(buildingIdentifier)</span>."</span>)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 打印 “John's building identifier is The Larches.”</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>如果要在该方法的返回值上进行可选链式调用，在方法的圆括号后面加上问号即可：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> beginsWithThe <span class="operator">=</span></span><br><span class="line">    john.residence<span class="operator">?</span>.address<span class="operator">?</span>.buildingIdentifier()<span class="operator">?</span>.hasPrefix(<span class="string">"The"</span>) {</span><br><span class="line">    <span class="keyword">if</span> beginsWithThe {</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"John's building identifier begins with <span class="subst">\"</span>The<span class="subst">\"</span>."</span>)</span><br><span class="line">    } <span class="keyword">else</span> {</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"John's building identifier doesn't begin with <span class="subst">\"</span>The<span class="subst">\"</span>."</span>)</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 打印 “John's building identifier begins with "The".”</span></span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote>
+<p>注意<br>在上面的例子中，在方法的圆括号后面加上问号是因为你要在 <code>buildingIdentifier()</code> 方法的可选返回值上进行可选链式调用，而不是方法本身。</p>
+</blockquote>
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>OPTIONALCHAINING</li>
+          
+  </ul>
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%AF%E9%80%89%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8%EF%BC%88Optional-Chaining%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">可选链式调用（Optional Chaining）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%8F%AF%E9%80%89%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8%E4%BB%A3%E6%9B%BF%E5%BC%BA%E5%88%B6%E5%B1%95%E5%BC%80"><span class="nav-number">1.1.</span> <span class="nav-text">使用可选链式调用代替强制展开</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E5%8F%AF%E9%80%89%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B%E7%B1%BB"><span class="nav-number">1.2.</span> <span class="nav-text">为可选链式调用定义模型类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E5%8F%AF%E9%80%89%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8%E8%AE%BF%E9%97%AE%E5%B1%9E%E6%80%A7"><span class="nav-number">1.3.</span> <span class="nav-text">通过可选链式调用访问属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E5%8F%AF%E9%80%89%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8%E8%B0%83%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">1.4.</span> <span class="nav-text">通过可选链式调用调用方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E5%8F%AF%E9%80%89%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8%E8%AE%BF%E9%97%AE%E4%B8%8B%E6%A0%87"><span class="nav-number">1.5.</span> <span class="nav-text">通过可选链式调用访问下标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E5%8F%AF%E9%80%89%E7%B1%BB%E5%9E%8B%E7%9A%84%E4%B8%8B%E6%A0%87"><span class="nav-number">1.5.1.</span> <span class="nav-text">访问可选类型的下标</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E5%A4%9A%E5%B1%82%E5%8F%AF%E9%80%89%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8"><span class="nav-number">1.6.</span> <span class="nav-text">连接多层可选链式调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E6%96%B9%E6%B3%95%E7%9A%84%E5%8F%AF%E9%80%89%E8%BF%94%E5%9B%9E%E5%80%BC%E4%B8%8A%E8%BF%9B%E8%A1%8C%E5%8F%AF%E9%80%89%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8"><span class="nav-number">1.7.</span> <span class="nav-text">在方法的可选返回值上进行可选链式调用</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

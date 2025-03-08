@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="析构过程释放需要自定义清理的资源。 析构器仅适用于类类型，析构器会在类实例被释放之前立即调用。使用 deinit 关键字来编写析构器，类似于使用 init 关键字编写构造器。 析构过程原理Swift 会在实例不再需要时自动释放它们，以释放资源。Swift 通过自动引用计数（ARC）来管理实例的内存，如 doc:AutomaticReferenceCounting 中所述。通常，在实例被释放时不需要">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/Deinitialization.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="析构过程释放需要自定义清理的资源。 析构器仅适用于类类型，析构器会在类实例被释放之前立即调用。使用 deinit 关键字来编写析构器，类似于使用 init 关键字编写构造器。 析构过程原理Swift 会在实例不再需要时自动释放它们，以释放资源。Swift 通过自动引用计数（ARC）来管理实例的内存，如 doc:AutomaticReferenceCounting 中所述。通常，在实例被释放时不需要">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-08T08:32:48.696Z">
+<meta property="article:modified_time" content="2025-03-08T08:32:48.696Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/Deinitialization">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>DEINITIALIZATION</li>
+          
+  </ul>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h1 id="析构过程"><a href="#析构过程" class="headerlink" title="析构过程"></a>析构过程</h1><p>释放需要自定义清理的资源。</p>
+<p>析构器仅适用于类类型，<strong>析构器</strong>会在类实例被释放之前立即调用。使用 <code>deinit</code> 关键字来编写析构器，类似于使用 <code>init</code> 关键字编写构造器。</p>
+<h2 id="析构过程原理"><a href="#析构过程原理" class="headerlink" title="析构过程原理"></a>析构过程原理</h2><p>Swift 会在实例不再需要时自动释放它们，以释放资源。Swift 通过<strong>自动引用计数</strong>（<em>ARC</em>）来管理实例的内存，如 <a href="doc:AutomaticReferenceCounting">doc:AutomaticReferenceCounting</a> 中所述。通常，在实例被释放时不需要执行手动清理。然而，当你处理自己的资源时，可能需要进行一些额外的清理。例如，如果创建一个自定义类来打开文件并向其中写入数据，可能需要在类实例被释放之前关闭文件。</p>
+<p>类定义中每个类最多只能有一个析构器。析构器不接受任何参数，并且是没有括号的：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">deinit</span> {</span><br><span class="line">    <span class="comment">// 执行析构过程</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `deinitializer`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; class Test &#123;</span><br><span class="line">-&gt; deinit &#123;</span><br><span class="line">      // 执行析构过程</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>析构器会在实例释放之前自动调用。不能自行调用析构器。父类的析构器会被子类继承，并且在子类析构器实现的末尾被自动调用。即使子类没有提供自己的析构器，父类的析构器也总是会被调用。</p>
+<p>由于实例在析构器调用完成后才会被释放，因此析构器可以访问该实例的所有属性，并可以根据这些属性修改其行为（例如查找需要关闭的文件的名称）。</p>
+<h2 id="析构器实践"><a href="#析构器实践" class="headerlink" title="析构器实践"></a>析构器实践</h2><p>下面是一个析构器实践的例子。这个例子定义了两个新类型，<code>Bank</code> 和 <code>Player</code>，用于一个简单的游戏。<code>Bank</code> 类管理一种虚构的货币，这种货币的流通量永远不会超过 10,000 个金币。游戏中只能有一个 <code>Bank</code>，因此 <code>Bank</code> 被实现为一个类，使用类型属性和类型方法来存储和管理其当前状态：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Bank</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> coinsInBank <span class="operator">=</span> <span class="number">10_000</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">distribute</span>(<span class="params">coins</span> <span class="params">numberOfCoinsRequested</span>: <span class="type">Int</span>) -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> numberOfCoinsToVend <span class="operator">=</span> <span class="built_in">min</span>(numberOfCoinsRequested, coinsInBank)</span><br><span class="line">        coinsInBank <span class="operator">-=</span> numberOfCoinsToVend</span><br><span class="line">        <span class="keyword">return</span> numberOfCoinsToVend</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">receive</span>(<span class="params">coins</span>: <span class="type">Int</span>) &#123;</span><br><span class="line">        coinsInBank <span class="operator">+=</span> coins</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `deinitializer`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class Bank &#123;</span><br><span class="line">      static var coinsInBank = 10_000</span><br><span class="line">      static func distribute(coins numberOfCoinsRequested: Int) -&gt; Int &#123;</span><br><span class="line">         let numberOfCoinsToVend = min(numberOfCoinsRequested, coinsInBank)</span><br><span class="line">         coinsInBank -= numberOfCoinsToVend</span><br><span class="line">         return numberOfCoinsToVend</span><br><span class="line">      &#125;</span><br><span class="line">      static func receive(coins: Int) &#123;</span><br><span class="line">         coinsInBank += coins</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>Bank</code> 通过其 <code>coinsInBank</code> 属性跟踪当前持有的金币数量。它还提供了两个方法——<code>distribute(coins:)</code> 和 <code>receive(coins:)</code>——来处理金币的分发和接收。</p>
+<p><code>distribute(coins:)</code> 方法在分发金币之前检查银行中是否有足够的金币。如果金币不足，<code>Bank</code> 会返回一个比请求的数量更小的数字（如果银行中没有金币，则返回零）。该方法返回一个整型值，表示实际提供的金币数量。</p>
+<p><code>receive(coins:)</code> 方法只是将接收到的金币数量重新添加到银行的金币库中。</p>
+<p><code>Player</code> 类描述了游戏中的一个玩家。每个玩家的钱包中随时都会存储一定数量的金币，由 <code>coinsInPurse</code> 属性表示：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Player</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> coinsInPurse: <span class="type">Int</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">coins</span>: <span class="type">Int</span>) &#123;</span><br><span class="line">        coinsInPurse <span class="operator">=</span> <span class="type">Bank</span>.distribute(coins: coins)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">win</span>(<span class="params">coins</span>: <span class="type">Int</span>) &#123;</span><br><span class="line">        coinsInPurse <span class="operator">+=</span> <span class="type">Bank</span>.distribute(coins: coins)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">deinit</span> &#123;</span><br><span class="line">        <span class="type">Bank</span>.receive(coins: coinsInPurse)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `deinitializer`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class Player &#123;</span><br><span class="line">      var coinsInPurse: Int</span><br><span class="line">      init(coins: Int) &#123;</span><br><span class="line">         coinsInPurse = Bank.distribute(coins: coins)</span><br><span class="line">      &#125;</span><br><span class="line">      func win(coins: Int) &#123;</span><br><span class="line">         coinsInPurse += Bank.distribute(coins: coins)</span><br><span class="line">      &#125;</span><br><span class="line">      deinit &#123;</span><br><span class="line">         Bank.receive(coins: coinsInPurse)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>每个 <code>Player</code> 实例在初始化时都会从银行获得指定的金币作为初始津贴，但是如果可用金币不足，<code>Player</code> 实例获得的金币数量可能会少于指定数量。</p>
+<p><code>Player</code> 类定义了一个 <code>win(coins:)</code> 方法，该方法从银行获取一定数量的金币并将其添加到玩家的钱包中。<code>Player</code> 类还实现了一个析构器，该析构器在 <code>Player</code> 实例被释放之前调用。在这里，析构器只是将玩家的所有金币返还给银行：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> playerOne: <span class="type">Player</span>? <span class="operator">=</span> <span class="type">Player</span>(coins: <span class="number">100</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;A new player has joined the game with <span class="subst">\(playerOne<span class="operator">!</span>.coinsInPurse)</span> coins&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;A new player has joined the game with 100 coins&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;There are now <span class="subst">\(Bank.coinsInBank)</span> coins left in the bank&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;There are now 9900 coins left in the bank&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `deinitializer`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var playerOne: Player? = Player(coins: 100)</span><br><span class="line">-&gt; print(&quot;A new player has joined the game with \(playerOne!.coinsInPurse) coins&quot;)</span><br><span class="line">&lt;- A new player has joined the game with 100 coins</span><br><span class="line">-&gt; print(&quot;There are now \(Bank.coinsInBank) coins left in the bank&quot;)</span><br><span class="line">&lt;- There are now 9900 coins left in the bank</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>创建了一个新的 <code>Player</code> 实例的时候，会向 <code>Bank</code> 请求获取 100 个金币（如果有的话）。这个 <code>Player</code> 实例被存储在一个名为 <code>playerOne</code> 的可选类型变量中。这里使用可选变量是因为玩家可以在任何时候退出游戏。通过可选类型可以跟踪当前是否有玩家在游戏中。</p>
+<p>由于 <code>playerOne</code> 是一个可选类型，因此在访问其 <code>coinsInPurse</code> 属性以打印默认金币数量时，以及每次调用其 <code>win(coins:)</code> 方法时，都需要使用感叹号（<code>!</code>）来强制解包：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">playerOne<span class="operator">!</span>.win(coins: <span class="number">2_000</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;PlayerOne won 2000 coins &amp; now has <span class="subst">\(playerOne<span class="operator">!</span>.coinsInPurse)</span> coins&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;PlayerOne won 2000 coins &amp; now has 2100 coins&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;The bank now only has <span class="subst">\(Bank.coinsInBank)</span> coins left&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;The bank now only has 7900 coins left&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `deinitializer`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; playerOne!.win(coins: 2_000)</span><br><span class="line">-&gt; print(&quot;PlayerOne won 2000 coins &amp; now has \(playerOne!.coinsInPurse) coins&quot;)</span><br><span class="line">&lt;- PlayerOne won 2000 coins &amp; now has 2100 coins</span><br><span class="line">-&gt; print(&quot;The bank now only has \(Bank.coinsInBank) coins left&quot;)</span><br><span class="line">&lt;- The bank now only has 7900 coins left</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>在这里，玩家赢得了 2,000 个金币。玩家的钱包现在有 2,100 个金币，而银行只剩下 7,900 个金币。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">playerOne <span class="operator">=</span> <span class="literal">nil</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;PlayerOne has left the game&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;PlayerOne has left the game&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;The bank now has <span class="subst">\(Bank.coinsInBank)</span> coins&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;The bank now has 10000 coins&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `deinitializer`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; playerOne = nil</span><br><span class="line">-&gt; print(&quot;PlayerOne has left the game&quot;)</span><br><span class="line">&lt;- PlayerOne has left the game</span><br><span class="line">-&gt; print(&quot;The bank now has \(Bank.coinsInBank) coins&quot;)</span><br><span class="line">&lt;- The bank now has 10000 coins</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>玩家现在已经退出游戏。这是通过将可选类型变量 <code>playerOne</code> 设置为 <code>nil</code> 来表示的，意味着“没有 <code>Player</code> 实例”。在这一刻，<code>playerOne</code> 变量对 <code>Player</code> 实例的引用被断开。没有其他属性或变量仍然引用该 <code>Player</code> 实例，因此它会被释放以回收其内存。在此之前，它的析构器会被自动调用，并将其金币返还给银行。</p>
+<!--
+This source file is part of the Swift.org open source project
+
+Copyright (c) 2014 - 2022 Apple Inc. and the Swift project authors
+Licensed under Apache License v2.0 with Runtime Library Exception
+
+See https://swift.org/LICENSE.txt for license information
+See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
+-->
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>DEINITIALIZATION</li>
+          
+  </ul>
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%90%E6%9E%84%E8%BF%87%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">析构过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%90%E6%9E%84%E8%BF%87%E7%A8%8B%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">析构过程原理</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

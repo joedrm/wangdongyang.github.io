@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="特性为声明和类型添加信息。 在 Swift 中有两种特性——适用于声明的特性和适用于类型的特性。特性提供有关声明或类型的附加信息。例如，函数声明上的 discardableResult 特性表示，尽管函数返回一个值，但如果返回值未被使用，编译器不应生成警告。 你可以通过编写 @ 符号，并在其后加上特性的名称以及特性接受的任何参数，来指定一个特性。 12@&lt;#attribute name#&amp;g">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/Attributes.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="特性为声明和类型添加信息。 在 Swift 中有两种特性——适用于声明的特性和适用于类型的特性。特性提供有关声明或类型的附加信息。例如，函数声明上的 discardableResult 特性表示，尽管函数返回一个值，但如果返回值未被使用，编译器不应生成警告。 你可以通过编写 @ 符号，并在其后加上特性的名称以及特性接受的任何参数，来指定一个特性。 12@&lt;#attribute name#&amp;g">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-08T08:32:48.727Z">
+<meta property="article:modified_time" content="2025-03-08T08:32:48.727Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/Attributes">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/">REFERENCEMANUAL</a></li>
+            <li>ATTRIBUTES</li>
+          
+  </ul>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h1 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h1><p>为声明和类型添加信息。</p>
+<p>在 Swift 中有两种特性——适用于声明的特性和适用于类型的特性。特性提供有关声明或类型的附加信息。例如，函数声明上的 <code>discardableResult</code> 特性表示，尽管函数返回一个值，但如果返回值未被使用，编译器不应生成警告。</p>
+<p>你可以通过编写 <code>@</code> 符号，并在其后加上特性的名称以及特性接受的任何参数，来指定一个特性。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@<span class="operator">&lt;</span>#attribute name#<span class="operator">&gt;</span></span><br><span class="line">@<span class="operator">&lt;</span>#attribute name#<span class="operator">&gt;</span>(<span class="operator">&lt;</span>#attribute arguments#<span class="operator">&gt;</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>有些声明特性接受参数，这些参数指定有关特性的更多信息以及它如何适用于特定声明。这些<em>特性参数</em>被括号括起来，其格式由它们所属的特性定义。</p>
+<p>附加宏和属性包装器也使用特性语法。有关宏如何展开的信息，参见 <a href="doc:Expressions#宏展开表达式">doc:Expressions#宏展开表达式</a>。有关属性包装器的信息，参见 <a href="doc:Attributes#属性包装器">doc:Attributes#属性包装器</a>。</p>
+<h2 id="声明特性"><a href="#声明特性" class="headerlink" title="声明特性"></a>声明特性</h2><p>你只能将声明特性应用于声明。</p>
+<h3 id="attached"><a href="#attached" class="headerlink" title="attached"></a>attached</h3><p>将 <code>attached</code> 特性应用于宏声明。该特性的参数指示宏的角色。对于具有多个角色的宏，针对每个角色多次应用 <code>attached</code> 宏，每个角色应用一次。</p>
+<!-- TODO:
+If there's a stable URL we can use, make the macro protocols below links.
+-->
+
+<p>特性的第一个参数指明宏的角色：</p>
+<ul>
+<li><p>Peer 宏：将 <code>peer</code> 作为此特性的第一个参数。实现该宏的类型遵循 <code>PeerMacro</code> 协议。这些宏在与宏附加的声明相同的作用域中生成新的声明。例如，将 peer 宏应用于结构体的方法可以在该结构体上定义额外的方法和属性。</p>
+</li>
+<li><p>Member 宏：将 <code>member</code> 作为此特性的第一个参数。实现该宏的类型遵循 <code>MemberMacro</code> 协议。这些宏生成的新声明是该宏所附加的类型或扩展的成员。例如，将 member 宏应用于结构体声明可以在该结构体上定义额外的方法和属性。</p>
+</li>
+<li><p>Member 特性：将 <code>memberAttribute</code> 作为此特性的第一个参数。实现该宏的类型遵循 <code>MemberAttributeMacro</code> 协议。这些宏将特性添加到该宏所附加的类型或扩展的成员上。</p>
+</li>
+<li><p>Accessor 宏：将 <code>accessor</code> 作为此特性的第一个参数。实现该宏的类型遵循 <code>AccessorMacro</code> 协议。这些宏为它们附加的存储属性添加访问器，将其转换为计算属性。</p>
+</li>
+<li><p>Extension 扩展宏：将 <code>extension</code> 作为此特性的第一个参数。实现宏的类型遵循 <code>ExtensionMacro</code> 协议。这些宏可以添加协议遵循、<code>where</code> 从句，以及宏所附加到的类型的成员的新声明。如果宏添加了协议遵循，请包含 <code>conformances:</code> 参数并指定这些协议。遵循列表包含协议名称、指向遵循列表项的类型别名，或者是遵循列表项的协议组合。嵌套类型上的扩展宏会展开为该文件顶层的扩展。你不能在扩展、类型别名或嵌套在函数内的类型上编写扩展宏，也不能使用扩展宏添加具有 peer 宏的扩展。</p>
+</li>
+</ul>
+<p>peer、member 和 accessor 宏角色需要一个 <code>names:</code> 参数，列出宏生成的符号名称。如果宏在扩展内部添加声明，扩展宏角色也需要一个 <code>names:</code> 参数。当宏声明包含 <code>names:</code> 参数时，宏实现必须仅生成与该列表匹配的名称的符号。也就是说，宏不必为每个列出的名称生成符号。该参数的值是以下一个或多个项的列表：</p>
+<ul>
+<li><p><code>named(&lt;#name#&gt;)</code> 其中 <em>name</em> 是那个固定的符号名称，用于一个已知的名称。</p>
+</li>
+<li><p><code>overloaded</code> 用于与现有符号同名的名称。</p>
+</li>
+<li><p><code>prefixed(&lt;#prefix#&gt;)</code> 其中 <em>prefix</em> 被添加到符号名称前，用于以固定字符串开头的名称。</p>
+</li>
+<li><p><code>suffixed(&lt;#suffix#&gt;)</code> 其中 <em>suffix</em> 被附加到符号名称后，用于以固定字符串结尾的名称。</p>
+</li>
+<li><p><code>arbitrary</code> 用于一个在宏展开之前无法确定的名称。</p>
+</li>
+</ul>
+<p>作为一个特殊情况，你可以为一个行为类似于属性包装器的宏编写 <code>prefixed($)</code>。</p>
+<!--
+TODO TR: Is there any more detail about this case?
+-->
+
+<h3 id="available"><a href="#available" class="headerlink" title="available"></a>available</h3><p>应用此特性来表明某个声明的生命周期是相对于特定的 Swift 语言版本或特定的平台和操作系统版本的。</p>
+<p><code>available</code> 特性总是与两个或更多用逗号分隔的特性参数列表一起出现。这些参数以以下平台或语言名称之一开头：</p>
+<ul>
+<li><code>iOS</code></li>
+<li><code>iOSApplicationExtension</code></li>
+<li><code>macOS</code></li>
+<li><code>macOSApplicationExtension</code></li>
+<li><code>macCatalyst</code></li>
+<li><code>macCatalystApplicationExtension</code></li>
+<li><code>watchOS</code></li>
+<li><code>watchOSApplicationExtension</code></li>
+<li><code>tvOS</code></li>
+<li><code>tvOSApplicationExtension</code></li>
+<li><code>visionOS</code></li>
+<li><code>visionOSApplicationExtension</code></li>
+<li><code>swift</code></li>
+</ul>
+<!--
+  If you need to add a new platform to this list,
+  you probably need to update platform-name in the grammar too.
+-->
+
+<!--
+  For the list in source, see include/swift/AST/PlatformKinds.def
+-->
+
+<p>你还可以使用星号 (<code>*</code>) 来表示在上述所有列出的平台上声明的可用性。使用 Swift 版本号指定可用性的 <code>available</code> 特性不能再使用星号。</p>
+<p>其余参数可以以任何顺序出现，并指定有关声明生命周期的附加信息，包括重要的里程碑。</p>
+<ul>
+<li><p><code>unavailable</code> 参数表示该声明在指定平台上不可用。指定 Swift 版本可用性时无法使用此参数。</p>
+</li>
+<li><p><code>introduced</code> 参数表示声明引入到指定平台或语言的第一个版本。它具有以下形式：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">introduced: <span class="operator">&lt;</span>#version number#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p><em>version number</em> 由一个到三个正整数组成，数字之间用句点分隔。</p>
+</li>
+<li><p><code>deprecated</code> 参数表示声明在指定平台或语言上被弃用的的第一个版本。它具有以下形式：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">deprecated: <span class="operator">&lt;</span>#version number#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p>可选的 <em>version number</em> 由一个到三个正整数组成，数字之间用句点分隔。省略版本号表示该声明当前已被弃用，但没有提供有关何时被弃用的任何信息。如果省略版本号，也要省略冒号 (<code>:</code>)。</p>
+</li>
+<li><p><code>obsoleted</code> 参数表示指定平台或语言中声明被废除的第一个版本。当声明被废除时，它会从指定的平台或语言中移除，并且不能再使用。它的形式如下：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obsoleted: <span class="operator">&lt;</span>#version number#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p> <em>version number</em> 由一个到三个正整数组成，数字之间用句点分隔。</p>
+</li>
+<li><p><code>message</code> 参数提供了一个文本消息，当编译器发出关于使用已弃用或已废除声明的警告或错误时，会显示该消息。它具有以下形式：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">message: <span class="operator">&lt;</span>#message#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p> <em>message</em> 由一个字符串字面量组成。</p>
+</li>
+<li><p><code>renamed</code> 参数提供了一个文本消息，表示声明被重命名到的新名称。当发出有关使用重命名声明的错误时，编译器会显示新名称。它具有以下形式：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">renamed: <span class="operator">&lt;</span>#new name#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p> <em>new name</em> 由一个字符串字面量组成。</p>
+<p>你可以将带有 <code>renamed</code> 和 <code>unavailable</code> 参数的 <code>available</code> 特性应用于类型别名声明，如下所示，以指示声明的名称在框架或库的不同版本之间发生了变化。此组合会导致编译时错误，表明声明已被重命名。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 首个版本</span></span><br><span class="line"><span class="keyword">protocol</span> <span class="title class_">MyProtocol</span> {</span><br><span class="line">    <span class="comment">// 协议定义</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+
+<!--
+  - test: `renamed1`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; // First release</span><br><span class="line">-&gt; protocol MyProtocol &#123;</span><br><span class="line">       // protocol definition</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 后续版本将 MyProtocol 重命名为 MyRenamedProtocol</span></span><br><span class="line"><span class="keyword">protocol</span> <span class="title class_">MyRenamedProtocol</span> &#123;</span><br><span class="line">    <span class="comment">// 协议定义</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@available</span>(<span class="operator">*</span>, unavailable, renamed: <span class="string">&quot;MyRenamedProtocol&quot;</span>)</span><br><span class="line"><span class="keyword">typealias</span> <span class="type">MyProtocol</span> <span class="operator">=</span> <span class="type">MyRenamedProtocol</span></span><br></pre></td></tr></table></figure>
+
+
+<!--
+  - test: `renamed2`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; // Subsequent release renames MyProtocol</span><br><span class="line">-&gt; protocol MyRenamedProtocol &#123;</span><br><span class="line">       // protocol definition</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; @available(*, unavailable, renamed: &quot;MyRenamedProtocol&quot;)</span><br><span class="line">   typealias MyProtocol = MyRenamedProtocol</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+</li>
+</ul>
+<p>你可以在单个声明上应用多个 <code>available</code> 特性，以指定该声明在不同平台和不同版本的 Swift 上的可用性。如果 <code>available</code> 特性指定的平台或语言版本与当前目标不匹配，则该特性被应用到的声明将被忽略。如果你使用多个 <code>available</code> 特性，则有效的可用性是平台和 Swift 可用性的组合。</p>
+<!--
+  - test: `multipleAvailableAttributes`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @available(iOS 9, *)</span><br><span class="line">-&gt; @available(macOS 10.9, *)</span><br><span class="line">-&gt; func foo() &#123; &#125;</span><br><span class="line">-&gt; foo()</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如果除了平台或语言名称参数之外，<code>available</code> 特性仅指定一个 <code>introduced</code> 参数，则可以使用以下简写语法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@available</span>(<span class="operator">&lt;</span>#platform name#<span class="operator">&gt;</span> <span class="operator">&lt;</span>#version number#<span class="operator">&gt;</span>, <span class="operator">*</span>)</span><br><span class="line"><span class="keyword">@available</span>(<span class="keyword">swift</span> <span class="operator">&lt;</span>#version number#<span class="operator">&gt;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>available</code> 特性的简写语法简洁地表达了多个平台的可用性。尽管这两种形式在功能上是等效的，但在可能的情况下，优先使用简写形式。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@available</span>(<span class="keyword">iOS</span> <span class="number">10.0</span>, <span class="keyword">macOS</span> <span class="number">10.12</span>, <span class="operator">*</span>)</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line">    <span class="comment">// class definition</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `availableShorthand`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @available(iOS 10.0, macOS 10.12, *)</span><br><span class="line">-&gt; class MyClass &#123;</span><br><span class="line">       // class definition</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>使用 Swift 版本号指定可用性的 <code>available</code> 特性不能另外指定声明的平台可用性。相反，使用单独的 <code>available</code> 特性来指定 Swift 版本的可用性和在一个或多个平台上的可用性。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@available</span>(<span class="keyword">swift</span> <span class="number">3.0</span>.<span class="number">2</span>)</span><br><span class="line"><span class="keyword">@available</span>(<span class="keyword">macOS</span> <span class="number">10.12</span>, <span class="operator">*</span>)</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">MyStruct</span> &#123;</span><br><span class="line">    <span class="comment">// struct definition</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `availableMultipleAvailabilities`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @available(swift 3.0.2)</span><br><span class="line">-&gt; @available(macOS 10.12, *)</span><br><span class="line">-&gt; struct MyStruct &#123;</span><br><span class="line">       // struct definition</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="backDeployed"><a href="#backDeployed" class="headerlink" title="backDeployed"></a>backDeployed</h3><p>将此特性应用于函数、方法、下标操作或计算属性，以便在调用或访问该符号的程序中包含符号实现的副本。你可以使用此特性来标注作为平台一部分发布的符号，例如某操作系统中所包含的 API。此特性标注可以通过在访问它们的程序中包含其实现的副本来可追溯地使用这些符号。复制实现也称为<em>发送到客户端</em>。</p>
+<p>此特性接受一个 <code>before:</code> 参数，指定提供此符号的平台的第一个版本。这些平台版本与你为 <code>available</code> 特性的指定的平台版本具有相同的含义。与 <code>available</code> 特性不同，列表中不能包含星号 (<code>*</code>) 来指代所有版本。例如，考虑以下代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@available</span>(<span class="keyword">iOS</span> <span class="number">16</span>, <span class="operator">*</span>)</span><br><span class="line"><span class="meta">@backDeployed</span>(before: iOS <span class="number">17</span>)</span><br><span class="line"><span class="keyword">func</span> <span class="title function_">someFunction</span>() &#123; <span class="comment">/* ... */</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上面的例子中，iOS SDK 从 iOS 17 开始提供 <code>someFunction()</code>。此外，SDK 通过向后兼容在 iOS 16 上提供 <code>someFunction()</code>。</p>
+<p>在编译调用此函数的代码时，Swift 插入了一层间接调用，以找到该函数的实现。如果代码已包含此函数的 SDK 版本运行，则使用 SDK 的实现。否则，将使用调用者中包含的副本。在上面的示例中，当在 iOS 17 或更高版本上运行时，调用 <code>someFunction()</code> 使用 SDK 的实现，而在 iOS 16 上运行时，则使用调用者中包含的 <code>someFunction()</code> 的副本。</p>
+<blockquote>
+<p>注意:<br>当调用者的最低部署目标与包含该符号的 SDK 的第一个版本相同或更高时，编译器可以优化掉运行时检查，直接调用 SDK 的实现。在这种情况下，如果你直接访问向后兼容的符号，编译器也可以省略客户端中符号实现的副本。</p>
+</blockquote>
+<!--
+Stripping out the copy emitted into the client
+depends on a chain of optimizations that must all take place --
+inlining the thunk,
+constant-folding the availability check,
+and stripping the emitted copy as dead code --
+and the details could change over time,
+so we don't guarantee in docs that it always happens.
+-->
+
+<p>满足以下标准的函数、方法、下标操作和计算属性可以进行向后兼容：</p>
+<ul>
+<li>声明是 <code>public</code> 或 <code>@usableFromInline</code>。</li>
+<li>对于实例方法和类方法，该方法被标记为 <code>final</code>，并且没有标记 <code>@objc</code>。</li>
+<li>该实现满足 <a href="doc:Attributes#inlinable">doc:Attributes#inlinable</a> 中描述的对内联函数的要求。</li>
+</ul>
+<h3 id="discardableResult"><a href="#discardableResult" class="headerlink" title="discardableResult"></a>discardableResult</h3><p>将此特性应用于函数或方法声明，以在调用返回值的函数或方法而不使用其结果时抑制编译器警告。</p>
+<h3 id="dynamicCallable"><a href="#dynamicCallable" class="headerlink" title="dynamicCallable"></a>dynamicCallable</h3><p>将此特性应用于类、结构体、枚举或协议，以将该类型的实例视为可调用函数。该类型必须实现 <code>dynamicallyCall(withArguments:)</code> 方法和 <code>dynamicallyCall(withKeywordArguments:)</code> 方法中的至少一个或都实现。</p>
+<p>你可以像调用有任意数量参数的函数一样调用动态可调用类型的实例。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@dynamicCallable</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">TelephoneExchange</span> {</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">dynamicallyCall</span>(<span class="params">withArguments</span> <span class="params">phoneNumber</span>: [<span class="type">Int</span>]) {</span><br><span class="line">        <span class="keyword">if</span> phoneNumber <span class="operator">==</span> [<span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>] {</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"Get Swift help on forums.swift.org"</span>)</span><br><span class="line">        } <span class="keyword">else</span> {</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"Unrecognized number"</span>)</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> dial <span class="operator">=</span> <span class="type">TelephoneExchange</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用动态方法调用</span></span><br><span class="line">dial(<span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line"><span class="comment">// 打印 "Get Swift help on forums.swift.org"</span></span><br><span class="line"></span><br><span class="line">dial(<span class="number">8</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">0</span>, <span class="number">9</span>)</span><br><span class="line"><span class="comment">// 打印 "Unrecognized number"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 直接调用内部的方法</span></span><br><span class="line">dial.dynamicallyCall(withArguments: [<span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>])</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `dynamicCallable`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @dynamicCallable</span><br><span class="line">-&gt; struct TelephoneExchange &#123;</span><br><span class="line">       func dynamicallyCall(withArguments phoneNumber: [Int]) &#123;</span><br><span class="line">           if phoneNumber == [4, 1, 1] &#123;</span><br><span class="line">               print(&quot;Get Swift help on forums.swift.org&quot;)</span><br><span class="line">           &#125; else &#123;</span><br><span class="line">               print(&quot;Unrecognized number&quot;)</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; let dial = TelephoneExchange()</span><br><span class="line">---</span><br><span class="line">-&gt; // Use a dynamic method call.</span><br><span class="line">-&gt; dial(4, 1, 1)</span><br><span class="line">&lt;- Get Swift help on forums.swift.org</span><br><span class="line">---</span><br><span class="line">-&gt; dial(8, 6, 7, 5, 3, 0, 9)</span><br><span class="line">&lt;- Unrecognized number</span><br><span class="line">---</span><br><span class="line">-&gt; // Call the underlying method directly.</span><br><span class="line">-&gt; dial.dynamicallyCall(withArguments: [4, 1, 1])</span><br><span class="line">&lt;&lt; Get Swift help on forums.swift.org</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>dynamicallyCall(withArguments:)</code> 方法的声明必须有一个遵循 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/expressiblebyarrayliteral"><code>ExpressibleByArrayLiteral</code></a> 协议的单一参数——就像上面的例子中的 <code>[Int]</code>。返回类型可以是任何类型。</p>
+<p>如果你实现了 <code>dynamicallyCall(withKeywordArguments:)</code> 方法，则可以在动态方法调用中包含标签。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@dynamicCallable</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Repeater</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">dynamicallyCall</span>(<span class="params">withKeywordArguments</span> <span class="params">pairs</span>: <span class="type">KeyValuePairs</span>&lt;<span class="type">String</span>, <span class="type">Int</span>&gt;) -&gt; <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> pairs</span><br><span class="line">            .map &#123; label, count <span class="keyword">in</span></span><br><span class="line">                <span class="built_in">repeatElement</span>(label, count: count).joined(separator: <span class="string">&quot; &quot;</span>)</span><br><span class="line">            &#125;</span><br><span class="line">            .joined(separator: <span class="string">&quot;<span class="subst">\n</span>&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> repeatLabels <span class="operator">=</span> <span class="type">Repeater</span>()</span><br><span class="line"><span class="built_in">print</span>(repeatLabels(a: <span class="number">1</span>, b: <span class="number">2</span>, c: <span class="number">3</span>, b: <span class="number">2</span>, a: <span class="number">1</span>))</span><br><span class="line"><span class="comment">// a</span></span><br><span class="line"><span class="comment">// b b</span></span><br><span class="line"><span class="comment">// c c c</span></span><br><span class="line"><span class="comment">// b b</span></span><br><span class="line"><span class="comment">// a</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `dynamicCallable`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @dynamicCallable</span><br><span class="line">   struct Repeater &#123;</span><br><span class="line">       func dynamicallyCall(withKeywordArguments pairs: KeyValuePairs&lt;String, Int&gt;) -&gt; String &#123;</span><br><span class="line">           return pairs</span><br><span class="line">               .map &#123; label, count in</span><br><span class="line">                   repeatElement(label, count: count).joined(separator: &quot; &quot;)</span><br><span class="line">               &#125;</span><br><span class="line">               .joined(separator: &quot;\n&quot;)</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; let repeatLabels = Repeater()</span><br><span class="line">-&gt; print(repeatLabels(a: 1, b: 2, c: 3, b: 2, a: 1))</span><br><span class="line">&lt;/ a</span><br><span class="line">&lt;/ b b</span><br><span class="line">&lt;/ c c c</span><br><span class="line">&lt;/ b b</span><br><span class="line">&lt;/ a</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>dynamicallyCall(withKeywordArguments:)</code> 方法的声明必须有一个遵循 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/expressiblebydictionaryliteral"><code>ExpressibleByDictionaryLiteral</code></a> 协议的单一参数，返回类型可以是任何类型。参数的 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/expressiblebydictionaryliteral/2294108-key"><code>Key</code></a> 必须遵循 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/expressiblebystringliteral"><code>ExpressibleByStringLiteral</code></a>。前面的例子使用 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/keyvaluepairs"><code>KeyValuePairs</code></a> 作为参数类型，以便调用者可以包含重复的参数标签——<code>a</code> 和 <code>b</code> 在对 <code>repeat</code> 的调用中出现多次。</p>
+<p>如果你实现了两种不同参数类型的 <code>dynamicallyCall</code> 方法，当方法调用包含关键字参数时，将调用 <code>dynamicallyCall(withKeywordArguments:)</code>。在所有其他情况下，将调用 <code>dynamicallyCall(withArguments:)</code>。</p>
+<p>你只能使用与你在某个 <code>dynamicallyCall</code> 方法实现中指定的类型匹配的参数和返回值来调用动态可调用实例。以下示例中的调用无法编译，因为没有接受 <code>KeyValuePairs&lt;String, String&gt;</code> 的 <code>dynamicallyCall(withArguments:)</code> 的实现。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">repeatLabels(a: <span class="string">&quot;four&quot;</span>) <span class="comment">// 错误</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `dynamicCallable-err`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; @dynamicCallable</span><br><span class="line">&gt;&gt; struct Repeater &#123;</span><br><span class="line">&gt;&gt;     func dynamicallyCall(withKeywordArguments pairs: KeyValuePairs&lt;String, Int&gt;) -&gt; String &#123;</span><br><span class="line">&gt;&gt;         return pairs</span><br><span class="line">&gt;&gt;             .map &#123; label, count in</span><br><span class="line">&gt;&gt;                 repeatElement(label, count: count).joined(separator: &quot; &quot;)</span><br><span class="line">&gt;&gt;             &#125;</span><br><span class="line">&gt;&gt;             .joined(separator: &quot;\n&quot;)</span><br><span class="line">&gt;&gt;     &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&gt;&gt; let repeatLabels = Repeater()</span><br><span class="line">-&gt; repeatLabels(a: &quot;four&quot;) // Error</span><br><span class="line">!$ error: cannot convert value of type &#x27;String&#x27; to expected argument type &#x27;Int&#x27;</span><br><span class="line">!! repeatLabels(a: &quot;four&quot;) // Error</span><br><span class="line">!! ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="dynamicMemberLookup"><a href="#dynamicMemberLookup" class="headerlink" title="dynamicMemberLookup"></a>dynamicMemberLookup</h3><p>将此特性应用于类、结构体、枚举或协议，以便在运行时按名称查找成员。该类型必须实现一个 <code>subscript(dynamicMember:)</code> 下标操作。</p>
+<p>在显式成员表达式中，如果没有对应的命名成员声明，则该表达式被理解为对类型的 <code>subscript(dynamicMember:)</code> 下标操作的调用，并将有关成员的信息作为参数传递。下标操作可以接受一个参数，该参数可以是键路径或成员名称；如果你实现了两种下标操作，则使用接受键路径参数的下标操作。</p>
+<p><code>subscript(dynamicMember:)</code> 的实现可以接受<br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/keypath"><code>KeyPath</code></a>、<br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/writablekeypath"><code>WritableKeyPath</code></a> 或 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/referencewritablekeypath"><code>ReferenceWritableKeyPath</code></a> 来作为键路径参数。它可以通过一个类型遵循 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/expressiblebystringliteral"><code>ExpressibleByStringLiteral</code></a> 协议的参数来接受成员名称——在大多数情况下，这个类型是 <code>String</code>。下标操作的返回类型可以是任何类型。</p>
+<p>通过成员名称的动态成员查找，可以创建一个包装类型，用于处理在编译时无法进行类型检查的数据，例如在将其他语言的数据桥接到 Swift 时。比如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@dynamicMemberLookup</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">DynamicStruct</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> dictionary <span class="operator">=</span> [<span class="string">&quot;someDynamicMember&quot;</span>: <span class="number">325</span>,</span><br><span class="line">                      <span class="string">&quot;someOtherMember&quot;</span>: <span class="number">787</span>]</span><br><span class="line">    <span class="keyword">subscript</span>(<span class="params">dynamicMember</span> <span class="params">member</span>: <span class="type">String</span>) -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> dictionary[member] <span class="operator">??</span> <span class="number">1054</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> s <span class="operator">=</span> <span class="type">DynamicStruct</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用动态成员查询</span></span><br><span class="line"><span class="keyword">let</span> <span class="keyword">dynamic</span> <span class="operator">=</span> s.someDynamicMember</span><br><span class="line"><span class="built_in">print</span>(<span class="keyword">dynamic</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;325&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 直接调用底层下标</span></span><br><span class="line"><span class="keyword">let</span> equivalent <span class="operator">=</span> s[dynamicMember: <span class="string">&quot;someDynamicMember&quot;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="keyword">dynamic</span> <span class="operator">==</span> equivalent)</span><br><span class="line"><span class="comment">// 打印 &quot;true&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `dynamicMemberLookup`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @dynamicMemberLookup</span><br><span class="line">-&gt; struct DynamicStruct &#123;</span><br><span class="line">       let dictionary = [&quot;someDynamicMember&quot;: 325,</span><br><span class="line">                         &quot;someOtherMember&quot;: 787]</span><br><span class="line">       subscript(dynamicMember member: String) -&gt; Int &#123;</span><br><span class="line">           return dictionary[member] ?? 1054</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let s = DynamicStruct()</span><br><span class="line">---</span><br><span class="line">// Use dynamic member lookup.</span><br><span class="line">-&gt; let dynamic = s.someDynamicMember</span><br><span class="line">-&gt; print(dynamic)</span><br><span class="line">&lt;- 325</span><br><span class="line">---</span><br><span class="line">// Call the underlying subscript directly.</span><br><span class="line">-&gt; let equivalent = s[dynamicMember: &quot;someDynamicMember&quot;]</span><br><span class="line">-&gt; print(dynamic == equivalent)</span><br><span class="line">&lt;- true</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>按键路径进行动态成员查找能以支持编译时类型检查的方式实现包装类型。例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Point</span> &#123; <span class="keyword">var</span> x, y: <span class="type">Int</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@dynamicMemberLookup</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">PassthroughWrapper</span>&lt;<span class="title class_">Value</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">var</span> value: <span class="type">Value</span></span><br><span class="line">    <span class="keyword">subscript</span>&lt;<span class="type">T</span>&gt;(<span class="params">dynamicMember</span> <span class="params">member</span>: <span class="type">KeyPath</span>&lt;<span class="type">Value</span>, <span class="type">T</span>&gt;) -&gt; <span class="type">T</span> &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123; <span class="keyword">return</span> value[keyPath: member] &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> point <span class="operator">=</span> <span class="type">Point</span>(x: <span class="number">381</span>, y: <span class="number">431</span>)</span><br><span class="line"><span class="keyword">let</span> wrapper <span class="operator">=</span> <span class="type">PassthroughWrapper</span>(value: point)</span><br><span class="line"><span class="built_in">print</span>(wrapper.x)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `dynamicMemberLookup`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct Point &#123; var x, y: Int &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; @dynamicMemberLookup</span><br><span class="line">   struct PassthroughWrapper&lt;Value&gt; &#123;</span><br><span class="line">       var value: Value</span><br><span class="line">       subscript&lt;T&gt;(dynamicMember member: KeyPath&lt;Value, T&gt;) -&gt; T &#123;</span><br><span class="line">           get &#123; return value[keyPath: member] &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; let point = Point(x: 381, y: 431)</span><br><span class="line">-&gt; let wrapper = PassthroughWrapper(value: point)</span><br><span class="line">-&gt; print(wrapper.x)</span><br><span class="line">&lt;&lt; 381</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="freestanding"><a href="#freestanding" class="headerlink" title="freestanding"></a>freestanding</h3><p>将 <code>freestanding</code> 特性应用于独立宏的声明。</p>
+<!--
+
+For the future, when other roles are supported:
+
+The arguments to this attribute indicate the macro's roles:
+
+- `expression`
+  A macro that produces an expression
+
+- `declaration`
+  A macro that produces a declaration
+
+Or are those supported today?
+I see #error and #warning as @freestanding(declaration)
+in the stdlib already:
+
+https://github.com/apple/swift/blob/main/stdlib/public/core/Macros.swift#L102
+-->
+
+<h3 id="frozen"><a href="#frozen" class="headerlink" title="frozen"></a>frozen</h3><p>将此特性应用于结构体或枚举的声明，以限制可以对该类型所能进行的更改类型。此特性仅在以库演进模式编译时允许使用。库的未来版本不能通过添加、删除或重新排序枚举的成员或结构体的存储实例属性来更改其声明。这些更改在非冻结类型上是允许的，但会破坏冻结类型的 ABI 兼容性。</p>
+<blockquote>
+<p>注意:<br>当编译器不处于库演进模式时，所有结构体和枚举都被隐式冻结，此特性将被忽略。</p>
+</blockquote>
+<!--
+  - test: `can-use-frozen-without-evolution`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; @frozen public enum E &#123; case x, y &#125;</span><br><span class="line">&gt;&gt; @frozen public struct S &#123; var a: Int = 10 &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  <rdar://problem/54041692> Using @frozen without Library Evolution has inconsistent error messages [SE-0260]
+-->
+
+<!--
+  - test: `frozen-is-fine-with-evolution`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; @frozen public enum E &#123; case x, y &#125;</span><br><span class="line">&gt;&gt; @frozen public struct S &#123; var a: Int = 10 &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>在库演进模式下，与非冻结结构体和枚举成员交互的代码会以一种特殊的方式编译，即使库的未来版本添加、移除或重新排序了该类型的一些成员，该代码也可以继续工作，而无需重新编译。编译器通过在运行时查找信息和添加间接层等技术实现了这一点。将结构体或枚举标记为冻结（frozen）会放弃这种灵活性以获得性能提升：库的未来版本只能对该类型进行有限的更改，但编译器可以在与该类型成员交互的代码中进行额外的优化。</p>
+<p>冻结类型、冻结结构体的存储属性类型以及冻结枚举成员的关联值类型必须是 public，或标记为 <code>usableFromInline</code> 特性。冻结结构体的属性不能有属性观察者，并且为存储实例属性提供初始值的表达式必须遵循与可内联函数相同的限制，详见 <a href="doc:Attributes#inlinable">doc:Attributes#inlinable</a>。</p>
+<!--
+  - test: `frozen-struct-prop-init-cant-refer-to-private-type`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; public protocol P &#123; &#125;</span><br><span class="line">&gt;&gt; private struct PrivateStruct: P &#123; &#125;</span><br><span class="line">&gt;&gt;         public struct S1 &#123; var fine: P = PrivateStruct() &#125;</span><br><span class="line">&gt;&gt; @frozen public struct S2 &#123; var nope: P = PrivateStruct() &#125;</span><br><span class="line">!$ error: struct &#x27;PrivateStruct&#x27; is private and cannot be referenced from a property initializer in a &#x27;@frozen&#x27; type</span><br><span class="line">!! @frozen public struct S2 &#123; var nope: P = PrivateStruct() &#125;</span><br><span class="line">!!                                          ^</span><br><span class="line">!$ note: struct &#x27;PrivateStruct&#x27; is not &#x27;@usableFromInline&#x27; or public</span><br><span class="line">!! private struct PrivateStruct: P &#123; &#125;</span><br><span class="line">!!                ^</span><br><span class="line">!$ error: initializer &#x27;init()&#x27; is private and cannot be referenced from a property initializer in a &#x27;@frozen&#x27; type</span><br><span class="line">!! @frozen public struct S2 &#123; var nope: P = PrivateStruct() &#125;</span><br><span class="line">!! ^</span><br><span class="line">!$ note: initializer &#x27;init()&#x27; is not &#x27;@usableFromInline&#x27; or public</span><br><span class="line">!! private struct PrivateStruct: P &#123; &#125;</span><br><span class="line">!! ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>要在命令行上启用库演化模式，请将 <code>-enable-library-evolution</code> 选项传递给 Swift 编译器。要在 Xcode 中启用它，请将 “Build Libraries for Distribution” 构建设置 (<code>BUILD_LIBRARY_FOR_DISTRIBUTION</code>) 设置 Yes，见：<a target="_blank" rel="noopener" href="https://help.apple.com/xcode/mac/current/#/dev04b3a04ba">Xcode Help</a>。</p>
+<!--
+  This is the first time we're talking about a specific compiler flag/option.
+  In the long term, the discussion of library evolution mode
+  will need to move to a new chapter in the guide
+  that also talks about things like @available and ABI.
+  See <rdar://problem/51929017> TSPL: Give guidance to library authors about @available @frozen and friends
+-->
+
+<p>对一个冻结的枚举进行 switch 语句时，不需要包含 <code>default</code> 分支，如 <a href="doc:Statements#Switching-Over-Future-Enumeration-Cases">doc:Statements#Switching-Over-Future-Enumeration-Cases</a> 中所述。在对冻结枚举进行 switch 时，如果包含 <code>default</code> 或 <code>@unknown default</code> 分支，会产生一个警告，因为这些代码永远不会被执行。</p>
+<!--
+  - test: `NoUnknownDefaultOverFrozenEnum`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; public enum E &#123; case x, y &#125;</span><br><span class="line">&gt;&gt; @frozen public enum F &#123; case x, y &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `NoUnknownDefaultOverFrozenEnum_Test1`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; import NoUnknownDefaultOverFrozenEnum</span><br><span class="line">&gt;&gt; func main() &#123;</span><br><span class="line">&gt;&gt;     let e = NoUnknownDefaultOverFrozenEnum.E.x</span><br><span class="line">&gt;&gt;     switch e &#123;</span><br><span class="line">&gt;&gt;         case .x: print(9)</span><br><span class="line">&gt;&gt;         case .y: print(8)</span><br><span class="line">&gt;&gt;         @unknown default: print(0)</span><br><span class="line">&gt;&gt;     &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">// Note that there&#x27;s no warning -- this is fine because E isn&#x27;t frozen.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `NoUnknownDefaultOverFrozenEnum_Test2`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; import NoUnknownDefaultOverFrozenEnum</span><br><span class="line">&gt;&gt; func main() &#123;</span><br><span class="line">&gt;&gt;     let f = NoUnknownDefaultOverFrozenEnum.F.x</span><br><span class="line">&gt;&gt;     switch f &#123;</span><br><span class="line">&gt;&gt;         case .x: print(9)</span><br><span class="line">&gt;&gt;         case .y: print(8)</span><br><span class="line">&gt;&gt;         @unknown default: print(0)</span><br><span class="line">&gt;&gt;     &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">// --- Main warning ---</span><br><span class="line">!! /tmp/sourcefile_0.swift:7:18: warning: case is already handled by previous patterns; consider removing it</span><br><span class="line">!! @unknown default: print(0)</span><br><span class="line">!! ~~~~~~~~~^~~~~~~~~~~~~~~~~</span><br><span class="line">!! /tmp/sourcefile_0.swift:7:9: warning: default will never be executed</span><br><span class="line">!! @unknown default: print(0)</span><br><span class="line">!! ^</span><br><span class="line">// --- Junk/ancillary warnings ---</span><br><span class="line">!! /tmp/sourcefile_0.swift:4:12: warning: switch condition evaluates to a constant</span><br><span class="line">!! switch f &#123;</span><br><span class="line">!! ^</span><br><span class="line">!! /tmp/sourcefile_0.swift:6:24: note: will never be executed</span><br><span class="line">!! case .y: print(8)</span><br><span class="line">!! ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="GKInspectable"><a href="#GKInspectable" class="headerlink" title="GKInspectable"></a>GKInspectable</h3><p>应用此特性可将自定义 GameplayKit 组件属性公开给 SpriteKit 编辑器 UI。应用此特性还隐含着 <code>objc</code> 特性。</p>
+<!--
+  See also <rdar://problem/27287369> Document @GKInspectable attribute
+  which we will want to link to, once it's written.
+-->
+
+<h3 id="inlinable"><a href="#inlinable" class="headerlink" title="inlinable"></a>inlinable</h3><p>将此特性应用于函数、方法、计算属性、下标操作、便利构造器或析构器声明，以将该声明的实现公开为模块的公共接口的一部分。编译器可以允许在调用位置用符号实现的副本替换对可内联符号的调用。</p>
+<p>可内联代码可以与任何模块中声明的 <code>open</code> 和 <code>public</code> 符号进行交互，并且可以与同一模块中标记为 <code>usableFromInline</code> 特性的 <code>internal</code> 符号进行交互。可内联代码无法与 <code>private</code> 或 <code>fileprivate</code> 符号进行交互。</p>
+<p>此特性不能应用于嵌套在函数内部的声明，也不能应用于 <code>fileprivate</code> 或 <code>private</code> 声明。定义在可内联函数内部的函数和闭包是隐式可内联的，即使它们不能用此特性标记。</p>
+<!--
+  - test: `cant-inline-private`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; @inlinable private func f() &#123; &#125;</span><br><span class="line">!$ error: &#x27;@inlinable&#x27; attribute can only be applied to public declarations, but &#x27;f&#x27; is private</span><br><span class="line">!! @inlinable private func f() &#123; &#125;</span><br><span class="line">!! ^~~~~~~~~~~</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `cant-inline-nested`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; public func outer() &#123;</span><br><span class="line">&gt;&gt;    @inlinable func f() &#123; &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">!$ error: &#x27;@inlinable&#x27; attribute can only be applied to public declarations, but &#x27;f&#x27; is private</span><br><span class="line">!! @inlinable func f() &#123; &#125;</span><br><span class="line">!! ^~~~~~~~~~~</span><br><span class="line">!!-</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  TODO: When we get resilience, this will actually be a problem.
+  Until then, per discussion with [Contributor 6004], there's no (supported) way
+  for folks to get into the state where this behavior would be triggered.
+
+  If a project uses a module that includes inlinable functions,
+  the inlined copies aren't necessarily updated
+  when the module's implementation of the function changes.
+  For this reason,
+  an inlinable function must be compatible with
+  every past version of that function.
+  In most cases, this means
+  externally visible aspects of their implementation can't be changed.
+  For example,
+  an inlinable hash function can't change what algorithm is used ---
+  inlined copies outside the module would use the old algorithm
+  and the noninlined copy would use the new algorithm,
+  yielding inconsistent results.
+-->
+
+<h3 id="main"><a href="#main" class="headerlink" title="main"></a>main</h3><p>将此特性应用于结构体、类或枚举声明，以表示它包含程序流程的顶级入口点。该类型必须提供一个不接受任何参数并返回 <code>Void</code> 的 <code>main</code> 类型函数。例如：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@main</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">MyTopLevel</span> {</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">main</span>() {</span><br><span class="line">        <span class="comment">// 顶层代码在此处编写</span></span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `atMain`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @main</span><br><span class="line">-&gt; struct MyTopLevel &#123;</span><br><span class="line">-&gt;     static func main() &#123;</span><br><span class="line">-&gt;         // Top-level code goes here</span><br><span class="line">&gt;&gt;         print(&quot;Hello&quot;)</span><br><span class="line">-&gt;     &#125;</span><br><span class="line">-&gt; &#125;</span><br><span class="line">&lt;&lt; Hello</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>描述 <code>main</code> 特性要求的另一种方法是，特性作用于的类型必须满足与遵循以下假设协议的类型相同的要求：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protocol</span> <span class="title class_">ProvidesMain</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">main</span>() <span class="keyword">throws</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `atMain_ProvidesMain`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; protocol ProvidesMain &#123;</span><br><span class="line">       static func main() throws</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>编译为可执行文件的 Swift 代码最多只能包含一个顶级入口点，详见 <a href="doc:Declarations#顶级代码">doc:Declarations#顶级代码</a>。</p>
+<!--
+  - test: `no-at-main-in-top-level-code`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// This is the same example as atMain, but without :compile: true.</span><br><span class="line">&gt;&gt; @main</span><br><span class="line">&gt;&gt; struct MyTopLevel &#123;</span><br><span class="line">&gt;&gt;     static func main() &#123;</span><br><span class="line">&gt;&gt;         print(&quot;Hello&quot;)</span><br><span class="line">&gt;&gt;     &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">!$ error: &#x27;main&#x27; attribute cannot be used in a module that contains top-level code</span><br><span class="line">!! @main</span><br><span class="line">!! ^</span><br><span class="line">!$ note: top-level code defined in this source file</span><br><span class="line">!! @main</span><br><span class="line">!! ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `atMain_library`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; // In file &quot;library.swift&quot;</span><br><span class="line">-&gt; open class C &#123;</span><br><span class="line">       public static func main() &#123; print(&quot;Hello&quot;) &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `atMain_client`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; import atMain_library</span><br><span class="line">-&gt; @main class CC: C &#123; &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="nonobjc"><a href="#nonobjc" class="headerlink" title="nonobjc"></a>nonobjc</h3><p>将此特性应用于方法、属性、下标操作或构造器声明，以抑制隐式 <code>objc</code> 特性。<code>nonobjc</code> 特性告诉编译器此声明在 Objective-C 代码中不可用，尽管在 Objective-C 中可以表示它。</p>
+<p>将此特性应用于扩展与将其应用于该扩展中未显式标记为 <code>objc</code> 特性的每个成员具有相同的效果。</p>
+<p>你可以使用 <code>nonobjc</code> 特性来解决标记为 <code>objc</code> 的类中桥接方法的循环引用问题，并且将允许重载标记为 <code>objc</code> 的类中的方法和构造器。</p>
+<p>标记为 <code>nonobjc</code> 特性的方法不能被标记为 <code>objc</code> 特性的方法重写。然而，标记为 <code>objc</code> 特性的方法可以被标记为 <code>nonobjc</code> 特性的方法重写。同样，标记为 <code>nonobjc</code> 特性的方法不能满足标记为 <code>objc</code> 特性的方法的协议要求。</p>
+<h3 id="NSApplicationMain"><a href="#NSApplicationMain" class="headerlink" title="NSApplicationMain"></a>NSApplicationMain</h3><blockquote>
+<p>已弃用:<br>此特性已弃用；请改用 <a href="doc:Attributes#main">doc:Attributes#main</a> 特性。在 Swift 6 中，使用此特性将会导致错误。</p>
+</blockquote>
+<p>将此特性应用于一个类，以指示它是应用程序委托。使用此特性等同于调用 <code>NSApplicationMain</code> 函数。</p>
+<p>如果你不使用此特性，请提供一个在顶层调用 <code>NSApplicationMain(_:_:)</code> 函数的 <code>main.swift</code> 文件，如下所示：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> AppKit</span><br><span class="line"><span class="type">NSApplicationMain</span>(<span class="type">CommandLine</span>.argc, <span class="type">CommandLine</span>.unsafeArgv)</span><br></pre></td></tr></table></figure>
+
+<!--
+  Above code isn't tested because it hangs the REPL indefinitely,
+  which is correct behavior if you call a non-returning function like this.
+-->
+
+<p>你编译为可执行文件的 Swift 代码最多只能包含一个顶级入口点，见 <a href="doc:Declarations#顶级代码">doc:Declarations#顶级代码</a> 中的讨论。</p>
+<h3 id="NSCopying"><a href="#NSCopying" class="headerlink" title="NSCopying"></a>NSCopying</h3><p>将此特性应用于类的存储变量属性。此特性会导致属性的 setter 被合成为使用 <code>copyWithZone(_:)</code> 方法返回的属性值<em>副本</em>，而不是属性值本身。属性的类型必须遵循 <code>NSCopying</code> 协议。</p>
+<p><code>NSCopying</code> 特性的行为类似于 Objective-C 的 <code>copy</code> 属性特性。</p>
+<!--
+  TODO: If and when Dave includes a section about this in the Guide,
+  provide a link to the relevant section.
+-->
+
+<h3 id="NSManaged"><a href="#NSManaged" class="headerlink" title="NSManaged"></a>NSManaged</h3><p>将此特性应用于从 <code>NSManagedObject</code> 继承的类的实例方法或存储属性变量，以表明 Core Data 会在运行时根据关联的实体描述动态提供其实现。对于标有 <code>NSManaged</code> 特性的属性，Core Data 还会在运行时提供存储。应用此特性也隐含了 <code>objc</code> 特性。</p>
+<h3 id="objc"><a href="#objc" class="headerlink" title="objc"></a>objc</h3><p>将此特性应用于任何可以用 Objective-C 表示的声明——例如，非嵌套类、协议、非泛型枚举（限制为整数原始值类型）、类的属性和方法（包括 getter 和 setter）、协议的可选成员、构造器和下标操作。<code>objc</code> 特性告诉编译器该声明可以在 Objective-C 代码中使用。</p>
+<p>将此特性应用于扩展与将其应用于该扩展中未显式标记为 <code>nonobjc</code> 特性的每个成员具有相同的效果。</p>
+<p>编译器隐式地将 <code>objc</code> 特性添加到 Objective-C 中定义的任何类的子类中。然而，子类不能是泛型的，也不能继承任何泛型类。如下所述，你可以显式地将 <code>objc</code> 特性添加到满足这些标准的子类中，以指定其 Objective-C 名称。标记为 <code>objc</code> 特性的协议不能继承未标记此特性的协议。</p>
+<p><code>objc</code> 特性在以下情况下也会被隐式添加：</p>
+<ul>
+<li>该声明是在子类中的重写，超类的声明具有 <code>objc</code> 特性。</li>
+<li>该声明满足具有 <code>objc</code> 特性的协议的要求。</li>
+<li>声明包含 <code>IBAction</code>、<code>IBSegueAction</code>、<code>IBOutlet</code>、<code>IBDesignable</code>、<code>IBInspectable</code>、<code>NSManaged</code> 或 <code>GKInspectable</code> 特性。</li>
+</ul>
+<p>如果你将 <code>objc</code> 特性应用于枚举，每个枚举成员都会在 Objective-C 代码中以枚举名称和枚举成员名称的组合形式暴露出来，且枚举成员名称的首字母会大写。例如，在 Swift 中名为 <code>Planet</code> 的枚举中的一个名为 <code>venus</code> 的枚举成员在 Objective-C 代码中将会以名为 <code>PlanetVenus</code> 的成员暴露出来。</p>
+<p><code>objc</code> 特性可以选择接受一个特性参数，该参数由一个标识符组成。该标识符指定了向 Objective-C 暴露的被 <code>objc</code> 特性所应用到的实体的名称。你可以使用此参数为类、枚举、枚举成员、协议、方法、getter、setter 和构造器命名。如果你为类、协议或枚举指定 Objective-C 名称，请在名称前加上三个字母的前缀，如 <a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Conventions/Conventions.html#//apple_ref/doc/uid/TP40011210-CH10-SW1">Conventions</a> 和 <a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html#//apple_ref/doc/uid/TP40011210">Programming with Objective-C</a> 中所述。下面的示例将 <code>ExampleClass</code> 的 <code>enabled</code> 属性的 getter 暴露给 Objective-C 代码，名称为 <code>isEnabled</code>，而不仅仅是属性本身的名称。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ExampleClass</span>: <span class="title class_">NSObject</span> {</span><br><span class="line">    <span class="keyword">@objc</span> <span class="keyword">var</span> enabled: <span class="type">Bool</span> {</span><br><span class="line">        <span class="keyword">@objc(isEnabled)</span> <span class="keyword">get</span> {</span><br><span class="line">            <span class="comment">// 返回适当的值</span></span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `objc-attribute`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; import Foundation</span><br><span class="line">-&gt; class ExampleClass: NSObject &#123;</span><br><span class="line">-&gt;    @objc var enabled: Bool &#123;</span><br><span class="line">-&gt;       @objc(isEnabled) get &#123;</span><br><span class="line">-&gt;          // Return the appropriate value</span><br><span class="line">&gt;&gt;          return true</span><br><span class="line">-&gt;       &#125;</span><br><span class="line">-&gt;    &#125;</span><br><span class="line">-&gt; &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>更多信息，请参见 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/imported_c_and_objective-c_apis/importing_swift_into_objective-c">Importing Swift into Objective-C</a>。</p>
+<blockquote>
+<p>注意:<br><code>objc</code> 特性的参数也可以更改该声明的运行时名称。当调用与 Objective-C 运行时交互的函数（如 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/foundation/1395135-nsclassfromstring"><code>NSClassFromString(_:)</code></a>）时，以及在应用的 Info.plist 文件中指定类名时，使用运行时名称。如果通过传递参数指定名称，则该名称将用作 Objective-C 代码中的名称和运行时名称。如果省略参数，则 Objective-C 代码中使用的名称与 Swift 代码中的名称相匹配，并且运行时名称遵循 Swift 编译器的名称重整惯例。</p>
+</blockquote>
+<h3 id="objcMembers"><a href="#objcMembers" class="headerlink" title="objcMembers"></a>objcMembers</h3><p>将此特性应用于类声明，以隐式地将 <code>objc</code> 特性应用于该类所有与 Objective-C 兼容的成员、其扩展、其子类及其子类的所有扩展。</p>
+<p>大多数代码应使用 <code>objc</code> 特性，仅暴露需要的声明。如果你需要暴露多个声明，可以将它们分组到一个带有 <code>objc</code> 特性的扩展中。<code>objcMembers</code> 特性是一个方便的工具，适用于大量使用 Objective-C 运行时的自省功能的库。在不需要时应用 <code>objc</code> 特性可能会增加你的二进制文件大小并对性能产生不利影响。</p>
+<!--
+  The binary size comes from the additional thunks
+  to translate between calling conventions.
+  The performance of linking and launch are slower
+  because of the larger symbol table slowing dyld down.
+-->
+
+<h3 id="preconcurrency"><a href="#preconcurrency" class="headerlink" title="preconcurrency"></a>preconcurrency</h3><p>将此特性应用于声明，以抑制严格的并发检查。你可以将此特性应用于以下类型的声明：</p>
+<ul>
+<li>导入</li>
+<li>结构体, 类和 actor</li>
+<li>枚举和枚举成员</li>
+<li>协议</li>
+<li>变量和常量</li>
+<li>下标操作</li>
+<li>构造器</li>
+<li>函数</li>
+</ul>
+<p>在导入声明中，此特性降低了对使用导入模块类型的代码的并发检查的严格性。具体来说，导入模块中未显式标记为不可发送（nonsendable）的类型可以在需要可发送（sendable）类型的上下文中使用。</p>
+<p>在其他声明中，此特性降低了对使用所声明符号的代码进行并发检查的严格性。当你在具有最小并发检查的范围内使用此符号时，该符号指定的与并发相关的约束，例如 <code>Sendable</code> 要求或全局 actor，将不会被检查。</p>
+<p>你可以按如下方式使用此特性，以帮助将代码迁移到严格的并发检查：</p>
+<ol>
+<li>启用严格检查。</li>
+<li>对尚未启用严格检查的模块，用 <code>preconcurrency</code> 特性标注导入。</li>
+<li>在将模块迁移到严格检查后，移除 <code>preconcurrency</code> 特性。编译器会警告你关于导入中 <code>preconcurrency</code> 特性不再有效并应被移除的任何地方。</li>
+</ol>
+<p>对于其他声明，当你在声明中添加与并发相关的约束时，如果你仍有未迁移到严格检查的客户端，请添加 <code>preconcurrency</code> 特性。在所有客户端迁移后，删除 <code>preconcurrency</code> 特性。</p>
+<p>来自 Objective-C 的声明在导入时始终被视为带有 <code>preconcurrency</code> 特性标记。</p>
+<h3 id="propertyWrapper"><a href="#propertyWrapper" class="headerlink" title="propertyWrapper"></a>propertyWrapper</h3><p>将此特性应用于类、结构体或枚举声明，以将该类型用作属性包装器。当你将此特性应用于某个类型时，你会创建一个与该类型同名的自定义特性。将该新特性应用于类、结构体或枚举的属性，以通过包装器类型的实例来包装对该属性的访问；将特性应用于局部存储变量声明，以相同方式包装对变量的访问。计算变量、全局变量和常量不能使用属性包装器。</p>
+<!--
+  - test: `property-wrappers-can-go-on-stored-variable`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; @propertyWrapper struct UselessWrapper &#123; var wrappedValue: Int &#125;</span><br><span class="line">&gt;&gt; func f() &#123;</span><br><span class="line">&gt;&gt;     @UselessWrapper var d: Int = 20</span><br><span class="line">&gt;&gt;     print(d)</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&gt;&gt; f()</span><br><span class="line">&lt;&lt; 20</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `property-wrappers-cant-go-on-constants`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; @propertyWrapper struct UselessWrapper &#123; var wrappedValue: Int &#125;</span><br><span class="line">&gt;&gt; func f() &#123;</span><br><span class="line">&gt;&gt;     @UselessWrapper let d: Int = 20</span><br><span class="line">&gt;&gt;     print(d)</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">!$ error: property wrapper can only be applied to a &#x27;var&#x27;</span><br><span class="line">!! @UselessWrapper let d: Int = 20</span><br><span class="line">!! ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `property-wrappers-cant-go-on-computed-variable`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; @propertyWrapper struct UselessWrapper &#123; var wrappedValue: Int &#125;</span><br><span class="line">&gt;&gt; func f() &#123;</span><br><span class="line">&gt;&gt;     @UselessWrapper var d: Int &#123; return 20 &#125;</span><br><span class="line">&gt;&gt;     print(d)</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&gt;&gt; f()</span><br><span class="line">!$ error: property wrapper cannot be applied to a computed property</span><br><span class="line">!! @UselessWrapper var d: Int &#123; return 20 &#125;</span><br><span class="line">!! ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>包装器必须定义一个 <code>wrappedValue</code> 实例属性。该属性的<em>被包装值</em>是 getter 和 setter 所暴露的值。在大多数情况下，<code>wrappedValue</code> 是一个计算值，但它也可以是一个存储值。包装器定义并管理其被包装值所需的任何底层存储。编译器通过在包装属性的名称前加下划线 (<code>_</code>) 来合成包装器类型实例的存储——例如，<code>someProperty</code> 的包装器存储为 <code>_someProperty</code>。包装器的合成存储具有 <code>private</code> 的访问控制级别。</p>
+<p>一个具有属性包装器的属性可以包含 <code>willSet</code> 和 <code>didSet</code> 块，但它不能覆盖编译器合成的 <code>get</code> 或 <code>set</code> 块。</p>
+<p>Swift 提供了两种语法糖形式用于初始化属性包装器。你可以在被包装值的定义中使用赋值语法，将赋值右侧的表达式作为参数传递给属性包装器构造器的 <code>wrappedValue</code> 参数。你还可以在将特性应用于属性时提供参数，这些参数会传递给属性包装器的构造器。例如，在下面的代码中，<code>SomeStruct</code> 调用 <code>SomeWrapper</code> 定义的每个构造器。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@propertyWrapper</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">SomeWrapper</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> wrappedValue: <span class="type">Int</span></span><br><span class="line">    <span class="keyword">var</span> someValue: <span class="type">Double</span></span><br><span class="line">    <span class="keyword">init</span>() &#123;</span><br><span class="line">        <span class="keyword">self</span>.wrappedValue <span class="operator">=</span> <span class="number">100</span></span><br><span class="line">        <span class="keyword">self</span>.someValue <span class="operator">=</span> <span class="number">12.3</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">wrappedValue</span>: <span class="type">Int</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.wrappedValue <span class="operator">=</span> wrappedValue</span><br><span class="line">        <span class="keyword">self</span>.someValue <span class="operator">=</span> <span class="number">45.6</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">wrappedValue</span> <span class="params">value</span>: <span class="type">Int</span>, <span class="params">custom</span>: <span class="type">Double</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.wrappedValue <span class="operator">=</span> value</span><br><span class="line">        <span class="keyword">self</span>.someValue <span class="operator">=</span> custom</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">SomeStruct</span> &#123;</span><br><span class="line">    <span class="comment">// 使用 init()</span></span><br><span class="line">    <span class="meta">@SomeWrapper</span> <span class="keyword">var</span> a: <span class="type">Int</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用 init(wrappedValue:)</span></span><br><span class="line">    <span class="meta">@SomeWrapper</span> <span class="keyword">var</span> b <span class="operator">=</span> <span class="number">10</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 二者都使用 init(wrappedValue:custom:)</span></span><br><span class="line">    <span class="meta">@SomeWrapper</span>(custom: <span class="number">98.7</span>) <span class="keyword">var</span> c <span class="operator">=</span> <span class="number">30</span></span><br><span class="line">    <span class="meta">@SomeWrapper</span>(wrappedValue: <span class="number">30</span>, custom: <span class="number">98.7</span>) <span class="keyword">var</span> d</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `propertyWrapper`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @propertyWrapper</span><br><span class="line">-&gt; struct SomeWrapper &#123;</span><br><span class="line">       var wrappedValue: Int</span><br><span class="line">       var someValue: Double</span><br><span class="line">       init() &#123;</span><br><span class="line">           self.wrappedValue = 100</span><br><span class="line">           self.someValue = 12.3</span><br><span class="line">       &#125;</span><br><span class="line">       init(wrappedValue: Int) &#123;</span><br><span class="line">           self.wrappedValue = wrappedValue</span><br><span class="line">           self.someValue = 45.6</span><br><span class="line">       &#125;</span><br><span class="line">       init(wrappedValue value: Int, custom: Double) &#123;</span><br><span class="line">           self.wrappedValue = value</span><br><span class="line">           self.someValue = custom</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; struct SomeStruct &#123;</span><br><span class="line">-&gt;     // Uses init()</span><br><span class="line">-&gt;     @SomeWrapper var a: Int</span><br><span class="line">---</span><br><span class="line">-&gt;     // Uses init(wrappedValue:)</span><br><span class="line">-&gt;     @SomeWrapper var b = 10</span><br><span class="line">---</span><br><span class="line">-&gt;     // Both use init(wrappedValue:custom:)</span><br><span class="line">-&gt;     @SomeWrapper(custom: 98.7) var c = 30</span><br><span class="line">-&gt;     @SomeWrapper(wrappedValue: 30, custom: 98.7) var d</span><br><span class="line">-&gt; &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  Comments in the SomeStruct part of the example above
+  are on the line before instead of at the end of the line
+  because the last example gets too long to fit on one line.
+-->
+
+<!--
+  Initialization of a wrapped property using ``init(wrappedValue:)``
+  can be split across multiple statements.
+  However, you can only see that behavior using local variables
+  which currently can't have a property wrapper.
+  It would look like this:
+
+  -> @SomeWrapper var e
+  -> e = 20  // Uses init(wrappedValue:)
+  -> e = 30  // Uses the property setter
+-->
+
+<p><em>被呈现值</em>对于一个被包装属性而言是可以让属性包装器用来暴露额外功能的第二个值。属性包装器类型的作者负责确定其被呈现值的含义，并定义被呈现值所暴露的接口。要从属性包装器中投射一个值，请在包装器类型上定义一个 <code>projectedValue</code> 实例属性。编译器通过在包装属性的名称前加上美元符号（<code>$</code>）来合成被呈现值的标识符——例如，<code>someProperty</code> 的被呈现值是 <code>$someProperty</code>。被呈现值具有与原始包装属性相同的访问控制级别。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@propertyWrapper</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">WrapperWithProjection</span> {</span><br><span class="line">    <span class="keyword">var</span> wrappedValue: <span class="type">Int</span></span><br><span class="line">    <span class="keyword">var</span> projectedValue: <span class="type">SomeProjection</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="type">SomeProjection</span>(wrapper: <span class="keyword">self</span>)</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">SomeProjection</span> {</span><br><span class="line">    <span class="keyword">var</span> wrapper: <span class="type">WrapperWithProjection</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">SomeStruct</span> {</span><br><span class="line">    <span class="meta">@WrapperWithProjection</span> <span class="keyword">var</span> x <span class="operator">=</span> <span class="number">123</span></span><br><span class="line">}</span><br><span class="line"><span class="keyword">let</span> s <span class="operator">=</span> <span class="type">SomeStruct</span>()</span><br><span class="line">s.x           <span class="comment">// Int 类型的值</span></span><br><span class="line">s.<span class="variable">$x</span>          <span class="comment">// SomeProjection 类型的值</span></span><br><span class="line">s.<span class="variable">$x</span>.wrapper  <span class="comment">// WrapperWithProjection 类型的值</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `propertyWrapper-projection`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @propertyWrapper</span><br><span class="line">-&gt; struct WrapperWithProjection &#123;</span><br><span class="line">       var wrappedValue: Int</span><br><span class="line">       var projectedValue: SomeProjection &#123;</span><br><span class="line">           return SomeProjection(wrapper: self)</span><br><span class="line">       &#125;</span><br><span class="line">&#125;</span><br><span class="line">-&gt; struct SomeProjection &#123;</span><br><span class="line">       var wrapper: WrapperWithProjection</span><br><span class="line">&#125;</span><br><span class="line">---</span><br><span class="line">-&gt; struct SomeStruct &#123;</span><br><span class="line">-&gt;     @WrapperWithProjection var x = 123</span><br><span class="line">-&gt; &#125;</span><br><span class="line">-&gt; let s = SomeStruct()</span><br><span class="line">&gt;&gt; _ =</span><br><span class="line">-&gt; s.x           // Int value</span><br><span class="line">&gt;&gt; _ =</span><br><span class="line">-&gt; s.$x          // SomeProjection value</span><br><span class="line">&gt;&gt; _ =</span><br><span class="line">-&gt; s.$x.wrapper  // WrapperWithProjection value</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="resultBuilder"><a href="#resultBuilder" class="headerlink" title="resultBuilder"></a>resultBuilder</h3><p>将此特性应用于类、结构体或枚举，以将该类型用作结果构造器。<em>结果构造器</em>是一种逐步构建嵌套数据结构的类型。你可以使用结果构造器来实现一种用于以自然、声明式方式创建嵌套数据结构的领域特定语言（DSL）。有关如何使用 <code>resultBuilder</code> 特性的示例，见 <a href="doc:AdvancedOperators#结果构建器">doc:AdvancedOperators#结果构建器</a>。</p>
+<h4 id="结果构造方法"><a href="#结果构造方法" class="headerlink" title="结果构造方法"></a>结果构造方法</h4><p>结果构造器实现了以下描述的静态方法。由于结果构造器的所有功能都是通过静态方法暴露的，因此你永远不需要初始化该类型的实例。结果构造器必须实现 <code>buildBlock(_:)</code> 方法，或者同时实现 <code>buildPartialBlock(first:)</code> 和 <code>buildPartialBlock(accumulated:next:)</code> 方法。其他方法（这些方法在 DSL 中启用额外功能）是可选的。结果构造器类型的声明实际上不必包含对任何协议的遵循。</p>
+<p>静态方法的描述中使用了三种类型作为占位符。<code>Expression</code> 是构造器输入类型的占位符，<code>Component</code> 是部分结果类型的占位符，而 <code>FinalResult</code> 是构造器生成的结果类型的占位符。你需要用结果构造器实际使用的类型替换这些占位符。如果你的结果构建方法没有为 <code>Expression</code> 或 <code>FinalResult</code> 指定类型，那么它们默认与 <code>Component</code> 类型相同。</p>
+<p>块的构造的方法如下：</p>
+<ul>
+<li><p><code>static func buildBlock(_ components: Component...) -&gt; Component</code>：将一组部分结果组合成一个单一的部分结果。</p>
+</li>
+<li><p><code>static func buildPartialBlock(first: Component) -&gt; Component</code>：从第一个组件构建一个部分结果组件。实现此方法和 <code>buildPartialBlock(accumulated:next:)</code> 以支持一次构建一个组件的块。与 <code>buildBlock(_:)</code> 相比，这种方法减少了处理不同数量参数的泛型重载的需求。</p>
+</li>
+<li><p><code>static func buildPartialBlock(accumulated: Component, next: Component) -&gt; Component</code>：通过将一个累积的组件与一个新组件结合，构建一个部分结果组件。实现此方法和 <code>buildPartialBlock(first:)</code> 以支持一次构建一个组件的块。与 <code>buildBlock(_:)</code> 相比，这种方法减少了处理不同数量参数的泛型重载的需求。</p>
+</li>
+</ul>
+<p>结果构造器可以实现上述列出的所有三种块构建方法；在这种情况下，可用性决定调用哪个方法。默认情况下，Swift 会调用 <code>buildPartialBlock(first:)</code> 和 <code>buildPartialBlock(accumulated:next:)</code> 方法。要让 Swift 调用 <code>buildBlock(_:)</code> 方法，请将包围声明标记为早于 <code>buildPartialBlock(first:)</code> 和 <code>buildPartialBlock(accumulated:next:)</code> 方法的可用性。</p>
+<p>其他结果构造方法如下：</p>
+<ul>
+<li><p><code>static func buildOptional(_ component: Component?) -&gt; Component</code>：从可以为 <code>nil</code> 的部分结果构建一个部分结果。实现此方法以支持不包含 <code>else</code> 从句的 <code>if</code> 语句。</p>
+</li>
+<li><p><code>static func buildEither(first: Component) -&gt; Component</code>：构建一个部分结果，其值根据某些条件而变化。实现此方法和 <code>buildEither(second:)</code> 以支持 <code>switch</code> 语句和包含 <code>else</code> 从句的 <code>if</code> 语句。</p>
+</li>
+<li><p><code>static func buildEither(second: Component) -&gt; Component</code>：构建一个部分结果，其值根据某些条件而变化。实现此方法和 <code>buildEither(first:)</code> 以支持 <code>switch</code> 语句和包含 <code>else</code> 从句的 <code>if</code> 语句。</p>
+</li>
+<li><p><code>static func buildArray(_ components: [Component]) -&gt; Component</code>：从部分结果的数组构造一个部分结果。实现此方法以支持 <code>for</code> 循环。</p>
+</li>
+<li><p><code>static func buildExpression(_ expression: Expression) -&gt; Component</code>：从表达式构建部分结果。你可以实现此方法以执行预处理——例如，将表达式转换为内部类型——或为使用端的类型推断提供额外的信息。</p>
+</li>
+<li><p><code>static func buildFinalResult(_ component: Component) -&gt; FinalResult</code>：从部分结果构建最终结果。你可以将此方法实现为结果构造器的一部分，该结果构造器对部分结果和最终结果使用不同的类型，或者在返回结果之前对结果执行其他后处理。</p>
+</li>
+<li><p><code>static func buildLimitedAvailability(_ component: Component) -&gt; Component</code>：构建一个擦除类型信息的部分结果。你可以实现此方法以防止类型信息传播到执行可用性检查的编译器控制语句之外。</p>
+</li>
+</ul>
+<p>例如，下面的代码定义了一个简单的结果构造器，用于构建一个整数数组。此代码将 <code>Component</code> 和 <code>Expression</code> 定义为类型别名，以便更容易将下面的示例与上面的方法列表进行匹配。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@resultBuilder</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">ArrayBuilder</span> &#123;</span><br><span class="line">    <span class="keyword">typealias</span> <span class="type">Component</span> <span class="operator">=</span> [<span class="type">Int</span>]</span><br><span class="line">    <span class="keyword">typealias</span> <span class="type">Expression</span> <span class="operator">=</span> <span class="type">Int</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">buildExpression</span>(<span class="keyword">_</span> <span class="params">element</span>: <span class="type">Expression</span>) -&gt; <span class="type">Component</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> [element]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">buildOptional</span>(<span class="keyword">_</span> <span class="params">component</span>: <span class="type">Component</span>?) -&gt; <span class="type">Component</span> &#123;</span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> component <span class="operator">=</span> component <span class="keyword">else</span> &#123; <span class="keyword">return</span> [] &#125;</span><br><span class="line">        <span class="keyword">return</span> component</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">buildEither</span>(<span class="params">first</span> <span class="params">component</span>: <span class="type">Component</span>) -&gt; <span class="type">Component</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> component</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">buildEither</span>(<span class="params">second</span> <span class="params">component</span>: <span class="type">Component</span>) -&gt; <span class="type">Component</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> component</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">buildArray</span>(<span class="keyword">_</span> <span class="params">components</span>: [<span class="type">Component</span>]) -&gt; <span class="type">Component</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">Array</span>(components.joined())</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">buildBlock</span>(<span class="keyword">_</span> <span class="params">components</span>: <span class="type">Component</span>...) -&gt; <span class="type">Component</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">Array</span>(components.joined())</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `array-result-builder`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @resultBuilder</span><br><span class="line">-&gt; struct ArrayBuilder &#123;</span><br><span class="line">       typealias Component = [Int]</span><br><span class="line">       typealias Expression = Int</span><br><span class="line">       static func buildExpression(_ element: Expression) -&gt; Component &#123;</span><br><span class="line">           return [element]</span><br><span class="line">       &#125;</span><br><span class="line">       static func buildOptional(_ component: Component?) -&gt; Component &#123;</span><br><span class="line">&gt;&gt;         print(&quot;Building optional...&quot;, component as Any)</span><br><span class="line">           guard let component = component else &#123; return [] &#125;</span><br><span class="line">           return component</span><br><span class="line">       &#125;</span><br><span class="line">       static func buildEither(first component: Component) -&gt; Component &#123;</span><br><span class="line">&gt;&gt;         print(&quot;Building first...&quot;, component)</span><br><span class="line">           return component</span><br><span class="line">       &#125;</span><br><span class="line">       static func buildEither(second component: Component) -&gt; Component &#123;</span><br><span class="line">&gt;&gt;         print(&quot;Building second...&quot;, component)</span><br><span class="line">           return component</span><br><span class="line">       &#125;</span><br><span class="line">       static func buildArray(_ components: [Component]) -&gt; Component &#123;</span><br><span class="line">           return Array(components.joined())</span><br><span class="line">       &#125;</span><br><span class="line">       static func buildBlock(_ components: Component...) -&gt; Component &#123;</span><br><span class="line">           return Array(components.joined())</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h4 id="结果转换"><a href="#结果转换" class="headerlink" title="结果转换"></a>结果转换</h4><p>递归应用以下语法转换，将使用结果构造器语法的代码转换为调用结果构造器类型的静态方法的代码：</p>
+<ul>
+<li><p>如果结果构造器有一个 <code>buildExpression(_:)</code> 方法，则每个表达式都变成对该方法的调用。这个转换总是首先进行。例如，以下声明是等价的：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ArrayBuilder</span> <span class="keyword">var</span> builderNumber: [<span class="type">Int</span>] &#123; <span class="number">10</span> &#125;</span><br><span class="line"><span class="keyword">var</span> manualNumber <span class="operator">=</span> <span class="type">ArrayBuilder</span>.buildExpression(<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+
+
+<!--
+  - test: `array-result-builder`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @ArrayBuilder var builderNumber: [Int] &#123; 10 &#125;</span><br><span class="line">-&gt; var manualNumber = ArrayBuilder.buildExpression(10)</span><br><span class="line">&gt;&gt; assert(builderNumber == manualNumber)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+</li>
+<li><p>赋值语句的转换方式类似于表达式，但被理解为计算 <code>()</code>。你可以定义一个 <code>buildExpression(_:)</code> 的重载，它采用 <code>()</code> 类型的参数来专门处理赋值。</p>
+</li>
+<li><p>检查可用性条件的分支语句将成为对 <code>buildLimitedAvailability(_:)</code> 方法的调用（如果该方法已实现）。如果未实现 <code>buildLimitedAvailability(_:)</code> 方法，那么检查可用性的分支语句将使用与其他分支语句相同的转换。这种转换发生在转换为对 <code>buildEither(first:)</code>、<code>buildEither(second:)</code> 或 <code>buildOptional(_:)</code> 的调用之前。</p>
+</li>
+</ul>
+<p>你可以使用 <code>buildLimitedAvailability(_:)</code> 方法来擦除根据所采用的分支而变化的类型信息。例如，下面的 <code>buildEither(first:)</code> 和 <code>buildEither(second:)</code> 方法使用一个泛型类型，该类型捕获有关两个分支的类型信息。</p>
+  <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protocol</span> <span class="title class_">Drawable</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">draw</span>() -&gt; <span class="type">String</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Text</span>: <span class="title class_">Drawable</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> content: <span class="type">String</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="keyword">_</span> <span class="params">content</span>: <span class="type">String</span>) &#123; <span class="keyword">self</span>.content <span class="operator">=</span> content &#125;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">draw</span>() -&gt; <span class="type">String</span> &#123; <span class="keyword">return</span> content &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Line</span>&lt;<span class="title class_">D</span>: <span class="title class_">Drawable</span>&gt;: <span class="title class_">Drawable</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> elements: [<span class="type">D</span>]</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">draw</span>() -&gt; <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> elements.map &#123; <span class="variable">$0</span>.draw() &#125;.joined(separator: <span class="string">&quot;&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">DrawEither</span>&lt;<span class="title class_">First</span>: <span class="title class_">Drawable</span>, <span class="title class_">Second</span>: <span class="title class_">Drawable</span>&gt;: <span class="title class_">Drawable</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> content: <span class="type">Drawable</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">draw</span>() -&gt; <span class="type">String</span> &#123; <span class="keyword">return</span> content.draw() &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@resultBuilder</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">DrawingBuilder</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">buildBlock</span>&lt;<span class="type">D</span>: <span class="type">Drawable</span>&gt;(<span class="keyword">_</span> <span class="params">components</span>: <span class="type">D</span>...) -&gt; <span class="type">Line</span>&lt;<span class="type">D</span>&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">Line</span>(elements: components)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">buildEither</span>&lt;<span class="type">First</span>, <span class="type">Second</span>&gt;(<span class="params">first</span>: <span class="type">First</span>)</span><br><span class="line">            -&gt; <span class="type">DrawEither</span>&lt;<span class="type">First</span>, <span class="type">Second</span>&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">DrawEither</span>(content: first)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">buildEither</span>&lt;<span class="type">First</span>, <span class="type">Second</span>&gt;(<span class="params">second</span>: <span class="type">Second</span>)</span><br><span class="line">            -&gt; <span class="type">DrawEither</span>&lt;<span class="type">First</span>, <span class="type">Second</span>&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">DrawEither</span>(content: second)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+  <!-- Comment block with swifttest for the code listing above is after the end of this bulleted list, due to tooling limitations. -->
+
+<p>  然而，这种方法在具有可用性检查的代码中会导致问题：</p>
+  <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@available</span>(<span class="keyword">macOS</span> <span class="number">99</span>, <span class="operator">*</span>)</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">FutureText</span>: <span class="title class_">Drawable</span> {</span><br><span class="line">    <span class="keyword">var</span> content: <span class="type">String</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="keyword">_</span> <span class="params">content</span>: <span class="type">String</span>) { <span class="keyword">self</span>.content <span class="operator">=</span> content }</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">draw</span>() -&gt; <span class="type">String</span> { <span class="keyword">return</span> content }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="meta">@DrawingBuilder</span> <span class="keyword">var</span> brokenDrawing: <span class="type">Drawable</span> {</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">#available</span>(<span class="keyword">macOS</span> <span class="number">99</span>, <span class="operator">*</span>) {</span><br><span class="line">        <span class="type">FutureText</span>(<span class="string">"Inside.future"</span>)  <span class="comment">// 问题所在</span></span><br><span class="line">    } <span class="keyword">else</span> {</span><br><span class="line">        <span class="type">Text</span>(<span class="string">"Inside.present"</span>)</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="comment">// brokenDrawing 的类型是 Line&lt;DrawEither&lt;Line&lt;FutureText&gt;, Line&lt;Text&gt;&gt;&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+  <!-- Comment block with swifttest for the code listing above is after the end of this bulleted list, due to tooling limitations. -->
+
+<p>  在上面的代码中，<code>FutureText</code> 作为 <code>brokenDrawing</code> 类型的一部分出现，因为它是 <code>DrawEither</code> 泛型类型中的类型之一。如果在运行时 <code>FutureText</code> 不可用， 即使在该类型显式未被使用的情况下，这可能会导致你的程序崩溃。</p>
+<p>  为了解决这个问题，实现一个 <code>buildLimitedAvailability(_:)</code> 方法，通过返回一个始终可用的类型来擦除类型信息。例如，下面的代码通过可用性检查构建一个 <code>AnyDrawable</code> 值。</p>
+  <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">AnyDrawable</span>: <span class="title class_">Drawable</span> {</span><br><span class="line">    <span class="keyword">var</span> content: <span class="type">Drawable</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">draw</span>() -&gt; <span class="type">String</span> { <span class="keyword">return</span> content.draw() }</span><br><span class="line">}</span><br><span class="line"><span class="keyword">extension</span> <span class="title class_">DrawingBuilder</span> {</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">buildLimitedAvailability</span>(<span class="keyword">_</span> <span class="params">content</span>: <span class="keyword">some</span> <span class="type">Drawable</span>) -&gt; <span class="type">AnyDrawable</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="type">AnyDrawable</span>(content: content)</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="meta">@DrawingBuilder</span> <span class="keyword">var</span> typeErasedDrawing: <span class="type">Drawable</span> {</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">#available</span>(<span class="keyword">macOS</span> <span class="number">99</span>, <span class="operator">*</span>) {</span><br><span class="line">        <span class="type">FutureText</span>(<span class="string">"Inside.future"</span>)</span><br><span class="line">    } <span class="keyword">else</span> {</span><br><span class="line">        <span class="type">Text</span>(<span class="string">"Inside.present"</span>)</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="comment">// typeErasedDrawing 的类型是 Line&lt;DrawEither&lt;AnyDrawable, Line&lt;Text&gt;&gt;&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+  <!-- Comment block with swifttest for the code listing above is after the end of this bulleted list, due to tooling limitations. -->
+
+<ul>
+<li><p>一个分支语句变成了一系列对 <code>buildEither(first:)</code> 和 <code>buildEither(second:)</code> 方法的嵌套调用。语句的条件和分支情况被映射到二叉树的叶子节点上，该语句成为了对 <code>buildEither</code> 方法的嵌套调用，遵循从根节点到该叶节点的路径。</p>
+<p>例如，如果你编写一个包含三个分支的 switch 语句，编译器将使用一个具有三个叶节点的二叉树。同样，因为从根节点到第二个 case 分支的路径是”第二个子节点”，然后是”第一个子节点”，所以该 case 分支变成了像 <code>buildEither(first: buildEither(second: ... ))</code> 这样的嵌套调用。以下声明是等效的：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> someNumber <span class="operator">=</span> <span class="number">19</span></span><br><span class="line"><span class="meta">@ArrayBuilder</span> <span class="keyword">var</span> builderConditional: [<span class="type">Int</span>] {</span><br><span class="line">    <span class="keyword">if</span> someNumber <span class="operator">&lt;</span> <span class="number">12</span> {</span><br><span class="line">        <span class="number">31</span></span><br><span class="line">    } <span class="keyword">else</span> <span class="keyword">if</span> someNumber <span class="operator">==</span> <span class="number">19</span> {</span><br><span class="line">        <span class="number">32</span></span><br><span class="line">    } <span class="keyword">else</span> {</span><br><span class="line">        <span class="number">33</span></span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> manualConditional: [<span class="type">Int</span>]</span><br><span class="line"><span class="keyword">if</span> someNumber <span class="operator">&lt;</span> <span class="number">12</span> {</span><br><span class="line">    <span class="keyword">let</span> partialResult <span class="operator">=</span> <span class="type">ArrayBuilder</span>.buildExpression(<span class="number">31</span>)</span><br><span class="line">    <span class="keyword">let</span> outerPartialResult <span class="operator">=</span> <span class="type">ArrayBuilder</span>.buildEither(first: partialResult)</span><br><span class="line">    manualConditional <span class="operator">=</span> <span class="type">ArrayBuilder</span>.buildEither(first: outerPartialResult)</span><br><span class="line">} <span class="keyword">else</span> <span class="keyword">if</span> someNumber <span class="operator">==</span> <span class="number">19</span> {</span><br><span class="line">    <span class="keyword">let</span> partialResult <span class="operator">=</span> <span class="type">ArrayBuilder</span>.buildExpression(<span class="number">32</span>)</span><br><span class="line">    <span class="keyword">let</span> outerPartialResult <span class="operator">=</span> <span class="type">ArrayBuilder</span>.buildEither(second: partialResult)</span><br><span class="line">    manualConditional <span class="operator">=</span> <span class="type">ArrayBuilder</span>.buildEither(first: outerPartialResult)</span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">    <span class="keyword">let</span> partialResult <span class="operator">=</span> <span class="type">ArrayBuilder</span>.buildExpression(<span class="number">33</span>)</span><br><span class="line">    manualConditional <span class="operator">=</span> <span class="type">ArrayBuilder</span>.buildEither(second: partialResult)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+
+<!--
+  - test: `array-result-builder`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let someNumber = 19</span><br><span class="line">-&gt; @ArrayBuilder var builderConditional: [Int] &#123;</span><br><span class="line">       if someNumber &lt; 12 &#123;</span><br><span class="line">           31</span><br><span class="line">       &#125; else if someNumber == 19 &#123;</span><br><span class="line">           32</span><br><span class="line">       &#125; else &#123;</span><br><span class="line">           33</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&lt;&lt; Building second... [32]</span><br><span class="line">&lt;&lt; Building first... [32]</span><br><span class="line">---</span><br><span class="line">-&gt; var manualConditional: [Int]</span><br><span class="line">-&gt; if someNumber &lt; 12 &#123;</span><br><span class="line">       let partialResult = ArrayBuilder.buildExpression(31)</span><br><span class="line">       let outerPartialResult = ArrayBuilder.buildEither(first: partialResult)</span><br><span class="line">       manualConditional = ArrayBuilder.buildEither(first: outerPartialResult)</span><br><span class="line">   &#125; else if someNumber == 19 &#123;</span><br><span class="line">       let partialResult = ArrayBuilder.buildExpression(32)</span><br><span class="line">       let outerPartialResult = ArrayBuilder.buildEither(second: partialResult)</span><br><span class="line">       manualConditional = ArrayBuilder.buildEither(first: outerPartialResult)</span><br><span class="line">   &#125; else &#123;</span><br><span class="line">       let partialResult = ArrayBuilder.buildExpression(33)</span><br><span class="line">       manualConditional = ArrayBuilder.buildEither(second: partialResult)</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; assert(builderConditional == manualConditional)</span><br><span class="line">&lt;&lt; Building second... [32]</span><br><span class="line">&lt;&lt; Building first... [32]</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+</li>
+<li><p>一个可能不产生值的分支语句，比如没有 <code>else</code> 从句的 <code>if</code> 语句，会变成对 <code>buildOptional(_:)</code> 的调用。如果 <code>if</code> 语句的条件满足，它的代码块会被转换并作为参数传递；否则，<code>buildOptional(_:)</code> 会以 <code>nil</code> 作为参数被调用。例如，以下声明是等价的：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ArrayBuilder</span> <span class="keyword">var</span> builderOptional: [<span class="type">Int</span>] &#123;</span><br><span class="line">    <span class="keyword">if</span> (someNumber <span class="operator">%</span> <span class="number">2</span>) <span class="operator">==</span> <span class="number">1</span> &#123; <span class="number">20</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> partialResult: [<span class="type">Int</span>]<span class="operator">?</span> <span class="operator">=</span> <span class="literal">nil</span></span><br><span class="line"><span class="keyword">if</span> (someNumber <span class="operator">%</span> <span class="number">2</span>) <span class="operator">==</span> <span class="number">1</span> &#123;</span><br><span class="line">    partialResult <span class="operator">=</span> <span class="type">ArrayBuilder</span>.buildExpression(<span class="number">20</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> manualOptional <span class="operator">=</span> <span class="type">ArrayBuilder</span>.buildOptional(partialResult)</span><br></pre></td></tr></table></figure>
+
+
+<!--
+  - test: `array-result-builder`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @ArrayBuilder var builderOptional: [Int] &#123;</span><br><span class="line">       if (someNumber % 2) == 1 &#123; 20 &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&lt;&lt; Building optional... Optional([20])</span><br><span class="line">---</span><br><span class="line">-&gt; var partialResult: [Int]? = nil</span><br><span class="line">-&gt; if (someNumber % 2) == 1 &#123;</span><br><span class="line">       partialResult = ArrayBuilder.buildExpression(20)</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; var manualOptional = ArrayBuilder.buildOptional(partialResult)</span><br><span class="line">&lt;&lt; Building optional... Optional([20])</span><br><span class="line">&gt;&gt; assert(builderOptional == manualOptional)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+</li>
+<li><p>如果结果构造器实现了 <code>buildPartialBlock(first:)</code> 和 <code>buildPartialBlock(accumulated:next:)</code> 方法，则代码块或 <code>do</code> 语句将变成对这些方法的调用。块内的第一条语句被转换为 <code>buildPartialBlock(first:)</code> 方法的一个参数，其余语句则变成对 <code>buildPartialBlock(accumulated:next:)</code> 方法的嵌套调用。例如，以下声明是等效的：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">DrawBoth</span>&lt;<span class="title class_">First</span>: <span class="title class_">Drawable</span>, <span class="title class_">Second</span>: <span class="title class_">Drawable</span>&gt;: <span class="title class_">Drawable</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> first: <span class="type">First</span></span><br><span class="line">    <span class="keyword">var</span> second: <span class="type">Second</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">draw</span>() -&gt; <span class="type">String</span> &#123; <span class="keyword">return</span> first.draw() <span class="operator">+</span> second.draw() &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@resultBuilder</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">DrawingPartialBlockBuilder</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">buildPartialBlock</span>&lt;<span class="type">D</span>: <span class="type">Drawable</span>&gt;(<span class="params">first</span>: <span class="type">D</span>) -&gt; <span class="type">D</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> first</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">buildPartialBlock</span>&lt;<span class="type">Accumulated</span>: <span class="type">Drawable</span>, <span class="type">Next</span>: <span class="type">Drawable</span>&gt;(</span><br><span class="line">        <span class="params">accumulated</span>: <span class="type">Accumulated</span>, <span class="params">next</span>: <span class="type">Next</span></span><br><span class="line">    ) -&gt; <span class="type">DrawBoth</span>&lt;<span class="type">Accumulated</span>, <span class="type">Next</span>&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">DrawBoth</span>(first: accumulated, second: next)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@DrawingPartialBlockBuilder</span> <span class="keyword">var</span> builderBlock: <span class="keyword">some</span> <span class="type">Drawable</span> &#123;</span><br><span class="line">    <span class="type">Text</span>(<span class="string">&quot;First&quot;</span>)</span><br><span class="line">    <span class="type">Line</span>(elements: [<span class="type">Text</span>(<span class="string">&quot;Second&quot;</span>), <span class="type">Text</span>(<span class="string">&quot;Third&quot;</span>)])</span><br><span class="line">    <span class="type">Text</span>(<span class="string">&quot;Last&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> partialResult1 <span class="operator">=</span> <span class="type">DrawingPartialBlockBuilder</span>.buildPartialBlock(first: <span class="type">Text</span>(<span class="string">&quot;first&quot;</span>))</span><br><span class="line"><span class="keyword">let</span> partialResult2 <span class="operator">=</span> <span class="type">DrawingPartialBlockBuilder</span>.buildPartialBlock(</span><br><span class="line">    accumulated: partialResult1,</span><br><span class="line">    next: <span class="type">Line</span>(elements: [<span class="type">Text</span>(<span class="string">&quot;Second&quot;</span>), <span class="type">Text</span>(<span class="string">&quot;Third&quot;</span>)])</span><br><span class="line">)</span><br><span class="line"><span class="keyword">let</span> manualResult <span class="operator">=</span> <span class="type">DrawingPartialBlockBuilder</span>.buildPartialBlock(</span><br><span class="line">    accumulated: partialResult2,</span><br><span class="line">    next: <span class="type">Text</span>(<span class="string">&quot;Last&quot;</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `drawing-partial-block-builder`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @resultBuilder</span><br><span class="line">-&gt; struct DrawingPartialBlockBuilder &#123;</span><br><span class="line">       static func buildPartialBlock&lt;D: Drawable&gt;(first: D) -&gt; D &#123;</span><br><span class="line">           return first</span><br><span class="line">       &#125;</span><br><span class="line">       static func buildPartialBlock&lt;Accumulated: Drawable, Next: Drawable&gt;(</span><br><span class="line">           accumulated: Accumulated, next: Next</span><br><span class="line">       ) -&gt; DrawBoth&lt;Accumulated, Next&gt; &#123;</span><br><span class="line">           return DrawBoth(first: accumulated, second: next)</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; @DrawingPartialBlockBuilder var builderBlock: some Drawable &#123;</span><br><span class="line">      Text(&quot;First&quot;)</span><br><span class="line">      Line(elements: [Text(&quot;Second&quot;), Text(&quot;Third&quot;)])</span><br><span class="line">      Text(&quot;Last&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; let partialResult1 = DrawingPartialBlockBuilder.buildPartialBlock(first: Text(&quot;first&quot;))</span><br><span class="line">-&gt; let partialResult2 = DrawingPartialBlockBuilder.buildPartialBlock(</span><br><span class="line">      accumulated: partialResult1,</span><br><span class="line">      next: Line(elements: [Text(&quot;Second&quot;), Text(&quot;Third&quot;)])</span><br><span class="line">   )</span><br><span class="line">   let manualResult = DrawingPartialBlockBuilder.buildPartialBlock(</span><br><span class="line">       accumulated: partialResult2,</span><br><span class="line">       next: Text(&quot;Last&quot;)</span><br><span class="line">   )</span><br><span class="line">&gt;&gt; assert(type(of: builderBlock) == type(of: manualResult))</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+</li>
+<li><p>否则，代码块或 <code>do</code> 语句会变成对 <code>buildBlock(_:)</code> 方法的调用。块内的每个语句都会逐个转换，并成为 <code>buildBlock(_:)</code> 方法的参数。例如，以下声明是等价的。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ArrayBuilder</span> <span class="keyword">var</span> builderBlock: [<span class="type">Int</span>] &#123;</span><br><span class="line">    <span class="number">100</span></span><br><span class="line">    <span class="number">200</span></span><br><span class="line">    <span class="number">300</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> manualBlock <span class="operator">=</span> <span class="type">ArrayBuilder</span>.buildBlock(</span><br><span class="line">    <span class="type">ArrayBuilder</span>.buildExpression(<span class="number">100</span>),</span><br><span class="line">    <span class="type">ArrayBuilder</span>.buildExpression(<span class="number">200</span>),</span><br><span class="line">    <span class="type">ArrayBuilder</span>.buildExpression(<span class="number">300</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+
+<!--
+  - test: `array-result-builder`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @ArrayBuilder var builderBlock: [Int] &#123;</span><br><span class="line">       100</span><br><span class="line">       200</span><br><span class="line">       300</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; var manualBlock = ArrayBuilder.buildBlock(</span><br><span class="line">       ArrayBuilder.buildExpression(100),</span><br><span class="line">       ArrayBuilder.buildExpression(200),</span><br><span class="line">       ArrayBuilder.buildExpression(300)</span><br><span class="line">   )</span><br><span class="line">&gt;&gt; assert(builderBlock == manualBlock)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+</li>
+<li><p>一个 <code>for</code> 循环会变成一个临时变量、一个新的 <code>for</code> 循环和对 <code>buildArray(_:)</code> 方法的调用。新的 <code>for</code> 循环遍历序列，并将每个部分结果附加到该数组中。临时数组作为参数传递给 <code>buildArray(_:)</code> 调用。例如，以下声明是等价的：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ArrayBuilder</span> <span class="keyword">var</span> builderArray: [<span class="type">Int</span>] &#123;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">5</span><span class="operator">...</span><span class="number">7</span> &#123;</span><br><span class="line">        <span class="number">100</span> <span class="operator">+</span> i</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> temporary: [[<span class="type">Int</span>]] <span class="operator">=</span> []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">5</span><span class="operator">...</span><span class="number">7</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> partialResult <span class="operator">=</span> <span class="type">ArrayBuilder</span>.buildExpression(<span class="number">100</span> <span class="operator">+</span> i)</span><br><span class="line">    temporary.append(partialResult)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> manualArray <span class="operator">=</span> <span class="type">ArrayBuilder</span>.buildArray(temporary)</span><br></pre></td></tr></table></figure>
+
+
+<!--
+  - test: `array-result-builder`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @ArrayBuilder var builderArray: [Int] &#123;</span><br><span class="line">       for i in 5...7 &#123;</span><br><span class="line">           100 + i</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; var temporary: [[Int]] = []</span><br><span class="line">-&gt; for i in 5...7 &#123;</span><br><span class="line">       let partialResult = ArrayBuilder.buildExpression(100 + i)</span><br><span class="line">       temporary.append(partialResult)</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let manualArray = ArrayBuilder.buildArray(temporary)</span><br><span class="line">&gt;&gt; assert(builderArray == manualArray)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+</li>
+<li><p>如果结果构造器有一个 <code>buildFinalResult(_:)</code> 方法，则最终结果变为对该方法的调用。此转换始终是最后进行的。</p>
+</li>
+</ul>
+<!--
+  - test: `result-builder-limited-availability-broken, result-builder-limited-availability-ok`, `drawing-partial-result-builder`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">-&gt; protocol Drawable &#123;</span><br><span class="line">       func draw() -&gt; String</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; struct Text: Drawable &#123;</span><br><span class="line">       var content: String</span><br><span class="line">       init(_ content: String) &#123; self.content = content &#125;</span><br><span class="line">       func draw() -&gt; String &#123; return content &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; struct Line&lt;D: Drawable&gt;: Drawable &#123;</span><br><span class="line">       var elements: [D]</span><br><span class="line">       func draw() -&gt; String &#123;</span><br><span class="line">           return elements.map &#123; $0.draw() &#125;.joined(separator: &quot;&quot;)</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; struct DrawEither&lt;First: Drawable, Second: Drawable&gt;: Drawable &#123;</span><br><span class="line">       var content: Drawable</span><br><span class="line">       func draw() -&gt; String &#123; return content.draw() &#125;</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; @resultBuilder</span><br><span class="line">   struct DrawingBuilder &#123;</span><br><span class="line">       static func buildBlock&lt;D: Drawable&gt;(_ components: D...) -&gt; Line&lt;D&gt; &#123;</span><br><span class="line">           return Line(elements: components)</span><br><span class="line">       &#125;</span><br><span class="line">       static func buildEither&lt;First, Second&gt;(first: First)</span><br><span class="line">               -&gt; DrawEither&lt;First, Second&gt; &#123;</span><br><span class="line">           return DrawEither(content: first)</span><br><span class="line">       &#125;</span><br><span class="line">       static func buildEither&lt;First, Second&gt;(second: Second)</span><br><span class="line">               -&gt; DrawEither&lt;First, Second&gt; &#123;</span><br><span class="line">           return DrawEither(content: second)</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `result-builder-limited-availability-broken`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @available(macOS 99, *)</span><br><span class="line">-&gt; struct FutureText: Drawable &#123;</span><br><span class="line">       var content: String</span><br><span class="line">       init(_ content: String) &#123; self.content = content &#125;</span><br><span class="line">       func draw() -&gt; String &#123; return content &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; @DrawingBuilder var brokenDrawing: Drawable &#123;</span><br><span class="line">       if #available(macOS 99, *) &#123;</span><br><span class="line">           FutureText(&quot;Inside.future&quot;)  // Problem</span><br><span class="line">       &#125; else &#123;</span><br><span class="line">           Text(&quot;Inside.present&quot;)</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">/&gt; The type of brokenDrawing is \(type(of: brokenDrawing))</span><br><span class="line">&lt;/ The type of brokenDrawing is Line&lt;DrawEither&lt;Line&lt;FutureText&gt;, Line&lt;Text&gt;&gt;&gt;</span><br><span class="line">!$ warning: result builder &#x27;DrawingBuilder&#x27; does not implement &#x27;buildLimitedAvailability&#x27;; this code may crash on earlier versions of the OS</span><br><span class="line">!! if #available(macOS 99, *) &#123;</span><br><span class="line">!! ^</span><br><span class="line">!$ note: add &#x27;buildLimitedAvailability(_:)&#x27; to the result builder &#x27;DrawingBuilder&#x27; to erase type information for less-available types</span><br><span class="line">!! struct DrawingBuilder &#123;</span><br><span class="line">!! ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `result-builder-limited-availability-ok`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; @available(macOS 99, *)</span><br><span class="line">&gt;&gt; struct FutureText: Drawable &#123;</span><br><span class="line">&gt;&gt;     var content: String</span><br><span class="line">&gt;&gt;     init(_ content: String) &#123; self.content = content &#125;</span><br><span class="line">&gt;&gt;     func draw() -&gt; String &#123; return content &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&gt;&gt; @DrawingBuilder var x: Drawable &#123;</span><br><span class="line">&gt;&gt;     if #available(macOS 99, *) &#123;</span><br><span class="line">&gt;&gt;         FutureText(&quot;Inside.future&quot;)</span><br><span class="line">&gt;&gt;     &#125; else &#123;</span><br><span class="line">&gt;&gt;         Text(&quot;Inside.present&quot;)</span><br><span class="line">&gt;&gt;     &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">-&gt; struct AnyDrawable: Drawable &#123;</span><br><span class="line">       var content: Drawable</span><br><span class="line">       func draw() -&gt; String &#123; return content.draw() &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; extension DrawingBuilder &#123;</span><br><span class="line">       static func buildLimitedAvailability(_ content: some Drawable) -&gt; AnyDrawable &#123;</span><br><span class="line">           return AnyDrawable(content: content)</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; @DrawingBuilder var typeErasedDrawing: Drawable &#123;</span><br><span class="line">       if #available(macOS 99, *) &#123;</span><br><span class="line">           FutureText(&quot;Inside.future&quot;)</span><br><span class="line">       &#125; else &#123;</span><br><span class="line">           Text(&quot;Inside.present&quot;)</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">/&gt; The type of typeErasedDrawing is \(type(of: typeErasedDrawing))</span><br><span class="line">&lt;/ The type of typeErasedDrawing is Line&lt;DrawEither&lt;AnyDrawable, Line&lt;Text&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>尽管转换行为是通过临时变量来描述的，但使用结果构造器实际上并不会创建任何在代码其他部分可见的新声明。</p>
+<p>你不能在结果构造器转换的代码中使用 <code>break</code>、<code>continue</code>、<code>defer</code>、<code>guard</code> 或 <code>return</code> 语句、<code>while</code> 语句或 <code>do</code>-<code>catch</code> 语句。</p>
+<p>转换过程不会改变代码中的声明，这使得你可以使用临时常量和变量逐步构建表达式。它也不会改变 <code>throw</code> 语句、编译时诊断语句或包含 <code>return</code> 语句的闭包。</p>
+<p>只要有可能，转换就会被合并。例如，表达式 <code>4 + 5 * 6</code> 变为 <code>buildExpression(4 + 5 * 6)</code>，而不是多次调用该函数。同样，嵌套分支语句成为调用 <code>buildEither</code> 方法的单个二叉树。</p>
+<!--
+  - test: `result-builder-transform-complex-expression`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; @resultBuilder</span><br><span class="line">&gt;&gt; struct ArrayBuilder &#123;</span><br><span class="line">&gt;&gt;     static func buildExpression(_ element: Int) -&gt; [Int] &#123;</span><br><span class="line">&gt;&gt;         print(&quot;Building&quot;, element)</span><br><span class="line">&gt;&gt;         return [element]</span><br><span class="line">&gt;&gt;     &#125;</span><br><span class="line">&gt;&gt;     static func buildBlock(_ components: [Int]...) -&gt; [Int] &#123;</span><br><span class="line">&gt;&gt;         return Array(components.joined())</span><br><span class="line">&gt;&gt;     &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&gt;&gt; @ArrayBuilder var x: [Int] &#123;</span><br><span class="line">&gt;&gt;     10+12*3</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&lt;&lt; Building 46</span><br><span class="line">&gt;&gt; print(x)</span><br><span class="line">&lt;&lt; [46]</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h4 id="自定义结果构造器特性"><a href="#自定义结果构造器特性" class="headerlink" title="自定义结果构造器特性"></a>自定义结果构造器特性</h4><p>创建结果构造器类型会创建一个同名的自定义特性。你可以在以下位置应用该特性：</p>
+<ul>
+<li>在函数声明中，结果构造器构建函数的主体。</li>
+<li>在包含 getter 的变量或下标操作声明中，结果构造器构建 getter 的主体。</li>
+<li>在函数声明中的一个参数上，结果构造器构建一个作为相应参数传递的闭包的主体。</li>
+</ul>
+<p>应用结果构造器特性不会影响 ABI 兼容性。将结果构造器特性应用于参数会使该特性成为函数接口的一部分，这可能会影响源代码的兼容性。</p>
+<h3 id="requires-stored-property-inits"><a href="#requires-stored-property-inits" class="headerlink" title="requires_stored_property_inits"></a>requires_stored_property_inits</h3><p>将此特性应用于类声明，以要求类中的所有存储属性在其定义中提供默认值。对于任何继承自 <code>NSManagedObject</code> 的类，都会推断出此特性。</p>
+<!--
+  - test: `requires_stored_property_inits-requires-default-values`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; @requires_stored_property_inits class DefaultValueProvided &#123;</span><br><span class="line">       var value: Int = -1</span><br><span class="line">       init() &#123; self.value = 0 &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; @requires_stored_property_inits class NoDefaultValue &#123;</span><br><span class="line">       var value: Int</span><br><span class="line">       init() &#123; self.value = 0 &#125;</span><br><span class="line">   &#125;</span><br><span class="line">!$ error: stored property &#x27;value&#x27; requires an initial value</span><br><span class="line">!! var value: Int</span><br><span class="line">!! ^</span><br><span class="line">!$ note: class &#x27;NoDefaultValue&#x27; requires all stored properties to have initial values</span><br><span class="line">!! @requires_stored_property_inits class NoDefaultValue &#123;</span><br><span class="line">!! ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="testable"><a href="#testable" class="headerlink" title="testable"></a>testable</h3><p>将此特性应用于 <code>import</code> 声明时，可以通过修改访问控制来简化对模块代码的测试。导入的模块中标记为 <code>internal</code> 访问级别的实体将被导入并视为 <code>public</code> 访问级别声明的实体。标记为 <code>internal</code> 或 <code>public</code> 访问级别的类和类成员将被导入并视为 <code>open</code> 访问级别声明的实体。导入的模块必须在启用了测试的情况下编译。</p>
+<h3 id="UIApplicationMain"><a href="#UIApplicationMain" class="headerlink" title="UIApplicationMain"></a>UIApplicationMain</h3><blockquote>
+<p>已弃用:<br>此特性已弃用；请改用 <a href="doc:Attributes#main">doc:Attributes#main</a> 特性。在 Swift 6 中，使用此特性将会导致错误。</p>
+</blockquote>
+<p>将此特性应用于一个类，以指示它是应用程序委托。使用此特性相当于调用 <code>UIApplicationMain</code> 函数，并将此类的名称作为委托类的名称传递。</p>
+<p>如果你不使用此特性，请提供一个包含顶层代码的 <code>main.swift</code> 文件，该代码调用 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/uikit/1622933-uiapplicationmain"><code>UIApplicationMain(_:_:_:_:)</code></a> 函数。例如，如果你的应用使用自定义的 <code>UIApplication</code> 子类作为其主类，请调用 <code>UIApplicationMain(_:_:_:_:)</code> 函数，而不是使用此特性。</p>
+<p>编译为可执行文件的 Swift 代码最多只能包含一个顶级入口点，详见 <a href="doc:Declarations#顶级代码">doc:Declarations#顶级代码</a>。</p>
+<h3 id="unchecked"><a href="#unchecked" class="headerlink" title="unchecked"></a>unchecked</h3><p>将此特性应用于协议类型，作为类型声明中采用的协议列表的一部分，以关闭对该协议要求的强制执行。</p>
+<p>唯一支持的协议是 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/sendable"><code>Sendable</code></a>。</p>
+<h3 id="usableFromInline"><a href="#usableFromInline" class="headerlink" title="usableFromInline"></a>usableFromInline</h3><p>将此特性应用于函数、方法、计算属性、下标操作、构造器或析构器声明，以允许该符号在与声明位于同一模块中定义的内联代码中使用。声明必须具有 <code>internal</code> 访问级别修饰符。标记为 <code>usableFromInline</code> 的结构体或类只能对其属性使用公共类型或 <code>usableFromInline</code> 类型。标记为 <code>usableFromInline</code> 的枚举只能对其枚举成员的原始值和关联值使用公共类型或 <code>usableFromInline</code> 类型。</p>
+<p>像 <code>public</code> 访问级别修饰符一样，这个特性将声明暴露为模块公共接口的一部分。与 <code>public</code> 不同，编译器不允许在模块外的代码中按名称引用标记为 <code>usableFromInline</code> 的声明，即使声明的符号已被导出。然而，模块外的代码仍然可以通过使用运行时行为与声明的符号进行交互。</p>
+<p>标记为 <code>inlinable</code> 特性的声明可以隐式地从可内联代码中使用。虽然 <code>inlinable</code> 或 <code>usableFromInline</code> 都可以应用于 <code>internal</code> 声明，但同时应用这两个特性是错误的。</p>
+<!--
+  - test: `usableFromInline-and-inlinable-is-redundant`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; @usableFromInline @inlinable internal func f() &#123; &#125;</span><br><span class="line">!$ warning: &#x27;@usableFromInline&#x27; attribute has no effect on &#x27;@inlinable&#x27; global function &#x27;f()&#x27;</span><br><span class="line">!! @usableFromInline @inlinable internal func f() &#123; &#125;</span><br><span class="line">!! ^~~~~~~~~~~~~~~~~~</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="warn-unqualified-access"><a href="#warn-unqualified-access" class="headerlink" title="warn_unqualified_access"></a>warn_unqualified_access</h3><p>将此特性应用于顶级函数、实例方法、类方法或静态方法，以便在未使用前缀限定符（如模块名称、类型名称、实例变量或实例常量）的情况下使用该函数或方法时触发警告。使用此特性可以帮助减少在同一作用域内访问的具有相同名称的函数之间的歧义。</p>
+<p>例如，Swift 标准库包括一个顶级函数 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/1538339-min/"><code>min(_:_:)</code></a> 和一个用于具有可比较元素的序列的 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/sequence/1641174-min"><code>min()</code></a> 方法。序列方法使用 <code>warn_unqualified_access</code> 特性声明，以帮助减少在 <code>Sequence</code> 扩展中尝试使用其中一个或另一个时的混淆。</p>
+<h3 id="Interface-Builder-使用的声明特性"><a href="#Interface-Builder-使用的声明特性" class="headerlink" title="Interface Builder 使用的声明特性"></a>Interface Builder 使用的声明特性</h3><p>Interface Builder 特性是声明特性，供 Interface Builder 与 Xcode 同步使用。Swift 提供了以下 Interface Builder 特性：<code>IBAction</code>、<code>IBSegueAction</code>、<code>IBOutlet</code>、<code>IBDesignable</code> 和 <code>IBInspectable</code>。这些特性在概念上与其对应的 Objective-C 特性相同。</p>
+<!--
+  TODO: Need to link to the relevant discussion of these attributes in Objc.
+-->
+
+<p>你将 <code>IBOutlet</code> 和 <code>IBInspectable</code> 特性应用于类的属性声明。<br>你将 <code>IBAction</code> 和 <code>IBSegueAction</code> 特性应用于类的方法声明，<br>并将 <code>IBDesignable</code> 特性应用于类声明。</p>
+<p>应用 <code>IBAction</code>, <code>IBSegueAction</code>, <code>IBOutlet</code>,<br><code>IBDesignable</code> 或 <code>IBInspectable</code> 特性也隐含 <code>objc</code> 特性。</p>
+<h2 id="类型特性"><a href="#类型特性" class="headerlink" title="类型特性"></a>类型特性</h2><p>你只能将类型特性应用于类型。</p>
+<h3 id="autoclosure"><a href="#autoclosure" class="headerlink" title="autoclosure"></a>autoclosure</h3><p>使用此特性可以通过将表达式自动包装在一个无参数的闭包中来延迟对表达式的求值。你可以在函数或方法声明中将其应用于参数的类型，该参数的类型为不接受参数且返回与表达式类型相同的值的函数类型。关于如何使用 <code>autoclosure</code> 特性的示例，请参见 <a href="doc:Closures#自动闭包">doc:Closures#自动闭包</a> 和 <a href="doc:Types#函数类型">doc:Types#函数类型</a>。</p>
+<h3 id="convention"><a href="#convention" class="headerlink" title="convention"></a>convention</h3><p>将此特性应用于函数的类型，以指示其调用约定。</p>
+<p><code>convention</code> 特性总是与以下参数之一一起出现：</p>
+<ul>
+<li><code>swift</code> 参数表示一个 Swift 函数引用。这是 Swift 中函数值的标准调用约定。</li>
+<li><code>block</code> 参数表示一个与 Objective-C 兼容的块引用。函数值表示为对块对象的引用，该块对象是一个 <code>id</code> 类型兼容的 Objective-C 对象，它将其调用函数嵌入到该对象中。调用函数使用 C 调用约定。</li>
+<li><code>c</code> 参数表示一个 C 函数引用。函数值不携带上下文，并使用 C 调用约定。</li>
+</ul>
+<!--
+  Note: @convention(thin) is private, even though it doesn't have an underscore
+  https://forums.swift.org/t/12087/6
+-->
+
+<p>除了少数例外，任何调用约定的函数都可以在需要其他调用约定的函数时使用。一个非泛型的全局函数、一个不捕获任何局部变量的局部函数，或者一个不捕获任何局部变量的闭包可以转换为 C 调用约定。其他 Swift 函数无法转换为 C 调用约定。具有 Objective-C 块调用约定的函数无法转换为 C 调用约定。</p>
+<h3 id="escaping"><a href="#escaping" class="headerlink" title="escaping"></a>escaping</h3><p>将此特性应用于函数或方法声明中的参数类型，以指示参数的值可以存储以供后续执行。这隐含着该值可以超出这次调用的生命周期。具有 <code>escaping</code> 类型特性的函数类型参数需要对属性或方法显式使用 <code>self.</code>。有关如何使用 <code>escaping</code> 特性的示例，见 <a href="doc:Closures#逃逸闭包">doc:Closures#逃逸闭包</a>。</p>
+<h3 id="Sendable"><a href="#Sendable" class="headerlink" title="Sendable"></a>Sendable</h3><p>将此特性应用于函数的类型，以指示该函数或闭包是可发送的。</p>
+<p>将此特性应用于函数类型与使非函数类型遵循 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/sendable"><code>Sendable</code></a> 协议具有相同的含义。</p>
+<p>如果函数或闭包在需要可发送值的上下文中使用，并且函数或闭包满足可发送的要求，则会在函数和闭包上推断有此特性。</p>
+<p>可发送函数类型是相应的不可发送函数类型的子类型。</p>
+<h2 id="Switch-Case-特性"><a href="#Switch-Case-特性" class="headerlink" title="Switch Case 特性"></a>Switch Case 特性</h2><p>你只能将 switch case 特性应用于 switch case。</p>
+<h3 id="unknown"><a href="#unknown" class="headerlink" title="unknown"></a>unknown</h3><p>将此特性应用于 switch case，以指示在代码编译时不期望与任何已知的枚举 case 匹配。有关如何使用 <code>unknown</code> 特性的示例，见 <a href="doc:Statements#切换未来的枚举情况">doc:Statements#切换未来的枚举情况</a>。</p>
+<blockquote>
+<p>特性的语法:</p>
+<p><em>attribute</em> → <strong><code>@</code></strong> <em>attribute-name</em> <em>attribute-argument-clause</em><em>?</em> <br><em>attribute-name</em> → <em>identifier</em> <br><em>attribute-argument-clause</em> → <strong><code>(</code></strong> <em>balanced-tokens</em><em>?</em> <strong><code>)</code></strong> <br><em>attributes</em> → <em>attribute</em> <em>attributes</em><em>?</em></p>
+<p><em>balanced-tokens</em> → <em>balanced-token</em> <em>balanced-tokens</em><em>?</em> <br><em>balanced-token</em> → <strong><code>(</code></strong> <em>balanced-tokens</em><em>?</em> <strong><code>)</code></strong> <br><em>balanced-token</em> → <strong><code>[</code></strong> <em>balanced-tokens</em><em>?</em> <strong><code>]</code></strong> <br><em>balanced-token</em> → <strong><code>{</code></strong> <em>balanced-tokens</em><em>?</em> <strong><code>}</code></strong> <br><em>balanced-token</em> → 任意标识符、关键字、字面量或运算符 <br><em>balanced-token</em> → 除了 <strong><code>(</code><strong>、</strong><code>)</code><strong>、</strong><code>[</code><strong>、</strong><code>]</code><strong>、</strong><code>{</code></strong> 或 <strong><code>}</code></strong> 之外的任何标点符号</p>
+</blockquote>
+<!--
+This source file is part of the Swift.org open source project
+
+Copyright (c) 2014 - 2022 Apple Inc. and the Swift project authors
+Licensed under Apache License v2.0 with Runtime Library Exception
+
+See https://swift.org/LICENSE.txt for license information
+See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
+-->
+</li></ul></li></ul></body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/">REFERENCEMANUAL</a></li>
+            <li>ATTRIBUTES</li>
+          
+  </ul>
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%B9%E6%80%A7"><span class="nav-number">1.</span> <span class="nav-text">特性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%E7%89%B9%E6%80%A7"><span class="nav-number">1.1.</span> <span class="nav-text">声明特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#attached"><span class="nav-number">1.1.1.</span> <span class="nav-text">attached</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#available"><span class="nav-number">1.1.2.</span> <span class="nav-text">available</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#discardableResult"><span class="nav-number">1.1.3.</span> <span class="nav-text">discardableResult</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dynamicCallable"><span class="nav-number">1.1.4.</span> <span class="nav-text">dynamicCallable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#frozen"><span class="nav-number">1.1.5.</span> <span class="nav-text">frozen</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#inlinable"><span class="nav-number">1.1.6.</span> <span class="nav-text">inlinable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#main"><span class="nav-number">1.1.7.</span> <span class="nav-text">main</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSCopying"><span class="nav-number">1.1.8.</span> <span class="nav-text">NSCopying</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSManaged"><span class="nav-number">1.1.9.</span> <span class="nav-text">NSManaged</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#objc"><span class="nav-number">1.1.10.</span> <span class="nav-text">objc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#preconcurrency"><span class="nav-number">1.1.11.</span> <span class="nav-text">preconcurrency</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#propertyWrapper"><span class="nav-number">1.1.12.</span> <span class="nav-text">propertyWrapper</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E7%89%B9%E6%80%A7"><span class="nav-number">1.2.</span> <span class="nav-text">类型特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#autoclosure"><span class="nav-number">1.2.1.</span> <span class="nav-text">autoclosure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#convention"><span class="nav-number">1.2.2.</span> <span class="nav-text">convention</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#escaping"><span class="nav-number">1.2.3.</span> <span class="nav-text">escaping</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sendable"><span class="nav-number">1.2.4.</span> <span class="nav-text">Sendable</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Switch-Case-%E7%89%B9%E6%80%A7"><span class="nav-number">1.3.</span> <span class="nav-text">Switch Case 特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#unknown"><span class="nav-number">1.3.1.</span> <span class="nav-text">unknown</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

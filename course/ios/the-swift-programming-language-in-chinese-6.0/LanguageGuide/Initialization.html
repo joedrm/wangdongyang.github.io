@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="构造过程设置类型中存储属性的初始值并执行一次性构造过程。 构造过程是使用类、结构体或枚举等实例之前的准备过程。这个过程包括为该实例的每个存储属性设置初始值，并执行任何其他必要的设置或构造过程，以确保新实例在使用前已经完成正确的构造。 你可以通过定义构造器来实现这个构造过程，它就像是用来创建特定类型新实例的特殊方法。与Objective-C构造器不同，Swift构造器没有返回值，它们的主要作用是确保">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/Initialization.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="构造过程设置类型中存储属性的初始值并执行一次性构造过程。 构造过程是使用类、结构体或枚举等实例之前的准备过程。这个过程包括为该实例的每个存储属性设置初始值，并执行任何其他必要的设置或构造过程，以确保新实例在使用前已经完成正确的构造。 你可以通过定义构造器来实现这个构造过程，它就像是用来创建特定类型新实例的特殊方法。与Objective-C构造器不同，Swift构造器没有返回值，它们的主要作用是确保">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wanflutter.netlify.app/initializersExample03">
+<meta property="og:image" content="https://wanflutter.netlify.app/initializerDelegation01">
+<meta property="og:image" content="https://wanflutter.netlify.app/initializerDelegation02">
+<meta property="og:image" content="https://wanflutter.netlify.app/twoPhaseInitialization01">
+<meta property="og:image" content="https://wanflutter.netlify.app/twoPhaseInitialization02">
+<meta property="og:image" content="https://wanflutter.netlify.app/initializersExample01">
+<meta property="og:image" content="https://wanflutter.netlify.app/initializersExample02">
+<meta property="og:image" content="https://wanflutter.netlify.app/initializersExample03">
+<meta property="og:image" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/Initialization/chessBoard">
+<meta property="article:published_time" content="2025-03-08T08:32:48.700Z">
+<meta property="article:modified_time" content="2025-03-08T08:32:48.700Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wanflutter.netlify.app/initializersExample03">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/Initialization">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>INITIALIZATION</li>
+          
+  </ul>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h1 id="构造过程"><a href="#构造过程" class="headerlink" title="构造过程"></a>构造过程</h1><p>设置类型中存储属性的初始值并执行一次性构造过程。</p>
+<p><em>构造过程</em>是使用类、结构体或枚举等实例之前的准备过程。这个过程包括为该实例的每个存储属性设置初始值，并执行任何其他必要的设置或构造过程，以确保新实例在使用前已经完成正确的构造。</p>
+<p>你可以通过定义<em>构造器</em>来实现这个构造过程，它就像是用来创建特定类型新实例的特殊方法。与Objective-C构造器不同，Swift构造器没有返回值，它们的主要作用是确保类型的新实例在首次使用前被正确构造。</p>
+<p>类的实例可以通过实现<em>析构器</em>来执行它释放之前自定义的清理工作。想了解析构器的更多内容，请参见 <a href="doc:析构过程">doc:析构过程</a>.</p>
+<h2 id="存储属性的初始赋值"><a href="#存储属性的初始赋值" class="headerlink" title="存储属性的初始赋值"></a>存储属性的初始赋值</h2><p>创建类和结构体的实例时，<em>必须</em>为它们所有的存储属性设置一个适当的初始值。存储属性不能处于不确定的状态。</p>
+<p>你可以在构造器中为存储属性设置初始值，或者在定义属性时赋予默认值。以下部分将会详细介绍这两种方法。</p>
+<blockquote>
+<p>注意：当你为存储属性赋予默认值，或者在构造器中设置其初始值时，该属性的值会被直接设置，而不会触发任何属性观察器。</p>
+</blockquote>
+<h3 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h3><p><em>构造器</em> 被调用来创建某个特定类型的新实例。构造器在最简单的形式中就像一个没有参数的实例方法，以关键字<code>init</code> 来命名：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">init</span>() {</span><br><span class="line">    <span class="comment">// 在此处执行构造过程</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `initializerSyntax`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; class Test &#123;</span><br><span class="line">-&gt; init() &#123;</span><br><span class="line">      // perform some initialization here</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>下面例子中定义了一个用来保存华氏温度的结构体 <code>Fahrenheit</code>，它拥有一个 <code>Double</code> 类型的存储型属性 <code>temperature</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Fahrenheit</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> temperature: <span class="type">Double</span></span><br><span class="line">    <span class="keyword">init</span>() &#123;</span><br><span class="line">        temperature <span class="operator">=</span> <span class="number">32.0</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> f <span class="operator">=</span> <span class="type">Fahrenheit</span>()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;The default temperature is <span class="subst">\(f.temperature)</span>° Fahrenheit&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;The default temperature is 32.0° Fahrenheit&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `fahrenheitInit`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct Fahrenheit &#123;</span><br><span class="line">      var temperature: Double</span><br><span class="line">      init() &#123;</span><br><span class="line">         temperature = 32.0</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; var f = Fahrenheit()</span><br><span class="line">-&gt; print(&quot;The default temperature is \(f.temperature)° Fahrenheit&quot;)</span><br><span class="line">&lt;- The default temperature is 32.0° Fahrenheit</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>这个结构体只定义了一个不带形参的构造器 <code>init</code>，并在里面将存储型属性 <code>temperature</code> 的值初始化为 <code>32.0</code>（华氏温度下水的冰点）。</p>
+<h3 id="默认属性值"><a href="#默认属性值" class="headerlink" title="默认属性值"></a>默认属性值</h3><p>如上所示，你可以在构造器中设置存储属性的初始值。同样，你也可以在属性声明时为其设置默认值。</p>
+<blockquote>
+<p>注意：如果一个属性总是使用相同的初始值，建议直接提供一个默认值，而不是每次都在构造器中设置值。两种方法的最终结果是一样的，但默认值使属性的初始化与其声明结合的更加紧密。它能让你的构造器更简洁、更清晰，且能够通过默认值推断属性的类型。默认值还能使你更容易利用默认构造器和构造器继承等特性，如本章后面所述。</p>
+</blockquote>
+<p>你可以通过在声明 <code>temperature</code> 属性时提供一个默认值，将上面的 <code>Fahrenheit</code> 结构体写成如下更简单的形式：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Fahrenheit</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> temperature <span class="operator">=</span> <span class="number">32.0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `fahrenheitDefault`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct Fahrenheit &#123;</span><br><span class="line">      var temperature = 32.0</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="自定义构造过程"><a href="#自定义构造过程" class="headerlink" title="自定义构造过程"></a>自定义构造过程</h2><p>你可以自定义构造过程，比如提供输入的形参、可选属性类型或者给常量属性赋值，这些都将在后面章节中提到。</p>
+<h3 id="形参的构造过程"><a href="#形参的构造过程" class="headerlink" title="形参的构造过程"></a>形参的构造过程</h3><p>你可以在自定义构造过程的定义中提供<em>构造形参</em>，指定其值的类型和名字。构造形参的功能和语法与函数和方法的形参相同。</p>
+<p>下面例子中定义了一个用来保存摄氏温度的结构体 <code>Celsius</code>。它定义了两个不同的构造器：<code>init(fromFahrenheit:)</code> 和 <code>init(fromKelvin:)</code>，二者分别通过接受不同温标下的温度值来创建新的实例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Celsius</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> temperatureInCelsius: <span class="type">Double</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">fromFahrenheit</span> <span class="params">fahrenheit</span>: <span class="type">Double</span>) &#123;</span><br><span class="line">        temperatureInCelsius <span class="operator">=</span> (fahrenheit <span class="operator">-</span> <span class="number">32.0</span>) <span class="operator">/</span> <span class="number">1.8</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">fromKelvin</span> <span class="params">kelvin</span>: <span class="type">Double</span>) &#123;</span><br><span class="line">        temperatureInCelsius <span class="operator">=</span> kelvin <span class="operator">-</span> <span class="number">273.15</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> boilingPointOfWater <span class="operator">=</span> <span class="type">Celsius</span>(fromFahrenheit: <span class="number">212.0</span>)</span><br><span class="line"><span class="comment">// boilingPointOfWater.temperatureInCelsius 是 100.0</span></span><br><span class="line"><span class="keyword">let</span> freezingPointOfWater <span class="operator">=</span> <span class="type">Celsius</span>(fromKelvin: <span class="number">273.15</span>)</span><br><span class="line"><span class="comment">// freezingPointOfWater.temperatureInCelsius 是 0.0</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `initialization`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct Celsius &#123;</span><br><span class="line">      var temperatureInCelsius: Double</span><br><span class="line">      init(fromFahrenheit fahrenheit: Double) &#123;</span><br><span class="line">         temperatureInCelsius = (fahrenheit - 32.0) / 1.8</span><br><span class="line">      &#125;</span><br><span class="line">      init(fromKelvin kelvin: Double) &#123;</span><br><span class="line">         temperatureInCelsius = kelvin - 273.15</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let boilingPointOfWater = Celsius(fromFahrenheit: 212.0)</span><br><span class="line">/&gt; boilingPointOfWater.temperatureInCelsius is \(boilingPointOfWater.temperatureInCelsius)</span><br><span class="line">&lt;/ boilingPointOfWater.temperatureInCelsius is 100.0</span><br><span class="line">-&gt; let freezingPointOfWater = Celsius(fromKelvin: 273.15)</span><br><span class="line">/&gt; freezingPointOfWater.temperatureInCelsius is \(freezingPointOfWater.temperatureInCelsius)</span><br><span class="line">&lt;/ freezingPointOfWater.temperatureInCelsius is 0.0</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>第一个构造器只拥有一个构造形参，其实参标签为 <code>fromFahrenheit</code>，形参命名为 <code>fahrenheit</code>；第二个构造器也拥有一个构造形参，其实参标签为 <code>fromKelvin</code>，形参命名为 <code>kelvin</code>。这两个构造器都将单一的实参转换成摄氏温度值，并保存在属性 <code>temperatureInCelsius</code> 中。</p>
+<!--
+  TODO: I need to provide an example of default values for initializer parameters,
+  to show they can help you to get multiple initializers "for free" (after a fashion).
+-->
+
+<h3 id="形参命名和实参标签"><a href="#形参命名和实参标签" class="headerlink" title="形参命名和实参标签"></a>形参命名和实参标签</h3><p>与函数和方法形参相同，构造形参可以同时具有在构造器内部使用的形参名称和在调用构造器时使用的实参标签。</p>
+<p>然而，构造器在括号前没有像函数和方法那样的可辨别的方法名。因此，构造器的形参名称和类型在确定应调用哪个构造器时起着至关重要的作用。正因为如此，如果你没有提供实参标签，Swift会为构造器的每个形参自动提供一个实参标签。</p>
+<p>下面例子中的 <code>Color</code> 结构体包含了三个 <code>Double</code> 类型的常量（ <code>red</code> 、 <code>green</code>、 <code>blue</code> ）,表明颜色中红、绿、蓝成分的含量。<br><code>Color</code> 提供了一个构造器，为红蓝绿提供三个合适 <code>Double</code> 类型的形参命名。<code>Color</code> 也提供了第二个构造器，它只包含名为 <code>white</code> 的 <code>Double</code> 类型的形参，它为三个颜色的属性提供相同的值。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Color</span> {</span><br><span class="line">    <span class="keyword">let</span> red, green, blue: <span class="type">Double</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">red</span>: <span class="type">Double</span>, <span class="params">green</span>: <span class="type">Double</span>, <span class="params">blue</span>: <span class="type">Double</span>) {</span><br><span class="line">        <span class="keyword">self</span>.red   <span class="operator">=</span> red</span><br><span class="line">        <span class="keyword">self</span>.green <span class="operator">=</span> green</span><br><span class="line">        <span class="keyword">self</span>.blue  <span class="operator">=</span> blue</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">white</span>: <span class="type">Double</span>) {</span><br><span class="line">        red   <span class="operator">=</span> white</span><br><span class="line">        green <span class="operator">=</span> white</span><br><span class="line">        blue  <span class="operator">=</span> white</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `externalParameterNames, externalParameterNames-err`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct Color &#123;</span><br><span class="line">      let red, green, blue: Double</span><br><span class="line">      init(red: Double, green: Double, blue: Double) &#123;</span><br><span class="line">         self.red   = red</span><br><span class="line">         self.green = green</span><br><span class="line">         self.blue  = blue</span><br><span class="line">      &#125;</span><br><span class="line">      init(white: Double) &#123;</span><br><span class="line">         red   = white</span><br><span class="line">         green = white</span><br><span class="line">         blue  = white</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>两种构造器都能通过为每一个构造器形参提供命名值来创建一个新的 Color 实例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> magenta <span class="operator">=</span> <span class="type">Color</span>(red: <span class="number">1.0</span>, green: <span class="number">0.0</span>, blue: <span class="number">1.0</span>)</span><br><span class="line"><span class="keyword">let</span> halfGray <span class="operator">=</span> <span class="type">Color</span>(white: <span class="number">0.5</span>)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `externalParameterNames`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let magenta = Color(red: 1.0, green: 0.0, blue: 1.0)</span><br><span class="line">-&gt; let halfGray = Color(white: 0.5)</span><br><span class="line">&gt;&gt; assert(halfGray.red == 0.5)</span><br><span class="line">&gt;&gt; assert(halfGray.green == 0.5)</span><br><span class="line">&gt;&gt; assert(halfGray.blue == 0.5)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>注意: 如果不通过实参标签传值，这个构造器是没法调用的。如果构造器定义了某个实参标签，就必须使用它，忽略它将导致编译期错误：</p>
+</blockquote>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> veryGreen <span class="operator">=</span> <span class="type">Color</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>)</span><br><span class="line"><span class="comment">// 报编译期错误-需要实参标签</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `externalParameterNames-err`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let veryGreen = Color(0.0, 1.0, 0.0)</span><br><span class="line">// this reports a compile-time error - argument labels are required</span><br><span class="line">!$ error: missing argument labels &#x27;red:green:blue:&#x27; in call</span><br><span class="line">!! let veryGreen = Color(0.0, 1.0, 0.0)</span><br><span class="line">!! ^</span><br><span class="line">!! red: green:  blue:</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="不带实参标签的构造器形参"><a href="#不带实参标签的构造器形参" class="headerlink" title="不带实参标签的构造器形参"></a>不带实参标签的构造器形参</h3><p>如果你不希望构造器的某个形参使用实参标签，可以使用下划线 <code>(_)</code> 来代替显式的实参标签来重写默认行为。</p>
+<p>接下来是 <a href="doc:形参的构造过程">doc:形参的构造过程</a> 带来的扩展版本的 <code>Celsius</code>, 增加了一个构造器用于从已经是摄氏温标的 <code>Double</code> 值创建一个新的 <code>Celsius</code> 实例:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Celsius</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> temperatureInCelsius: <span class="type">Double</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">fromFahrenheit</span> <span class="params">fahrenheit</span>: <span class="type">Double</span>) &#123;</span><br><span class="line">        temperatureInCelsius <span class="operator">=</span> (fahrenheit <span class="operator">-</span> <span class="number">32.0</span>) <span class="operator">/</span> <span class="number">1.8</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">fromKelvin</span> <span class="params">kelvin</span>: <span class="type">Double</span>) &#123;</span><br><span class="line">        temperatureInCelsius <span class="operator">=</span> kelvin <span class="operator">-</span> <span class="number">273.15</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">init</span>(<span class="keyword">_</span> <span class="params">celsius</span>: <span class="type">Double</span>) &#123;</span><br><span class="line">        temperatureInCelsius <span class="operator">=</span> celsius</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> bodyTemperature <span class="operator">=</span> <span class="type">Celsius</span>(<span class="number">37.0</span>)</span><br><span class="line"><span class="comment">// bodyTemperature.temperatureInCelsius 是 37.0</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `initializersWithoutExternalParameterNames`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct Celsius &#123;</span><br><span class="line">      var temperatureInCelsius: Double</span><br><span class="line">      init(fromFahrenheit fahrenheit: Double) &#123;</span><br><span class="line">         temperatureInCelsius = (fahrenheit - 32.0) / 1.8</span><br><span class="line">      &#125;</span><br><span class="line">      init(fromKelvin kelvin: Double) &#123;</span><br><span class="line">         temperatureInCelsius = kelvin - 273.15</span><br><span class="line">      &#125;</span><br><span class="line">      init(_ celsius: Double) &#123;</span><br><span class="line">         temperatureInCelsius = celsius</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let bodyTemperature = Celsius(37.0)</span><br><span class="line">/&gt; bodyTemperature.temperatureInCelsius is \(bodyTemperature.temperatureInCelsius)</span><br><span class="line">&lt;/ bodyTemperature.temperatureInCelsius is 37.0</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>构造器调用 <code>Celsius(37.0)</code> 的意图非常明确，不需要实参标签。因此，适合使用构造器 <code>init(_ celsius: Double)</code>来通过未命名的 <code>Double</code> 值来构造 <code>Celsius</code> 。</p>
+<h3 id="可选属性类型"><a href="#可选属性类型" class="headerlink" title="可选属性类型"></a>可选属性类型</h3><p>如果你自定义的类型有一个逻辑上允许值为空的存储型属性——无论是因为它无法在初始化时赋值，还是因为它在之后某个时机可以赋值为空——都需要将它声明为 <code>可选类型</code>。可选类型的属性将自动初始化为 <code>nil</code>，表示这个属性是特意在构造过程设置为空。</p>
+<p>下面例子中定义了类 <code>SurveyQuestion</code>，它包含一个可选 <code>String</code> 属性 <code>response</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SurveyQuestion</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> text: <span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> response: <span class="type">String</span>?</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">text</span>: <span class="type">String</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.text <span class="operator">=</span> text</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">ask</span>() &#123;</span><br><span class="line">        <span class="built_in">print</span>(text)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> cheeseQuestion <span class="operator">=</span> <span class="type">SurveyQuestion</span>(text: <span class="string">&quot;Do you like cheese?&quot;</span>)</span><br><span class="line">cheeseQuestion.ask()</span><br><span class="line"><span class="comment">// 打印 &quot;Do you like cheese?&quot;</span></span><br><span class="line">cheeseQuestion.response <span class="operator">=</span> <span class="string">&quot;Yes, I do like cheese.&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `surveyQuestionVariable`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class SurveyQuestion &#123;</span><br><span class="line">      var text: String</span><br><span class="line">      var response: String?</span><br><span class="line">      init(text: String) &#123;</span><br><span class="line">         self.text = text</span><br><span class="line">      &#125;</span><br><span class="line">      func ask() &#123;</span><br><span class="line">         print(text)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let cheeseQuestion = SurveyQuestion(text: &quot;Do you like cheese?&quot;)</span><br><span class="line">-&gt; cheeseQuestion.ask()</span><br><span class="line">&lt;- Do you like cheese?</span><br><span class="line">-&gt; cheeseQuestion.response = &quot;Yes, I do like cheese.&quot;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>对调查问卷问题的答案，唯有提问后方能揭晓，因此 <code>response</code> 属性被声明为 <code>String?</code> 类型，即“可选的 <code>String</code> ”。当一个新的 <code>SurveyQuestion</code> 实例被初始化时，它会自动被赋予默认值 <code>nil</code>，表示“尚无字符串”。</p>
+<h3 id="构造过程中常量属性的赋值"><a href="#构造过程中常量属性的赋值" class="headerlink" title="构造过程中常量属性的赋值"></a>构造过程中常量属性的赋值</h3><p>你可以在构造过程中的任意时间点给常量属性赋值，只要在构造过程结束时将它设置成确定的值。一旦常量属性被赋值，它将永远不可更改。</p>
+<!--
+  - test: `constantPropertyAssignment`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; struct S &#123;</span><br><span class="line">      let c: Int</span><br><span class="line">      init() &#123;</span><br><span class="line">         self.c = 1</span><br><span class="line">         self.c = 2</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">!$ error: immutable value &#x27;self.c&#x27; may only be initialized once</span><br><span class="line">!! self.c = 2</span><br><span class="line">!! ^</span><br><span class="line">!$ note: change &#x27;let&#x27; to &#x27;var&#x27; to make it mutable</span><br><span class="line">!! let c: Int</span><br><span class="line">!! ^~~</span><br><span class="line">!! var</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `constantPropertyAssignmentWithInitialValue`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; struct S &#123;</span><br><span class="line">      let c: Int = 0</span><br><span class="line">      init() &#123;</span><br><span class="line">         self.c = 1</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">!$ error: immutable value &#x27;self.c&#x27; may only be initialized once</span><br><span class="line">!! self.c = 1</span><br><span class="line">!! ^</span><br><span class="line">!$ note: initial value already provided in &#x27;let&#x27; declaration</span><br><span class="line">!! let c: Int = 0</span><br><span class="line">!! ^</span><br><span class="line">!$ note: change &#x27;let&#x27; to &#x27;var&#x27; to make it mutable</span><br><span class="line">!! let c: Int = 0</span><br><span class="line">!! ^~~</span><br><span class="line">!! var</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>注意: 对于类的实例来说，它的常量属性只能在类的构造过程中修改，不能在子类中修改。</p>
+</blockquote>
+<p>你可以修改上面的 <code>SurveyQuestion</code> 示例，将问题的 <code>text</code> 属性从变量属性改为常量属性，以表明一旦 <code>SurveyQuestion</code> 实例被创建，<code>text</code> 是不会改变的。即使 <code>text</code> 属性现在是一个常量，它仍然可以在类的构造器中被设置：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SurveyQuestion</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> text: <span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> response: <span class="type">String</span>?</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">text</span>: <span class="type">String</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.text <span class="operator">=</span> text</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">ask</span>() &#123;</span><br><span class="line">        <span class="built_in">print</span>(text)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> beetsQuestion <span class="operator">=</span> <span class="type">SurveyQuestion</span>(text: <span class="string">&quot;How about beets?&quot;</span>)</span><br><span class="line">beetsQuestion.ask()</span><br><span class="line"><span class="comment">// 打印 &quot;How about beets?&quot;</span></span><br><span class="line">beetsQuestion.response <span class="operator">=</span> <span class="string">&quot;I also like beets. (But not with cheese.)&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `surveyQuestionConstant`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class SurveyQuestion &#123;</span><br><span class="line">      let text: String</span><br><span class="line">      var response: String?</span><br><span class="line">      init(text: String) &#123;</span><br><span class="line">         self.text = text</span><br><span class="line">      &#125;</span><br><span class="line">      func ask() &#123;</span><br><span class="line">         print(text)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let beetsQuestion = SurveyQuestion(text: &quot;How about beets?&quot;)</span><br><span class="line">-&gt; beetsQuestion.ask()</span><br><span class="line">&lt;- How about beets?</span><br><span class="line">-&gt; beetsQuestion.response = &quot;I also like beets. (But not with cheese.)&quot;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="默认构造器"><a href="#默认构造器" class="headerlink" title="默认构造器"></a>默认构造器</h2><p>如果结构体或类为所有属性提供了默认值，又没有提供任何自定义的构造器，那么 Swift 会给这些结构体或类提供一个默认构造器。这个默认构造器将简单地创建一个所有属性值都设置为它们默认值的实例。</p>
+<!--
+  - test: `defaultInitializersForStructAndClass`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct S &#123; var s: String = &quot;s&quot; &#125;</span><br><span class="line">-&gt; assert(S().s == &quot;s&quot;)</span><br><span class="line">-&gt; class A &#123; var a: String = &quot;a&quot; &#125;</span><br><span class="line">-&gt; assert(A().a == &quot;a&quot;)</span><br><span class="line">-&gt; class B: A &#123; var b: String = &quot;b&quot; &#125;</span><br><span class="line">-&gt; assert(B().a == &quot;a&quot;)</span><br><span class="line">-&gt; assert(B().b ==  &quot;b&quot;)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>下面例子中定义了一个类 <code>ShoppingListItem</code>，它封装了购物清单中的某一物品的名字（<code>name</code>）、数量（<code>quantity</code>）和购买状态 <code>purchase state</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ShoppingListItem</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span>?</span><br><span class="line">    <span class="keyword">var</span> quantity <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">var</span> purchased <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> item <span class="operator">=</span> <span class="type">ShoppingListItem</span>()</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `initialization`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class ShoppingListItem &#123;</span><br><span class="line">      var name: String?</span><br><span class="line">      var quantity = 1</span><br><span class="line">      var purchased = false</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; var item = ShoppingListItem()</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>由于 <code>ShoppingListItem</code> 类的所有属性都有默认值，并且它是一个没有超类的基类。因此，<code>ShoppingListItem</code> 会自动获得一个默认构造器实现，该实现会创建一个新实例，并将其所有属性设置为默认值。（<code>name</code> 属性是一个可选的 <code>String</code> 属性，因此它会自动接收一个默认值 <code>nil</code>，即使这个值没有在代码中写出。）上面的示例使用 <code>ShoppingListItem</code> 类的默认构造器来创建一个类的新实例（ <code>ShoppingListItem()</code>形式的构造语法），并将其赋值给变量 <code>item</code> 。</p>
+<p><img src="/initializersExample03"></p>
+<h3 id="结构体类型的成员逐一构造器"><a href="#结构体类型的成员逐一构造器" class="headerlink" title="结构体类型的成员逐一构造器"></a>结构体类型的成员逐一构造器</h3><p>如果结构体类型没有定义任何自定义构造器，它们会自动获得<em>逐一成员构造器</em>。与默认构造器不同，即使存储属性没有默认值，结构体也会获得逐一成员构造器。</p>
+<!--
+  - test: `memberwiseInitializersDontRequireDefaultStoredPropertyValues`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct S &#123; var int: Int; var string: String &#125;</span><br><span class="line">-&gt; let s = S(int: 42, string: &quot;hello&quot;)</span><br><span class="line">---</span><br><span class="line">-&gt; struct SS &#123; var int = 10; var string: String &#125;</span><br><span class="line">-&gt; let ss = SS(int: 42, string: &quot;hello&quot;)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>成员逐一构造器是一种用于初始化新结构体实例里成员属性的快捷方法。新实例的属性的初始值可以通过名称传递给逐一成员构造器。</p>
+<p>下面的示例定义了一个名为 <code>Size</code> 的结构体，该结构体有两个属性，分别是 <code>width</code> 和 <code>height</code>。通过赋予默认值 <code>0.0</code>，这两个属性都被推断为 <code>Double</code> 类型。</p>
+<p><code>Size</code> 结构体会自动获得一个 <code>init(width:height:)</code> 逐一成员构造器，你可以用它来构造一个新的 <code>Size</code> 实例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Size</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> width <span class="operator">=</span> <span class="number">0.0</span>, height <span class="operator">=</span> <span class="number">0.0</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> twoByTwo <span class="operator">=</span> <span class="type">Size</span>(width: <span class="number">2.0</span>, height: <span class="number">2.0</span>)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `initialization`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct Size &#123;</span><br><span class="line">      var width = 0.0, height = 0.0</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let twoByTwo = Size(width: 2.0, height: 2.0)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>When you call a memberwise initializer,<br>you can omit values for any properties<br>that have default values.<br>In the example above,<br>the <code>Size</code> structure has a default value<br>for both its <code>height</code> and <code>width</code> properties.<br>You can omit either property or both properties,<br>and the initializer uses the default value for anything you omit.<br>For example:<br>当你调用逐一成员构造器时，你可以省略任何具有默认值的属性。在上面的示例中，<code>Size</code> 结构体的 <code>height</code> 和 <code>width</code> 属性都有默认值。你可以省略其中一个或两个属性，构造器会使用默认值。例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> zeroByTwo <span class="operator">=</span> <span class="type">Size</span>(height: <span class="number">2.0</span>)</span><br><span class="line"><span class="built_in">print</span>(zeroByTwo.width, zeroByTwo.height)</span><br><span class="line"><span class="comment">// 输出 &quot;0.0 2.0&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> zeroByZero <span class="operator">=</span> <span class="type">Size</span>()</span><br><span class="line"><span class="built_in">print</span>(zeroByZero.width, zeroByZero.height)</span><br><span class="line"><span class="comment">// Prints &quot;0.0 0.0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `initialization`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let zeroByTwo = Size(height: 2.0)</span><br><span class="line">-&gt; print(zeroByTwo.width, zeroByTwo.height)</span><br><span class="line">&lt;- 0.0 2.0</span><br><span class="line">---</span><br><span class="line">-&gt; let zeroByZero = Size()</span><br><span class="line">-&gt; print(zeroByZero.width, zeroByZero.height)</span><br><span class="line">&lt;- 0.0 0.0</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="值类型的构造器代理"><a href="#值类型的构造器代理" class="headerlink" title="值类型的构造器代理"></a>值类型的构造器代理</h2><p>构造器可以调用其他构造器来完成实例的部分构造过程。这个过程被称为<em>构造器代理</em>，它避免了在多个构造器中重复代码。</p>
+<p>构造器代理的实现规则和形式在值类型和类类型中有所不同。值类型（结构体和枚举类型）不支持继承，所以构造器代理的过程相对简单，因为它们只能代理给自己的其它构造器。<br>然而，类不一样，它可以继承自其他类（请参考<a href="doc:继承">doc:继承</a>）。这意味着类有责任保证其所有继承的存储型属性在构造时也能正确的初始化。这些责任将在后续章节<a href="doc:类的继承和构造过程">doc:类的继承和构造过程</a>中介绍。</p>
+<p>对于值类型，你可以使用 <code>self.init</code> 在自定义的构造器中引用相同值类型的构造器。并且，你只能在构造器内部调用 <code>self.init</code> 。</p>
+<p>请注意，如果你为某个值类型定义了一个自定义构造器，你将无法访问到默认构造器（如果是结构体，还将无法访问逐一成员构造器）。这种限制避免了在一个更复杂的构造器中做了额外的重要设置，但有人不小心使用自动生成的构造器而导致错误的情况。</p>
+<blockquote>
+<p>注意: 如果你希望默认构造器、逐一成员构造器以及你自己的自定义构造器都能用来创建实例，可以将自定义的构造器写到扩展（extension）中，而不是写在值类型的原始定义中。想查看更多内容，请查看<a href="doc:Extensions">doc:Extensions</a>.</p>
+</blockquote>
+<p>下面的示例中定义了一个自定义结构体 <code>Rect</code> ，用来代表几何矩形。这个示例需要两个辅助的结构体 <code>Size</code> 和 <code>Point</code> ，它们各自为其所有的属性提供了默认值 <code>0.0</code> .</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Size</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> width <span class="operator">=</span> <span class="number">0.0</span>, height <span class="operator">=</span> <span class="number">0.0</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Point</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> x <span class="operator">=</span> <span class="number">0.0</span>, y <span class="operator">=</span> <span class="number">0.0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `valueDelegation`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct Size &#123;</span><br><span class="line">      var width = 0.0, height = 0.0</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; struct Point &#123;</span><br><span class="line">      var x = 0.0, y = 0.0</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>你可以通过三种方式为 <code>Rect</code> 创建实例 (1)使用含有默认值 <code>origin</code> 和 <code>size</code> 属性来初始化；(2)提供指定的 <code>origin</code> 和 <code>size</code> 实例来初始化；(3)提供指定的 <code>center</code> 和 <code>size</code> 来初始化。在下面 <code>Rect</code> 结构体定义中，我们为这三种方法提供了三个自定义的构造器:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Rect</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> origin <span class="operator">=</span> <span class="type">Point</span>()</span><br><span class="line">    <span class="keyword">var</span> size <span class="operator">=</span> <span class="type">Size</span>()</span><br><span class="line">    <span class="keyword">init</span>() &#123;&#125;</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">origin</span>: <span class="type">Point</span>, <span class="params">size</span>: <span class="type">Size</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.origin <span class="operator">=</span> origin</span><br><span class="line">        <span class="keyword">self</span>.size <span class="operator">=</span> size</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">center</span>: <span class="type">Point</span>, <span class="params">size</span>: <span class="type">Size</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> originX <span class="operator">=</span> center.x <span class="operator">-</span> (size.width <span class="operator">/</span> <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">let</span> originY <span class="operator">=</span> center.y <span class="operator">-</span> (size.height <span class="operator">/</span> <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">self</span>.<span class="keyword">init</span>(origin: <span class="type">Point</span>(x: originX, y: originY), size: size)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `valueDelegation`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct Rect &#123;</span><br><span class="line">      var origin = Point()</span><br><span class="line">      var size = Size()</span><br><span class="line">      init() &#123;&#125;</span><br><span class="line">      init(origin: Point, size: Size) &#123;</span><br><span class="line">         self.origin = origin</span><br><span class="line">         self.size = size</span><br><span class="line">      &#125;</span><br><span class="line">      init(center: Point, size: Size) &#123;</span><br><span class="line">         let originX = center.x - (size.width / 2)</span><br><span class="line">         let originY = center.y - (size.height / 2)</span><br><span class="line">         self.init(origin: Point(x: originX, y: originY), size: size)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>第一个 <code>Rect</code> 构造器 <code>init()</code> ，在功能上跟没有自定义构造器时自动获得的默认构造器是一样的。这个构造器的函数是空的，使用一对大括号 <code>&#123;&#125;</code> 来表示。<br>调用这个构造器将返回一个 <code>Rect</code> 实例，它的<code>origin</code> 和 <code>size</code> 属性都使用定义时的默认值 <code>Point(x: 0.0, y: 0.0)</code> 和 <code>Size(width: 0.0, height: 0.0)</code> :</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> basicRect <span class="operator">=</span> <span class="type">Rect</span>()</span><br><span class="line"><span class="comment">// basicRect 的 origin 是 (0.0, 0.0) ， size 是 (0.0, 0.0)</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `valueDelegation`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let basicRect = Rect()</span><br><span class="line">/&gt; basicRect&#x27;s origin is (\(basicRect.origin.x), \(basicRect.origin.y)) and its size is (\(basicRect.size.width), \(basicRect.size.height))</span><br><span class="line">&lt;/ basicRect&#x27;s origin is (0.0, 0.0) and its size is (0.0, 0.0)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>第二个 <code>Rect</code> 构造器  <code>init(origin:size:)</code> ，在功能上跟结构体在没有自定义构造器时获得的逐一成员构造器是一样的。这个构造器只是简单地将 <code>origin</code> 和 <code>size</code> 的实参值赋给对应的存储类型:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> originRect <span class="operator">=</span> <span class="type">Rect</span>(origin: <span class="type">Point</span>(x: <span class="number">2.0</span>, y: <span class="number">2.0</span>),</span><br><span class="line">    size: <span class="type">Size</span>(width: <span class="number">5.0</span>, height: <span class="number">5.0</span>))</span><br><span class="line"><span class="comment">// originRect 的 origin 是 (2.0, 2.0)，size 是 (5.0, 5.0)</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `valueDelegation`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let originRect = Rect(origin: Point(x: 2.0, y: 2.0),</span><br><span class="line">      size: Size(width: 5.0, height: 5.0))</span><br><span class="line">/&gt; originRect&#x27;s origin is (\(originRect.origin.x), \(originRect.origin.y)) and its size is (\(originRect.size.width), \(originRect.size.height))</span><br><span class="line">&lt;/ originRect&#x27;s origin is (2.0, 2.0) and its size is (5.0, 5.0)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>第三个 <code>Rect</code> 构造器  <code>init(center:size:)</code> 要稍微更复杂一点。它先通过 <code>center</code> 和 <code>size</code> 的值计算出 <code>origin</code> 的坐标，然后再调用（或者说 <em>代理</em> 给） <code>init(origin:size:)</code> 构造器来将新的 <code>origin</code> 和 <code>size</code> 值赋值到对应的属性中：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> centerRect <span class="operator">=</span> <span class="type">Rect</span>(center: <span class="type">Point</span>(x: <span class="number">4.0</span>, y: <span class="number">4.0</span>),</span><br><span class="line">    size: <span class="type">Size</span>(width: <span class="number">3.0</span>, height: <span class="number">3.0</span>))</span><br><span class="line"><span class="comment">// centerRect 的 origin 是 (2.5, 2.5)，size 是 (3.0, 3.0)</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `valueDelegation`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let centerRect = Rect(center: Point(x: 4.0, y: 4.0),</span><br><span class="line">      size: Size(width: 3.0, height: 3.0))</span><br><span class="line">/&gt; centerRect&#x27;s origin is (\(centerRect.origin.x), \(centerRect.origin.y)) and its size is (\(centerRect.size.width), \(centerRect.size.height))</span><br><span class="line">&lt;/ centerRect&#x27;s origin is (2.5, 2.5) and its size is (3.0, 3.0)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>构造器 init(center:size:)<code>可以直接将</code>origin<code>和</code>size<code>的新值赋值到对应的属性中。然而，构造器</code>init(center:size:)&#96; 通过使用提供了相关功能的现有构造器将会更加便捷（而且意图更清晰）。</p>
+<blockquote>
+<p>注意: 如果你想使用另一种不需要自己定义的 <code>init()</code> and <code>init(origin:size:)</code> 构造器的方式来实现这个例子, 请参考 <a href="doc:Extensions">doc:Extensions</a>.</p>
+</blockquote>
+<h2 id="类的继承和构造过程"><a href="#类的继承和构造过程" class="headerlink" title="类的继承和构造过程"></a>类的继承和构造过程</h2><p>类里面的所有存储型属性———包括所有继承自父类的属性——都必须在构造过程中设置初始值。</p>
+<p>Swift 为类类型提供了两种构造器来确保实例中所有存储型属性都能获得初始值，它们被称为指定构造器和便利构造器。</p>
+<h3 id="指定构造器和便利构造器"><a href="#指定构造器和便利构造器" class="headerlink" title="指定构造器和便利构造器"></a>指定构造器和便利构造器</h3><p><em>指定构造器</em> 是类中最主要的构造器。一个指定构造器将初始化类中提供的所有属性，并调用合适的父类构造器让构造过程沿着父类链继续往上进行。</p>
+<p>类倾向于拥有极少的指定构造器，普遍的是一个类只拥有一个指定构造器。指定构造器像一个个“漏斗”放在构造过程发生的地方，让构造过程沿着父类链继续往上进行。</p>
+<p>每一个类都必须至少拥有一个指定构造器。在某些情况下，许多类通过继承了父类中的指定构造器而满足了这个条件。具体内容请参考后续章节<a href="doc:Initialization#构造器的自动继承">doc:Initialization#构造器的自动继承</a>。</p>
+<p><em>便利构造器</em> 是类中比较次要的、辅助型的构造器。你可以定义便利构造器来调用同一个类中的指定构造器，并为部分形参提供默认值。你也可以定义便利构造器来创建一个特殊用途或特定输入值的实例。</p>
+<p>你应当只在必要的时候为类提供便利构造器，比方说某种情况下通过使用便利构造器来快捷调用某个指定构造器，能够节省更多开发时间并让类的构造过程更清晰明了。</p>
+<h3 id="指定构造器和便利构造器的语法"><a href="#指定构造器和便利构造器的语法" class="headerlink" title="指定构造器和便利构造器的语法"></a>指定构造器和便利构造器的语法</h3><p>类的指定构造器的写法跟值类型简单构造器一样:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">init</span>(<span class="operator">&lt;</span>#parameters#<span class="operator">&gt;</span>) &#123;</span><br><span class="line">   <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>便利构造器也采用相同样式的写法，但需要在 <code>init</code> 关键字之前放置 <code>convenience</code> 关键字，并使用空格将其分开:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">convenience</span> <span class="keyword">init</span>(<span class="operator">&lt;</span>#parameters#<span class="operator">&gt;</span>) &#123;</span><br><span class="line">   <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="类类型的构造器代理"><a href="#类类型的构造器代理" class="headerlink" title="类类型的构造器代理"></a>类类型的构造器代理</h3><p>为了简化指定构造器和便利构造器之间的调用关系，Swift 构造器之间的代理调用遵循以下三条规则:</p>
+<ul>
+<li><p>term <strong>规则 1</strong>:<br>指定构造器必须调用其直接父类的的指定构造器。</p>
+</li>
+<li><p>term <strong>规则 2</strong>:<br>便利构造器必须调用 <em>相同</em> 类中定义的其它构造器.</p>
+</li>
+<li><p>term <strong>规则 3</strong>:<br>便利构造器最后必须调用指定构造器。</p>
+</li>
+</ul>
+<p>一个更方便记忆的方法是:</p>
+<ul>
+<li>指定构造器必须总是 <em>向上</em> 代理</li>
+<li>便利构造器必须总是 <em>横向</em> 代理</li>
+</ul>
+<p>这些规则可以通过下面图例来说明:</p>
+<p><img src="/initializerDelegation01"></p>
+<p>如图所示，父类中包含一个指定构造器和两个便利构造器。其中一个便利构造器调用了另外一个便利构造器，而后者又调用了唯一的指定构造器。这满足了上面提到的规则 2 和 3。这个父类没有自己的父类，所以规则 1 没有用到。</p>
+<p>子类中包含两个指定构造器和一个便利构造器。便利构造器必须调用两个指定构造器中的任意一个，因为它只能调用同一个类里的其他构造器。这满足了上面提到的规则 2 和 3。而两个指定构造器必须调用父类中唯一的指定构造器，这满足了规则 1。</p>
+<blockquote>
+<p>注意: 这些规则不会影响类的实例如何 <em>创建</em> 。任何上图中展示的构造器都可以用来创建完全初始化的实例。这些规则只影响类的构造器如何实现。</p>
+</blockquote>
+<p>下面图例中展示了一种涉及四个类的更复杂的类层级结构。它演示了指定构造器是如何在类层级中充当“漏斗”的作用，在类的构造器链上简化了类之间的相互关系。</p>
+<p><img src="/initializerDelegation02"></p>
+<h3 id="两段式构造过程"><a href="#两段式构造过程" class="headerlink" title="两段式构造过程"></a>两段式构造过程</h3><p>Swift 中类的构造过程包含两个阶段。第一个阶段，类中的每个存储型属性赋一个初始值。当每个存储型属性的初始值被赋值后，第二阶段开始，它给每个类一次机会，在新实例准备使用之前进一步自定义它们的存储型属性。</p>
+<p>两段式构造过程的使用让构造过程更安全，同时在整个类层级结构中给予了每个类完全的灵活性。两段式构造过程可以防止属性值在初始化之前被访问，也可以防止属性被另外一个构造器意外地赋予不同的值。</p>
+<blockquote>
+<p>注意: Swift 的两段式构造过程跟 Objective-C 中的构造过程类似。最主要的区别在于阶段 1，Objective-C 给每一个属性赋值零或空值(比如说 <code>0</code> 或 <code>nil</code>)。<br>Swift 的构造流程则更加灵活，它允许你设置定制的初始值，并自如应对某些属性不能以 <code>0</code> 或 <code>nil</code> 作为合法默认值的情况。</p>
+</blockquote>
+<p>Swift 编译器将执行 4 种有效的安全检查，以确保两段式构造过程不出错地完成：</p>
+<ul>
+<li>term <strong>安全检查 1</strong>:<br>指定构造器必须保证它所在类的所有属性都初始化完成，之后才能将其它构造任务向上代理给父类中的构造器。</li>
+</ul>
+<p>如上所述，一个对象的内存只有在其所有存储型属性确定之后才能完全初始化。为了满足这一规则，指定构造器必须保证它所在类的属性在它往上代理之前先完成初始化。</p>
+<ul>
+<li><p>term <strong>安全检查 2</strong>:<br>指定构造器必须在为继承的属性设置新值之前向上代理调用父类构造器。如果没这么做，指定构造器赋予的新值将被父类中的构造器所覆盖。</p>
+</li>
+<li><p>term <strong>安全检查 3</strong>:<br>便利构造器必须为任意属性（包括所有同类中定义的）赋新值之前代理调用其它构造器。如果没这么做，便利构造器赋予的新值将被该类的指定构造器所覆盖。</p>
+</li>
+<li><p>term <strong>安全检查 4</strong>:<br>构造器在第一阶段构造完成之前，不能调用任何实例方法，不能读取任何实例属性的值，不能引用 <code>self</code> 作为一个值。</p>
+</li>
+</ul>
+<p>类的实例在第一阶段结束以前并不是完全有效的。只有第一阶段完成后，类的实例才是有效的，才能访问属性和调用方法。</p>
+<p>以下是基于上述安全检查的两段式构造过程展示：</p>
+<p><strong>阶段 1</strong></p>
+<ul>
+<li>类的某个指定构造器或便利构造器被调用.</li>
+<li>完成类的新实例内存的分配，但此时内存还没有被初始化.</li>
+<li>指定构造器确保其所在类引入的所有存储型属性都已赋初值。存储型属性所属的内存完成初始化。</li>
+<li>指定构造器切换到父类的构造器，对其存储属性完成相同的任务。</li>
+<li>这个过程沿着类的继承链一直往上执行，直到到达继承链的最顶部。</li>
+<li>当到达了继承链最顶部，而且继承链的最后一个类已确保所有的存储型属性都已经赋值，这个实例的内存被认为已经完全初始化。此时阶段 1 完成。</li>
+</ul>
+<p><strong>阶段 2</strong></p>
+<ul>
+<li>从继承链顶部往下，继承链中每个类的指定构造器都有机会进一步自定义实例。构造器此时可以访问 <code>self</code> 、修改它的属性并调用实例方法等等。</li>
+<li>最终，继承链中任意的便利构造器有机会自定义实例和使用 <code>self</code>.</li>
+</ul>
+<p>下图展示了在假定的子类和父类之间的构造阶段 1:</p>
+<p><img src="/twoPhaseInitialization01"></p>
+<p>在这个示例中，构造过程从对子类中一个便利构造器的调用开始。这个便利构造器此时还不能修改任何属性，它会代理到该类中的指定构造器。</p>
+<p>如安全检查 1 所示，指定构造器将确保所有子类的属性都有值。然后它将调用父类的指定构造器，并沿着继承链一直往上完成父类的构造过程。</p>
+<p>父类中的指定构造器确保所有父类的属性都有值。由于没有更多的父类需要初始化，也就无需继续向上代理。</p>
+<p>一旦父类中所有属性都有了初始值，实例的内存被认为是完全初始化，阶段 1 完成。</p>
+<p>以下展示了相同构造过程的阶段 2：</p>
+<p><img src="/twoPhaseInitialization02"></p>
+<p>父类中的指定构造器现在有机会进一步自定义实例（尽管这不是必须的）。</p>
+<p>一旦父类中的指定构造器完成调用，子类中的指定构造器可以执行更多的自定义操作（这也不是必须的）。</p>
+<p>最终，一旦子类的指定构造器完成调用，最开始被调用的便利构造器可以执行更多的自定义操作。</p>
+<h3 id="构造器的继承和重写"><a href="#构造器的继承和重写" class="headerlink" title="构造器的继承和重写"></a>构造器的继承和重写</h3><p>跟 Objective-C 中的子类不同，Swift 中的子类默认情况下不会继承父类的构造器。Swift 的这种机制可以防止一个父类的简单构造器被一个更精细的子类继承，而在用来创建子类的新实例时没有完全或错误被初始化。</p>
+<blockquote>
+<p>注意: 父类的构造器仅会在安全和适当的某些情况下 <em>被</em> 继承。具体内容请参考后续章节 <a href="doc:构造器的自动继承">doc:构造器的自动继承</a> .</p>
+</blockquote>
+<p>假如你希望自定义的子类中能提供一个或多个跟父类相同的构造器，你可以在子类中提供这些构造器的自定义实现。</p>
+<p>当你在编写一个和父类中指定构造器相匹配的子类构造器时，你实际上是在重写父类的这个指定构造器。因此，你必须在定义子类构造器时带上 <code>override</code> 修饰符。即使你重写的是系统自动提供的默认构造器，也需要带上 <code>override</code> 修饰符，具体内容请参考<a href="doc:默认构造器">doc:默认构造器</a>.</p>
+<p>正如重写属性，方法或者是下标，<code>override</code> 修饰符会让编译器去检查父类中是否有相匹配的指定构造器，并验证构造器参数是否按预想中被指定。</p>
+<blockquote>
+<p>注意: 当你重写一个父类的指定构造器时，你总是需要写 <code>override</code> 修饰符，即使是为了实现子类的便利构造器。</p>
+</blockquote>
+<!--
+  - test: `youHaveToWriteOverrideWhenOverridingADesignatedInitializer`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      init() &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D1: C &#123;</span><br><span class="line">      // this is correct</span><br><span class="line">      override init() &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D2: C &#123;</span><br><span class="line">      // this isn&#x27;t correct</span><br><span class="line">      init() &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">!$ error: overriding declaration requires an &#x27;override&#x27; keyword</span><br><span class="line">!! init() &#123;&#125;</span><br><span class="line">!! ^</span><br><span class="line">!! override</span><br><span class="line">!$ note: overridden declaration is here</span><br><span class="line">!! init() &#123;&#125;</span><br><span class="line">!! ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `youHaveToWriteOverrideEvenWhenOverridingADefaultInitializer`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      var i = 0</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D1: C &#123;</span><br><span class="line">      // this is correct</span><br><span class="line">      override init() &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D2: C &#123;</span><br><span class="line">      // this isn&#x27;t correct</span><br><span class="line">      init() &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">!$ error: overriding declaration requires an &#x27;override&#x27; keyword</span><br><span class="line">!! init() &#123;&#125;</span><br><span class="line">!! ^</span><br><span class="line">!! override</span><br><span class="line">!$ note: overridden declaration is here</span><br><span class="line">!! class C &#123;</span><br><span class="line">!! ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>相反，如果你编写了一个和父类便利构造器相匹配的子类构造器，由于子类不能直接调用父类的便利构造器（每个规则都在上文<a href="doc:类的构造器代理规则">doc:类的构造器代理规则</a>有所描述）。<br>因此，严格意义上来讲，你的子类并未对一个父类构造器提供重写。最后的结果就是，你在子类中“重写”一个父类便利构造器时，不需要加 <code>override</code> 修饰符。</p>
+<!--
+  - test: `youDoNotAndCannotWriteOverrideWhenOverridingAConvenienceInitializer`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      var i: Int</span><br><span class="line">      init(someInt: Int) &#123;</span><br><span class="line">         i = someInt</span><br><span class="line">      &#125;</span><br><span class="line">      convenience init() &#123;</span><br><span class="line">         self.init(someInt: 42)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D1: C &#123;</span><br><span class="line">      // override for designated, so needs the override modifier</span><br><span class="line">      override init(someInt: Int) &#123;</span><br><span class="line">         super.init(someInt: someInt)</span><br><span class="line">      &#125;</span><br><span class="line">      // not technically an override, so doesn&#x27;t need the override modifier</span><br><span class="line">      convenience init() &#123;</span><br><span class="line">         self.init(someInt: 42)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D2: C &#123;</span><br><span class="line">      // override for designated, so needs the override modifier</span><br><span class="line">      override init(someInt: Int) &#123;</span><br><span class="line">         super.init(someInt: someInt)</span><br><span class="line">      &#125;</span><br><span class="line">      // this isn&#x27;t correct - &quot;override&quot; isn&#x27;t required</span><br><span class="line">      override convenience init() &#123;</span><br><span class="line">         self.init(someInt: 42)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">!$ error: initializer does not override a designated initializer from its superclass</span><br><span class="line">!! override convenience init() &#123;</span><br><span class="line">!! ~~~~~~~~             ^</span><br><span class="line">!$ note: attempt to override convenience initializer here</span><br><span class="line">!! convenience init() &#123;</span><br><span class="line">!! ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>在下面的例子中定义了一个叫 <code>Vehicle</code> 的基类。基类中声明了一个存储型属性 <code>numberOfWheels</code> ，它是默认值为 <code>Int</code> 类型的 <code>0</code> 。 <code>numberOfWheels</code> 属性用在一个描述车辆特征 <code>String</code> 类型为 <code>description</code> 的计算型属性中:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Vehicle</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> numberOfWheels <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">var</span> description: <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;<span class="subst">\(numberOfWheels)</span> wheel(s)&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `initializerInheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class Vehicle &#123;</span><br><span class="line">      var numberOfWheels = 0</span><br><span class="line">      var description: String &#123;</span><br><span class="line">         return &quot;\(numberOfWheels) wheel(s)&quot;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>Vehicle</code> 类只为存储型属性提供默认值，也没有提供自定义构造器。因此，它会自动获得一个默认构造器，具体内容请参考<a href="doc:默认构造器">doc:默认构造器</a>。默认构造器（如果有的话）总是类中的指定构造器，可以用于创建 <code>numberOfWheels</code> 为 <code>0</code> 的 <code>Vehicle</code> 实例:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> vehicle <span class="operator">=</span> <span class="type">Vehicle</span>()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Vehicle: <span class="subst">\(vehicle.description)</span>&quot;</span>)</span><br><span class="line"><span class="comment">// Vehicle: 0 wheel(s)</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `initializerInheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let vehicle = Vehicle()</span><br><span class="line">-&gt; print(&quot;Vehicle: \(vehicle.description)&quot;)</span><br><span class="line">&lt;/ Vehicle: 0 wheel(s)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>下面例子中定义了一个 <code>Vehicle</code> 的子类 <code>Bicycle</code>:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Bicycle</span>: <span class="title class_">Vehicle</span> &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">init</span>() &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>()</span><br><span class="line">        numberOfWheels <span class="operator">=</span> <span class="number">2</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `initializerInheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class Bicycle: Vehicle &#123;</span><br><span class="line">      override init() &#123;</span><br><span class="line">         super.init()</span><br><span class="line">         numberOfWheels = 2</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>子类 <code>Bicycle</code> 定义了一个自定义指定构造器 <code>init()</code>。这个指定构造器和父类的指定构造器相匹配，所以 <code>Bicycle</code> 中这个版本的构造器需要带上 <code>override</code> 修饰符。</p>
+<p><code>Bicycle</code> 的构造器 <code>init()</code> 以调用 <code>super.init()</code> 方法开始，这个方法的作用是调用 <code>Bicycle</code> 的父类 <code>Vehicle</code> 的默认构造器。这样可以确保 <code>Bicycle</code> 在修改属性之前，它所继承的属性 <code>numberOfWheels</code> 能被 <code>Vehicle</code> 类初始化。在调用 <code>super.init()</code> 之后，属性 <code>numberOfWheels</code> 的原值被新值 <code>2</code> 替换。</p>
+<p>如果你创建一个 <code>Bicycle</code> 实例, 你可以调用继承的 <code>description</code> 计算型属性去查看属性 <code>numberOfWheels</code> 是否有改变:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> bicycle <span class="operator">=</span> <span class="type">Bicycle</span>()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Bicycle: <span class="subst">\(bicycle.description)</span>&quot;</span>)</span><br><span class="line"><span class="comment">// Bicycle: 2 wheel(s)</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `initializerInheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let bicycle = Bicycle()</span><br><span class="line">-&gt; print(&quot;Bicycle: \(bicycle.description)&quot;)</span><br><span class="line">&lt;/ Bicycle: 2 wheel(s)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如果子类的构造器没有在阶段 2 过程中做自定义操作，并且父类有一个同步、无参数的指定构造器，你可以在所有子类的存储属性赋值之后省略 <code>super.init()</code> 的调用。若父类的构造器是异步的，你就需要明确地写入 <code>await super.init()</code> 。</p>
+<p>这个例子定义了另一个 <code>Vehicle</code> 的子类 <code>Hoverboard</code> ，只设置它的 <code>color</code> 属性。这个构造器依赖隐式调用父类的构造器来完成，而不是显式调用 <code>super.init()</code> 。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Hoverboard</span>: <span class="title class_">Vehicle</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> color: <span class="type">String</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">color</span>: <span class="type">String</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.color <span class="operator">=</span> color</span><br><span class="line">        <span class="comment">// super.init() 在这里被隐式调用</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">var</span> description: <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;<span class="subst">\(<span class="keyword">super</span>.description)</span> in a beautiful <span class="subst">\(color)</span>&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `initializerInheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class Hoverboard: Vehicle &#123;</span><br><span class="line">       var color: String</span><br><span class="line">       init(color: String) &#123;</span><br><span class="line">           self.color = color</span><br><span class="line">           // super.init() implicitly called here</span><br><span class="line">       &#125;</span><br><span class="line">       override var description: String &#123;</span><br><span class="line">           return &quot;\(super.description) in a beautiful \(color)&quot;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>Hoverboard</code> 的实例用 <code>Vehicle</code> 构造器里默认的轮子数量。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> hoverboard <span class="operator">=</span> <span class="type">Hoverboard</span>(color: <span class="string">&quot;silver&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Hoverboard: <span class="subst">\(hoverboard.description)</span>&quot;</span>)</span><br><span class="line"><span class="comment">// Hoverboard: 0 wheel(s) 以美丽的银色</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `initializerInheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let hoverboard = Hoverboard(color: &quot;silver&quot;)</span><br><span class="line">-&gt; print(&quot;Hoverboard: \(hoverboard.description)&quot;)</span><br><span class="line">&lt;/ Hoverboard: 0 wheel(s) in a beautiful silver</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>注意: 子类可以在构造过程修改继承来的变量属性，但是不能修改继承来的常量属性。</p>
+</blockquote>
+<!--
+  - test: `youCantModifyInheritedConstantPropertiesFromASuperclass`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      let constantProperty: Int</span><br><span class="line">      var variableProperty: Int</span><br><span class="line">      init() &#123;</span><br><span class="line">         // this is fine - a class can set its own constant and variable properties during init</span><br><span class="line">         constantProperty = 0</span><br><span class="line">         variableProperty = 0</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D1: C &#123;</span><br><span class="line">      override init() &#123;</span><br><span class="line">         // this is fine - a subclass can set its superclass&#x27;s variable properties during init</span><br><span class="line">         super.init()</span><br><span class="line">         variableProperty = 0</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D2: C &#123;</span><br><span class="line">      override init() &#123;</span><br><span class="line">         // this is wrong - a subclass can&#x27;t set its superclass&#x27;s constant properties during init</span><br><span class="line">         super.init()</span><br><span class="line">         constantProperty = 0</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">!$ error: cannot assign to property: &#x27;constantProperty&#x27; is a &#x27;let&#x27; constant</span><br><span class="line">!! constantProperty = 0</span><br><span class="line">!! ^~~~~~~~~~~~~~~~</span><br><span class="line">!$ note: change &#x27;let&#x27; to &#x27;var&#x27; to make it mutable</span><br><span class="line">!! let constantProperty: Int</span><br><span class="line">!! ^~~</span><br><span class="line">!! var</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="构造器的自动继承"><a href="#构造器的自动继承" class="headerlink" title="构造器的自动继承"></a>构造器的自动继承</h3><p>如上所述，子类在默认情况下不会继承父类的构造器。但是如果满足特定条件，父类构造器是可以 <em>被</em> 自动继承的。事实上，这意味着对于许多常见场景你不必重写父类的构造器，并且可以在安全的情况下以最小的代价继承父类的构造器。</p>
+<p>假设你为子类中引入的所有新属性都提供了默认值，以下 2 个规则将适用:</p>
+<ul>
+<li><p>term <em>规则 1</em>*:<br>如果子类没有定义任何指定构造器，它将自动继承父类所有的指定构造器。</p>
+</li>
+<li><p>term <strong>规则 2</strong>:<br>如果子类提供了 <em>所有</em> 父类指定构造器的实现——无论是通过规则 1 继承过来的，还是提供了自定义实现——它将自动继承父类所有的便利构造器。</p>
+</li>
+</ul>
+<p>即使你在子类中添加了更多的便利构造器，这两条规则仍然适用。</p>
+<blockquote>
+<p>注意: 子类可以将父类的指定构造器实现为便利构造器来满足规则 2。</p>
+</blockquote>
+<!--
+  TODO: feedback from Beto is that this note is a little hard to parse.
+  Perhaps this point should be left until the later "in action" example,
+  where this principle is demonstrated?
+-->
+
+<!--
+  TODO: There are rare cases in which we automatically insert a call to super.init() for you.
+  When is this? Either way, I need to mention it in here.
+-->
+
+<h3 id="指定构造器和便利构造器实践"><a href="#指定构造器和便利构造器实践" class="headerlink" title="指定构造器和便利构造器实践"></a>指定构造器和便利构造器实践</h3><p>接下来的例子将在实践中展示指定构造器、便利构造器以及构造器的自动继承。这个例子定义了包含三个类 <code>Food</code>, <code>RecipeIngredient</code>, 以及 <code>ShoppingListItem</code> 的层级结构，并将演示它们的构造器是如何相互作用的。 </p>
+<p>类层次中的基类是 <code>Food</code> ，它是一个简单的用来封装食物名字的类。 <code>Food</code> 类引入了一个叫做 <code>name</code> 的 <code>String</code> 类型的属性，并且提供了两个构造器来创建 <code>Food</code> 实例:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Food</span> {</span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">name</span>: <span class="type">String</span>) {</span><br><span class="line">        <span class="keyword">self</span>.name <span class="operator">=</span> name</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">convenience</span> <span class="keyword">init</span>() {</span><br><span class="line">        <span class="keyword">self</span>.<span class="keyword">init</span>(name: <span class="string">"[Unnamed]"</span>)</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `designatedConvenience`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class Food &#123;</span><br><span class="line">      var name: String</span><br><span class="line">      init(name: String) &#123;</span><br><span class="line">         self.name = name</span><br><span class="line">      &#125;</span><br><span class="line">      convenience init() &#123;</span><br><span class="line">         self.init(name: &quot;[Unnamed]&quot;)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>下图展示了 <code>Food</code> 的构造链路:</p>
+<p><img src="/initializersExample01"></p>
+<p>类类型没有默认的逐一成员构造器，所以 <code>Food</code> 类提供了一个接受单一参数 <code>name</code> 的指定构造器。这个构造器可以使用一个特定的名字来创建新的 <code>Food</code> 实例:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> namedMeat <span class="operator">=</span> <span class="type">Food</span>(name: <span class="string">&quot;Bacon&quot;</span>)</span><br><span class="line"><span class="comment">// namedMeat 的名字是 &quot;Bacon&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `designatedConvenience`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let namedMeat = Food(name: &quot;Bacon&quot;)</span><br><span class="line">/&gt; namedMeat&#x27;s name is \&quot;\(namedMeat.name)\&quot;</span><br><span class="line">&lt;/ namedMeat&#x27;s name is &quot;Bacon&quot;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>Food</code> 类中的构造器 <code>init(name: String)</code> 被定义为一个 <em>指定</em> 构造器，因为它能确保 <code>Food</code> 实例的所有存储型属性都被初始化。 <code>Food</code> 类没有父类，所以 <code>init(name: String)</code> 构造器不需要调用 <code>super.init()</code> 来完成构造过程。</p>
+<p><code>Food</code> 类样提供了一个没有参数的便利构造器 <code>init()</code> 。这个 <code>init()</code> 构造器为新食物提供了一个默认的占位名字，通过横向代理到指定构造器 <code>init(name: String)</code> 并给参数 <code>name</code> 赋值为 <code>[Unnamed]</code> 来实现:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> mysteryMeat <span class="operator">=</span> <span class="type">Food</span>()</span><br><span class="line"><span class="comment">// mysteryMeat 的名字是 &quot;[Unnamed]&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `designatedConvenience`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let mysteryMeat = Food()</span><br><span class="line">/&gt; mysteryMeat&#x27;s name is \&quot;\(mysteryMeat.name)\&quot;</span><br><span class="line">&lt;/ mysteryMeat&#x27;s name is &quot;[Unnamed]&quot;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>层级中的第二个类是 <code>Food</code> 的子类 <code>RecipeIngredient</code> 。 <code>RecipeIngredient</code> 类用来表示食谱中的一项原料。它引入了 <code>Int</code> 类型的属性 <code>quantity</code> (以及从 <code>Food</code> 继承过来的 <code>name</code> 属性)，并且定义了两个构造器来创建 <code>RecipeIngredient</code> 实例:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">RecipeIngredient</span>: <span class="title class_">Food</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> quantity: <span class="type">Int</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">name</span>: <span class="type">String</span>, <span class="params">quantity</span>: <span class="type">Int</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.quantity <span class="operator">=</span> quantity</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(name: name)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">convenience</span> <span class="keyword">init</span>(<span class="params">name</span>: <span class="type">String</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.<span class="keyword">init</span>(name: name, quantity: <span class="number">1</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `designatedConvenience`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class RecipeIngredient: Food &#123;</span><br><span class="line">      var quantity: Int</span><br><span class="line">      init(name: String, quantity: Int) &#123;</span><br><span class="line">         self.quantity = quantity</span><br><span class="line">         super.init(name: name)</span><br><span class="line">      &#125;</span><br><span class="line">      override convenience init(name: String) &#123;</span><br><span class="line">         self.init(name: name, quantity: 1)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>下图中展示了 <code>RecipeIngredient</code> 类的构造器链:</p>
+<p><img src="/initializersExample02"></p>
+<p><code>RecipeIngredient</code> 类拥有一个指定构造器 <code>init(name: String, quantity: Int)</code>, 它可以用来填充 <code>RecipeIngredient</code> 的所有属性值。 这个构造器一开始先将传入的 <code>quantity</code> 实参赋值给 <code>quantity</code> 属性，这个属性也是唯一在 <code>RecipeIngredient</code> 中新引入的属性。随后，构造器向上代理到父类 <code>Food</code> 的 <code>init(name: String)</code> 。这个过程满足 <a href="doc:两段式构造过程">doc:两段式构造过程</a> 中的安全检查 1。</p>
+<p><code>RecipeIngredient</code> 也定义了一个便利构造器 <code>init(name: String)</code> ，它只通过 <code>name</code> 来创建 <code>RecipeIngredient</code> 的实例。这个便利构造器假设任意 <code>RecipeIngredient</code> 实例的 <code>quantity</code> 为 <code>1</code> ，所以不需要显式的质量即可创建出实例。这个便利构造器的定义可以更加方便和快捷地创建实例，并且避免了创建多个 <code>quantity</code> 为 <code>1</code> 的 <code>RecipeIngredient</code> 实例时的代码重复。这个便利构造器只是简单地横向代理到类中的指定构造器，并为 <code>quantity</code> 参数传递 <code>1</code> 。</p>
+<p><code>RecipeIngredient</code> 的便利构造器 <code>init(name: String)</code> 使用了跟 <code>Food</code> 中指定构造器 <code>init(name: String)</code> 相同的形参。由于这个便利构造器重写了父类的指定构造器 <code>init(name: String)</code> ， 因此必须在前面使用 <code>override</code> 修饰符(参见<a href="doc:构造器的继承和重写">doc:构造器的继承和重写</a>)</p>
+<p>尽管 <code>RecipeIngredient</code> 将父类的指定构造器重写为了便利构造器，但是它依然提供了父类的所有指定构造器的实现。因此，<code>RecipeIngredient</code> 会自动继承父类的所有便利构造器。</p>
+<p>在这个示例中， <code>RecipeIngredient</code> 的父类是 <code>Food</code>,它有一个便利构造器 <code>init()</code>。这个便利构造器会被 <code>RecipeIngredient</code> 继承。这个继承版本的 <code>init()</code> 在功能上跟 <code>Food</code> 提供的版本是一样的,只是它会代理到 <code>RecipeIngredient</code> 版本的 <code>init(name: String)</code> 而不是 <code>Food</code> 提供的版本.</p>
+<p>所有的这三种构造器都可以用来创建新的 <code>RecipeIngredient</code> 实例:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> oneMysteryItem <span class="operator">=</span> <span class="type">RecipeIngredient</span>()</span><br><span class="line"><span class="keyword">let</span> oneBacon <span class="operator">=</span> <span class="type">RecipeIngredient</span>(name: <span class="string">&quot;Bacon&quot;</span>)</span><br><span class="line"><span class="keyword">let</span> sixEggs <span class="operator">=</span> <span class="type">RecipeIngredient</span>(name: <span class="string">&quot;Eggs&quot;</span>, quantity: <span class="number">6</span>)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `designatedConvenience`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let oneMysteryItem = RecipeIngredient()</span><br><span class="line">-&gt; let oneBacon = RecipeIngredient(name: &quot;Bacon&quot;)</span><br><span class="line">-&gt; let sixEggs = RecipeIngredient(name: &quot;Eggs&quot;, quantity: 6)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>类层级中第三个也是最后一个类 <code>ShoppingListItem</code> 是 <code>RecipeIngredient</code> 的子类。它构建了购物单中出现的某一种食谱原料。</p>
+<p>购物单中的每一项总是从未购买状态开始的。为了呈现这一事实， <code>ShoppingListItem</code> 引入了一个 Boolean（布尔类型）的属性 <code>purchased</code> ，它的默认值是 <code>false</code> 。 <code>ShoppingListItem</code> 还添加了一个计算型属性 <code>description</code> ， 它提供了关于 <code>ShoppingListItem</code> 实例的一些文字描述:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ShoppingListItem</span>: <span class="title class_">RecipeIngredient</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> purchased <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line">    <span class="keyword">var</span> description: <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> output <span class="operator">=</span> <span class="string">&quot;<span class="subst">\(quantity)</span> x <span class="subst">\(name)</span>&quot;</span></span><br><span class="line">        output <span class="operator">+=</span> purchased <span class="operator">?</span> <span class="string">&quot; ✔&quot;</span> : <span class="string">&quot; ✘&quot;</span></span><br><span class="line">        <span class="keyword">return</span> output</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `designatedConvenience`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class ShoppingListItem: RecipeIngredient &#123;</span><br><span class="line">      var purchased = false</span><br><span class="line">      var description: String &#123;</span><br><span class="line">         var output = &quot;\(quantity) x \(name)&quot;</span><br><span class="line">         output += purchased ? &quot; ✔&quot; : &quot; ✘&quot;</span><br><span class="line">         return output</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>注意: <code>ShoppingListItem</code> 没有定义构造器来为 <code>purchased</code> 提供初始值，因为添加到购物单的物品的初始状态总是未购买。</p>
+</blockquote>
+<p>因为它为自己引入的所有属性都提供了默认值，并且自己没有定义任何构造器，  <code>ShoppingListItem</code> 将自动继承 <em>所有</em> 父类中的指定构造器和便利构造器。</p>
+<p>下图展示了这三个类的构造器链:</p>
+<p><img src="/initializersExample03"></p>
+<p>你可以使用三个继承来的构造器来创建 <code>ShoppingListItem</code> 的新实例:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> breakfastList <span class="operator">=</span> [</span><br><span class="line">    <span class="type">ShoppingListItem</span>(),</span><br><span class="line">    <span class="type">ShoppingListItem</span>(name: <span class="string">&quot;Bacon&quot;</span>),</span><br><span class="line">    <span class="type">ShoppingListItem</span>(name: <span class="string">&quot;Eggs&quot;</span>, quantity: <span class="number">6</span>),</span><br><span class="line">]</span><br><span class="line">breakfastList[<span class="number">0</span>].name <span class="operator">=</span> <span class="string">&quot;Orange juice&quot;</span></span><br><span class="line">breakfastList[<span class="number">0</span>].purchased <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> breakfastList &#123;</span><br><span class="line">    <span class="built_in">print</span>(item.description)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 1 x Orange juice ✔</span></span><br><span class="line"><span class="comment">// 1 x Bacon ✘</span></span><br><span class="line"><span class="comment">// 6 x Eggs ✘</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `designatedConvenience`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var breakfastList = [</span><br><span class="line">      ShoppingListItem(),</span><br><span class="line">      ShoppingListItem(name: &quot;Bacon&quot;),</span><br><span class="line">      ShoppingListItem(name: &quot;Eggs&quot;, quantity: 6),</span><br><span class="line">   ]</span><br><span class="line">-&gt; breakfastList[0].name = &quot;Orange juice&quot;</span><br><span class="line">-&gt; breakfastList[0].purchased = true</span><br><span class="line">-&gt; for item in breakfastList &#123;</span><br><span class="line">      print(item.description)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;/ 1 x Orange juice ✔</span><br><span class="line">&lt;/ 1 x Bacon ✘</span><br><span class="line">&lt;/ 6 x Eggs ✘</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如上所述，例子中通过字面量方式创建了一个数组 <code>breakfastList</code> ，它包含了三个 <code>ShoppingListItem</code> 实例，因此数组的类型也能被自动推导为 <code>[ShoppingListItem]</code> 。 在数组创建完之后，数组中第一个 <code>ShoppingListItem</code> 实例的名字从 <code>&quot;[Unnamed]&quot;</code> 更改为 <code>&quot;Orange juice&quot;</code> ，并标记状态为已购买。打印数组中每个元素的描述显示了它们都已按照预期被赋值。</p>
+<!--
+  TODO: talk about the general factory initializer pattern,
+  and how Swift's approach to initialization removes the need for most factories.
+-->
+
+<!--
+  NOTE: We import some Obj-C-imported factory initializers as init() -> MyType,
+  but you can't currently write these in Swift yourself.
+  After conferring with Doug, I've decided not to include these in the Guide
+  if you can't write them yourself in pure Swift.
+-->
+
+<!--
+  TODO: Feedback from Beto is that it would be useful to indicate the flow
+  through these inherited initializers.
+-->
+
+<h2 id="可失败构造器"><a href="#可失败构造器" class="headerlink" title="可失败构造器"></a>可失败构造器</h2><p>有时，定义一个构造器可失败的类，结构体或者枚举是很有用的。这里的“失败” 指的是，如给构造器传入无效的形参，或缺少某种所需的外部资源，又或是不满足某种必要的条件等。</p>
+<p>为了妥善处理这种构造过程中可能会失败的情况。你可以在一个类，结构体或是枚举类型的定义中，添加一个或多个可失败构造器。其语法为在 <code>init</code> 关键字后面添加问号 (<code>init?</code>) 。</p>
+<blockquote>
+<p>注意: 可失败构造器的参数名和参数类型，不能与其它非可失败构造器的参数名，及其参数类型相同。</p>
+</blockquote>
+<!--
+  - test: `failableAndNonFailableInitializersCannotMatch`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct S &#123;</span><br><span class="line">      let s: String</span><br><span class="line">      init(s: String) &#123; self.s = s &#125;</span><br><span class="line">      init?(s: String) &#123; self.s = s &#125;</span><br><span class="line">   &#125;</span><br><span class="line">!$ error: invalid redeclaration of &#x27;init(s:)&#x27;</span><br><span class="line">!!            init?(s: String) &#123; self.s = s &#125;</span><br><span class="line">!!            ^</span><br><span class="line">!$ note: &#x27;init(s:)&#x27; previously declared here</span><br><span class="line">!!            init(s: String) &#123; self.s = s &#125;</span><br><span class="line">!!            ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>可失败构造器会创建一个类型为自身类型的 <em>可选</em> 类型的对象。你通过 <code>return nil</code> 语句来表明可失败构造器在何种情况下应该 “失败”。</p>
+<blockquote>
+<p>注意: 严格来说，构造器都不支持返回值。因为构造器本身的作用，只是为了确保对象能被正确构造。因此你只是用 <code>return nil</code> 表明可失败构造器构造失败，而不要用关键字 <code>return</code> 来表明构造成功。</p>
+</blockquote>
+<p>例如，实现针对数字类型转换的可失败构造器。确保数字类型之间的转换能保持精确的值，使用这个 <code>init(exactly:)</code> 构造器。如果类型转换不能保持值不变，则这个构造器构造失败。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> wholeNumber: <span class="type">Double</span> <span class="operator">=</span> <span class="number">12345.0</span></span><br><span class="line"><span class="keyword">let</span> pi <span class="operator">=</span> <span class="number">3.14159</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> valueMaintained <span class="operator">=</span> <span class="type">Int</span>(exactly: wholeNumber) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;<span class="subst">\(wholeNumber)</span> conversion to Int maintains value of <span class="subst">\(valueMaintained)</span>&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;12345.0 conversion to Int maintains value of 12345&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> valueChanged <span class="operator">=</span> <span class="type">Int</span>(exactly: pi)</span><br><span class="line"><span class="comment">// valueChanged 是 Int? 类型，不是 Int 类型</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> valueChanged <span class="operator">==</span> <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;<span class="subst">\(pi)</span> conversion to Int doesn&#x27;t maintain value&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;3.14159 conversion to Int doesn&#x27;t maintain value&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `failableInitializers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let wholeNumber: Double = 12345.0</span><br><span class="line">-&gt; let pi = 3.14159</span><br><span class="line">---</span><br><span class="line">-&gt; if let valueMaintained = Int(exactly: wholeNumber) &#123;</span><br><span class="line">       print(&quot;\(wholeNumber) conversion to Int maintains value of \(valueMaintained)&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- 12345.0 conversion to Int maintains value of 12345</span><br><span class="line">---</span><br><span class="line">-&gt; let valueChanged = Int(exactly: pi)</span><br><span class="line">// valueChanged is of type Int?, not Int</span><br><span class="line">---</span><br><span class="line">-&gt; if valueChanged == nil &#123;</span><br><span class="line">       print(&quot;\(pi) conversion to Int doesn&#x27;t maintain value&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- 3.14159 conversion to Int doesn&#x27;t maintain value</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>下面示例中，定义一个名为 <code>Animal</code> 的结构体，其中有一个名为 <code>species</code> 的 <code>String</code> 类型的常量属性。同时该结构体还定义了一个接受一个名为 <code>species</code> 的 <code>String</code> 类型形参的可失败构造器。这个可失败构造器检查传入的 <code>species</code> 值是否为一个空字符串。如果为空字符串，则构造失败。否则， <code>species</code> 属性被赋值，构造成功。  </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> species: <span class="type">String</span></span><br><span class="line">    <span class="keyword">init?</span>(<span class="params">species</span>: <span class="type">String</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> species.isEmpty &#123; <span class="keyword">return</span> <span class="literal">nil</span> &#125;</span><br><span class="line">        <span class="keyword">self</span>.species <span class="operator">=</span> species</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `failableInitializers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct Animal &#123;</span><br><span class="line">      let species: String</span><br><span class="line">      init?(species: String) &#123;</span><br><span class="line">         if species.isEmpty &#123; return nil &#125;</span><br><span class="line">         self.species = species</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>你可以通过该可失败构造器来尝试构建一个 <code>Animal</code> 的实例，并检查构造过程是否成功:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> someCreature <span class="operator">=</span> <span class="type">Animal</span>(species: <span class="string">&quot;Giraffe&quot;</span>)</span><br><span class="line"><span class="comment">// someCreature 的类型是 Animal?, 而不是 Animal</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> giraffe <span class="operator">=</span> someCreature &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;An animal was initialized with a species of <span class="subst">\(giraffe.species)</span>&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;An animal was initialized with a species of Giraffe&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `failableInitializers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let someCreature = Animal(species: &quot;Giraffe&quot;)</span><br><span class="line">// someCreature is of type Animal?, not Animal</span><br><span class="line">---</span><br><span class="line">-&gt; if let giraffe = someCreature &#123;</span><br><span class="line">      print(&quot;An animal was initialized with a species of \(giraffe.species)&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- An animal was initialized with a species of Giraffe</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如果你给该可失败构造器传入一个空字符串到形参 <code>species</code> ，则会导致构造失败:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> anonymousCreature <span class="operator">=</span> <span class="type">Animal</span>(species: <span class="string">&quot;&quot;</span>)</span><br><span class="line"><span class="comment">// anonymousCreature 的类型是 Animal?, 而不是 Animal</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> anonymousCreature <span class="operator">==</span> <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;The anonymous creature couldn&#x27;t be initialized&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;The anonymous creature couldn&#x27;t be initialized&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `failableInitializers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let anonymousCreature = Animal(species: &quot;&quot;)</span><br><span class="line">// anonymousCreature is of type Animal?, not Animal</span><br><span class="line">---</span><br><span class="line">-&gt; if anonymousCreature == nil &#123;</span><br><span class="line">      print(&quot;The anonymous creature couldn&#x27;t be initialized&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- The anonymous creature couldn&#x27;t be initialized</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>注意: 检查空字符串的值 (如 <code>&quot;&quot;</code> 而不是 <code>&quot;Giraffe&quot;</code>) 不等同于检查 <code>nil</code> 以表示 <em>可选</em> <code>String</code> 值的缺失。<br>上述示例中的空字符串 (<code>&quot;&quot;</code>) 是一个合法且非可选的 <code>String</code>.<br>然而, 对于 <code>Animal</code> 这个类来说，其 <code>species</code> 属性的值为空字符串是不合适的。<br>为了体现这个限制，如果发现使用空字符串，构造器就会触发初始化失败的错误。</p>
+</blockquote>
+<h3 id="枚举类型的可失败构造器"><a href="#枚举类型的可失败构造器" class="headerlink" title="枚举类型的可失败构造器"></a>枚举类型的可失败构造器</h3><p>你可以通过一个基于一个或多个形参的可失败构造器来获取枚举类型中特定的枚举成员。如果提供的形参无法匹配任何枚举成员，则构造失败。</p>
+<p>下面的示例中，定义了一个 <code>TemperatureUnit</code> 的枚举类型。其中包含了三个可能的枚举状态 (<code>kelvin</code>, <code>celsius</code>, and <code>fahrenheit</code>)，以及一个根据表示温度单位的 <code>Character</code> 值找出合适的枚举成员的可失败构造器:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">TemperatureUnit</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> kelvin, celsius, fahrenheit</span><br><span class="line">    <span class="keyword">init?</span>(<span class="params">symbol</span>: <span class="type">Character</span>) &#123;</span><br><span class="line">        <span class="keyword">switch</span> symbol &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;K&quot;</span>:</span><br><span class="line">            <span class="keyword">self</span> <span class="operator">=</span> .kelvin</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;C&quot;</span>:</span><br><span class="line">            <span class="keyword">self</span> <span class="operator">=</span> .celsius</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;F&quot;</span>:</span><br><span class="line">            <span class="keyword">self</span> <span class="operator">=</span> .fahrenheit</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `failableInitializers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-&gt; enum TemperatureUnit &#123;</span><br><span class="line">      case kelvin, celsius, fahrenheit</span><br><span class="line">      init?(symbol: Character) &#123;</span><br><span class="line">         switch symbol &#123;</span><br><span class="line">            case &quot;K&quot;:</span><br><span class="line">               self = .kelvin</span><br><span class="line">            case &quot;C&quot;:</span><br><span class="line">               self = .celsius</span><br><span class="line">            case &quot;F&quot;:</span><br><span class="line">               self = .fahrenheit</span><br><span class="line">            default:</span><br><span class="line">               return nil</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>你可以利用该可失败构造器在三个枚举成员中选择合适的枚举成员，当形参不能和任何枚举成员相匹配时，则构造失败：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> fahrenheitUnit <span class="operator">=</span> <span class="type">TemperatureUnit</span>(symbol: <span class="string">&quot;F&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> fahrenheitUnit <span class="operator">!=</span> <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;This is a defined temperature unit, so initialization succeeded.&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;This is a defined temperature unit, so initialization succeeded.&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> unknownUnit <span class="operator">=</span> <span class="type">TemperatureUnit</span>(symbol: <span class="string">&quot;X&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> unknownUnit <span class="operator">==</span> <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;This isn&#x27;t a defined temperature unit, so initialization failed.&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;This isn&#x27;t a defined temperature unit, so initialization failed.&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `failableInitializers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let fahrenheitUnit = TemperatureUnit(symbol: &quot;F&quot;)</span><br><span class="line">-&gt; if fahrenheitUnit != nil &#123;</span><br><span class="line">      print(&quot;This is a defined temperature unit, so initialization succeeded.&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- This is a defined temperature unit, so initialization succeeded.</span><br><span class="line">---</span><br><span class="line">-&gt; let unknownUnit = TemperatureUnit(symbol: &quot;X&quot;)</span><br><span class="line">-&gt; if unknownUnit == nil &#123;</span><br><span class="line">      print(&quot;This isn&#x27;t a defined temperature unit, so initialization failed.&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- This isn&#x27;t a defined temperature unit, so initialization failed.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="带原始值的枚举类型的可失败构造器"><a href="#带原始值的枚举类型的可失败构造器" class="headerlink" title="带原始值的枚举类型的可失败构造器"></a>带原始值的枚举类型的可失败构造器</h3><p>带原始值的枚举类型会自带一个可失败构造器 <code>init?(rawValue:)</code> ，该可失败构造器有一个合适的原始值类型的 <code>rawValue</code> 形参，选择找到的相匹配的枚举成员，找不到则构造失败。</p>
+<p>因此 <code>TemperatureUnit</code> 的例子可以用原始值类型的 <code>Character</code> 和进阶的 <code>init?(rawValue:)</code> 构造器重写为:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">TemperatureUnit</span>: <span class="title class_">Character</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> kelvin <span class="operator">=</span> <span class="string">&quot;K&quot;</span>, celsius <span class="operator">=</span> <span class="string">&quot;C&quot;</span>, fahrenheit <span class="operator">=</span> <span class="string">&quot;F&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> fahrenheitUnit <span class="operator">=</span> <span class="type">TemperatureUnit</span>(rawValue: <span class="string">&quot;F&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> fahrenheitUnit <span class="operator">!=</span> <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;This is a defined temperature unit, so initialization succeeded.&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;This is a defined temperature unit, so initialization succeeded.&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> unknownUnit <span class="operator">=</span> <span class="type">TemperatureUnit</span>(rawValue: <span class="string">&quot;X&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> unknownUnit <span class="operator">==</span> <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;This isn&#x27;t a defined temperature unit, so initialization failed.&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;This isn&#x27;t a defined temperature unit, so initialization failed.&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `failableInitializersForEnumerations`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-&gt; enum TemperatureUnit: Character &#123;</span><br><span class="line">      case kelvin = &quot;K&quot;, celsius = &quot;C&quot;, fahrenheit = &quot;F&quot;</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; let fahrenheitUnit = TemperatureUnit(rawValue: &quot;F&quot;)</span><br><span class="line">-&gt; if fahrenheitUnit != nil &#123;</span><br><span class="line">      print(&quot;This is a defined temperature unit, so initialization succeeded.&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- This is a defined temperature unit, so initialization succeeded.</span><br><span class="line">---</span><br><span class="line">-&gt; let unknownUnit = TemperatureUnit(rawValue: &quot;X&quot;)</span><br><span class="line">-&gt; if unknownUnit == nil &#123;</span><br><span class="line">      print(&quot;This isn&#x27;t a defined temperature unit, so initialization failed.&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- This isn&#x27;t a defined temperature unit, so initialization failed.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="构造失败的传递"><a href="#构造失败的传递" class="headerlink" title="构造失败的传递"></a>构造失败的传递</h3><p>类、结构体、枚举的可失败构造器可以横向代理到它们自己其他的可失败构造器。类似的，子类的可失败构造器也能向上代理到父类的可失败构造器。</p>
+<p>无论是向上代理还是横向代理，如果你代理到的其他可失败构造器触发构造失败，整个构造过程将立即终止，接下来的任何构造代码不会再被执行。</p>
+<!--
+  - test: `delegatingAcrossInAStructurePropagatesInitializationFailureImmediately`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct S &#123;</span><br><span class="line">      init?(string1: String) &#123;</span><br><span class="line">         self.init(string2: string1)</span><br><span class="line">         print(&quot;Hello!&quot;) // this should never be printed, because initialization has already failed</span><br><span class="line">      &#125;</span><br><span class="line">      init?(string2: String) &#123; return nil &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let s = S(string1: &quot;bing&quot;)</span><br><span class="line">-&gt; assert(s == nil)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `delegatingAcrossInAClassPropagatesInitializationFailureImmediately`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      convenience init?(string1: String) &#123;</span><br><span class="line">         self.init(string2: string1)</span><br><span class="line">         print(&quot;Hello!&quot;) // this should never be printed, because initialization has already failed</span><br><span class="line">      &#125;</span><br><span class="line">      init?(string2: String) &#123; return nil &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let c = C(string1: &quot;bing&quot;)</span><br><span class="line">-&gt; assert(c == nil)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `delegatingUpInAClassPropagatesInitializationFailureImmediately`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      init?(string1: String) &#123; return nil &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D: C &#123;</span><br><span class="line">      init?(string2: String) &#123;</span><br><span class="line">         super.init(string1: string2)</span><br><span class="line">         print(&quot;Hello!&quot;) // this should never be printed, because initialization has already failed</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let d = D(string2: &quot;bing&quot;)</span><br><span class="line">-&gt; assert(d == nil)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>注意: 可失败构造器也可以代理到其它的不可失败构造器。通过这种方式，你可以增加一个可能的失败状态到现有的构造过程中。</p>
+</blockquote>
+<p>下面这个示例中定义了一个 <code>Product</code> 的子类 <code>CartItem</code> 。 <code>CartItem</code> 类建立了一个在线购物车中的物品的模型，它有一个名为 <code>quantity</code> 的常量存储型属性，并确保给属性的值至少为 <code>1</code> :</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Product</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> name: <span class="type">String</span></span><br><span class="line">    <span class="keyword">init?</span>(<span class="params">name</span>: <span class="type">String</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> name.isEmpty &#123; <span class="keyword">return</span> <span class="literal">nil</span> &#125;</span><br><span class="line">        <span class="keyword">self</span>.name <span class="operator">=</span> name</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CartItem</span>: <span class="title class_">Product</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> quantity: <span class="type">Int</span></span><br><span class="line">    <span class="keyword">init?</span>(<span class="params">name</span>: <span class="type">String</span>, <span class="params">quantity</span>: <span class="type">Int</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> quantity <span class="operator">&lt;</span> <span class="number">1</span> &#123; <span class="keyword">return</span> <span class="literal">nil</span> &#125;</span><br><span class="line">        <span class="keyword">self</span>.quantity <span class="operator">=</span> quantity</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(name: name)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `failableInitializers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class Product &#123;</span><br><span class="line">      let name: String</span><br><span class="line">      init?(name: String) &#123;</span><br><span class="line">         if name.isEmpty &#123; return nil &#125;</span><br><span class="line">         self.name = name</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; let p = Product(name: &quot;&quot;)</span><br><span class="line">---</span><br><span class="line">-&gt; class CartItem: Product &#123;</span><br><span class="line">      let quantity: Int</span><br><span class="line">      init?(name: String, quantity: Int) &#123;</span><br><span class="line">         if quantity &lt; 1 &#123; return nil &#125;</span><br><span class="line">         self.quantity = quantity</span><br><span class="line">         super.init(name: name)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>CartItem</code> 可失败构造器首先验证接收的 <code>quantity</code> 值是否大于等于1。倘若 <code>quantity</code> 值无效，则立即终止整个构造过程，返回失败结果，且不再执行余下代码。同样地， <code>Product</code> 的可失败构造器首先检查 <code>name</code> 值， 如果 <code>name</code> 值为空字符串，则构造器立即执行失败。</p>
+<p>如果你通过传入一个非空的 <code>name</code> 以及 大于等于 <code>1</code> 的 <code>quantity</code> 来创建一个 <code>CartItem</code> 实例，构建方法将成功执行:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> twoSocks <span class="operator">=</span> <span class="type">CartItem</span>(name: <span class="string">&quot;sock&quot;</span>, quantity: <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Item: <span class="subst">\(twoSocks.name)</span>, quantity: <span class="subst">\(twoSocks.quantity)</span>&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;Item: sock, quantity: 2&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `failableInitializers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; if let twoSocks = CartItem(name: &quot;sock&quot;, quantity: 2) &#123;</span><br><span class="line">      print(&quot;Item: \(twoSocks.name), quantity: \(twoSocks.quantity)&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- Item: sock, quantity: 2</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如果你用值为 <code>0</code> 的 <code>quantity</code> 来创建一个 <code>CartItem</code> 实例，那么将导致 <code>CartItem</code> 的构造器失败:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> zeroShirts <span class="operator">=</span> <span class="type">CartItem</span>(name: <span class="string">&quot;shirt&quot;</span>, quantity: <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Item: <span class="subst">\(zeroShirts.name)</span>, quantity: <span class="subst">\(zeroShirts.quantity)</span>&quot;</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Unable to initialize zero shirts&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;Unable to initialize zero shirts&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `failableInitializers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; if let zeroShirts = CartItem(name: &quot;shirt&quot;, quantity: 0) &#123;</span><br><span class="line">      print(&quot;Item: \(zeroShirts.name), quantity: \(zeroShirts.quantity)&quot;)</span><br><span class="line">   &#125; else &#123;</span><br><span class="line">      print(&quot;Unable to initialize zero shirts&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- Unable to initialize zero shirts</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>同样地，如果你尝试传入一个值为空字符串的 <code>name</code> 来创建一个 <code>CartItem</code> 实例，那么将导致父类 <code>Product</code> 的构造过程失败:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> oneUnnamed <span class="operator">=</span> <span class="type">CartItem</span>(name: <span class="string">&quot;&quot;</span>, quantity: <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Item: <span class="subst">\(oneUnnamed.name)</span>, quantity: <span class="subst">\(oneUnnamed.quantity)</span>&quot;</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Unable to initialize one unnamed product&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;Unable to initialize one unnamed product&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `failableInitializers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; if let oneUnnamed = CartItem(name: &quot;&quot;, quantity: 1) &#123;</span><br><span class="line">      print(&quot;Item: \(oneUnnamed.name), quantity: \(oneUnnamed.quantity)&quot;)</span><br><span class="line">   &#125; else &#123;</span><br><span class="line">      print(&quot;Unable to initialize one unnamed product&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- Unable to initialize one unnamed product</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="重写一个可失败构造器"><a href="#重写一个可失败构造器" class="headerlink" title="重写一个可失败构造器"></a>重写一个可失败构造器</h3><p>如同其它的构造器，你可以在子类中重写父类的可失败构造器。或者你也可以用子类的非可失败构造器重写一个父类的可失败构造器。这使你可以定义一个不会构造失败的子类，即使父类的构造器允许构造失败。</p>
+<p>注意，当你用子类的非可失败构造器重写父类的可失败构造器时，向上代理到父类的可失败构造器的唯一方式是对父类的可失败构造器的返回值进行强制解包。</p>
+<blockquote>
+<p>注意: 你可以用非可失败构造器重写可失败构造器，但反过来却不行。</p>
+</blockquote>
+<!--
+  - test: `youCannotOverrideANonFailableInitializerWithAFailableInitializer`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      init() &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D: C &#123;</span><br><span class="line">      override init?() &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">!$ error: failable initializer &#x27;init()&#x27; cannot override a non-failable initializer</span><br><span class="line">!!            override init?() &#123;&#125;</span><br><span class="line">!!                     ^</span><br><span class="line">!$ note: non-failable initializer &#x27;init()&#x27; overridden here</span><br><span class="line">!!            init() &#123;&#125;</span><br><span class="line">!!            ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>下面的示例定义了 <code>Document</code> 类。这个类模拟一个文档并可以用 <code>name</code> 属性来构造，属性的值必须为一个非空的字符串或 <code>nil</code> ，但不能是一个空字符串:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Document</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span>?</span><br><span class="line">    <span class="comment">// 该构造器创建了一个 name 属性的值为 nil 的 document 实例</span></span><br><span class="line">    <span class="keyword">init</span>() &#123;&#125;</span><br><span class="line">    <span class="comment">// 该构造器创建了一个 name 属性的值为非空字符串的 document 实例</span></span><br><span class="line">    <span class="keyword">init?</span>(<span class="params">name</span>: <span class="type">String</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> name.isEmpty &#123; <span class="keyword">return</span> <span class="literal">nil</span> &#125;</span><br><span class="line">        <span class="keyword">self</span>.name <span class="operator">=</span> name</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `failableInitializers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class Document &#123;</span><br><span class="line">      var name: String?</span><br><span class="line">      // this initializer creates a document with a nil name value</span><br><span class="line">      init() &#123;&#125;</span><br><span class="line">      // this initializer creates a document with a nonempty name value</span><br><span class="line">      init?(name: String) &#123;</span><br><span class="line">         if name.isEmpty &#123; return nil &#125;</span><br><span class="line">         self.name = name</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>下一个示例中定义了一个 <code>Document</code> 的子类 <code>AutomaticallyNamedDocument</code> 。 <code>AutomaticallyNamedDocument</code> 子类重写了所有父类引入的指定构造器。这些重写确保了 <code>AutomaticallyNamedDocument</code> 在没有 <code>name</code> 值时传递空字符串给 <code>init(name:)</code> 构造器，具有初始 <code>name</code> 值 <code>&quot;[Untitled]&quot;</code> 。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">AutomaticallyNamedDocument</span>: <span class="title class_">Document</span> &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">init</span>() &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>()</span><br><span class="line">        <span class="keyword">self</span>.name <span class="operator">=</span> <span class="string">&quot;[Untitled]&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">init</span>(<span class="params">name</span>: <span class="type">String</span>) &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>()</span><br><span class="line">        <span class="keyword">if</span> name.isEmpty &#123;</span><br><span class="line">            <span class="keyword">self</span>.name <span class="operator">=</span> <span class="string">&quot;[Untitled]&quot;</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">self</span>.name <span class="operator">=</span> name</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `failableInitializers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class AutomaticallyNamedDocument: Document &#123;</span><br><span class="line">      override init() &#123;</span><br><span class="line">         super.init()</span><br><span class="line">         self.name = &quot;[Untitled]&quot;</span><br><span class="line">      &#125;</span><br><span class="line">      override init(name: String) &#123;</span><br><span class="line">         super.init()</span><br><span class="line">         if name.isEmpty &#123;</span><br><span class="line">            self.name = &quot;[Untitled]&quot;</span><br><span class="line">         &#125; else &#123;</span><br><span class="line">            self.name = name</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>AutomaticallyNamedDocument</code> 用一个不可失败构造器 <code>init?(name:)</code> 重写了父类的可失败构造器。因为子类用另一种方式处理了空字符串的情况，所以不再需要一个可失败构造器，因此子类用一个不可失败构造器代替了父类的可失败构造器。</p>
+<p>你可以在子类的不可失败构造器中使用强制解包来调用父类的可失败构造器。比如，下面的 <code>UntitledDocument</code> 子类总是被命名为 <code>&quot;[Untitled]&quot;</code> 并且在初始化阶段使用父类的可失败构造器 <code>init(name:)</code> 。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UntitledDocument</span>: <span class="title class_">Document</span> &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">init</span>() &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(name: <span class="string">&quot;[Untitled]&quot;</span>)<span class="operator">!</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `failableInitializers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class UntitledDocument: Document &#123;</span><br><span class="line">      override init() &#123;</span><br><span class="line">         super.init(name: &quot;[Untitled]&quot;)!</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>在这个例子中，如果在调用父类的可失败构造器 <code>init(name:)</code> 时传入的是空字符串，那么强制解包操作会引发运行时错误。不过，因为这里是通过字符串常量来调用它，构造器不会失败，所以在这个例子中并不会发生运行时错误。</p>
+<h3 id="init-可失败构造器"><a href="#init-可失败构造器" class="headerlink" title="init! 可失败构造器"></a>init! 可失败构造器</h3><p>通常来说我们通过在 <code>init</code> 关键字后添加问号的方式 (<code>init?</code>) 来定义一个可失败的构造器。但你也可以通过在 <code>init</code> 后面添加感叹号的方式来定义一个可失败构造器 (<code>init!</code>) ，该可失败构造器将会构建一个对应类型的隐式解包可选类型的对象。</p>
+<p>你可以在 <code>init?</code> 中代理到 <code>init!</code> ，反之亦然。你也可以用 <code>init?</code> 重写 <code>init!</code> ，反之亦然。你还可以用 <code>init</code> 代理到 <code>init!</code> ，不过，一旦 <code>init!</code> 构造失败，则会触发断言。</p>
+<!--
+  - test: `structuresCanDelegateAcrossFromOptionalToIUO`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct S &#123;</span><br><span class="line">      init?(optional: Int) &#123; self.init(iuo: optional) &#125;</span><br><span class="line">      init!(iuo: Int) &#123;&#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `structuresCanDelegateAcrossFromIUOToOptional`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct S &#123;</span><br><span class="line">      init!(iuo: Int) &#123; self.init(optional: iuo) &#125;</span><br><span class="line">      init?(optional: Int) &#123;&#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `classesCanDelegateAcrossFromOptionalToIUO`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      convenience init?(optional: Int) &#123; self.init(iuo: optional) &#125;</span><br><span class="line">      init!(iuo: Int) &#123;&#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `classesCanDelegateAcrossFromIUOToOptional`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      convenience init!(iuo: Int) &#123; self.init(optional: iuo) &#125;</span><br><span class="line">      init?(optional: Int) &#123;&#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `classesCanDelegateUpFromOptionalToIUO`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      init!(iuo: Int) &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D: C &#123;</span><br><span class="line">      init?(optional: Int) &#123; super.init(iuo: optional) &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `classesCanDelegateUpFromIUOToOptional`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      init?(optional: Int) &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D: C &#123;</span><br><span class="line">      init!(iuo: Int) &#123; super.init(optional: iuo) &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `classesCanOverrideOptionalWithIUO`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      init?(i: Int) &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D: C &#123;</span><br><span class="line">      override init!(i: Int) &#123; super.init(i: i) &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `classesCanOverrideIUOWithOptional`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      init!(i: Int) &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D: C &#123;</span><br><span class="line">      override init?(i: Int) &#123; super.init(i: i) &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `structuresCanDelegateAcrossFromNonFailingToIUO`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct S &#123;</span><br><span class="line">      init(nonFailing: Int) &#123; self.init(iuo: nonFailing) &#125;</span><br><span class="line">      init!(iuo: Int) &#123;&#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `classesCanDelegateAcrossFromNonFailingToIUO`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      convenience init(nonFailing: Int) &#123; self.init(iuo: nonFailing) &#125;</span><br><span class="line">      init!(iuo: Int) &#123;&#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `classesCanDelegateUpFromNonFailingToIUO`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      init!(iuo: Int) &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D: C &#123;</span><br><span class="line">      init(nonFailing: Int) &#123; super.init(iuo: nonFailing) &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `structuresAssertWhenDelegatingAcrossFromNonFailingToNilIUO`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct S &#123;</span><br><span class="line">      init(nonFailing: Int) &#123; self.init(iuo: nonFailing) &#125;</span><br><span class="line">      init!(iuo: Int) &#123; return nil &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let s = S(nonFailing: 42)</span><br><span class="line">xx assertion</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `classesAssertWhenDelegatingAcrossFromNonFailingToNilIUO`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      convenience init(nonFailing: Int) &#123; self.init(iuo: nonFailing) &#125;</span><br><span class="line">      init!(iuo: Int) &#123; return nil &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let c = C(nonFailing: 42)</span><br><span class="line">xx assertion</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `classesAssertWhenDelegatingUpFromNonFailingToNilIUO`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      init!(iuo: Int) &#123; return nil &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D: C &#123;</span><br><span class="line">      init(nonFailing: Int) &#123; super.init(iuo: nonFailing) &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let d = D(nonFailing: 42)</span><br><span class="line">xx assertion</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="必要构造器"><a href="#必要构造器" class="headerlink" title="必要构造器"></a>必要构造器</h2><p>在类的构造器前添加 <code>required</code> 修饰符表明所有该类的子类都必须实现该构造器:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SomeClass</span> &#123;</span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">init</span>() &#123;</span><br><span class="line">        <span class="comment">// 构造器的实现代码</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `requiredInitializers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class SomeClass &#123;</span><br><span class="line">      required init() &#123;</span><br><span class="line">         // initializer implementation goes here</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `requiredDesignatedInitializersMustBeImplementedBySubclasses`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      required init(i: Int) &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D: C &#123;</span><br><span class="line">      init() &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">!$ error: &#x27;required&#x27; initializer &#x27;init(i:)&#x27; must be provided by subclass of &#x27;C&#x27;</span><br><span class="line">!! &#125;</span><br><span class="line">!! ^</span><br><span class="line">!$ note: &#x27;required&#x27; initializer is declared in superclass here</span><br><span class="line">!!    required init(i: Int) &#123;&#125;</span><br><span class="line">!!             ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `requiredConvenienceInitializersMustBeImplementedBySubclasses`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      init() &#123;&#125;</span><br><span class="line">      required convenience init(i: Int) &#123;</span><br><span class="line">         self.init()</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D: C &#123;</span><br><span class="line">      init(s: String) &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">!$ error: &#x27;required&#x27; initializer &#x27;init(i:)&#x27; must be provided by subclass of &#x27;C&#x27;</span><br><span class="line">!! &#125;</span><br><span class="line">!! ^</span><br><span class="line">!$ note: &#x27;required&#x27; initializer is declared in superclass here</span><br><span class="line">!!    required convenience init(i: Int) &#123;</span><br><span class="line">!!                         ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>在子类重写父类的必要构造器时，必须在子类的构造器前也添加 <code>required</code> 修饰符，表明该构造器要求也应用于继承链后面的子类。在重写父类中必要的指定构造器时，不需要添加 <code>override</code> 修饰符:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SomeSubclass</span>: <span class="title class_">SomeClass</span> &#123;</span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">init</span>() &#123;</span><br><span class="line">        <span class="comment">// 子类的必要构造器实现</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `requiredInitializers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class SomeSubclass: SomeClass &#123;</span><br><span class="line">      required init() &#123;</span><br><span class="line">         // subclass implementation of the required initializer goes here</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `youCannotWriteOverrideWhenOverridingARequiredDesignatedInitializer`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      required init() &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D: C &#123;</span><br><span class="line">      override required init() &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">!$ warning: &#x27;override&#x27; is implied when overriding a required initializer</span><br><span class="line">!!    override required init() &#123;&#125;</span><br><span class="line">!! ~~~~~~~~~         ^</span><br><span class="line">!!-</span><br><span class="line">!$ note: overridden required initializer is here</span><br><span class="line">!!    required init() &#123;&#125;</span><br><span class="line">!!             ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>注意: 如果子类继承的构造器能满足必要构造器的要求，则无须在子类中显式提供必要构造器的实现。</p>
+</blockquote>
+<!--
+  - test: `youCanSatisfyARequiredDesignatedInitializerWithAnInheritedInitializer`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      var x = 0</span><br><span class="line">      required init(i: Int) &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D: C &#123;</span><br><span class="line">      var y = 0</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `youCanSatisfyARequiredConvenienceInitializerWithAnInheritedInitializer`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      var x = 0</span><br><span class="line">      init(i: Int) &#123;&#125;</span><br><span class="line">      required convenience init() &#123;</span><br><span class="line">         self.init(i: 42)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D: C &#123;</span><br><span class="line">      var y = 0</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  FIXME: This section still doesn't describe why required initializers are useful.
+  This is because the reason for their usefulness -
+  construction through a metatype of some protocol type with an initializer requirement -
+  used to be broken due to
+  <rdar://problem/13695680> Constructor requirements in protocols (needed for NSCoding).
+  As of early 2015 that bug has been fixed.
+  See the corresponding FIXME in the Protocols chapter introduction too.
+-->
+
+<h2 id="通过闭包或函数设置属性的默认值"><a href="#通过闭包或函数设置属性的默认值" class="headerlink" title="通过闭包或函数设置属性的默认值"></a>通过闭包或函数设置属性的默认值</h2><p>如果某个存储型属性的默认值需要一些自定义或设置，你可以使用闭包或全局函数为其提供定制的默认值。每当某个属性所在类型的新实例被构造时，对应的闭包或函数会被调用，而它们的返回值会当做默认值赋值给这个属性。</p>
+<p>这种类型的闭包或函数通常会创建一个跟属性类型相同的临时变量，然后修改它的值以满足预期的初始状态，最后返回这个临时变量，作为属性的默认值。</p>
+<p>下面模板介绍了如何用闭包为属性提供默认值：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SomeClass</span> {</span><br><span class="line">    <span class="keyword">let</span> someProperty: <span class="type">SomeType</span> <span class="operator">=</span> {</span><br><span class="line">        <span class="comment">// 在这个闭包中给 someProperty 创建一个默认值</span></span><br><span class="line">        <span class="comment">// someValue 必须和 SomeType 类型相同</span></span><br><span class="line">        <span class="keyword">return</span> someValue</span><br><span class="line">    }()</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `defaultPropertyWithClosure`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; class SomeType &#123;&#125;</span><br><span class="line">-&gt; class SomeClass &#123;</span><br><span class="line">      let someProperty: SomeType = &#123;</span><br><span class="line">         // create a default value for someProperty inside this closure</span><br><span class="line">         // someValue must be of the same type as SomeType</span><br><span class="line">&gt;&gt;       let someValue = SomeType()</span><br><span class="line">         return someValue</span><br><span class="line">      &#125;()</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>注意闭包结尾的花括号后面接了一对空的小括号。这用来告诉 Swift 立即执行此闭包。如果你忽略了这对括号，相当于将闭包本身作为值赋值给了属性，而不是将闭包的返回值赋值给属性。</p>
+<!--
+  TODO: feedback from Peter is that this is very close to the syntax for
+  a computed property that doesn't define a separate getter.
+  He's right, and it would be good to provide an additional example -
+  perhaps with a stored property that's assigned the result of a function -
+  to make the difference more explicit.
+-->
+
+<blockquote>
+<p>注意: 如果你使用闭包来初始化属性，请记住在闭包执行时，实例的其它部分都还没有初始化。这意味着你不能在闭包里访问其它属性，即使这些属性有默认值。同样，你也不能使用隐式的 <code>self</code> 属性，或者调用任何实例方法。</p>
+</blockquote>
+<p>下面的示例中定义了一个 <code>Chessboard</code> 结构体，它构建了西洋跳棋游戏的棋盘。西洋跳棋游戏在一副黑白格交替的 8 x 8 的棋盘中进行的：</p>
+<p><img src="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/Initialization/chessBoard"></p>
+<p>为了呈现这副游戏棋盘， <code>Chessboard</code> 结构体定义了一个属性 <code>boardColors</code> ，它是一个包含64个 <code>Bool</code> 值的数组。数组中值为 <code>true</code> 表示为一个黑格，值为 <code>false</code> 表示为一个白格。数组中第一个元素代表棋盘上左上角的格子，最后一个元素代表棋盘上右下角的格子。 .</p>
+<p><code>boardColors</code> 数组是同一个闭包初始化并设置颜色值的： array is initialized with a closure to set up its color values:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Chessboard</span> {</span><br><span class="line">    <span class="keyword">let</span> boardColors: [<span class="type">Bool</span>] <span class="operator">=</span> {</span><br><span class="line">        <span class="keyword">var</span> temporaryBoard: [<span class="type">Bool</span>] <span class="operator">=</span> []</span><br><span class="line">        <span class="keyword">var</span> isBlack <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">1</span><span class="operator">...</span><span class="number">8</span> {</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="number">1</span><span class="operator">...</span><span class="number">8</span> {</span><br><span class="line">                temporaryBoard.append(isBlack)</span><br><span class="line">                isBlack <span class="operator">=</span> <span class="operator">!</span>isBlack</span><br><span class="line">            }</span><br><span class="line">            isBlack <span class="operator">=</span> <span class="operator">!</span>isBlack</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> temporaryBoard</span><br><span class="line">    }()</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">squareIsBlackAt</span>(<span class="params">row</span>: <span class="type">Int</span>, <span class="params">column</span>: <span class="type">Int</span>) -&gt; <span class="type">Bool</span> {</span><br><span class="line">        <span class="keyword">return</span> boardColors[(row <span class="operator">*</span> <span class="number">8</span>) <span class="operator">+</span> column]</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `chessboard`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct Chessboard &#123;</span><br><span class="line">      let boardColors: [Bool] = &#123;</span><br><span class="line">         var temporaryBoard: [Bool] = []</span><br><span class="line">         var isBlack = false</span><br><span class="line">         for i in 1...8 &#123;</span><br><span class="line">            for j in 1...8 &#123;</span><br><span class="line">               temporaryBoard.append(isBlack)</span><br><span class="line">               isBlack = !isBlack</span><br><span class="line">            &#125;</span><br><span class="line">            isBlack = !isBlack</span><br><span class="line">         &#125;</span><br><span class="line">         return temporaryBoard</span><br><span class="line">      &#125;()</span><br><span class="line">      func squareIsBlackAt(row: Int, column: Int) -&gt; Bool &#123;</span><br><span class="line">         return boardColors[(row * 8) + column]</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>每当一个新的 <code>Chessboard</code> 实例被创建时，闭包就会被执行， <code>boardColors</code> 的默认值会被计算出来并返回。上面的示例中的闭包会计算出棋盘中每个格子对应的颜色，并将这些值保存到一个临时数组 <code>temporaryBoard</code> 中，最后在构建完成时将此数组作为闭包返回值返回。这个返回的数组会保存到 <code>boardColors</code> 中，并可以通过 <code>squareIsBlackAt(row:column:)</code> 工具函数来查询:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> board <span class="operator">=</span> <span class="type">Chessboard</span>()</span><br><span class="line"><span class="built_in">print</span>(board.squareIsBlackAt(row: <span class="number">0</span>, column: <span class="number">1</span>))</span><br><span class="line"><span class="comment">// 打印 &quot;true&quot;</span></span><br><span class="line"><span class="built_in">print</span>(board.squareIsBlackAt(row: <span class="number">7</span>, column: <span class="number">7</span>))</span><br><span class="line"><span class="comment">// 打印 &quot;false&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `chessboard`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let board = Chessboard()</span><br><span class="line">&gt;&gt; assert(board.boardColors == [false, true, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, true, false])</span><br><span class="line">-&gt; print(board.squareIsBlackAt(row: 0, column: 1))</span><br><span class="line">&lt;- true</span><br><span class="line">-&gt; print(board.squareIsBlackAt(row: 7, column: 7))</span><br><span class="line">&lt;- false</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+This source file is part of the Swift.org open source project
+
+Copyright (c) 2014 - 2022 Apple Inc. and the Swift project authors
+Licensed under Apache License v2.0 with Runtime Library Exception
+
+See https://swift.org/LICENSE.txt for license information
+See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
+-->
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>INITIALIZATION</li>
+          
+  </ul>
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E8%BF%87%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">构造过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%B1%9E%E6%80%A7%E7%9A%84%E5%88%9D%E5%A7%8B%E8%B5%8B%E5%80%BC"><span class="nav-number">1.1.</span> <span class="nav-text">存储属性的初始赋值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%99%A8"><span class="nav-number">1.1.1.</span> <span class="nav-text">构造器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%A2%E5%8F%82%E5%91%BD%E5%90%8D%E5%92%8C%E5%AE%9E%E5%8F%82%E6%A0%87%E7%AD%BE"><span class="nav-number">1.1.2.</span> <span class="nav-text">形参命名和实参标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E5%AE%9A%E6%9E%84%E9%80%A0%E5%99%A8%E5%92%8C%E4%BE%BF%E5%88%A9%E6%9E%84%E9%80%A0%E5%99%A8%E5%AE%9E%E8%B7%B5"><span class="nav-number">1.1.3.</span> <span class="nav-text">指定构造器和便利构造器实践</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E5%A4%B1%E8%B4%A5%E6%9E%84%E9%80%A0%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">可失败构造器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E9%97%AD%E5%8C%85%E6%88%96%E5%87%BD%E6%95%B0%E8%AE%BE%E7%BD%AE%E5%B1%9E%E6%80%A7%E7%9A%84%E9%BB%98%E8%AE%A4%E5%80%BC"><span class="nav-number">1.3.</span> <span class="nav-text">通过闭包或函数设置属性的默认值</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

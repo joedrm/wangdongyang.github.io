@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="扩展为现有类型添加功能。 扩展（Extensions） 用于为现有的类、结构体、枚举或协议类型添加新功能。这包括了扩展那些您无法访问原始源代码的类型的能力（即追溯建模）。扩展和 Objective-C 的分类很相似。（与 Objective-C 分类不同的是，Swift 扩展是没有名字的。） Swift 中的扩展可以：  添加计算实例属性和计算类属性 定义实例方法和类方法 提供新的构造器 定义下标">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/Extensions.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="扩展为现有类型添加功能。 扩展（Extensions） 用于为现有的类、结构体、枚举或协议类型添加新功能。这包括了扩展那些您无法访问原始源代码的类型的能力（即追溯建模）。扩展和 Objective-C 的分类很相似。（与 Objective-C 分类不同的是，Swift 扩展是没有名字的。） Swift 中的扩展可以：  添加计算实例属性和计算类属性 定义实例方法和类方法 提供新的构造器 定义下标">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-08T08:32:48.698Z">
+<meta property="article:modified_time" content="2025-03-08T08:32:48.698Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/Extensions">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>EXTENSIONS</li>
+          
+  </ul>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h1 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h1><p>为现有类型添加功能。</p>
+<p><strong>扩展（Extensions）</strong> 用于为现有的类、结构体、枚举或协议类型添加新功能。这包括了扩展那些您无法访问原始源代码的类型的能力（即<em>追溯建模</em>）。扩展和 Objective-C 的分类很相似。（与 Objective-C 分类不同的是，Swift 扩展是没有名字的。）</p>
+<p>Swift 中的扩展可以：</p>
+<ul>
+<li>添加计算实例属性和计算类属性</li>
+<li>定义实例方法和类方法</li>
+<li>提供新的构造器</li>
+<li>定义下标</li>
+<li>定义和使用新的嵌套类型</li>
+<li>使已经存在的类型遵循一个协议</li>
+</ul>
+<p>在 Swift 中，你甚至可以扩展协议以提供其需要的实现，或者添加额外功能给遵循的类型所使用。你可以从 <a href="doc:Protocols#协议扩展">doc:Protocols#协议扩展</a> 获取更多细节。</p>
+<blockquote>
+<p>注意:<br>扩展可以给一个类型添加新的功能，但是不能重写已经存在的功能。</p>
+</blockquote>
+<!--
+  - test: `extensionsCannotOverrideExistingBehavior`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      var x = 0</span><br><span class="line">      func foo() &#123;&#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; extension C &#123;</span><br><span class="line">      override var x: Int &#123;</span><br><span class="line">         didSet &#123;</span><br><span class="line">            print(&quot;new x is \(x)&quot;)</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      override func foo() &#123;</span><br><span class="line">         print(&quot;called overridden foo&quot;)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">!$ error: property does not override any property from its superclass</span><br><span class="line">!! override var x: Int &#123;</span><br><span class="line">!! ~~~~~~~~     ^</span><br><span class="line">!$ error: ambiguous use of &#x27;x&#x27;</span><br><span class="line">!! print(&quot;new x is \(x)&quot;)</span><br><span class="line">!!            ^</span><br><span class="line">!$ note: found this candidate</span><br><span class="line">!! var x = 0</span><br><span class="line">!!     ^</span><br><span class="line">!$ note: found this candidate</span><br><span class="line">!! override var x: Int &#123;</span><br><span class="line">!!              ^</span><br><span class="line">!$ error: invalid redeclaration of &#x27;x&#x27;</span><br><span class="line">!! override var x: Int &#123;</span><br><span class="line">!!              ^</span><br><span class="line">!$ note: &#x27;x&#x27; previously declared here</span><br><span class="line">!! var x = 0</span><br><span class="line">!!     ^</span><br><span class="line">!$ error: method does not override any method from its superclass</span><br><span class="line">!! override func foo() &#123;</span><br><span class="line">!! ~~~~~~~~      ^</span><br><span class="line">!$ error: invalid redeclaration of &#x27;foo()&#x27;</span><br><span class="line">!! override func foo() &#123;</span><br><span class="line">!!               ^</span><br><span class="line">!$ note: &#x27;foo()&#x27; previously declared here</span><br><span class="line">!! func foo() &#123;&#125;</span><br><span class="line">!!      ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="扩展的语法"><a href="#扩展的语法" class="headerlink" title="扩展的语法"></a>扩展的语法</h2><p>使用 <code>extension</code> 关键字声明扩展：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">SomeType</span> &#123;</span><br><span class="line">    <span class="comment">// 在这里给 SomeType 添加新的功能</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `extensionSyntax`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; struct SomeType &#123;&#125;</span><br><span class="line">-&gt; extension SomeType &#123;</span><br><span class="line">      // new functionality to add to SomeType goes here</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>扩展可以扩充一个现有的类型，给它添加一个或多个协议。在添加协议的遵循声明时，协议名称的写法和类或者结构体一样：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">SomeType</span>: <span class="title class_">SomeProtocol</span>, <span class="title class_">AnotherProtocol</span> &#123;</span><br><span class="line">    <span class="comment">// 协议所需要的实现写在这里</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `extensionSyntax`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; protocol SomeProtocol &#123;&#125;</span><br><span class="line">&gt;&gt; protocol AnotherProtocol &#123;&#125;</span><br><span class="line">-&gt; extension SomeType: SomeProtocol, AnotherProtocol &#123;</span><br><span class="line">      // implementation of protocol requirements goes here</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>这种遵循协议的方式在 <a href="doc:Protocols#在扩展里添加协议遵循">doc:Protocols#在扩展里添加协议遵循</a> 中有描述。</p>
+<p>扩展可以使用在现有泛型类型上，就像 <a href="doc:Generics#Extending-a-Generic-Type">doc:Generics#Extending-a-Generic-Type</a> 中描述的一样。你还可以使用扩展给泛型类型有条件地添加功能，就像 <a href="doc:Generics#Extensions-with-a-Generic-Where-Clause">doc:Generics#Extensions-with-a-Generic-Where-Clause</a> 中描述的一样。</p>
+<blockquote>
+<p>注意: 对一个现有的类型，如果你定义了一个扩展来添加新的功能，那么这个类型的所有实例都可以使用这个新功能，包括那些在扩展定义之前就存在的实例。</p>
+</blockquote>
+<h2 id="计算属性"><a href="#计算属性" class="headerlink" title="计算属性"></a>计算属性</h2><p>扩展可以给现有类型添加计算实例属性和计算类属性。这个例子给 Swift 内建的 <code>Double</code> 类型添加了五个计算型实例属性，以提供基本的距离单位处理功能：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">Double</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> km: <span class="type">Double</span> &#123; <span class="keyword">return</span> <span class="keyword">self</span> <span class="operator">*</span> <span class="number">1_000.0</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> m: <span class="type">Double</span> &#123; <span class="keyword">return</span> <span class="keyword">self</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> cm: <span class="type">Double</span> &#123; <span class="keyword">return</span> <span class="keyword">self</span> <span class="operator">/</span> <span class="number">100.0</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> mm: <span class="type">Double</span> &#123; <span class="keyword">return</span> <span class="keyword">self</span> <span class="operator">/</span> <span class="number">1_000.0</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> ft: <span class="type">Double</span> &#123; <span class="keyword">return</span> <span class="keyword">self</span> <span class="operator">/</span> <span class="number">3.28084</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> oneInch <span class="operator">=</span> <span class="number">25.4</span>.mm</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;One inch is <span class="subst">\(oneInch)</span> meters&quot;</span>)</span><br><span class="line"><span class="comment">// 打印“One inch is 0.0254 meters”</span></span><br><span class="line"><span class="keyword">let</span> threeFeet <span class="operator">=</span> <span class="number">3</span>.ft</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Three feet is <span class="subst">\(threeFeet)</span> meters&quot;</span>)</span><br><span class="line"><span class="comment">// 打印“Three feet is 0.914399970739201 meters”</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `extensionsComputedProperties`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-&gt; extension Double &#123;</span><br><span class="line">      var km: Double &#123; return self * 1_000.0 &#125;</span><br><span class="line">      var m: Double &#123; return self &#125;</span><br><span class="line">      var cm: Double &#123; return self / 100.0 &#125;</span><br><span class="line">      var mm: Double &#123; return self / 1_000.0 &#125;</span><br><span class="line">      var ft: Double &#123; return self / 3.28084 &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let oneInch = 25.4.mm</span><br><span class="line">-&gt; print(&quot;One inch is \(oneInch) meters&quot;)</span><br><span class="line">&lt;- One inch is 0.0254 meters</span><br><span class="line">-&gt; let threeFeet = 3.ft</span><br><span class="line">-&gt; print(&quot;Three feet is \(threeFeet) meters&quot;)</span><br><span class="line">&lt;- Three feet is 0.914399970739201 meters</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>这些计算属性表示一个 <code>Double</code> 值应该被视为某种长度单位。尽管它们是作为计算属性实现的，但是这些属性的名称可以使用点语法附加到浮点字面量值之后，作为一种使用该字面量值执行距离转换的方式。</p>
+<p>在这个例子中，<code>Double</code> 类型的 <code>1.0</code> 代表的是“一米”。这就是为什么计算属性 <code>m</code> 返回的是 <code>self</code> ——表达式 <code>1.m</code> 被认为是计算一个 <code>Double</code> 类型的 <code>1.0</code>。</p>
+<p>其他单位需要进行一些转换，才能表示为以米为单位的值。一千米等于 1000 米，所以计算属性 <code>km</code> 将该值乘以 <code>1_000.00</code>来将其转换为以米为单位的数字。类似地，一米等于 3.28084 英尺，因此计算属性 <code>ft</code> 将底层的 <code>Double</code> 值除以 <code>3.28084</code> 来将其从英尺转换为米。</p>
+<p>这些属性是只读的计算属性，因此为了简便，它们的表达方式省略了 <code>get</code> 关键字。它们的返回值是 <code>Double</code> 类型，可以在任何接受 <code>Double</code> 的数学计算中使用:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> aMarathon <span class="operator">=</span> <span class="number">42</span>.km <span class="operator">+</span> <span class="number">195</span>.m</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;A marathon is <span class="subst">\(aMarathon)</span> meters long&quot;</span>)</span><br><span class="line"><span class="comment">// 打印“A marathon is 42195.0 meters long”</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `extensionsComputedProperties`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let aMarathon = 42.km + 195.m</span><br><span class="line">-&gt; print(&quot;A marathon is \(aMarathon) meters long&quot;)</span><br><span class="line">&lt;- A marathon is 42195.0 meters long</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>注意: 扩展可以添加新的计算属性，但是它们不能添加存储属性，也不能为现有属性添加属性观察器。</p>
+</blockquote>
+<!--
+  - test: `extensionsCannotAddStoredProperties`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;&#125;</span><br><span class="line">-&gt; extension C &#123; var x = 0 &#125;</span><br><span class="line">!$ error: extensions must not contain stored properties</span><br><span class="line">!! extension C &#123; var x = 0 &#125;</span><br><span class="line">!!                   ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  TODO: change this example to something more advisable / less contentious.
+-->
+
+<h2 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h2><p>扩展可以为现有类型添加新的构造器。这使你可以扩展其他类型以接受你自己的自定义类型作为构造器参数，或提供类型的原始实现中未包含的其他构造选项。</p>
+<p>扩展可以为一个类添加新的便利构造器（convenience initializer），但是它们不能为一个类添加新的指定构造器（designated initializer）或析构器（deinitializer）。指定构造器和析构器必须始终由类的原始实现提供。</p>
+<p>如果你使用扩展为一个值类型添加构造器，并且该值类型提供了所有存储属性的默认值，且没有定义任何自定义构造器，你就可以在扩展的构造器中调用该值类型的默认构造器和成员构造器。如果你已经将构造器写在该值类型的原始实现中，则不适用于这种情况，正如 <a href="doc:Initialization#值类型的构造器代理">doc:Initialization#值类型的构造器代理</a> 中所描述的那样。</p>
+<p>如果你使用扩展为另一个模块中声明的结构体添加构造器，那么在调用定义模块中的构造器之前，新的构造器是不能访问 <code>self</code> 的。</p>
+<p>以下示例定义了一个自定义的 <code>Rect</code> 结构体来表示几何矩形。该示例还定义了两个辅助结构体 <code>Size</code> 和 <code>Point</code>，它们都为所有属性提供了默认值 <code>0.0</code>：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Size</span> {</span><br><span class="line">    <span class="keyword">var</span> width <span class="operator">=</span> <span class="number">0.0</span>, height <span class="operator">=</span> <span class="number">0.0</span></span><br><span class="line">}</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Point</span> {</span><br><span class="line">    <span class="keyword">var</span> x <span class="operator">=</span> <span class="number">0.0</span>, y <span class="operator">=</span> <span class="number">0.0</span></span><br><span class="line">}</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Rect</span> {</span><br><span class="line">    <span class="keyword">var</span> origin <span class="operator">=</span> <span class="type">Point</span>()</span><br><span class="line">    <span class="keyword">var</span> size <span class="operator">=</span> <span class="type">Size</span>()</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `extensionsInitializers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct Size &#123;</span><br><span class="line">      var width = 0.0, height = 0.0</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; struct Point &#123;</span><br><span class="line">      var x = 0.0, y = 0.0</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; struct Rect &#123;</span><br><span class="line">      var origin = Point()</span><br><span class="line">      var size = Size()</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>因为 <code>Rect</code> 结构体为所有属性都提供了默认值，它会自动获得默认构造器和成员构造器，如 <a href="doc:Initialization#默认构造器">doc:Initialization#默认构造器</a> 中所述。这些构造器可用于创建新的 <code>Rect</code> 实例:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> defaultRect <span class="operator">=</span> <span class="type">Rect</span>()</span><br><span class="line"><span class="keyword">let</span> memberwiseRect <span class="operator">=</span> <span class="type">Rect</span>(origin: <span class="type">Point</span>(x: <span class="number">2.0</span>, y: <span class="number">2.0</span>),</span><br><span class="line">    size: <span class="type">Size</span>(width: <span class="number">5.0</span>, height: <span class="number">5.0</span>))</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `extensionsInitializers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let defaultRect = Rect()</span><br><span class="line">-&gt; let memberwiseRect = Rect(origin: Point(x: 2.0, y: 2.0),</span><br><span class="line">      size: Size(width: 5.0, height: 5.0))</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>你可以通过扩展 <code>Rect</code> 结构体来额外提供一个允许指定 center 和 size 的构造器：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">Rect</span> &#123;</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">center</span>: <span class="type">Point</span>, <span class="params">size</span>: <span class="type">Size</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> originX <span class="operator">=</span> center.x <span class="operator">-</span> (size.width <span class="operator">/</span> <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">let</span> originY <span class="operator">=</span> center.y <span class="operator">-</span> (size.height <span class="operator">/</span> <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">self</span>.<span class="keyword">init</span>(origin: <span class="type">Point</span>(x: originX, y: originY), size: size)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `extensionsInitializers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; extension Rect &#123;</span><br><span class="line">      init(center: Point, size: Size) &#123;</span><br><span class="line">         let originX = center.x - (size.width / 2)</span><br><span class="line">         let originY = center.y - (size.height / 2)</span><br><span class="line">         self.init(origin: Point(x: originX, y: originY), size: size)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>这个新的构造器首先根据提供的 <code>center</code> 和 <code>size</code> 计算一个适当的原点。然后这个构造器调用结构体自带的成员构造器 <code>init(origin:size:)</code>，它会将新的 origin 和 size 值储存在相应的属性中：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> centerRect <span class="operator">=</span> <span class="type">Rect</span>(center: <span class="type">Point</span>(x: <span class="number">4.0</span>, y: <span class="number">4.0</span>),</span><br><span class="line">    size: <span class="type">Size</span>(width: <span class="number">3.0</span>, height: <span class="number">3.0</span>))</span><br><span class="line"><span class="comment">// centerRect 的 origin 是 (2.5, 2.5) 并且它的 size 是 (3.0, 3.0)</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `extensionsInitializers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let centerRect = Rect(center: Point(x: 4.0, y: 4.0),</span><br><span class="line">      size: Size(width: 3.0, height: 3.0))</span><br><span class="line">/&gt; centerRect&#x27;s origin is (\(centerRect.origin.x), \(centerRect.origin.y)) and its size is (\(centerRect.size.width), \(centerRect.size.height))</span><br><span class="line">&lt;/ centerRect&#x27;s origin is (2.5, 2.5) and its size is (3.0, 3.0)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>注意: 如果你使用扩展提供了一个新的构造器，你仍然需要确保在构造器完成时每个实例都被完全初始化。</p>
+</blockquote>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>扩展可以为现有类型添加新的实例方法和类方法。以下示例为 <code>Int</code> 类型添加了一个名为 <code>repetitions</code> 的新实例方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">Int</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">repetitions</span>(<span class="params">task</span>: () -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> <span class="keyword">_</span> <span class="keyword">in</span> <span class="number">0</span><span class="operator">..&lt;</span><span class="keyword">self</span> &#123;</span><br><span class="line">            task()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `extensionsInstanceMethods`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; extension Int &#123;</span><br><span class="line">      func repetitions(task: () -&gt; Void) &#123;</span><br><span class="line">         for _ in 0..&lt;self &#123;</span><br><span class="line">            task()</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>repetitions(task:)</code> 方法仅接受一个类型为 <code>() -&gt; Void</code> 的参数，它表示一个没有参数没有返回值的函数。</p>
+<p>定义了这个扩展之后，你可以对任意整形数值调用 <code>repetitions(task:)</code> 方法，以执行指定次数的任务:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3</span>.repetitions &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Hello!&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Hello!</span></span><br><span class="line"><span class="comment">// Hello!</span></span><br><span class="line"><span class="comment">// Hello!</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `extensionsInstanceMethods`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; 3.repetitions &#123;</span><br><span class="line">      print(&quot;Hello!&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;/ Hello!</span><br><span class="line">&lt;/ Hello!</span><br><span class="line">&lt;/ Hello!</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="变值实例方法"><a href="#变值实例方法" class="headerlink" title="变值实例方法"></a>变值实例方法</h3><p>通过扩展添加的实例方法同样也可以修改（modify）（或 <em>改变（mutating）</em>）实例本身。修改 <code>self</code> 或其属性的结构体和枚举方法，必须将实例方法标记为 <code>mutating</code>，就像原始实现中的变值方法（mutating methods）一样。</p>
+<p>下面的示例为 Swift 的 <code>Int</code> 类型添加了一个新的变值方法 <code>square</code>，它可以计算原始值的平方：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">Int</span> &#123;</span><br><span class="line">    <span class="keyword">mutating</span> <span class="keyword">func</span> <span class="title function_">square</span>() &#123;</span><br><span class="line">        <span class="keyword">self</span> <span class="operator">=</span> <span class="keyword">self</span> <span class="operator">*</span> <span class="keyword">self</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> someInt <span class="operator">=</span> <span class="number">3</span></span><br><span class="line">someInt.square()</span><br><span class="line"><span class="comment">// someInt 现在是 9</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `extensionsInstanceMethods`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; extension Int &#123;</span><br><span class="line">      mutating func square() &#123;</span><br><span class="line">         self = self * self</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; var someInt = 3</span><br><span class="line">-&gt; someInt.square()</span><br><span class="line">/&gt; someInt is now \(someInt)</span><br><span class="line">&lt;/ someInt is now 9</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="下标"><a href="#下标" class="headerlink" title="下标"></a>下标</h2><p>扩展可以为现有类型添加新的下标。这个示例为 Swift 内置的 <code>Int</code> 类型添加了一个整数下标。下标 <code>[n]</code> 返回数字从右边数第 <code>n</code> 位的十进制数字:</p>
+<ul>
+<li><code>123456789[0]</code> 返回 <code>9</code></li>
+<li><code>123456789[1]</code> 返回 <code>8</code></li>
+</ul>
+<p>……以此类推：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">Int</span> &#123;</span><br><span class="line">    <span class="keyword">subscript</span>(<span class="params">digitIndex</span>: <span class="type">Int</span>) -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> decimalBase <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> <span class="keyword">_</span> <span class="keyword">in</span> <span class="number">0</span><span class="operator">..&lt;</span>digitIndex &#123;</span><br><span class="line">            decimalBase <span class="operator">*=</span> <span class="number">10</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">self</span> <span class="operator">/</span> decimalBase) <span class="operator">%</span> <span class="number">10</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="number">746381295</span>[<span class="number">0</span>]</span><br><span class="line"><span class="comment">// 返回 5</span></span><br><span class="line"><span class="number">746381295</span>[<span class="number">1</span>]</span><br><span class="line"><span class="comment">// 返回 9</span></span><br><span class="line"><span class="number">746381295</span>[<span class="number">2</span>]</span><br><span class="line"><span class="comment">// 返回 2</span></span><br><span class="line"><span class="number">746381295</span>[<span class="number">8</span>]</span><br><span class="line"><span class="comment">// 返回 7</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `extensionsSubscripts`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">-&gt; extension Int &#123;</span><br><span class="line">      subscript(digitIndex: Int) -&gt; Int &#123;</span><br><span class="line">         var decimalBase = 1</span><br><span class="line">         for _ in 0..&lt;digitIndex &#123;</span><br><span class="line">            decimalBase *= 10</span><br><span class="line">         &#125;</span><br><span class="line">         return (self / decimalBase) % 10</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; let r0 =</span><br><span class="line">-&gt; 746381295[0]</span><br><span class="line">/&gt; returns \(r0)</span><br><span class="line">&lt;/ returns 5</span><br><span class="line">&gt;&gt; let r1 =</span><br><span class="line">-&gt; 746381295[1]</span><br><span class="line">/&gt; returns \(r1)</span><br><span class="line">&lt;/ returns 9</span><br><span class="line">&gt;&gt; let r2 =</span><br><span class="line">-&gt; 746381295[2]</span><br><span class="line">/&gt; returns \(r2)</span><br><span class="line">&lt;/ returns 2</span><br><span class="line">&gt;&gt; let r3 =</span><br><span class="line">-&gt; 746381295[8]</span><br><span class="line">/&gt; returns \(r3)</span><br><span class="line">&lt;/ returns 7</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  Rewrite the above to avoid bare expressions.
+  Tracking bug is <rdar://problem/35301593>
+-->
+
+<!--
+  TODO: Replace the for loop above with an exponent,
+  if/when integer exponents land in the stdlib.
+  Darwin's pow() function is only for floating point.
+-->
+
+<p>如果 <code>Int</code> 值的数字位数不足以满足所请求的索引，那么下标实现会返回 <code>0</code>，就好像在数字左边补上了 0：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">746381295</span>[<span class="number">9</span>]</span><br><span class="line"><span class="comment">// 返回 0，就好像你进行了这个请求：</span></span><br><span class="line"><span class="number">0746381295</span>[<span class="number">9</span>]</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `extensionsSubscripts`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; let r4 =</span><br><span class="line">-&gt; 746381295[9]</span><br><span class="line">/&gt; returns \(r4), as if you had requested:</span><br><span class="line">&lt;/ returns 0, as if you had requested:</span><br><span class="line">&gt;&gt; let r5 =</span><br><span class="line">-&gt; 0746381295[9]</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  TODO: provide an explanation of this example
+-->
+
+<!--
+  Rewrite the above to avoid bare expressions.
+  Tracking bug is <rdar://problem/35301593>
+-->
+
+<h2 id="嵌套类型"><a href="#嵌套类型" class="headerlink" title="嵌套类型"></a>嵌套类型</h2><p>扩展可以给现有的类，结构体，和枚举添加新的嵌套类型：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">Int</span> {</span><br><span class="line">    <span class="keyword">enum</span> <span class="title class_">Kind</span> {</span><br><span class="line">        <span class="keyword">case</span> negative, zero, positive</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">var</span> kind: <span class="type">Kind</span> {</span><br><span class="line">        <span class="keyword">switch</span> <span class="keyword">self</span> {</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> .zero</span><br><span class="line">        <span class="keyword">case</span> <span class="keyword">let</span> x <span class="keyword">where</span> x <span class="operator">&gt;</span> <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> .positive</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">return</span> .negative</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `extensionsNestedTypes`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-&gt; extension Int &#123;</span><br><span class="line">      enum Kind &#123;</span><br><span class="line">         case negative, zero, positive</span><br><span class="line">      &#125;</span><br><span class="line">      var kind: Kind &#123;</span><br><span class="line">         switch self &#123;</span><br><span class="line">            case 0:</span><br><span class="line">               return .zero</span><br><span class="line">            case let x where x &gt; 0:</span><br><span class="line">               return .positive</span><br><span class="line">            default:</span><br><span class="line">               return .negative</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>这个例子给 <code>Int</code> 添加了一个新的嵌套枚举。这个枚举叫做 <code>Kind</code>，表示特定整数所代表的数字类型。具体来说，它表示数字是负数、零还是正数。</p>
+<p>这个例子也给 <code>Int</code> 添加了一个新的计算实例属性，叫做 <code>kind</code>，它返回被操作整数所对应的 <code>Kind</code> 枚举值。</p>
+<p>现在，这个嵌套枚举可以用于任何 <code>Int</code> 值：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">printIntegerKinds</span>(<span class="keyword">_</span> <span class="params">numbers</span>: [<span class="type">Int</span>]) &#123;</span><br><span class="line">    <span class="keyword">for</span> number <span class="keyword">in</span> numbers &#123;</span><br><span class="line">        <span class="keyword">switch</span> number.kind &#123;</span><br><span class="line">        <span class="keyword">case</span> .negative:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;- &quot;</span>, terminator: <span class="string">&quot;&quot;</span>)</span><br><span class="line">        <span class="keyword">case</span> .zero:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;0 &quot;</span>, terminator: <span class="string">&quot;&quot;</span>)</span><br><span class="line">        <span class="keyword">case</span> .positive:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;+ &quot;</span>, terminator: <span class="string">&quot;&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line">printIntegerKinds([<span class="number">3</span>, <span class="number">19</span>, <span class="operator">-</span><span class="number">27</span>, <span class="number">0</span>, <span class="operator">-</span><span class="number">6</span>, <span class="number">0</span>, <span class="number">7</span>])</span><br><span class="line"><span class="comment">// 打印“+ + - 0 - 0 + ”</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `extensionsNestedTypes`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func printIntegerKinds(_ numbers: [Int]) &#123;</span><br><span class="line">      for number in numbers &#123;</span><br><span class="line">         switch number.kind &#123;</span><br><span class="line">            case .negative:</span><br><span class="line">               print(&quot;- &quot;, terminator: &quot;&quot;)</span><br><span class="line">            case .zero:</span><br><span class="line">               print(&quot;0 &quot;, terminator: &quot;&quot;)</span><br><span class="line">            case .positive:</span><br><span class="line">               print(&quot;+ &quot;, terminator: &quot;&quot;)</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      print(&quot;&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; printIntegerKinds([3, 19, -27, 0, -6, 0, 7])</span><br><span class="line">&lt;&lt; + + - 0 - 0 +</span><br><span class="line">// Prints &quot;+ + - 0 - 0 + &quot;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  Workaround for rdar://26016325
+-->
+
+<p>这个函数 <code>printIntegerKinds(_:)</code> 接受一个 <code>Int</code> 值的数组作为输入，并逐个遍历这些值。对于数组中的每个整数，该函数都会检查它的 <code>kind</code> 计算属性，然后打印适当的描述。</p>
+<blockquote>
+<p>注意: <code>number.kind</code> 已经被认为是 <code>Int.Kind</code> 类型。所以，在 <code>switch</code> 语句中所有的 <code>Int.Kind</code> 枚举值可以被缩写，例如使用 <code>.negative</code> 替代 <code>Int.Kind.negative</code>。</p>
+</blockquote>
+<!--
+This source file is part of the Swift.org open source project
+Copyright (c) 2014 - 2022 Apple Inc. and the Swift project authors
+Licensed under Apache License v2.0 with Runtime Library Exception
+See https://swift.org/LICENSE.txt for license information
+See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
+-->
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>EXTENSIONS</li>
+          
+  </ul>
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%A9%E5%B1%95"><span class="nav-number">1.</span> <span class="nav-text">扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%99%A8"><span class="nav-number">1.1.</span> <span class="nav-text">构造器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B5%8C%E5%A5%97%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">嵌套类型</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="基本运算符执行赋值、算术和比较等操作。 运算符是一种特殊的符号或短语，用于检查、更改或组合值。例如，加法运算符（+）将两个数字相加，如 let i &#x3D; 1 + 2，逻辑与运算符（&amp;&amp;）组合两个布尔值，如 if enteredDoorCode &amp;&amp; passedRetinaScan。 Swift 支持类似 C 等你已所熟知的语言中的运算符，并改进了几个功能，以消除常见">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/BasicOperators.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="基本运算符执行赋值、算术和比较等操作。 运算符是一种特殊的符号或短语，用于检查、更改或组合值。例如，加法运算符（+）将两个数字相加，如 let i &#x3D; 1 + 2，逻辑与运算符（&amp;&amp;）组合两个布尔值，如 if enteredDoorCode &amp;&amp; passedRetinaScan。 Swift 支持类似 C 等你已所熟知的语言中的运算符，并改进了几个功能，以消除常见">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wanflutter.netlify.app/remainderInteger">
+<meta property="article:published_time" content="2025-03-08T08:32:48.693Z">
+<meta property="article:modified_time" content="2025-03-08T08:32:48.693Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wanflutter.netlify.app/remainderInteger">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/BasicOperators">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>BASICOPERATORS</li>
+          
+  </ul>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h1 id="基本运算符"><a href="#基本运算符" class="headerlink" title="基本运算符"></a>基本运算符</h1><p>执行赋值、算术和比较等操作。</p>
+<p><em>运算符</em>是一种特殊的符号或短语，用于检查、更改或组合值。例如，加法运算符（<code>+</code>）将两个数字相加，如 <code>let i = 1 + 2</code>，逻辑与运算符（<code>&amp;&amp;</code>）组合两个布尔值，如 <code>if enteredDoorCode &amp;&amp; passedRetinaScan</code>。</p>
+<p>Swift 支持类似 C 等你已所熟知的语言中的运算符，并改进了几个功能，以消除常见的编码错误。赋值运算符（<code>=</code>）不返回值，以防止它被误用时等于运算符（<code>==</code>）被意外使用。算术运算符（<code>+</code>、<code>-</code>、<code>*</code>、<code>/</code>、<code>%</code> 等）检测并禁止值溢出，以避免在处理超出存储它们的类型允许值范围的较大或较小数字时出现意外结果。你可以选择使用 Swift 的溢出运算符来处理值溢出行为，如 <a href="doc:AdvancedOperators#溢出运算符">doc:AdvancedOperators#溢出运算符</a> 中所述。</p>
+<p>Swift 还提供了 C 语言中没有的区间运算符，如 <code>a..&lt;b</code> 和 <code>a...b</code>，作为表达值范围的快捷方式。</p>
+<p>本章介绍了 Swift 中的常见运算符。<a href="doc:AdvancedOperators">doc:AdvancedOperators</a> 涵盖了 Swift 的高级运算符，并描述了如何定义自定义运算符以及为自定义类型实现标准运算符。</p>
+<h2 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h2><p>运算符可以是一元、二元或三元：</p>
+<ul>
+<li><em>一元</em>运算符作用于单个目标（如 <code>-a</code>）。一元<em>前置</em>运算符紧跟在其目标之前（如 <code>!b</code>），一元<em>后置</em>运算符紧跟在其目标之后（如 <code>c!</code>）。</li>
+<li><em>二元</em>运算符作用于两个目标（如 <code>2 + 3</code>），是<em>中置</em>的，因为它们出现在两个目标之间。</li>
+<li><em>三元</em>运算符作用于三个目标。与 C 一样，Swift 只有一个三元运算符，即三元条件运算符（<code>a ? b : c</code>）。</li>
+</ul>
+<p>运算符影响的值称为<em>操作数</em>。在表达式 <code>1 + 2</code> 中，<code>+</code> 符号是一个中置运算符，它的两个操作数是值 <code>1</code> 和 <code>2</code>。</p>
+<h2 id="赋值运算符"><a href="#赋值运算符" class="headerlink" title="赋值运算符"></a>赋值运算符</h2><p><em>赋值运算符</em>（<code>a = b</code>）用 <code>b</code> 的值初始化或更新 <code>a</code> 的值：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> b <span class="operator">=</span> <span class="number">10</span></span><br><span class="line"><span class="keyword">var</span> a <span class="operator">=</span> <span class="number">5</span></span><br><span class="line">a <span class="operator">=</span> b</span><br><span class="line"><span class="comment">// a 现在等于 10</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `assignmentOperator`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let b = 10</span><br><span class="line">-&gt; var a = 5</span><br><span class="line">-&gt; a = b</span><br><span class="line">/&gt; a 现在等于 \(a)</span><br><span class="line">&lt;/ a 现在等于 10</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如果赋值运算符的右侧是一个包含多个值的元组，可以将其元素同时分解为多个常量或变量：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> (x, y) <span class="operator">=</span> (<span class="number">1</span>, <span class="number">2</span>) <span class="comment">// x 等于 1, y 等于 2</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `assignmentOperator`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let (x, y) = (1, 2)</span><br><span class="line">/&gt; x 等于 \(x),  y 等于 \(y)</span><br><span class="line">&lt;/ x 等于 1,  y 等于 2</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `tuple-unwrapping-with-var`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; var (x, y) = (1, 2)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  这仍然允许变量赋值，
+  即使 var 模式已经被移除，
+  因为它被解析为一个变量声明，
+  使用第一个替代方案，其中 (x, y) 是一个模式，
+  但 `var` 来自变量声明头部，
+  而不是来自模式。
+-->
+
+<p>与 C 和 Objective-C 中的赋值运算符不同，Swift 中的赋值运算符本身不返回值。以下语句无效：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> x <span class="operator">=</span> y { <span class="comment">// 这是无效的，因为 x = y 不返回值。</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `assignmentOperatorInvalid`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; if x = y &#123;</span><br><span class="line">      // 这是无效的，因为 x = y 不返回值。</span><br><span class="line">   &#125;</span><br><span class="line">!$ error: cannot find &#x27;x&#x27; in scope</span><br><span class="line">!! if x = y &#123;</span><br><span class="line">!!    ^</span><br><span class="line">!$ error: cannot find &#x27;y&#x27; in scope</span><br><span class="line">!! if x = y &#123;</span><br><span class="line">!!        ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>因为 Swift 语言规定 <code>if x = y</code> 这种写法是无效的，这个特性可以防止不小心使用赋值运算符（&#x3D;） 而非等于运算符（&#x3D;&#x3D;）。Swift 帮助你避免代码中出现这种错误。</p>
+<!--
+  TODO: 我们是否应该提到 x = y = z 也是无效的？
+  如果是这样，是否有一个令人信服的理由说明这为什么我们要这么做？
+-->
+
+<h2 id="算术运算符"><a href="#算术运算符" class="headerlink" title="算术运算符"></a>算术运算符</h2><p>Swift 为所有数值类型支持四种标准<em>算术运算符</em>：</p>
+<ul>
+<li>加法（<code>+</code>） </li>
+<li>减法（<code>-</code>） </li>
+<li>乘法（<code>*</code>） </li>
+<li>除法（<code>/</code>）</li>
+</ul>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> <span class="operator">+</span> <span class="number">2</span>       <span class="comment">// 等于 3</span></span><br><span class="line"><span class="number">5</span> <span class="operator">-</span> <span class="number">3</span>       <span class="comment">// 等于 2</span></span><br><span class="line"><span class="number">2</span> <span class="operator">*</span> <span class="number">3</span>       <span class="comment">// 等于 6 </span></span><br><span class="line"><span class="number">10.0</span> <span class="operator">/</span> <span class="number">2.5</span>  <span class="comment">// 等于 4.0</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `arithmeticOperators`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; let r0 =</span><br><span class="line">-&gt; 1 + 2       // equals 3</span><br><span class="line">&gt;&gt; assert(r0 == 3)</span><br><span class="line">&gt;&gt; let r1 =</span><br><span class="line">-&gt; 5 - 3       // equals 2</span><br><span class="line">&gt;&gt; assert(r1 == 2)</span><br><span class="line">&gt;&gt; let r2 =</span><br><span class="line">-&gt; 2 * 3       // equals 6</span><br><span class="line">&gt;&gt; assert(r2 == 6)</span><br><span class="line">&gt;&gt; let r3 =</span><br><span class="line">-&gt; 10.0 / 2.5  // equals 4.0</span><br><span class="line">&gt;&gt; assert(r3 == 4.0)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>Swift 的算术运算符与 C 和 Objective-C 中的不同，默认情况下不允许值溢出。您可以选择使用 Swift 的溢出运算符（如 <code>a &amp;+ b</code>）来启用值溢出行为。请参阅 <a href="doc:AdvancedOperators#溢出运算符">doc:AdvancedOperators#溢出运算符</a>。</p>
+<p>加法运算符也支持 <code>String</code> 拼接：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;hello, &quot;</span> <span class="operator">+</span> <span class="string">&quot;world&quot;</span>  <span class="comment">// 等于 &quot;hello, world&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `arithmeticOperators`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; let r4 =</span><br><span class="line">-&gt; &quot;hello, &quot; + &quot;world&quot;  // 等于 &quot;hello, world&quot;</span><br><span class="line">&gt;&gt; assert(r4 == &quot;hello, world&quot;)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="余数运算符"><a href="#余数运算符" class="headerlink" title="余数运算符"></a>余数运算符</h3><p><em>余数运算符</em>（<code>a % b</code>）计算出 <code>b</code> 在 <code>a</code> 中能容纳多少个倍数，并返回剩余的值（称为<em>余数</em>）。</p>
+<blockquote>
+<p>注意: 需要注意的是，尽管余数运算符在其他语言中也被称为模运算符，<br>但在 Swift 中对负数的处理与模运算符有所不同。</p>
+</blockquote>
+<!--
+  - test: `percentOperatorIsRemainderNotModulo`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; for i in -5...0 &#123;</span><br><span class="line">      print(i % 4)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;&lt; -1</span><br><span class="line">&lt;&lt; 0</span><br><span class="line">&lt;&lt; -3</span><br><span class="line">&lt;&lt; -2</span><br><span class="line">&lt;&lt; -1</span><br><span class="line">&lt;&lt; 0</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>让我们来看看余数运算符是如何工作的。<br>要计算 <code>9 % 4</code>，首先要确定 <code>9</code> 中可以包含多少个 <code>4</code>：</p>
+<p><img src="/remainderInteger"></p>
+<p>我们可以在 <code>9</code> 中容纳两个 <code>4</code>，剩余的是 <code>1</code>（用橙色表示）。</p>
+<p>在 Swift 中，这可以写作：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">9</span> <span class="operator">%</span> <span class="number">4</span>    <span class="comment">// 等于 1</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `arithmeticOperators`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; let r5 =</span><br><span class="line">-&gt; 9 % 4    // equals 1</span><br><span class="line">&gt;&gt; assert(r5 == 1)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>为了确定 <code>a % b</code> 的答案，<code>%</code> 运算符计算以下等式并返回 <code>余数</code> 作为输出：</p>
+<p><code>a</code> &#x3D; (<code>b</code> x <code>某个乘数</code>) + <code>余数</code></p>
+<p>其中 <code>某个乘数</code> 是 <code>b</code> 在 <code>a</code> 中能容纳的最大倍数。</p>
+<p>将 <code>9</code> 和 <code>4</code> 代入此等式，得：</p>
+<p><code>9</code> &#x3D; (<code>4</code> x <code>2</code>) + <code>1</code></p>
+<p>当计算 <code>a</code> 为负值时，采用相同的方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">-</span><span class="number">9</span> <span class="operator">%</span> <span class="number">4</span>   <span class="comment">// 等于 -1</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `arithmeticOperators`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; let r6 =</span><br><span class="line">-&gt; -9 % 4   // equals -1</span><br><span class="line">&gt;&gt; assert(r6 == -1)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>将 <code>-9</code> 和 <code>4</code> 代入等式，得：</p>
+<p><code>-9</code> &#x3D; (<code>4</code> x <code>-2</code>) + <code>-1</code></p>
+<p>因此余数值为 <code>-1</code>。</p>
+<p>对于 b 为负值的情况，其符号将被忽略。这意味着 <code>a % b</code> 和 <code>a % -b</code> 总是给出相同的答案。</p>
+<h3 id="一元负号运算符"><a href="#一元负号运算符" class="headerlink" title="一元负号运算符"></a>一元负号运算符</h3><p>数值的正负号可以使用前缀 <code>-</code> 切换，称为<em>一元负号运算符</em>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> three <span class="operator">=</span> <span class="number">3</span></span><br><span class="line"><span class="keyword">let</span> minusThree <span class="operator">=</span> <span class="operator">-</span>three       <span class="comment">// minusThree 等于 -3</span></span><br><span class="line"><span class="keyword">let</span> plusThree <span class="operator">=</span> <span class="operator">-</span>minusThree   <span class="comment">// plusThree 等于 3，或 &quot;负负三&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!-- - test: `arithmeticOperators`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let three = 3</span><br><span class="line">-&gt; let minusThree = -three       // minusThree 等于 -3</span><br><span class="line">-&gt; let plusThree = -minusThree   // plusThree 等于 3, 也就是 &quot;减去减去三&quot;</span><br><span class="line">``` --&gt;</span><br><span class="line"></span><br><span class="line">一元负号运算符（`-`）直接加在它所作用的值前面，中间没有任何空格。</span><br><span class="line"></span><br><span class="line">### 一元正号运算符</span><br><span class="line"></span><br><span class="line">*一元正号运算符*（`+`）只是返回它所作用的值，不做任何改变：</span><br><span class="line"></span><br><span class="line">```swift</span><br><span class="line">let minusSix = -6</span><br><span class="line">let alsoMinusSix = +minusSix  // alsoMinusSix 等于 -6  </span><br></pre></td></tr></table></figure>
+
+<!-- - test: `arithmeticOperators`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let minusSix = -6</span><br><span class="line">-&gt; let alsoMinusSix = +minusSix  // alsoMinusSix 等于 -6</span><br><span class="line">&gt;&gt; assert(alsoMinusSix == minusSix)</span><br><span class="line">``` --&gt;</span><br><span class="line"></span><br><span class="line">虽然一元加运算符实际上什么也没做，但是当你使用一元减运算符表示负数时，你可以使用它来使你的代码对正数也保持对称性。</span><br><span class="line"></span><br><span class="line">## 复合赋值运算符</span><br><span class="line"></span><br><span class="line">与 C 语言一样，Swift 提供了*复合赋值运算符*，它将赋值（`=`）与另一个操作结合起来。</span><br><span class="line">一个例子是*加法赋值运算符*（`+=`）：</span><br><span class="line"></span><br><span class="line">```swift</span><br><span class="line">var a = 1</span><br><span class="line">a += 2</span><br><span class="line">// a 现在等于 3</span><br></pre></td></tr></table></figure>
+
+<!-- - test: `compoundAssignment`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var a = 1</span><br><span class="line">-&gt; a += 2</span><br><span class="line">/&gt; a 现在等于 \(a)</span><br><span class="line">&lt;/ a 现在等于 3</span><br><span class="line">``` --&gt;</span><br><span class="line"></span><br><span class="line">表达式 `a += 2` 是 `a = a + 2` 的简写。</span><br><span class="line">实际上，加法和赋值被合并成一个同时执行这两个任务的运算符。</span><br><span class="line"></span><br><span class="line">&gt; 注意: 复合赋值运算符不会返回值。</span><br><span class="line">&gt; 例如，你不能写 `let b = a += 2`。</span><br><span class="line"></span><br><span class="line">有关 Swift 标准库提供的运算符的信息，请参阅 [Operator Declarations](https://developer.apple.com/documentation/swift/operator_declarations)。</span><br><span class="line"></span><br><span class="line">## 比较运算符</span><br><span class="line"></span><br><span class="line">Swift 支持以下比较运算符：</span><br><span class="line"></span><br><span class="line">- 等于（`a == b`）</span><br><span class="line">- 不等于（`a != b`）</span><br><span class="line">- 大于（`a &gt; b`）</span><br><span class="line">- 小于（`a &lt; b`） </span><br><span class="line">- 大于等于（`a &gt;= b`）</span><br><span class="line">- 小于等于（`a &lt;= b`）</span><br><span class="line"></span><br><span class="line">&gt; 注意: Swift 还提供了两个*标识运算符*（`===` 和 `!==`），</span><br><span class="line">&gt; 你可以用它们来测试两个对象引用是否指向同一个对象实例。</span><br><span class="line">&gt; 更多信息请参阅 &lt;doc:ClassesAndStructures#恒等运算符&gt;。</span><br><span class="line"></span><br><span class="line">每个比较运算符都返回一个 `Bool` 值来指示语句是否为真：</span><br><span class="line"></span><br><span class="line">```swift</span><br><span class="line">1 == 1   // true 因为 1 等于 1</span><br><span class="line">2 != 1   // true 因为 2 不等于 1</span><br><span class="line">2 &gt; 1    // true 因为 2 大于 1 </span><br><span class="line">1 &lt; 2    // true 因为 1 小于 2</span><br><span class="line">1 &gt;= 1   // true 因为 1 大于等于 1</span><br><span class="line">2 &lt;= 1   // false 因为 2 不小于等于 1</span><br></pre></td></tr></table></figure>
+
+<!-- - test: `comparisonOperators`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; assert(</span><br><span class="line">-&gt; 1 == 1   // true 因为 1 等于 1</span><br><span class="line">&gt;&gt; )</span><br><span class="line">&gt;&gt; assert(</span><br><span class="line">-&gt; 2 != 1   // true 因为 2 不等于 1</span><br><span class="line">&gt;&gt; )</span><br><span class="line">&gt;&gt; assert(</span><br><span class="line">-&gt; 2 &gt; 1    // true 因为 2 大于 1</span><br><span class="line">&gt;&gt; )</span><br><span class="line">&gt;&gt; assert(</span><br><span class="line">-&gt; 1 &lt; 2    // true 因为 1 小于 2</span><br><span class="line">&gt;&gt; )</span><br><span class="line">&gt;&gt; assert(</span><br><span class="line">-&gt; 1 &gt;= 1   // true 因为 1 大于等于 1</span><br><span class="line">&gt;&gt; )</span><br><span class="line">&gt;&gt; assert( !(</span><br><span class="line">-&gt; 2 &lt;= 1   // false 因为 2 不小于等于 1</span><br><span class="line">&gt;&gt; ) )</span><br><span class="line">``` --&gt;</span><br><span class="line"></span><br><span class="line">比较运算符通常用于条件语句中，例如 `if` 语句：</span><br><span class="line"></span><br><span class="line">```swift</span><br><span class="line">let name = &quot;world&quot;</span><br><span class="line">if name == &quot;world&quot; &#123;</span><br><span class="line">    print(&quot;hello, world&quot;) </span><br><span class="line">&#125; else &#123;</span><br><span class="line">    print(&quot;I&#x27;m sorry \(name), but I don&#x27;t recognize you&quot;)</span><br><span class="line">&#125; // 打印 &quot;hello, world&quot;, 因为 name 确实等于 &quot;world&quot;。</span><br></pre></td></tr></table></figure>
+
+<!-- - test: `comparisonOperators`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let name = &quot;world&quot;</span><br><span class="line">-&gt; if name == &quot;world&quot; &#123;</span><br><span class="line">      print(&quot;hello, world&quot;)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      print(&quot;对不起 \(name), 但我不认识你&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&lt;&lt; hello, world</span><br><span class="line">// 打印 &quot;hello, world&quot;, 因为 name 确实等于 &quot;world&quot;。</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>关于 <code>if</code> 语句的更多信息，请参阅 <a href="doc:ControlFlow">doc:ControlFlow</a>。</p>
+<p>如果两个元组具有相同的类型和相同数量的值，则可以比较它们。<br>元组是从左到右逐个值进行比较的，直到比较发现两个不相等的值为止。<br>这两个值将进行比较，并且该比较的结果决定了整个元组比较的结果。<br>如果所有元素都相等，那么这两个元组本身就相等。<br>例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">1</span>, <span class="string">&quot;zebra&quot;</span>) <span class="operator">&lt;</span> (<span class="number">2</span>, <span class="string">&quot;apple&quot;</span>)   <span class="comment">// 为 true，因为 1 小于 2; &quot;zebra&quot; 和 &quot;apple&quot; 未比较</span></span><br><span class="line">(<span class="number">3</span>, <span class="string">&quot;apple&quot;</span>) <span class="operator">&lt;</span> (<span class="number">3</span>, <span class="string">&quot;bird&quot;</span>)    <span class="comment">// 为 true，因为 3 等于 3，而 &quot;apple&quot; 小于 &quot;bird&quot;</span></span><br><span class="line">(<span class="number">4</span>, <span class="string">&quot;dog&quot;</span>) <span class="operator">==</span> (<span class="number">4</span>, <span class="string">&quot;dog&quot;</span>)      <span class="comment">// 为 true，因为 4 等于 4，而 &quot;dog&quot; 等于 &quot;dog&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `tuple-comparison-operators`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; let a =</span><br><span class="line">-&gt; (1, &quot;zebra&quot;) &lt; (2, &quot;apple&quot;)   // 为 true，因为 1 小于 2; &quot;zebra&quot; 和 &quot;apple&quot; 未比较aren&#x27;t compared</span><br><span class="line">&gt;&gt; let b =</span><br><span class="line">-&gt; (3, &quot;apple&quot;) &lt; (3, &quot;bird&quot;)    // 为 true，因为 3 等于 3，而 &quot;apple&quot; 小于 &quot;bird&quot;</span><br><span class="line">&gt;&gt; let c =</span><br><span class="line">-&gt; (4, &quot;dog&quot;) == (4, &quot;dog&quot;)      // 为 true，因为 4 等于 4，而 &quot;dog&quot; 等于 &quot;dog&quot;</span><br><span class="line">&gt;&gt; print(a, b, c)</span><br><span class="line">&lt;&lt; true true true</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>在上面的示例中，您可以看到第一行的从左到右比较行为。<br>因为 <code>1</code> 小于 <code>2</code>，所以 <code>(1, &quot;zebra&quot;)</code> 被认为小于 <code>(2, &quot;apple&quot;)</code>，而不管元组中的任何其他值如何。<br>即使 <code>&quot;zebra&quot;</code> 不小于 <code>&quot;apple&quot;</code>，也无关紧要，因为比较已经由元组的第一个元素决定了。<br>但是，当元组的第一个元素相同时，它们的第二个元素<em>会</em>进行比较 —— 这就是第二行和第三行发生的情况。</p>
+<p>只有当给定的运算符可以应用于各自元组中的每个值时，元组才能与该运算符进行比较。例如，如下面的代码所示，您可以比较两个类型为 <code>(String, Int)</code> 的元组，因为 <code>String</code> 和 <code>Int</code> 值都可以使用 <code>&lt;</code> 运算符进行比较。相反，类型为 <code>(String, Bool)</code> 的两个元组不能使用 <code>&lt;</code> 运算符进行比较，因为 <code>&lt;</code> 运算符不能应用于 <code>Bool</code> 值。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(<span class="string">&quot;blue&quot;</span>, <span class="operator">-</span><span class="number">1</span>) <span class="operator">&lt;</span> (<span class="string">&quot;purple&quot;</span>, <span class="number">1</span>)        <span class="comment">// 可以，计算结果为 true</span></span><br><span class="line">(<span class="string">&quot;blue&quot;</span>, <span class="literal">false</span>) <span class="operator">&lt;</span> (<span class="string">&quot;purple&quot;</span>, <span class="literal">true</span>)  <span class="comment">// 错误，因为 &lt; 不能比较布尔值</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `tuple-comparison-operators-err`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; _ =</span><br><span class="line">-&gt; (&quot;blue&quot;, -1) &lt; (&quot;purple&quot;, 1)        // 可以，计算结果为 true</span><br><span class="line">&gt;&gt; _ =</span><br><span class="line">-&gt; (&quot;blue&quot;, false) &lt; (&quot;purple&quot;, true)  // 错误，因为 &lt; 不能比较布尔值</span><br><span class="line">!$ error: type &#x27;(String, Bool)&#x27; cannot conform to &#x27;Comparable&#x27;</span><br><span class="line">!! (&quot;blue&quot;, false) &lt; (&quot;purple&quot;, true)  // 错误，因为 &lt; 不能比较布尔值</span><br><span class="line">!!                 ^</span><br><span class="line">!$ note: only concrete types such as structs, enums and classes can conform to protocols</span><br><span class="line">!! (&quot;blue&quot;, false) &lt; (&quot;purple&quot;, true)  // 错误，因为 &lt; 不能比较布尔值</span><br><span class="line">!!                 ^</span><br><span class="line">!$ note: required by referencing operator function &#x27;&lt;&#x27; on &#x27;Comparable&#x27; where &#x27;Self&#x27; = &#x27;(String, Bool)&#x27;</span><br><span class="line">!! (&quot;blue&quot;, false) &lt; (&quot;purple&quot;, true)  // 错误，因为 &lt; 不能比较布尔值</span><br><span class="line">!!                 ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `tuple-comparison-operators-ok`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; let x = (&quot;blue&quot;, -1) &lt; (&quot;purple&quot;, 1)        // 可以，计算结果为 true</span><br><span class="line">&gt;&gt; print(x)</span><br><span class="line">&lt;&lt; true</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>注意: Swift 标准库包含用于具有少于七个元素的元组的比较运算符。<br>要比较具有七个或更多元素的元组，<br>您必须自己实现比较运算符。</p>
+</blockquote>
+<!--
+  TODO: 这些默认操作于哪些类型？
+  它们如何处理字符串？
+  如果是自定义的类型又会怎样？
+-->
+
+<h2 id="三元条件运算符"><a href="#三元条件运算符" class="headerlink" title="三元条件运算符"></a>三元条件运算符</h2><p>三元条件运算符是一种特殊的运算符，用于根据给定条件选择两个值中的一个。它由三个部分组成，语法格式为<code>问题 ? 答案1 : 答案2</code>。它根据问题的真假值来选择计算哪个表达式，并返回该表达式的值。如果<code>问题</code>为真，它会计算<code>答案1</code>并返回其值;否则，它会计算<code>答案2</code>并返回其值。</p>
+<p>三元条件运算符是以下代码的简写形式：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> question {</span><br><span class="line">    answer1</span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">    answer2</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `ternaryConditionalOperatorOutline`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; let question = true</span><br><span class="line">&gt;&gt; let answer1 = true</span><br><span class="line">&gt;&gt; let answer2 = true</span><br><span class="line">-&gt; if question &#123;</span><br><span class="line">      answer1</span><br><span class="line">   &#125; else &#123;</span><br><span class="line">      answer2</span><br><span class="line">   &#125;</span><br><span class="line">!! /tmp/swifttest.swift:5:4: warning: expression of type &#x27;Bool&#x27; is unused</span><br><span class="line">!! answer1</span><br><span class="line">!! ^~~~~~~</span><br><span class="line">!! /tmp/swifttest.swift:7:4: warning: expression of type &#x27;Bool&#x27; is unused</span><br><span class="line">!! answer2</span><br><span class="line">!! ^~~~~~~</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  FIXME 这个例子含糊其辞的地方太多了。
+  Swift 中并没有 'if' 表达式。
+-->
+
+<p>下面是一个例子，用于计算表格行的高度。如果该行有标题，则行高应比内容高度高 50 点；如果该行没有标题，则行高应比内容高度高 20 点：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> contentHeight <span class="operator">=</span> <span class="number">40</span></span><br><span class="line"><span class="keyword">let</span> hasHeader <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line"><span class="keyword">let</span> rowHeight <span class="operator">=</span> contentHeight <span class="operator">+</span> (hasHeader <span class="operator">?</span> <span class="number">50</span> : <span class="number">20</span>)</span><br><span class="line"><span class="comment">// rowHeight 等于 90</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `ternaryConditionalOperatorPart1`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let contentHeight = 40</span><br><span class="line">-&gt; let hasHeader = true</span><br><span class="line">-&gt; let rowHeight = contentHeight + (hasHeader ? 50 : 20)</span><br><span class="line">/&gt; rowHeight is equal to \(rowHeight)</span><br><span class="line">&lt;/ rowHeight is equal to 90</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>上面的例子是下面代码的简写形式：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> contentHeight <span class="operator">=</span> <span class="number">40</span></span><br><span class="line"><span class="keyword">let</span> hasHeader <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line"><span class="keyword">let</span> rowHeight: <span class="type">Int</span></span><br><span class="line"><span class="keyword">if</span> hasHeader &#123;</span><br><span class="line">    rowHeight <span class="operator">=</span> contentHeight <span class="operator">+</span> <span class="number">50</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    rowHeight <span class="operator">=</span> contentHeight <span class="operator">+</span> <span class="number">20</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// rowHeight 等于 90</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `ternaryConditionalOperatorPart2`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let contentHeight = 40</span><br><span class="line">-&gt; let hasHeader = true</span><br><span class="line">-&gt; let rowHeight: Int</span><br><span class="line">-&gt; if hasHeader &#123;</span><br><span class="line">      rowHeight = contentHeight + 50</span><br><span class="line">   &#125; else &#123;</span><br><span class="line">      rowHeight = contentHeight + 20</span><br><span class="line">   &#125;</span><br><span class="line">/&gt; rowHeight is equal to \(rowHeight)</span><br><span class="line">&lt;/ rowHeight is equal to 90</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>第一个例子使用三元条件运算符意味着<code>rowHeight</code>可以在一行代码中设置为正确的值，这比第二个例子中使用的代码更加简洁。</p>
+<p>三元条件运算符提供了一种有效的简写方式来决定考虑两个表达式中的哪一个。不过，要谨慎使用三元条件运算符。如果过度使用，代码的可读性会下降。避免将多个三元条件运算符实例组合成一个复合语句。</p>
+<h2 id="空合并运算符"><a href="#空合并运算符" class="headerlink" title="空合并运算符"></a>空合并运算符</h2><p><em>空合并运算符</em>（<code>a ?? b</code>）如果可选项<code>a</code>包含一个值，则会解包该值，否则会返回默认值<code>b</code>（如果<code>a</code>为<code>nil</code>）。表达式<code>a</code>始终是一个可选类型。表达式<code>b</code>必须与存储在<code>a</code>中的类型相匹配。</p>
+<p>空合并运算符是以下代码的简写形式：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a <span class="operator">!=</span> <span class="literal">nil</span> <span class="operator">?</span> a<span class="operator">!</span> : b</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `nilCoalescingOperatorOutline`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; var a: Int?</span><br><span class="line">&gt;&gt; let b = 42</span><br><span class="line">&gt;&gt; let c =</span><br><span class="line">-&gt; a != nil ? a! : b</span><br><span class="line">&gt;&gt; print(c)</span><br><span class="line">&lt;&lt; 42</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>上面的代码使用三元条件运算符和强制解包（<code>a!</code>）来访问 <code>a</code> 中包装的值（当 <code>a</code> 不是 <code>nil</code> 时），否则返回 <code>b</code>。空合并运算符提供了一种更优雅的方式，以简洁和可读的形式封装这种条件检查和解包。</p>
+<blockquote>
+<p>注意: 如果 <code>a</code> 的值是非 <code>nil</code> 的，则不会计算 <code>b</code> 的值。这被称为<em>短路求值</em>。</p>
+</blockquote>
+<p>下面的示例使用空合并运算符在默认颜色名称和可选用户定义的颜色名称之间进行选择：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> defaultColorName <span class="operator">=</span> <span class="string">&quot;red&quot;</span></span><br><span class="line"><span class="keyword">var</span> userDefinedColorName: <span class="type">String</span>?   <span class="comment">// 默认为 nil</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> colorNameToUse <span class="operator">=</span> userDefinedColorName <span class="operator">??</span> defaultColorName</span><br><span class="line"><span class="comment">// userDefinedColorName 为空，所以 colorNameToUse 为默认值 &quot;red&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `nilCoalescingOperator`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let defaultColorName = &quot;red&quot;</span><br><span class="line">-&gt; var userDefinedColorName: String?   // 默认为 nil</span><br><span class="line">---</span><br><span class="line">-&gt; var colorNameToUse = userDefinedColorName ?? defaultColorName</span><br><span class="line">/&gt; userDefinedColorName 为空，所以 colorNameToUse 为默认值 \&quot;\(colorNameToUse)\&quot;</span><br><span class="line">&lt;/ userDefinedColorName 为空，所以 colorNameToUse 为默认值 &quot;red&quot;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>变量 <code>userDefinedColorName</code> 被定义为一个可选的 <code>String</code> 类型，默认值为 <code>nil</code>。由于 <code>userDefinedColorName</code> 是一个可选类型，你可以使用空合并运算符来考虑它的值。在上面的例子中，该运算符被用于确定一个名为 <code>colorNameToUse</code> 的 <code>String</code> 变量的初始值。因为 <code>userDefinedColorName</code> 是 <code>nil</code>，所以表达式 <code>userDefinedColorName ?? defaultColorName</code> 返回 <code>defaultColorName</code> 的值，即 <code>&quot;red&quot;</code>。</p>
+<p>如果你给 <code>userDefinedColorName</code> 赋予一个非 <code>nil</code> 的值，并再次执行 nil 合并运算符检查，那么 <code>userDefinedColorName</code> 包裹的值将被使用，而不是默认值：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">userDefinedColorName <span class="operator">=</span> <span class="string">&quot;green&quot;</span> </span><br><span class="line">colorNameToUse <span class="operator">=</span> userDefinedColorName <span class="operator">??</span> defaultColorName</span><br><span class="line"><span class="comment">// userDefinedColorName 不是 nil，所以 colorNameToUse 被设置为 &quot;green&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `nilCoalescingOperator`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; userDefinedColorName = &quot;green&quot;</span><br><span class="line">-&gt; colorNameToUse = userDefinedColorName ?? defaultColorName</span><br><span class="line">/&gt; userDefinedColorName 不是 nil，所以 colorNameToUse 被设置为 \&quot;\(colorNameToUse)\&quot;</span><br><span class="line">&lt;/ userDefinedColorName 不是 nil，所以 colorNameToUse 被设置为 &quot;green&quot;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="区间运算符"><a href="#区间运算符" class="headerlink" title="区间运算符"></a>区间运算符</h2><p>Swift 包含几个<em>区间运算符</em>，这些是表达一个值范围的快捷方式。</p>
+<h3 id="闭区间运算符"><a href="#闭区间运算符" class="headerlink" title="闭区间运算符"></a>闭区间运算符</h3><p><em>闭区间运算符</em>（<code>a...b</code>）定义了一个从 <code>a</code> 到 <code>b</code> 的范围，包括 <code>a</code> 和 <code>b</code> 的值。<code>a</code> 的值不能大于 <code>b</code>。</p>
+<!--
+  - test: `closedRangeStartCanBeLessThanEnd`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let range = 1...2</span><br><span class="line">&gt;&gt; print(type(of: range))</span><br><span class="line">&lt;&lt; ClosedRange&lt;Int&gt;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `closedRangeStartCanBeTheSameAsEnd`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let range = 1...1</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `closedRangeStartCannotBeGreaterThanEnd`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let range = 1...0</span><br><span class="line">xx assertion</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>闭区间运算符在需要使用所有值的情况下很有用，例如在 <code>for-in</code> 循环中：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> index <span class="keyword">in</span> <span class="number">1</span><span class="operator">...</span><span class="number">5</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;<span class="subst">\(index)</span> 乘以 5 等于 <span class="subst">\(index <span class="operator">*</span> <span class="number">5</span>)</span>&quot;</span>) </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 1 乘以 5 等于 5</span></span><br><span class="line"><span class="comment">// 2 乘以 5 等于 10</span></span><br><span class="line"><span class="comment">// 3 乘以 5 等于 15 </span></span><br><span class="line"><span class="comment">// 4 乘以 5 等于 20</span></span><br><span class="line"><span class="comment">// 5 乘以 5 等于 25</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `rangeOperators`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; for index in 1...5 &#123;</span><br><span class="line">      print(&quot;\(index) 乘以 5 等于 \(index * 5)&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;/ 1 乘以 5 等于 5</span><br><span class="line">&lt;/ 2 乘以 5 等于 10</span><br><span class="line">&lt;/ 3 乘以 5 等于 15 </span><br><span class="line">&lt;/ 4 乘以 5 等于 20</span><br><span class="line">&lt;/ 5 乘以 5 等于 25</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>更多关于 <code>for-in</code> 循环的内容，请参阅 <a href="doc:ControlFlow">doc:ControlFlow</a>。</p>
+<h3 id="半开区间运算符"><a href="#半开区间运算符" class="headerlink" title="半开区间运算符"></a>半开区间运算符</h3><p><em>半开区间运算符</em>（<code>a..&lt;b</code>）定义了一个从 <code>a</code> 到 <code>b</code> 但不包括 <code>b</code> 的范围。它被称为<em>半开</em>是因为它包含第一个值但不包含最后一个值。与闭区间运算符一样，<code>a</code> 的值不能大于 <code>b</code>。如果 <code>a</code> 等于 <code>b</code>，那么结果范围将是空的。</p>
+<!--
+  - test: `halfOpenRangeStartCanBeLessThanEnd`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let range = 1..&lt;2</span><br><span class="line">&gt;&gt; print(type(of: range))</span><br><span class="line">&lt;&lt; Range&lt;Int&gt;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `halfOpenRangeStartCanBeTheSameAsEnd`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let range = 1..&lt;1</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `halfOpenRangeStartCannotBeGreaterThanEnd`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let range = 1..&lt;0</span><br><span class="line">xx assertion</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>半开区间对于处理从基数 0 开始的列表（如数组）时特别有用，因为它可以计数到列表长度（但不包括列表长度）：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> names <span class="operator">=</span> [<span class="string">&quot;Anna&quot;</span>, <span class="string">&quot;Alex&quot;</span>, <span class="string">&quot;Brian&quot;</span>, <span class="string">&quot;Jack&quot;</span>] </span><br><span class="line"><span class="keyword">let</span> count <span class="operator">=</span> names.count</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span><span class="operator">..&lt;</span>count &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;第 <span class="subst">\(i <span class="operator">+</span> <span class="number">1</span>)</span> 个人叫 <span class="subst">\(names[i])</span>&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 第 1 个人叫 Anna</span></span><br><span class="line"><span class="comment">// 第 2 个人叫 Alex</span></span><br><span class="line"><span class="comment">// 第 3 个人叫 Brian </span></span><br><span class="line"><span class="comment">// 第 4 个人叫 Jack</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `rangeOperators`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let names = [&quot;Anna&quot;, &quot;Alex&quot;, &quot;Brian&quot;, &quot;Jack&quot;]</span><br><span class="line">-&gt; let count = names.count</span><br><span class="line">&gt;&gt; assert(count == 4)</span><br><span class="line">-&gt; for i in 0..&lt;count &#123;</span><br><span class="line">      print(&quot;第 \(i + 1) 个人叫 \(names[i])&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;/ 第 1 个人叫 Anna</span><br><span class="line">&lt;/ 第 2 个人叫 Alex</span><br><span class="line">&lt;/ 第 3 个人叫 Brian </span><br><span class="line">&lt;/ 第 4 个人叫 Jack</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>注意数组包含四个元素，但 <code>0..&lt;count</code> 只计数到 <code>3</code>（数组中最后一个元素的索引），因为它是一个半开区间。<br>有关数组的更多信息，请参阅 <a href="doc:CollectionTypes#数组">doc:CollectionTypes#数组</a>。</p>
+<h3 id="单侧区间"><a href="#单侧区间" class="headerlink" title="单侧区间"></a>单侧区间</h3><p>闭区间运算符有一种替代形式，用于一直延伸到尽可能远的区间 —— 例如，一个包含从索引 2 到数组末尾所有元素的区间。<br>在这些情况下，你可以省略区间运算符的一侧值。<br>这种区间被称为<em>单侧区间</em>，因为运算符只有一侧有值。<br>例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> names[<span class="number">2</span><span class="operator">...</span>] &#123; <span class="built_in">print</span>(name) &#125;</span><br><span class="line"><span class="comment">// Brian</span></span><br><span class="line"><span class="comment">// Jack</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> names[<span class="operator">...</span><span class="number">2</span>] &#123; <span class="built_in">print</span>(name) &#125;</span><br><span class="line"><span class="comment">// Anna</span></span><br><span class="line"><span class="comment">// Alex</span></span><br><span class="line"><span class="comment">// Brian </span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `rangeOperators`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-&gt; for name in names[2...] &#123;</span><br><span class="line">       print(name)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;/ Brian</span><br><span class="line">&lt;/ Jack</span><br><span class="line">---</span><br><span class="line">-&gt; for name in names[...2] &#123;</span><br><span class="line">       print(name)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;/ Anna</span><br><span class="line">&lt;/ Alex</span><br><span class="line">&lt;/ Brian</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>半开区间运算符也有一种只写最后一个值的单侧形式。<br>就像在两侧都包含值时一样，最后一个值不包含在区间内。<br>例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> names[<span class="operator">..&lt;</span><span class="number">2</span>] &#123; <span class="built_in">print</span>(name) &#125;</span><br><span class="line"><span class="comment">// Anna</span></span><br><span class="line"><span class="comment">// Alex</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `rangeOperators`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; for name in names[..&lt;2] &#123;</span><br><span class="line">       print(name)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;/ Anna</span><br><span class="line">&lt;/ Alex</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>单侧区间不仅可以用于下标，还可以用于其他上下文。<br>对于省略了第一个值的单侧区间，你不能遍历它，因为不清楚他从哪里开始迭代。<br>你<em>可以</em>遍历省略了最后一个值的单侧区间；但是，由于该区间无限延伸，请确保为循环添加一个显式的结束条件。<br>你还可以检查单侧区间是否包含特定值，如下面的代码所示。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> range <span class="operator">=</span> <span class="operator">...</span><span class="number">5</span></span><br><span class="line">range.contains(<span class="number">7</span>)   <span class="comment">// false</span></span><br><span class="line">range.contains(<span class="number">4</span>)   <span class="comment">// true</span></span><br><span class="line">range.contains(<span class="operator">-</span><span class="number">1</span>)  <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `rangeOperators`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let range = ...5</span><br><span class="line">&gt;&gt; print(type(of: range))</span><br><span class="line">&lt;&lt; PartialRangeThrough&lt;Int&gt;</span><br><span class="line">&gt;&gt; let a =</span><br><span class="line">-&gt; range.contains(7)   // false</span><br><span class="line">&gt;&gt; let b =</span><br><span class="line">-&gt; range.contains(4)   // true</span><br><span class="line">&gt;&gt; let c =</span><br><span class="line">-&gt; range.contains(-1)  // true</span><br><span class="line">&gt;&gt; print(a, b, c)</span><br><span class="line">&lt;&lt; false true true</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h2><p><em>逻辑运算符</em>修改或组合布尔逻辑值 <code>true</code> 和 <code>false</code>。<br>Swift 支持 C 语言中的三个标准逻辑运算符：</p>
+<ul>
+<li>逻辑非（<code>!a</code>）</li>
+<li>逻辑与（<code>a &amp;&amp; b</code>）</li>
+<li>逻辑或（<code>a || b</code>）</li>
+</ul>
+<h3 id="逻辑非运算符"><a href="#逻辑非运算符" class="headerlink" title="逻辑非运算符"></a>逻辑非运算符</h3><p><em>逻辑非运算符</em>（<code>!a</code>）反转布尔值，使 <code>true</code> 变为 <code>false</code>，<code>false</code> 变为 <code>true</code>。</p>
+<p>逻辑非运算符是一个前置运算符，紧跟在它所操作的值之前，中间没有空格。<br>它可以读作”非 <code>a</code>“，如下例所示：</p>
+<p>让我们来看一个简单的例子：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> allowedEntry <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line"><span class="keyword">if</span> <span class="operator">!</span>allowedEntry &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;ACCESS DENIED&quot;</span>)</span><br><span class="line">&#125; <span class="comment">// 打印 &quot;ACCESS DENIED&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `logicalOperators`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let allowedEntry = false</span><br><span class="line">-&gt; if !allowedEntry &#123;</span><br><span class="line">      print(&quot;ACCESS DENIED&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- ACCESS DENIED</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>短语 <code>if !allowedEntry</code> 可以理解为 “如果不允许进入”。只有当 “不允许进入” 为真时，才会执行后续的那一行；也就是说，如果 <code>allowedEntry</code> 为 <code>false</code>。</p>
+<p>正如这个例子所示，谨慎选择布尔常量和变量名可以帮助保持代码的可读性和简洁性，同时避免双重否定或令人困惑的逻辑语句。</p>
+<h3 id="逻辑与运算符"><a href="#逻辑与运算符" class="headerlink" title="逻辑与运算符"></a>逻辑与运算符</h3><p><em>逻辑与运算符</em>（<code>a &amp;&amp; b</code>） 创建逻辑表达式，其中两个值都必须为 <code>true</code>，整个表达式才为 <code>true</code>。如果任一值为 <code>false</code>，整个表达式也将为 <code>false</code>。事实上，如果<em>第一个</em>值为 <code>false</code>，第二个值甚至不会被评估，因为它无论如何都不可能使整个表达式等于 <code>true</code>。这被称为<em>短路求值</em>。</p>
+<p>下面的例子考虑了两个 <code>Bool</code> 值，只有在两个值都为 <code>true</code> 时才允许访问：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> enteredDoorCode <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line"><span class="keyword">let</span> passedRetinaScan <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line"><span class="keyword">if</span> enteredDoorCode <span class="operator">&amp;&amp;</span> passedRetinaScan &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Welcome!&quot;</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;ACCESS DENIED&quot;</span>)</span><br><span class="line">&#125; <span class="comment">// 打印 &quot;ACCESS DENIED&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `logicalOperators`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let enteredDoorCode = true</span><br><span class="line">-&gt; let passedRetinaScan = false</span><br><span class="line">-&gt; if enteredDoorCode &amp;&amp; passedRetinaScan &#123;</span><br><span class="line">      print(&quot;Welcome!&quot;)</span><br><span class="line">   &#125; else &#123;</span><br><span class="line">      print(&quot;ACCESS DENIED&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- ACCESS DENIED</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="逻辑或运算符"><a href="#逻辑或运算符" class="headerlink" title="逻辑或运算符"></a>逻辑或运算符</h3><p><em>逻辑或运算符</em>（<code>a || b</code>） 是由两个相邻的管道字符组成的中置运算符。你可以使用它来创建逻辑表达式，在这种表达式中，只要<em>其中一个</em>值为 <code>true</code>，整个表达式就为 <code>true</code>。</p>
+<p>与上面的逻辑与运算符一样，逻辑或运算符也使用短路求值来考虑它的表达式。如果逻辑或表达式的左侧为 <code>true</code>，右侧就不会被评估，因为它无法改变整个表达式的结果。</p>
+<p>在下面的例子中，第一个 <code>Bool</code> 值（<code>hasDoorKey</code>） 为 <code>false</code>，但第二个值（<code>knowsOverridePassword</code>） 为 <code>true</code>。由于有一个值为 <code>true</code>，整个表达式也将评估为 <code>true</code>，因此允许访问：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> hasDoorKey <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line"><span class="keyword">let</span> knowsOverridePassword <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line"><span class="keyword">if</span> hasDoorKey <span class="operator">||</span> knowsOverridePassword &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Welcome!&quot;</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;ACCESS DENIED&quot;</span>)</span><br><span class="line">&#125; <span class="comment">// 打印 &quot;Welcome!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `logicalOperators`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let hasDoorKey = false</span><br><span class="line">-&gt; let knowsOverridePassword = true</span><br><span class="line">-&gt; if hasDoorKey || knowsOverridePassword &#123;</span><br><span class="line">      print(&quot;Welcome!&quot;)</span><br><span class="line">   &#125; else &#123;</span><br><span class="line">      print(&quot;ACCESS DENIED&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- Welcome!</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="组合逻辑运算符"><a href="#组合逻辑运算符" class="headerlink" title="组合逻辑运算符"></a>组合逻辑运算符</h3><p>你可以组合多个逻辑运算符来创建更长的复合表达式：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> enteredDoorCode <span class="operator">&amp;&amp;</span> passedRetinaScan <span class="operator">||</span> hasDoorKey <span class="operator">||</span> knowsOverridePassword &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Welcome!&quot;</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;ACCESS DENIED&quot;</span>)</span><br><span class="line">&#125; <span class="comment">// 打印 &quot;Welcome!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `logicalOperators`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; if enteredDoorCode &amp;&amp; passedRetinaScan || hasDoorKey || knowsOverridePassword &#123;</span><br><span class="line">      print(&quot;Welcome!&quot;)</span><br><span class="line">   &#125; else &#123;</span><br><span class="line">      print(&quot;ACCESS DENIED&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- Welcome!</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>这个例子使用多个 <code>&amp;&amp;</code> 和 <code>||</code> 运算符来创建一个更长的复合表达式。然而，<code>&amp;&amp;</code> 和 <code>||</code> 运算符仍然只作用于两个值，所以这实际上是三个较小的表达式链接在一起。这个例子可以理解为：</p>
+<p>如果我们输入了正确的门禁代码并通过了视网膜扫描，或者我们有一把有效的门钥匙，或者我们知道紧急情况下的覆盖密码，那么就允许访问。</p>
+<p>根据 <code>enteredDoorCode</code>、<code>passedRetinaScan</code> 和 <code>hasDoorKey</code> 的值，前两个子表达式为 <code>false</code>。然而，由于知道紧急覆盖密码，整个复合表达式仍然评估为 <code>true</code>。</p>
+<blockquote>
+<p>注意: Swift 逻辑运算符 <code>&amp;&amp;</code> 和 <code>||</code> 遵循从左到右的结合顺序，这意味着带有多个逻辑运算符的复合表达式会首先评估最左边的子表达式。</p>
+</blockquote>
+<h3 id="显式括号"><a href="#显式括号" class="headerlink" title="显式括号"></a>显式括号</h3><p>有时即使不严格需要，也有必要使用括号来提高复杂表达式的可读性，让表达式的意图更加清晰。<br>在上面的门禁示例中，为复合表达式的第一部分添加括号是有用的，可以明确表达其意图：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (enteredDoorCode <span class="operator">&amp;&amp;</span> passedRetinaScan) <span class="operator">||</span> hasDoorKey <span class="operator">||</span> knowsOverridePassword &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Welcome!&quot;</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;ACCESS DENIED&quot;</span>)</span><br><span class="line">&#125; <span class="comment">// 打印 &quot;Welcome!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `logicalOperators`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; if (enteredDoorCode &amp;&amp; passedRetinaScan) || hasDoorKey || knowsOverridePassword &#123;</span><br><span class="line">      print(&quot;Welcome!&quot;)</span><br><span class="line">   &#125; else &#123;</span><br><span class="line">      print(&quot;ACCESS DENIED&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- Welcome!</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>括号明确表示前两个条件被视为整体逻辑中的一种可能状态。<br>虽然复合表达式的输出没有改变，但整体意图对读者来说更加清晰明了。<br>可读性永远比简洁性更重要，因此在有助于阐明意图的地方使用括号是很有必要的。</p>
+<!--
+此源文件属于 Swift.org 开源项目的一部分
+
+版权所有 (c) 2014 - 2022 Apple Inc. 及 Swift 项目作者
+根据 Apache License v2.0 许可证及运行库例外条款授权
+
+有关许可证信息，请参见 https://swift.org/LICENSE.txt
+有关 Swift 项目作者的列表，请参见 https://swift.org/CONTRIBUTORS.txt
+-->
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>BASICOPERATORS</li>
+          
+  </ul>
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.</span> <span class="nav-text">基本运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AF%E8%AF%AD"><span class="nav-number">1.1.</span> <span class="nav-text">术语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.2.</span> <span class="nav-text">赋值运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.3.</span> <span class="nav-text">算术运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E5%85%83%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.4.</span> <span class="nav-text">三元条件运算符</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

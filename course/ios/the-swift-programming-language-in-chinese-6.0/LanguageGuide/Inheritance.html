@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="继承通过子类化来添加或重写功能。 一个类可以从另一个类继承方法、属性和其他特性。当一个类从另一个类继承时，继承的类被称为子类，而被它继承的类被称为父类。继承是 Swift 中区别类与其他类型的基本特性。 Swift 中的类可以调用和访问属于其父类的方法、属性和下标，并且可以通过重写这些方法、属性和下标来优化或修改他们的行为。Swift 通过检查重写定义是否与父类定义相匹配来帮助确保您的覆盖是正确的">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/Inheritance.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="继承通过子类化来添加或重写功能。 一个类可以从另一个类继承方法、属性和其他特性。当一个类从另一个类继承时，继承的类被称为子类，而被它继承的类被称为父类。继承是 Swift 中区别类与其他类型的基本特性。 Swift 中的类可以调用和访问属于其父类的方法、属性和下标，并且可以通过重写这些方法、属性和下标来优化或修改他们的行为。Swift 通过检查重写定义是否与父类定义相匹配来帮助确保您的覆盖是正确的">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-08T08:32:48.700Z">
+<meta property="article:modified_time" content="2025-03-08T08:32:48.700Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/Inheritance">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>INHERITANCE</li>
+          
+  </ul>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h1 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h1><p>通过子类化来添加或重写功能。</p>
+<p>一个类可以从另一个类<em>继承</em>方法、属性和其他特性。当一个类从另一个类继承时，继承的类被称为<em>子类</em>，而被它继承的类被称为<em>父类</em>。继承是 Swift 中区别类与其他类型的基本特性。</p>
+<p>Swift 中的类可以调用和访问属于其父类的方法、属性和下标，并且可以通过重写这些方法、属性和下标来优化或修改他们的行为。Swift 通过检查重写定义是否与父类定义相匹配来帮助确保您的覆盖是正确的。</p>
+<p>类还可以为继承的属性添加属性观察器，以便在属性值发生变化时得到通知。无论最初是定义为存储属性还是计算属性，都可以为任何属性添加属性观察器。</p>
+<h2 id="定义基类"><a href="#定义基类" class="headerlink" title="定义基类"></a>定义基类</h2><p>如果一个类没有继承其他类，那他就是一个基类。</p>
+<blockquote>
+<p>注意: Swift 中没有统一的基类，所有类的起源都是平等的。您不指定父类的类会自动成为基类。</p>
+</blockquote>
+<p>下面的示例定义了一个名为 <code>Vehicle</code> 的基类。这个基类定义了一个名为 <code>currentSpeed</code> 的存储属性，默认值为 <code>0.0</code>（推断出属性类型为 <code>Double</code>）。<code>currentSpeed</code> 属性的值被一个只读计算 <code>String</code> 属性 <code>description</code> 用于创建车辆的描述。</p>
+<p><code>Vehicle</code> 基类还定义了一个名为 <code>makeNoise()</code> 的方法。这个方法对于基类 Vehicle 的实例不会做任何事情，但稍后会被 <code>Vehicle</code> 的子类自定义：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Vehicle</span> {</span><br><span class="line">    <span class="keyword">var</span> currentSpeed <span class="operator">=</span> <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">var</span> description: <span class="type">String</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"traveling at <span class="subst">\(currentSpeed)</span> miles per hour"</span></span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">makeNoise</span>() {</span><br><span class="line">        <span class="comment">// 不做任何事情 - 不是任何一辆车都会发出噪音。</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `inheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class Vehicle &#123;</span><br><span class="line">      var currentSpeed = 0.0</span><br><span class="line">      var description: String &#123;</span><br><span class="line">         return &quot;traveling at \(currentSpeed) miles per hour&quot;</span><br><span class="line">      &#125;</span><br><span class="line">      func makeNoise() &#123;</span><br><span class="line">         // 不做任何事情 - 不是任何一辆车都会发出噪音。</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>您可以使用<em>初始化语法</em>创建一个新的 <code>Vehicle</code> 实例，写作类型名后跟一对空括号：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> someVehicle <span class="operator">=</span> <span class="type">Vehicle</span>()</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `inheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let someVehicle = Vehicle()</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>创建了一个新的 <code>Vehicle</code> 实例后，您可以访问它的 <code>description</code> 属性来打印车辆当前速度的描述:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Vehicle: <span class="subst">\(someVehicle.description)</span>&quot;</span>) </span><br><span class="line"><span class="comment">// Vehicle: traveling at 0.0 miles per hour</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `inheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; print(&quot;Vehicle: \(someVehicle.description)&quot;)</span><br><span class="line">&lt;/ Vehicle: traveling at 0.0 miles per hour</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>Vehicle</code> 类定义了任意车辆的通用特性，但本身并不太有用。要使其更有用，您需要对其进行完善以描述更具体的车辆类型。</p>
+<h2 id="子类化"><a href="#子类化" class="headerlink" title="子类化"></a>子类化</h2><p><em>子类化</em>是基于现有类创建新类的行为。子类继承现有类的特性，然后您可以对其进行完善。您还可以向子类添加新的特性。</p>
+<p>要指示子类有一个父类，请在父类名前写子类名，中间用冒号分隔：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SomeSubclass</span>: <span class="title class_">SomeSuperclass</span> &#123;</span><br><span class="line">    <span class="comment">// 子类定义在这里</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `protocolSyntax`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; class SomeSuperclass &#123;&#125;</span><br><span class="line">-&gt; class SomeSubclass: SomeSuperclass &#123;</span><br><span class="line">      // subclass definition goes here</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>下面的示例定义了一个名为 <code>Bicycle</code> 的子类，它的父类是 <code>Vehicle</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Bicycle</span>: <span class="title class_">Vehicle</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> hasBasket <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `inheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class Bicycle: Vehicle &#123;</span><br><span class="line">      var hasBasket = false</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>新的 <code>Bicycle</code> 类自动获得了 <code>Vehicle</code> 的所有特性，例如它的 <code>currentSpeed</code> 和 <code>description</code> 属性以及 <code>makeNoise()</code> 方法。</p>
+<p>除了继承的特性之外，<code>Bicycle</code> 类还定义了一个新的存储属性 <code>hasBasket</code>，默认值为 <code>false</code> （推断该属性的类型为 <code>Bool</code>）。</p>
+<p>默认情况下，您创建的任何新 <code>Bicycle</code> 实例都默认没有篮子。在创建实例后，您可以将特定 <code>Bicycle</code> 实例的 <code>hasBasket</code> 属性设置为 <code>true</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> bicycle <span class="operator">=</span> <span class="type">Bicycle</span>()</span><br><span class="line">bicycle.hasBasket <span class="operator">=</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `inheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let bicycle = Bicycle()</span><br><span class="line">-&gt; bicycle.hasBasket = true</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>您还可以修改 <code>Bicycle</code> 实例继承的 <code>currentSpeed</code> 属性，并查询实例继承的 <code>description</code> 属性：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bicycle.currentSpeed <span class="operator">=</span> <span class="number">15.0</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Bicycle: <span class="subst">\(bicycle.description)</span>&quot;</span>)</span><br><span class="line"><span class="comment">// Bicycle: traveling at 15.0 miles per hour</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `inheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; bicycle.currentSpeed = 15.0</span><br><span class="line">-&gt; print(&quot;Bicycle: \(bicycle.description)&quot;)</span><br><span class="line">&lt;/ Bicycle: traveling at 15.0 miles per hour</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>子类本身也可以被子类化。下一个示例创建了一个 <code>Bicycle</code> 的子类，用于双人自行车，称为 “tandem”：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Tandem</span>: <span class="title class_">Bicycle</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> currentNumberOfPassengers <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `inheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class Tandem: Bicycle &#123;</span><br><span class="line">      var currentNumberOfPassengers = 0</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>Tandem</code> 继承了 <code>Bicycle</code> 的所有属性和方法，而 <code>Bicycle</code> 又继承了 <code>Vehicle</code> 的所有属性和方法。<code>Tandem</code> 子类还添加了一个名为 <code>currentNumberOfPassengers</code> 的新存储属性，默认值为 <code>0</code>。</p>
+<p>如果您创建一个 <code>Tandem</code> 实例，您可以使用它的任何新属性和继承的属性，并查询它从 <code>Vehicle</code> 继承的只读属性：<code>description</code></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> tandem <span class="operator">=</span> <span class="type">Tandem</span>()</span><br><span class="line">tandem.hasBasket <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line">tandem.currentNumberOfPassengers <span class="operator">=</span> <span class="number">2</span></span><br><span class="line">tandem.currentSpeed <span class="operator">=</span> <span class="number">22.0</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Tandem: <span class="subst">\(tandem.description)</span>&quot;</span>)</span><br><span class="line"><span class="comment">// Tandem: traveling at 22.0 miles per hour</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `inheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let tandem = Tandem()</span><br><span class="line">-&gt; tandem.hasBasket = true</span><br><span class="line">-&gt; tandem.currentNumberOfPassengers = 2</span><br><span class="line">-&gt; tandem.currentSpeed = 22.0</span><br><span class="line">-&gt; print(&quot;Tandem: \(tandem.description)&quot;)</span><br><span class="line">&lt;/ Tandem: traveling at 22.0 miles per hour</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="重写"><a href="#重写" class="headerlink" title="重写"></a>重写</h2><p>子类可以提供自己的自定义实现来覆盖它将从父类继承的实例方法、类型方法、实例属性、类型属性或下标。这被称为<em>重写</em>。</p>
+<p>要重写将被继承的特性，您需要在重写定义前加上 <code>override</code> 关键字。这样做可以明确您打算提供重写，而不是由于疏忽而提供了相同的定义。无意间的重写可能会导致意外行为，任何没有 <code>override</code> 关键字的重写在编译代码时都会被诊断为错误。</p>
+<p><code>override</code> 关键字还会提示 Swift 编译器检查您的重写类的父类（或其父类之一）是否有与您提供的重写定义相匹配的声明。这个检查可以确保您的重写定义是正确的。</p>
+<h3 id="访问父类方法、属性和下标"><a href="#访问父类方法、属性和下标" class="headerlink" title="访问父类方法、属性和下标"></a>访问父类方法、属性和下标</h3><p>当您为子类提供方法、属性或下标重写时，有时使用现有父类实现作为重写的一部分是很有用的。例如，您可以改进现有实现的行为，或在现有继承的变量中存储修改后的值。</p>
+<p>在适当的情况下，您可以使用 <code>super</code> 前缀来访问父类的方法、属性或下标：</p>
+<ul>
+<li>一个被重写的名为 <code>someMethod()</code> 的方法可以在重写方法实现中通过调用 <code>super.someMethod()</code> 来调用父类版本的 <code>someMethod()</code>。</li>
+<li>一个被重写的名为 <code>someProperty</code> 的属性可以在重写的 getter 或 setter 实现中通过 <code>super.someProperty</code> 来访问父类版本的 <code>someProperty</code>。</li>
+<li>一个被重写的针对 <code>someIndex</code> 的下标可以在重写的下标实现中通过 <code>super[someIndex]</code> 来访问同一下标的父类版本。</li>
+</ul>
+<h3 id="重写方法"><a href="#重写方法" class="headerlink" title="重写方法"></a>重写方法</h3><p>您可以重写继承的实例或类型方法，以在子类中提供该方法的定制或替代实现。</p>
+<p>下面的示例定义了一个名为 <code>Train</code> 的新 <code>Vehicle</code> 子类，它重写了从 <code>Vehicle</code> 继承的 <code>makeNoise()</code> 方法:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Train</span>: <span class="title class_">Vehicle</span> &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">makeNoise</span>() &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Choo Choo&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `inheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class Train: Vehicle &#123;</span><br><span class="line">      override func makeNoise() &#123;</span><br><span class="line">         print(&quot;Choo Choo&quot;)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如果您创建一个新的 <code>Train</code> 实例并调用它的 <code>makeNoise()</code> 方法，您可以看到调用了 <code>Train</code> 子类版本的方法:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> train <span class="operator">=</span> <span class="type">Train</span>()</span><br><span class="line">train.makeNoise()</span><br><span class="line"><span class="comment">// 打印 &quot;Choo Choo&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `inheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let train = Train()</span><br><span class="line">-&gt; train.makeNoise()</span><br><span class="line">&lt;- Choo Choo</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="重写属性"><a href="#重写属性" class="headerlink" title="重写属性"></a>重写属性</h3><p>您可以重写继承的实例或类型属性，为该属性提供自己的自定义 getter 和 setter，或添加属性观察器以使重写的属性能够观察底层属性值的变化。</p>
+<h4 id="重写属性-Getter-和-Setter"><a href="#重写属性-Getter-和-Setter" class="headerlink" title="重写属性 Getter 和 Setter"></a>重写属性 Getter 和 Setter</h4><p>您可以为任何继承的属性提供自定义 getter（如果需要的话还有 setter），无论继承的属性在源码中是作为存储属性还是计算属性实现的。子类不知道继承属性的存储或计算性质，它只知道继承的属性有一个特定的名称和类型。您必须始终声明要重写的属性的名称和类型，以便编译器检查您的重写与父类中具有相同名称和类型的属性相匹配。</p>
+<p>您可以通过在子类属性重写中提供 getter 和 setter 来将继承的只读属性表示为可读写属性。但是您不能将继承的可读写属性声明为只读属性。</p>
+<blockquote>
+<p>如果您在属性重写中提供了 setter，您也必须为该重写提供 getter。如果您不想在重写的 getter 中修改继承属性的值。您可以简单地通过从 getter 返回 <code>super.someProperty</code> 来传递继承的值。其中 <code>someProperty</code> 是您正在重写的属性的名称。</p>
+</blockquote>
+<p>下面的示例定义了一个名为 <code>Car</code> 的新类，它是 <code>Vehicle</code> 的子类。<code>Car</code> 类引入了一个名为 <code>gear</code> 的新存储属性，默认整数值为 <code>1</code>。<code>Car</code> 类还重写了它从 <code>Vehicle</code> 继承的 <code>description</code> 属性，以提供包含当前档位的自定义描述:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span>: <span class="title class_">Vehicle</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> gear <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">var</span> description: <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.description <span class="operator">+</span> <span class="string">&quot; in gear <span class="subst">\(gear)</span>&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `inheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class Car: Vehicle &#123;</span><br><span class="line">      var gear = 1</span><br><span class="line">      override var description: String &#123;</span><br><span class="line">         return super.description + &quot; in gear \(gear)&quot;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>description</code> 属性的重写首先调用 <code>super.description</code>，它返回 <code>Vehicle</code> 类的 <code>description</code> 属性。然后,<code>Car</code> 类的 <code>description</code> 版本在此描述的末尾添加了一些额外文本，以提供有关当前档位的信息。</p>
+<p>如果您创建 <code>Car</code> 类的实例并设置其 <code>gear</code> 和 <code>currentSpeed</code> 属性，您可以看到它的 <code>description</code> 属性返回在 <code>Car</code> 类中定义的定制描述：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> car <span class="operator">=</span> <span class="type">Car</span>()</span><br><span class="line">car.currentSpeed <span class="operator">=</span> <span class="number">25.0</span></span><br><span class="line">car.gear <span class="operator">=</span> <span class="number">3</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Car: <span class="subst">\(car.description)</span>&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;Car: traveling at 25.0 miles per hour in gear 3&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `inheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let car = Car()</span><br><span class="line">-&gt; car.currentSpeed = 25.0</span><br><span class="line">-&gt; car.gear = 3</span><br><span class="line">-&gt; print(&quot;Car: \(car.description)&quot;)</span><br><span class="line">&lt;/ Car: traveling at 25.0 miles per hour in gear 3</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h4 id="重写属性观察器"><a href="#重写属性观察器" class="headerlink" title="重写属性观察器"></a>重写属性观察器</h4><p>您可以使用属性重写的方式为继承的属性添加属性观察器。这样无论该属性最初是如何实现的，您都能够在继承属性的值发生变化时得到通知。有关属性观察器的更多信息，请参阅 <a href="doc:Properties#属性观察器">doc:Properties#属性观察器</a>。</p>
+<blockquote>
+<p>注意: 你无法为继承的常量存储属性或继承的只读计算属性添加属性观察器。这些属性的值无法被修改，所以在重写时提供 <code>willSet</code> 或 <code>didSet</code> 实现是不合适的。</p>
+<p>另请注意，你不能为同一属性提供重写的 setter 和重写的属性观察器。如果你想观察属性值的变化，并且你已经为该属性提供了自定义 setter，你可以简单地在自定义 setter 中观察任何值的变化。</p>
+</blockquote>
+<p>以下示例创建了一个名为 <code>AutomaticCar</code> 的新类，它继承自 <code>Car</code> 类。<code>AutomaticCar</code> 类表示一辆带有自动变速箱的汽车，根据当前速度自动选择合适的挡位：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">AutomaticCar</span>: <span class="title class_">Car</span> &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">var</span> currentSpeed: <span class="type">Double</span> &#123;</span><br><span class="line">        <span class="keyword">didSet</span> &#123;</span><br><span class="line">            gear <span class="operator">=</span> <span class="type">Int</span>(currentSpeed <span class="operator">/</span> <span class="number">10.0</span>) <span class="operator">+</span> <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `inheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class AutomaticCar: Car &#123;</span><br><span class="line">      override var currentSpeed: Double &#123;</span><br><span class="line">         didSet &#123;</span><br><span class="line">            gear = Int(currentSpeed / 10.0) + 1</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>每当你设置 <code>AutomaticCar</code> 实例的 <code>currentSpeed</code> 属性时，该属性的 <code>didSet</code> 观察器会根据新速度为实例的 <code>gear</code> 属性设置一个合适的挡位。具体来说，属性观察器选择一个挡位，该挡位是新 <code>currentSpeed</code> 值除以 10 向下取整后加 1。速度为 <code>35.0</code> 时会挂 <code>4</code> 挡:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> automatic <span class="operator">=</span> <span class="type">AutomaticCar</span>()</span><br><span class="line">automatic.currentSpeed <span class="operator">=</span> <span class="number">35.0</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;AutomaticCar: <span class="subst">\(automatic.description)</span>&quot;</span>)</span><br><span class="line"><span class="comment">// AutomaticCar: traveling at 35.0 miles per hour in gear 4</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `inheritance`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let automatic = AutomaticCar()</span><br><span class="line">-&gt; automatic.currentSpeed = 35.0</span><br><span class="line">-&gt; print(&quot;AutomaticCar: \(automatic.description)&quot;)</span><br><span class="line">&lt;/ AutomaticCar: traveling at 35.0 miles per hour in gear 4</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="防止重写"><a href="#防止重写" class="headerlink" title="防止重写"></a>防止重写</h2><p>你可以通过将其标记为 <em>final</em> 来防止方法、属性或下标被重写。在方法、属性或下标的引入关键字前写 <code>final</code> 修饰符。（如 <code>final var</code>、<code>final func</code>、<code>final class func</code> 和 <code>final subscript</code>）</p>
+<p>任何尝试在子类中重写 final 方法、属性或下标的行为都会在编译时报错。你在扩展中添加到类的方法、属性或下标也可以在扩展的定义中标记为 final。有关更多信息，请参阅 <a href="doc:Extensions">doc:Extensions</a>。</p>
+<!--
+  - test: `finalPreventsOverriding`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      final var someVar = 0</span><br><span class="line">      final func someFunction() &#123;</span><br><span class="line">         print(&quot;In someFunction&quot;)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D : C &#123;</span><br><span class="line">      override var someVar: Int &#123;</span><br><span class="line">         get &#123; return 1 &#125;</span><br><span class="line">         set &#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">      override func someFunction() &#123;</span><br><span class="line">         print(&quot;In overridden someFunction&quot;)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">!$ error: property overrides a &#x27;final&#x27; property</span><br><span class="line">!! override var someVar: Int &#123;</span><br><span class="line">!! ^</span><br><span class="line">!$ note: overridden declaration is here</span><br><span class="line">!! final var someVar = 0</span><br><span class="line">!! ^</span><br><span class="line">!$ error: instance method overrides a &#x27;final&#x27; instance method</span><br><span class="line">!! override func someFunction() &#123;</span><br><span class="line">!! ^</span><br><span class="line">!$ note: overridden declaration is here</span><br><span class="line">!! final func someFunction() &#123;</span><br><span class="line">!! ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>你可以通过在类定义（<code>final class</code>）中在 <code>class</code> 关键字前写 <code>final</code> 修饰符来将整个类标记为 final。任何尝试子类化 final 类的行为都会在编译时报错。</p>
+<!--
+  - test: `finalClassPreventsOverriding`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">-&gt; final class C &#123;</span><br><span class="line">      var someVar = 0</span><br><span class="line">      func someFunction() &#123;</span><br><span class="line">         print(&quot;In someFunction&quot;)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D : C &#123;</span><br><span class="line">      override var someVar: Int &#123;</span><br><span class="line">         get &#123; return 1 &#125;</span><br><span class="line">         set &#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">      override func someFunction() &#123;</span><br><span class="line">         print(&quot;In overridden someFunction&quot;)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">!$ error: property overrides a &#x27;final&#x27; property</span><br><span class="line">!!      override var someVar: Int &#123;</span><br><span class="line">!!                   ^</span><br><span class="line">!$ note: overridden declaration is here</span><br><span class="line">!!      var someVar = 0</span><br><span class="line">!!          ^</span><br><span class="line">!$ error: instance method overrides a &#x27;final&#x27; instance method</span><br><span class="line">!!      override func someFunction() &#123;</span><br><span class="line">!!                    ^</span><br><span class="line">!$ note: overridden declaration is here</span><br><span class="line">!!      func someFunction() &#123;</span><br><span class="line">!!           ^</span><br><span class="line">!$ error: inheritance from a final class &#x27;C&#x27;</span><br><span class="line">!! class D : C &#123;</span><br><span class="line">!!       ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  TODO: 我应该在这里提供一个示例。
+-->
+
+<!--
+  TODO: 提供有关函数签名的更多信息，
+  以及什么构成了函数签名的唯一性。
+  例如，参数名称不需要与父类中的类似签名匹配才能重写。
+  （这对于两种函数声明语法都是正确的）
+-->
+
+<!--
+  TODO: 提及在重写使用可选类型或未经检查的可选类型的方法时，
+  可以返回更具体的类型，并接受更不具体的类型。
+  TODO: 重写类型方法
+  ~~~~~~~~~~~~~~~~~
+-->
+
+<!--
+此源文件属于 Swift.org 开源项目的一部分
+
+版权所有 (c) 2014 - 2022 Apple Inc. 及 Swift 项目作者
+根据 Apache License v2.0 许可证及运行库例外条款授权
+
+有关许可证信息，请参见 https://swift.org/LICENSE.txt
+有关 Swift 项目作者的列表，请参见 https://swift.org/CONTRIBUTORS.txt
+-->
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>INHERITANCE</li>
+          
+  </ul>
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF"><span class="nav-number">1.</span> <span class="nav-text">继承</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E5%9F%BA%E7%B1%BB"><span class="nav-number">1.1.</span> <span class="nav-text">定义基类</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

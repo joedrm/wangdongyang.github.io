@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="属性访问属于实例或类型的存储值和计算值。 属性将值与特定的类、结构或枚举关联。存储属性将常量和变量值作为实例的一部分进行存储，而计算属性则计算（而不是存储）一个值。计算属性由类、结构和枚举提供。存储属性仅由类和结构体提供。   延时加载存储属性  延时加载存储属性是指当第一次被调用的时候才会计算其初始值的属性。在属性声明前使用 lazy 来标示一个延时加载存储属性。  注意:必须将延时加载属性声明">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/Properties.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="属性访问属于实例或类型的存储值和计算值。 属性将值与特定的类、结构或枚举关联。存储属性将常量和变量值作为实例的一部分进行存储，而计算属性则计算（而不是存储）一个值。计算属性由类、结构和枚举提供。存储属性仅由类和结构体提供。   延时加载存储属性  延时加载存储属性是指当第一次被调用的时候才会计算其初始值的属性。在属性声明前使用 lazy 来标示一个延时加载存储属性。  注意:必须将延时加载属性声明">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/Properties/computedProperties">
+<meta property="og:image" content="https://wanflutter.netlify.app/staticPropertiesVUMeter">
+<meta property="article:published_time" content="2025-03-08T08:32:48.704Z">
+<meta property="article:modified_time" content="2025-03-08T08:32:48.704Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/Properties/computedProperties">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/Properties">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>PROPERTIES</li>
+          
+  </ul>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h1 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h1><p>访问属于实例或类型的存储值和计算值。</p>
+<p><strong>属性</strong>将值与特定的类、结构或枚举关联。存储属性将常量和变量值作为实例的一部分进行存储，而计算属性则计算（而不是存储）一个值。计算属性由类、结构和枚举提供。存储属性仅由类和结构体提供。</p>
+<!--
+  - test: `enumerationsCantProvideStoredProperties`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; enum E &#123; case a, b; var x = 0 &#125;</span><br><span class="line">!$ error: enums must not contain stored properties</span><br><span class="line">!! enum E &#123; case a, b; var x = 0 &#125;</span><br><span class="line">!! ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>存储和计算属性通常与特定类型的实例相关联。然而，属性也可以与类型本身相关联。这种属性称为类型属性。</p>
+<p>另外，还可以定义属性观察器来监控属性值的变化，以此来触发自定义的操作。属性观察器可以添加到类本身定义的存储属性上，也可以添加到从父类继承的属性上。</p>
+<!--  
+  - test: `propertyObserverIntroClaims`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      var x: Int = 0 &#123;</span><br><span class="line">         willSet &#123; print(&quot;C willSet x to \(newValue)&quot;) &#125;</span><br><span class="line">         didSet &#123; print(&quot;C didSet x from \(oldValue)&quot;) &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D: C &#123;</span><br><span class="line">      override var x: Int &#123;</span><br><span class="line">         willSet &#123; print(&quot;D willSet x to \(newValue)&quot;) &#125;</span><br><span class="line">         didSet &#123; print(&quot;D didSet x from \(oldValue)&quot;) &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; var c = C(); c.x = 42</span><br><span class="line">&lt;- C willSet x to 42</span><br><span class="line">&lt;- C didSet x from 0</span><br><span class="line">-&gt; var d = D(); d.x = 42</span><br><span class="line">&lt;- D willSet x to 42</span><br><span class="line">&lt;- C willSet x to 42</span><br><span class="line">&lt;- C didSet x from 0</span><br><span class="line">&lt;- D didSet x from 0</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>你也可以利用属性包装器在多个属性的 getter 和 setter 中复用代码。</p>
+<h2 id="存储属性"><a href="#存储属性" class="headerlink" title="存储属性"></a>存储属性</h2><p>简单来说，存储属性是作为特定类或结构实例的一部分所存储的常量或变量。存储属性可以是<em>变量存储属性</em>（用关键字 <code>var</code> 定义）<br>也可以是<em>常量存储属性</em>（用关键字 <code>let</code> 定义）。</p>
+<p>可以在定义存储属性的时候指定默认值，请参考 <a href="doc:Initialization#默认属性值">doc:Initialization#默认属性值</a> 一节。还可以在构造过程中设置和修改存储属性的初始值，甚至修改常量存储属性的值，请参考 <a href="doc:Initialization#构造过程中常量属性的赋值">doc:Initialization#构造过程中常量属性的赋值</a> 一节。</p>
+<p>下面的例子定义了一个名为 <code>FixedLengthRange</code>的结构体，该结构体用于描述整数的区间，且这个区间值在被创建后不能被修改。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">FixedLengthRange</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> firstValue: <span class="type">Int</span></span><br><span class="line">    <span class="keyword">let</span> length: <span class="type">Int</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> rangeOfThreeItems <span class="operator">=</span> <span class="type">FixedLengthRange</span>(firstValue: <span class="number">0</span>, length: <span class="number">3</span>)</span><br><span class="line"><span class="comment">// 该区间表示整数 0，1，2</span></span><br><span class="line">rangeOfThreeItems.firstValue <span class="operator">=</span> <span class="number">6</span></span><br><span class="line"><span class="comment">// 该区间现在表示整数 6，7，8</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `storedProperties, storedProperties-err`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct FixedLengthRange &#123;</span><br><span class="line">      var firstValue: Int</span><br><span class="line">      let length: Int</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; var rangeOfThreeItems = FixedLengthRange(firstValue: 0, length: 3)</span><br><span class="line">// the range represents integer values 0, 1, and 2</span><br><span class="line">-&gt; rangeOfThreeItems.firstValue = 6</span><br><span class="line">// the range now represents integer values 6, 7, and 8</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>FixedLengthRange</code> 的实例包含一个名为 <code>firstValue</code>的变量存储属性和一个名为 <code>length</code>的常量存储属性。在上面的例子中， <code>length</code> 在创建实例的时候被初始化，且之后无法修改它的值，因为它是一个常量属性。</p>
+<h3 id="常量结构体实例的存储属性"><a href="#常量结构体实例的存储属性" class="headerlink" title="常量结构体实例的存储属性"></a>常量结构体实例的存储属性</h3><p>如果创建了一个结构体实例并将其赋值给一个常量，则无法修改该实例的任何属性，即使它们被声明为可变属性：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> rangeOfFourItems <span class="operator">=</span> <span class="type">FixedLengthRange</span>(firstValue: <span class="number">0</span>, length: <span class="number">4</span>)</span><br><span class="line"><span class="comment">// 该区间表示整数 0，1，2，3</span></span><br><span class="line">rangeOfFourItems.firstValue <span class="operator">=</span> <span class="number">6</span></span><br><span class="line"><span class="comment">// 尽管 firstValue 是个可变属性，但这里还是会报错</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `storedProperties-err`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let rangeOfFourItems = FixedLengthRange(firstValue: 0, length: 4)</span><br><span class="line">// this range represents integer values 0, 1, 2, and 3</span><br><span class="line">-&gt; rangeOfFourItems.firstValue = 6</span><br><span class="line">!$ error: cannot assign to property: &#x27;rangeOfFourItems&#x27; is a &#x27;let&#x27; constant</span><br><span class="line">!! rangeOfFourItems.firstValue = 6</span><br><span class="line">!! ~~~~~~~~~~~~~~~~ ^</span><br><span class="line">!$ note: change &#x27;let&#x27; to &#x27;var&#x27; to make it mutable</span><br><span class="line">!! let rangeOfFourItems = FixedLengthRange(firstValue: 0, length: 4)</span><br><span class="line">!! ^~~</span><br><span class="line">!! var</span><br><span class="line">// 尽管 firstValue 是个可变属性，但这里还是会报错</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>因为 <code>rangeOfFourItems</code> 被声明为常量（使用 <code>let</code> 关键字），所以即使 <code>firstValue</code> 是一个可变属性，也无法再修改它了。</p>
+<p>这种行为是由于结构体属于<strong>值类型</strong>。当值类型的实例被声明为常量的时候，它的所有属性也就成了常量。</p>
+<p>属于<em>引用类型</em>的类别则不一样，把一个引用类型的实例赋给一个常量后，依然可以修改该实例的可变属性。</p>
+<!--
+  TODO: this explanation could still do to be improved.
+-->
+
+<h3 id="延时加载存储属性"><a href="#延时加载存储属性" class="headerlink" title="延时加载存储属性"></a>延时加载存储属性</h3><!--
+  QUESTION: is this section too complex for this point in the book?
+  Should it go in the Default Property Values section of Initialization instead?
+-->
+
+<p><em>延时加载存储属性</em>是指当第一次被调用的时候才会计算其初始值的属性。在属性声明前使用 <code>lazy</code> 来标示一个延时加载存储属性。</p>
+<blockquote>
+<p>注意:<br>必须将延时加载属性声明成变量（使用 <code>var</code> 关键词），因为属性的初始值可能在实例构造完成之后才会得到。而常量属性在构造过程完成之前必须要有初始值，因此无法声明成延时加载。</p>
+</blockquote>
+<!--
+  - test: `lazyPropertiesMustAlwaysBeVariables`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123; lazy let x = 0 &#125;</span><br><span class="line">!$ error: &#x27;lazy&#x27; cannot be used on a let</span><br><span class="line">!! class C &#123; lazy let x = 0 &#125;</span><br><span class="line">!! ^~~~~</span><br><span class="line">!!-</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>延时加载属性在属性的初始值依赖于外部因素，且这些因素的值在实例初始化完成后才会知道时非常有用。或者当获得属性的值因为需要复杂或者大量的计算，而应该采用需要的时候再计算的方式，延时加载属性也会很有用。</p>
+<!--
+  TODO: add a note that if you assign a value to a lazy property before first access,
+  the initial value you give in your code will be ignored.
+-->
+
+<p>下面的例子使用了延时加载存储属性来避免复杂类中不必要的初始化工作。例子中定义了 <code>DataImporter</code> 和 <code>DataManager</code> 两个类，下面是部分代码：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">DataImporter</span> {</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    DataImporter 是一个负责将外部文件中的数据导入的类。</span></span><br><span class="line"><span class="comment">    这个类的初始化会消耗不少时间。</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">var</span> filename <span class="operator">=</span> <span class="string">"data.txt"</span></span><br><span class="line">    <span class="comment">// 这里会提供数据导入功能</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DataManager</span> {</span><br><span class="line">    <span class="keyword">lazy</span> <span class="keyword">var</span> importer <span class="operator">=</span> <span class="type">DataImporter</span>()</span><br><span class="line">    <span class="keyword">var</span> data: [<span class="type">String</span>] <span class="operator">=</span> []</span><br><span class="line">    <span class="comment">// 这里会提供数据管理功能</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> manager <span class="operator">=</span> <span class="type">DataManager</span>()</span><br><span class="line">manager.data.append(<span class="string">"Some data"</span>)</span><br><span class="line">manager.data.append(<span class="string">"Some more data"</span>)</span><br><span class="line"><span class="comment">// DataImporter 实例的 importer 属性还没有被创建</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `lazyProperties`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class DataImporter &#123;</span><br><span class="line">      /*</span><br><span class="line">      DataImporter is a class to import data from an external file.</span><br><span class="line">      The class is assumed to take a nontrivial amount of time to initialize.</span><br><span class="line">      */</span><br><span class="line">      var filename = &quot;data.txt&quot;</span><br><span class="line">      // the DataImporter class would provide data importing functionality here</span><br><span class="line">&gt;&gt;    init() &#123;</span><br><span class="line">&gt;&gt;       print(&quot;the DataImporter instance for the importer property has now been created&quot;)</span><br><span class="line">&gt;&gt;    &#125;</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; class DataManager &#123;</span><br><span class="line">      lazy var importer = DataImporter()</span><br><span class="line">      var data: [String] = []</span><br><span class="line">      // the DataManager class would provide data management functionality here</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; let manager = DataManager()</span><br><span class="line">-&gt; manager.data.append(&quot;Some data&quot;)</span><br><span class="line">-&gt; manager.data.append(&quot;Some more data&quot;)</span><br><span class="line">// the DataImporter instance for the importer property hasn&#x27;t yet been created</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>DataManager</code> 类包含一个名为 <code>data</code>的存储属性，初始值是一个空的字符串数组。这里没有给出全部代码，只需知道 <code>DataManager</code> 类的目的是管理和提供对这个字符串数组的访问即可。</p>
+<p><code>DataManager</code> 的一个功能是从文件中导入数据。这个功能由 <code>DataImporter</code> 类提供，<code>DataImporter</code> 完成初始化需要消耗不少时间：因为它的实例在初始化时可能需要打开文件并读取文件中的内容到内存中。</p>
+<p><code>DataManager</code> 管理数据时也可能不从文件中导入数据。所以当 <code>DataManager</code> 的实例被创建时，不会创建一个 <code>DataImporter</code> 的实例，更明智的做法是第一次用到 <code>DataManager</code> 的时候才去创建它。</p>
+<p>由于使用了 <code>lazy</code>，<code>DataImporter</code> 的实例 <code>importer</code> 属性只有在第一次被访问的时候才被创建。比如访问它的属性 <code>filename</code> 的时候：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(manager.importer.filename)</span><br><span class="line"><span class="comment">// DataImporter 实例的 importer 属性现在被创建了</span></span><br><span class="line"><span class="comment">// 输出“data.txt”</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `lazyProperties`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; print(manager.importer.filename)</span><br><span class="line">&lt;/ the DataImporter instance for the importer property has now been created</span><br><span class="line">&lt;- data.txt</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>注意:<br>如果一个被标记为 <code>lazy</code> 的属性在没有初始化时就同时被多个线程访问，则无法保证该属性只会被初始化一次。</p>
+</blockquote>
+<!--
+  6/19/14, 10:54 PM [Contributor 7746]: @lazy isn't thread safe.  Global variables (and static struct/enum fields) *are*.
+-->
+
+<h3 id="存储属性和实例变量"><a href="#存储属性和实例变量" class="headerlink" title="存储属性和实例变量"></a>存储属性和实例变量</h3><p>如果你有过使用 Objective-C 的经验，应该知道 Objective-C 为类实例存储值和引用提供了两种方法。除了属性之外，还可以使用实例变量作为一个备份存储将变量值赋值给属性。</p>
+<p>Swift 编程语言中把这些理论统一用属性来实现。Swift 中的属性没有对应的实例变量，属性的备份存储也无法直接访问。这就避免了不同场景下访问方式的困扰，同时也将属性的定义简化成一个语句。属性的全部信息——包括命名、类型和内存管理特征——作为类型定义的一部分，都定义在一个地方。</p>
+<!--
+  TODO: what happens if one property of a constant structure is an object reference?
+-->
+
+<h2 id="计算属性"><a href="#计算属性" class="headerlink" title="计算属性"></a>计算属性</h2><p>除存储属性外，类、结构体和枚举还可以定义计算属性。计算属性不直接存储值，而是提供一个 getter 和一个可选的 setter，来间接获取和设置其他属性或变量的值。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Point</span> {</span><br><span class="line">    <span class="keyword">var</span> x <span class="operator">=</span> <span class="number">0.0</span>, y <span class="operator">=</span> <span class="number">0.0</span></span><br><span class="line">}</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Size</span> {</span><br><span class="line">    <span class="keyword">var</span> width <span class="operator">=</span> <span class="number">0.0</span>, height <span class="operator">=</span> <span class="number">0.0</span></span><br><span class="line">}</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Rect</span> {</span><br><span class="line">    <span class="keyword">var</span> origin <span class="operator">=</span> <span class="type">Point</span>()</span><br><span class="line">    <span class="keyword">var</span> size <span class="operator">=</span> <span class="type">Size</span>()</span><br><span class="line">    <span class="keyword">var</span> center: <span class="type">Point</span> {</span><br><span class="line">        <span class="keyword">get</span> {</span><br><span class="line">            <span class="keyword">let</span> centerX <span class="operator">=</span> origin.x <span class="operator">+</span> (size.width <span class="operator">/</span> <span class="number">2</span>)</span><br><span class="line">            <span class="keyword">let</span> centerY <span class="operator">=</span> origin.y <span class="operator">+</span> (size.height <span class="operator">/</span> <span class="number">2</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="type">Point</span>(x: centerX, y: centerY)</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">set</span>(newCenter) {</span><br><span class="line">            origin.x <span class="operator">=</span> newCenter.x <span class="operator">-</span> (size.width <span class="operator">/</span> <span class="number">2</span>)</span><br><span class="line">            origin.y <span class="operator">=</span> newCenter.y <span class="operator">-</span> (size.height <span class="operator">/</span> <span class="number">2</span>)</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="keyword">var</span> square <span class="operator">=</span> <span class="type">Rect</span>(origin: <span class="type">Point</span>(x: <span class="number">0.0</span>, y: <span class="number">0.0</span>),</span><br><span class="line">    size: <span class="type">Size</span>(width: <span class="number">10.0</span>, height: <span class="number">10.0</span>))</span><br><span class="line"><span class="keyword">let</span> initialSquareCenter <span class="operator">=</span> square.center</span><br><span class="line"><span class="comment">// initialSquareCenter 位于（5.0， 5.0）</span></span><br><span class="line">square.center <span class="operator">=</span> <span class="type">Point</span>(x: <span class="number">15.0</span>, y: <span class="number">15.0</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"square.origin is now at (<span class="subst">\(square.origin.x)</span>, <span class="subst">\(square.origin.y)</span>)"</span>)</span><br><span class="line"><span class="comment">// 打印“square.origin is now at (10.0, 10.0)”</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `computedProperties`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct Point &#123;</span><br><span class="line">      var x = 0.0, y = 0.0</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; struct Size &#123;</span><br><span class="line">      var width = 0.0, height = 0.0</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; struct Rect &#123;</span><br><span class="line">      var origin = Point()</span><br><span class="line">      var size = Size()</span><br><span class="line">      var center: Point &#123;</span><br><span class="line">         get &#123;</span><br><span class="line">            let centerX = origin.x + (size.width / 2)</span><br><span class="line">            let centerY = origin.y + (size.height / 2)</span><br><span class="line">            return Point(x: centerX, y: centerY)</span><br><span class="line">         &#125;</span><br><span class="line">         set(newCenter) &#123;</span><br><span class="line">            origin.x = newCenter.x - (size.width / 2)</span><br><span class="line">            origin.y = newCenter.y - (size.height / 2)</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; var square = Rect(origin: Point(x: 0.0, y: 0.0),</span><br><span class="line">      size: Size(width: 10.0, height: 10.0))</span><br><span class="line">-&gt; let initialSquareCenter = square.center</span><br><span class="line">/&gt; initialSquareCenter is at (\(initialSquareCenter.x), \(initialSquareCenter.y))</span><br><span class="line">&lt;/ initialSquareCenter is at (5.0, 5.0)</span><br><span class="line">-&gt; square.center = Point(x: 15.0, y: 15.0)</span><br><span class="line">-&gt; print(&quot;square.origin is now at (\(square.origin.x), \(square.origin.y))&quot;)</span><br><span class="line">&lt;- square.origin is now at (10.0, 10.0)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>此示例定义了三个用于处理几何形状的结构：</p>
+<ul>
+<li><code>Point</code> 封装了一个点的 x 和 y 坐标。</li>
+<li><code>Size</code> 包含 <code>width</code> 和 <code>height</code>.</li>
+<li><code>Rect</code> 通过一个原点和大小来定义一个矩形。</li>
+</ul>
+<p><code>Rect</code> 还提供了一个名为 <code>center</code> 的计算属性。<code>Rect</code> 的当前中心位置始终可以从其原点和大小确定，因此不需要将中心点以 <code>Point</code> 类型的值来存储。<code>Rect</code> 的计算属性 <code>center</code>提供了自定义的 getter 和 setter 来获取和设置矩形的中心点，就像它有一个存储属性一样。</p>
+<p>上面的示例创建了一个名为 <code>square</code> 的 <code>Rect</code> 变量，初始值原点是 <code>(0, 0)</code>，宽度和高度均为 <code>10</code>。如下图中的浅绿色正方形所示。</p>
+<p><code>square</code> 的 <code>center</code> 属性可以通过点运算符（<code>square.center</code>）来访问，这会调用该属性的 getter 来获取它的值。跟直接返回已经存在的值不同，getter 实际上是通过计算然后返回一个新的 <code>Point</code> 来表示 <code>square</code> 的中心点，如代码所示，它正确返回了中心点 <code>(5, 5)</code>。</p>
+<p>将 <code>center</code> 属性设置为新的值 <code>(15, 15)</code>，会将正方形向上和向右移动，移动到下图中深绿色正方形所示的新位置。设置 <code>center</code> 属性会调用 <code>center</code> 的 setter，修改存储的 <code>origin</code> 属性的 <code>x</code> 和 <code>y</code> 值，从而将正方形移动到新的位置。</p>
+<!-- Apple Books screenshot begins here. -->
+
+<p><img src="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/Properties/computedProperties"></p>
+<h3 id="简化-Setter-声明"><a href="#简化-Setter-声明" class="headerlink" title="简化 Setter 声明"></a>简化 Setter 声明</h3><p>如果计算属性的 setter 没有为要设置的新值定义名称，则默认会使用 <code>newValue</code> 作为名称。这里是利用这种简写方式的 <code>Rect</code> 结构体的另一个版本：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">AlternativeRect</span> {</span><br><span class="line">    <span class="keyword">var</span> origin <span class="operator">=</span> <span class="type">Point</span>()</span><br><span class="line">    <span class="keyword">var</span> size <span class="operator">=</span> <span class="type">Size</span>()</span><br><span class="line">    <span class="keyword">var</span> center: <span class="type">Point</span> {</span><br><span class="line">        <span class="keyword">get</span> {</span><br><span class="line">            <span class="keyword">let</span> centerX <span class="operator">=</span> origin.x <span class="operator">+</span> (size.width <span class="operator">/</span> <span class="number">2</span>)</span><br><span class="line">            <span class="keyword">let</span> centerY <span class="operator">=</span> origin.y <span class="operator">+</span> (size.height <span class="operator">/</span> <span class="number">2</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="type">Point</span>(x: centerX, y: centerY)</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">set</span> {</span><br><span class="line">            origin.x <span class="operator">=</span> newValue.x <span class="operator">-</span> (size.width <span class="operator">/</span> <span class="number">2</span>)</span><br><span class="line">            origin.y <span class="operator">=</span> newValue.y <span class="operator">-</span> (size.height <span class="operator">/</span> <span class="number">2</span>)</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `computedProperties`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct AlternativeRect &#123;</span><br><span class="line">      var origin = Point()</span><br><span class="line">      var size = Size()</span><br><span class="line">      var center: Point &#123;</span><br><span class="line">         get &#123;</span><br><span class="line">            let centerX = origin.x + (size.width / 2)</span><br><span class="line">            let centerY = origin.y + (size.height / 2)</span><br><span class="line">            return Point(x: centerX, y: centerY)</span><br><span class="line">         &#125;</span><br><span class="line">         set &#123;</span><br><span class="line">            origin.x = newValue.x - (size.width / 2)</span><br><span class="line">            origin.y = newValue.y - (size.height / 2)</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!-- Apple Books screenshot ends here. -->
+
+<h3 id="简化-Getter-声明"><a href="#简化-Getter-声明" class="headerlink" title="简化 Getter 声明"></a>简化 Getter 声明</h3><p>如果 getter 的主体是一个单一表达式，那么 getter 会隐式返回该表达式。这里是另一个利用这种 getter 和 setter 简写方式的 <code>Rect</code> 结构体版本：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">CompactRect</span> {</span><br><span class="line">    <span class="keyword">var</span> origin <span class="operator">=</span> <span class="type">Point</span>()</span><br><span class="line">    <span class="keyword">var</span> size <span class="operator">=</span> <span class="type">Size</span>()</span><br><span class="line">    <span class="keyword">var</span> center: <span class="type">Point</span> {</span><br><span class="line">        <span class="keyword">get</span> {</span><br><span class="line">            <span class="type">Point</span>(x: origin.x <span class="operator">+</span> (size.width <span class="operator">/</span> <span class="number">2</span>),</span><br><span class="line">                  y: origin.y <span class="operator">+</span> (size.height <span class="operator">/</span> <span class="number">2</span>))</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">set</span> {</span><br><span class="line">            origin.x <span class="operator">=</span> newValue.x <span class="operator">-</span> (size.width <span class="operator">/</span> <span class="number">2</span>)</span><br><span class="line">            origin.y <span class="operator">=</span> newValue.y <span class="operator">-</span> (size.height <span class="operator">/</span> <span class="number">2</span>)</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `computedProperties`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct CompactRect &#123;</span><br><span class="line">      var origin = Point()</span><br><span class="line">      var size = Size()</span><br><span class="line">      var center: Point &#123;</span><br><span class="line">         get &#123;</span><br><span class="line">            Point(x: origin.x + (size.width / 2),</span><br><span class="line">                  y: origin.y + (size.height / 2))</span><br><span class="line">         &#125;</span><br><span class="line">         set &#123;</span><br><span class="line">            origin.x = newValue.x - (size.width / 2)</span><br><span class="line">            origin.y = newValue.y - (size.height / 2)</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>省略 getter 中的 <code>return</code> 遵循与函数省略 <code>return</code> 相同的规则，详见 <a href="doc:Functions#隐式返回的函数">doc:Functions#隐式返回的函数</a>。</p>
+<h3 id="只读计算属性"><a href="#只读计算属性" class="headerlink" title="只读计算属性"></a>只读计算属性</h3><p>只有 getter 而没有 setter 的计算属性被称为<em>只读计算属性</em>。只读计算属性总是返回一个值，可以通过点运算符访问，但不能设置为其他值。</p>
+<blockquote>
+<p>注意:<br>你必须将计算属性——包括只读计算属性——声明为使用 <code>var</code> 关键字的变量属性，因为它们的值并非固定的。<code>let</code> 关键字只用于常量属性，表示它们的值在实例初始化时设置后就无法更改。</p>
+</blockquote>
+<!--
+  - test: `readOnlyComputedPropertiesMustBeVariables`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      let x: Int &#123; return 42 &#125;</span><br><span class="line">      let y: Int &#123; get &#123; return 42 &#125; set &#123;&#125; &#125;</span><br><span class="line">   &#125;</span><br><span class="line">!! /tmp/swifttest.swift:2:15: error: &#x27;let&#x27; declarations cannot be computed properties</span><br><span class="line">!! let x: Int &#123; return 42 &#125;</span><br><span class="line">!! ~~~        ^</span><br><span class="line">!! var</span><br><span class="line">!! /tmp/swifttest.swift:3:15: error: &#x27;let&#x27; declarations cannot be computed properties</span><br><span class="line">!! let y: Int &#123; get &#123; return 42 &#125; set &#123;&#125; &#125;</span><br><span class="line">!! ~~~        ^</span><br><span class="line">!! var</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>可以通过省略 <code>get</code> 关键字和它的花括号来简化只读计算属性的声明：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Cuboid</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> width <span class="operator">=</span> <span class="number">0.0</span>, height <span class="operator">=</span> <span class="number">0.0</span>, depth <span class="operator">=</span> <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">var</span> volume: <span class="type">Double</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> width <span class="operator">*</span> height <span class="operator">*</span> depth</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> fourByFiveByTwo <span class="operator">=</span> <span class="type">Cuboid</span>(width: <span class="number">4.0</span>, height: <span class="number">5.0</span>, depth: <span class="number">2.0</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;the volume of fourByFiveByTwo is <span class="subst">\(fourByFiveByTwo.volume)</span>&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;the volume of fourByFiveByTwo is 40.0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `computedProperties`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct Cuboid &#123;</span><br><span class="line">      var width = 0.0, height = 0.0, depth = 0.0</span><br><span class="line">      var volume: Double &#123;</span><br><span class="line">         return width * height * depth</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let fourByFiveByTwo = Cuboid(width: 4.0, height: 5.0, depth: 2.0)</span><br><span class="line">-&gt; print(&quot;the volume of fourByFiveByTwo is \(fourByFiveByTwo.volume)&quot;)</span><br><span class="line">&lt;- the volume of fourByFiveByTwo is 40.0</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>这个示例定义了一个名为 <code>Cuboid</code> 的新结构体，用于表示一个具有 <code>width</code>、<code>height</code> 和 <code>depth</code> 属性的三维立方体。该结构体还包含一个名为 <code>volume</code> 的只读计算属性，用于计算并返回立方体的当前体积。<code>volume</code> 属性不应是可设置的，因为这样会导致对于应使用哪些 <code>width</code>、<code>height</code> 和 <code>depth</code> 值来计算特定体积产生歧义。然而，<code>Cuboid</code> 提供一个只读计算属性来让外部用户了解其当前计算的体积是非常有用的。</p>
+<!--
+  NOTE: getters and setters are also allowed for constants and variables
+  that aren't associated with a particular class or struct.
+  Where should this be mentioned?
+-->
+
+<!--
+  TODO: Anything else from https://[Internal Staging Server]/docs/StoredAndComputedVariables.html
+-->
+
+<!--
+  TODO: Add an example of a computed property for an enumeration
+  (now that the Enumerations chapter no longer has an example of this itself).
+-->
+
+<h2 id="属性观察器"><a href="#属性观察器" class="headerlink" title="属性观察器"></a>属性观察器</h2><p>属性观察器用于监测并响应属性值的变化。每次属性值被设置时，无论新值是否与当前值相同，属性观察器都会被调用。</p>
+<!--
+  - test: `observersAreCalledEvenIfNewValueIsTheSameAsOldValue`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123; var x: Int = 0 &#123; willSet &#123; print(&quot;willSet&quot;) &#125; didSet &#123; print(&quot;didSet&quot;) &#125; &#125; &#125;</span><br><span class="line">-&gt; let c = C()</span><br><span class="line">-&gt; c.x = 24</span><br><span class="line">&lt;- willSet</span><br><span class="line">&lt;- didSet</span><br><span class="line">-&gt; c.x = 24</span><br><span class="line">&lt;- willSet</span><br><span class="line">&lt;- didSet</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>属性观察器可以添加在以下位置：</p>
+<ul>
+<li>自定义的存储属性</li>
+<li>继承的存储属性</li>
+<li>继承的计算属性</li>
+</ul>
+<p>对于继承的属性，可以通过在子类中重写该属性来添加属性观察器。对于自定义的计算属性，应使用属性的 setter 来观察和响应值的变化，而不是试图创建一个观察器。重写属性的相关内容详见 <a href="doc:Inheritance#重写">doc:Inheritance#重写</a>。</p>
+<!--
+  - test: `lazyPropertiesCanHaveObservers`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; class C &#123;</span><br><span class="line">      lazy var x: Int = 0 &#123;</span><br><span class="line">         willSet &#123; print(&quot;C willSet x to \(newValue)&quot;) &#125;</span><br><span class="line">         didSet &#123; print(&quot;C didSet x from \(oldValue)&quot;) &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; let c = C()</span><br><span class="line">&gt;&gt; print(c.x)</span><br><span class="line">&lt;&lt; 0</span><br><span class="line">&gt;&gt; c.x = 12</span><br><span class="line">&lt;&lt; C willSet x to 12</span><br><span class="line">&lt;&lt; C didSet x from 0</span><br><span class="line">&gt;&gt; print(c.x)</span><br><span class="line">&lt;&lt; 12</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `storedAndComputedInheritedPropertiesCanBeObserved`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      var x = 0</span><br><span class="line">      var y: Int &#123; get &#123; return 42 &#125; set &#123;&#125; &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class D: C &#123;</span><br><span class="line">      override var x: Int &#123;</span><br><span class="line">         willSet &#123; print(&quot;D willSet x to \(newValue)&quot;) &#125;</span><br><span class="line">         didSet &#123; print(&quot;D didSet x from \(oldValue)&quot;) &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      override var y: Int &#123;</span><br><span class="line">         willSet &#123; print(&quot;D willSet y to \(newValue)&quot;) &#125;</span><br><span class="line">         didSet &#123; print(&quot;D didSet y from \(oldValue)&quot;) &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; var d = D()</span><br><span class="line">-&gt; d.x = 42</span><br><span class="line">&lt;- D willSet x to 42</span><br><span class="line">&lt;- D didSet x from 0</span><br><span class="line">-&gt; d.y = 42</span><br><span class="line">&lt;- D willSet y to 42</span><br><span class="line">&lt;- D didSet y from 42</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>可以为属性添加以下一个或两个观察器：</p>
+<ul>
+<li><code>willSet</code> 在值存储之前被调用。</li>
+<li><code>didSet</code> 在新值存储之后立即被调用。</li>
+</ul>
+<p>如果实现了 <code>willSet</code> 观察器，新的属性值会作为一个常量参数传递。可以在 <code>willSet</code> 实现中为这个参数指定名称。如果没有在实现中写出参数名称和括号，则该参数将以默认名称 <code>newValue</code> 提供。</p>
+<p>同样地，如果实现了 <code>didSet</code> 观察器，旧的属性值会作为一个常量参数传递。可以命名这个参数，也可以使用默认名称 <code>oldValue</code>。如果在 <code>didSet</code> 观察器内为属性赋值，所分配的新值将覆盖刚刚设置的值。</p>
+<!--
+  - test: `assigningANewValueInADidSetReplacesTheNewValue`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123; var x: Int = 0 &#123; didSet &#123; x = -273 &#125; &#125; &#125;</span><br><span class="line">-&gt; let c = C()</span><br><span class="line">-&gt; c.x = 24</span><br><span class="line">-&gt; print(c.x)</span><br><span class="line">&lt;- -273</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>注意:<br>父类属性的 <code>willSet</code> 和 <code>didSet</code> 观察器会在子类初始化器中设置属性时调用，此时父类的初始化器已经被调用。而在父类初始化器被调用之前，给子类的属性赋值时不会调用子类属性的观察器。</p>
+<p>有关初始化器代理的更多信息，请参见 <a href="doc:Initialization#值类型的构造器代理">doc:Initialization#值类型的构造器代理</a> 和 <a href="doc:Initialization#类类型的构造器代理">doc:Initialization#类类型的构造器代理</a>。</p>
+</blockquote>
+<!--
+  - test: `observersDuringInitialization`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123;</span><br><span class="line">      var x: Int &#123; willSet &#123; print(&quot;willSet x&quot;) &#125; didSet &#123; print(&quot;didSet x&quot;) &#125; &#125;</span><br><span class="line">      init(x: Int) &#123; self.x = x &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let c = C(x: 42)</span><br><span class="line">-&gt; c.x = 24</span><br><span class="line">&lt;- willSet x</span><br><span class="line">&lt;- didSet x</span><br><span class="line">-&gt; class C2: C &#123;</span><br><span class="line">      var y: Int &#123; willSet &#123; print(&quot;willSet y&quot;) &#125; didSet &#123; print(&quot;didSet y&quot;) &#125; &#125;</span><br><span class="line">      init() &#123;</span><br><span class="line">          self.y = 1</span><br><span class="line">          print(&quot;calling super&quot;)</span><br><span class="line">          super.init(x: 100)</span><br><span class="line">          self.x = 10</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let c2 = C2()</span><br><span class="line">&lt;- calling super</span><br><span class="line">&lt;- willSet x</span><br><span class="line">&lt;- didSet x</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>下面是一个 <code>willSet</code> 和 <code>didSet</code> 实际应用的例子。以下示例定义了一个名为 <code>StepCounter</code> 的新类，用于跟踪一个人在行走时所走的总步数。这个类可以与计步器或其他步数计数器的输入数据配合使用，以记录一个人在日常锻炼中的活动情况。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">StepCounter</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> totalSteps: <span class="type">Int</span> <span class="operator">=</span> <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">willSet</span>(newTotalSteps) &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;About to set totalSteps to <span class="subst">\(newTotalSteps)</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">didSet</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> totalSteps <span class="operator">&gt;</span> oldValue  &#123;</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;Added <span class="subst">\(totalSteps <span class="operator">-</span> oldValue)</span> steps&quot;</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> stepCounter <span class="operator">=</span> <span class="type">StepCounter</span>()</span><br><span class="line">stepCounter.totalSteps <span class="operator">=</span> <span class="number">200</span></span><br><span class="line"><span class="comment">// 将 totalSteps 的值设置为 200</span></span><br><span class="line"><span class="comment">// 增加了 200 步</span></span><br><span class="line">stepCounter.totalSteps <span class="operator">=</span> <span class="number">360</span></span><br><span class="line"><span class="comment">// 将 totalSteps 的值设置为 360</span></span><br><span class="line"><span class="comment">// 增加了 160 步</span></span><br><span class="line">stepCounter.totalSteps <span class="operator">=</span> <span class="number">896</span></span><br><span class="line"><span class="comment">// 将 totalSteps 的值设置为 896</span></span><br><span class="line"><span class="comment">// 增加了 536 步</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `storedProperties`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class StepCounter &#123;</span><br><span class="line">      var totalSteps: Int = 0 &#123;</span><br><span class="line">         willSet(newTotalSteps) &#123;</span><br><span class="line">            print(&quot;About to set totalSteps to \(newTotalSteps)&quot;)</span><br><span class="line">         &#125;</span><br><span class="line">         didSet &#123;</span><br><span class="line">            if totalSteps &gt; oldValue  &#123;</span><br><span class="line">               print(&quot;Added \(totalSteps - oldValue) steps&quot;)</span><br><span class="line">            &#125;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let stepCounter = StepCounter()</span><br><span class="line">-&gt; stepCounter.totalSteps = 200</span><br><span class="line">&lt;/ About to set totalSteps to 200</span><br><span class="line">&lt;/ Added 200 steps</span><br><span class="line">-&gt; stepCounter.totalSteps = 360</span><br><span class="line">&lt;/ About to set totalSteps to 360</span><br><span class="line">&lt;/ Added 160 steps</span><br><span class="line">-&gt; stepCounter.totalSteps = 896</span><br><span class="line">&lt;/ About to set totalSteps to 896</span><br><span class="line">&lt;/ Added 536 steps</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>StepCounter</code> 类声明了一个名为 <code>totalSteps</code> 的 <code>Int</code> 类型属性。这是一个具有 <code>willSet</code> 和 <code>didSet</code> 观察器的存储属性。</p>
+<p>当 <code>totalSteps</code> 属性被赋予新值时，这些观察器都会被调用，即使新值与当前值相同也是如此。</p>
+<p>这个例子中的 <code>willSet</code> 观察器为即将设置的新值使用了自定义参数名称 <code>newTotalSteps</code>，在这里，它简单地打印出即将被设置的值。</p>
+<p><code>didSet</code> 观察器在 <code>totalSteps</code> 的值更新后被调用。它将 <code>totalSteps</code> 的新值与旧值进行比较。如果步数总数增加了，则会打印一条消息，指示增加了多少步数。<code>didSet</code> 观察器没有为旧值提供自定义参数名称，使用的是默认名称 <code>oldValue</code>。</p>
+<blockquote>
+<p>注意:<br>如果将一个具有观察器的属性作为 in-out 参数传递给函数，那么 <code>willSet</code> 和 <code>didSet</code> 观察器总是会被调用。这是因为 in-out 参数的复制-写回内存模型：在函数结束时，值总是会被写回属性。关于 in-out 参数行为的详细讨论，请参见 <a href="doc:Declarations#In-Out-参数">doc:Declarations#In-Out-参数</a>。</p>
+</blockquote>
+<!--
+  - test: `observersCalledAfterInout`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var a: Int = 0 &#123;</span><br><span class="line">       willSet &#123; print(&quot;willSet&quot;) &#125;</span><br><span class="line">       didSet &#123; print(&quot;didSet&quot;) &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; func f(b: inout Int) &#123; print(&quot;in f&quot;) &#125;</span><br><span class="line">-&gt; f(b: &amp;a)</span><br><span class="line">&lt;&lt; in f</span><br><span class="line">&lt;&lt; willSet</span><br><span class="line">&lt;&lt; didSet</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  TODO: If you add a property observer to a stored property of structure type,
+  that property observer is fired whenever any of the subproperties
+  of that structure instance are set. This is cool, but nonobvious.
+  Provide an example of it here.
+-->
+
+<h2 id="属性包装器"><a href="#属性包装器" class="headerlink" title="属性包装器"></a>属性包装器</h2><p>属性包装器在管理属性存储方式的代码和定义属性的代码之间添加了一层分离。例如，如果有一些属性需要提供线程安全检查或将其底层数据存储在数据库中，那么你必须在每个属性上编写这些代码。而使用属性包装器时，只需在定义包装器时编写一次管理代码，然后通过将其应用于多个属性来重复使用这些管理代码。</p>
+<p>要定义属性包装器，需要创建一个结构体、枚举或类，并定义一个 <code>wrappedValue</code> 属性。在下面的代码中，<code>TwelveOrLess</code> 结构体确保它所包装的值始终不大于 12。如果试图存储更大的数字，它会将数字存储为 12。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@propertyWrapper</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">TwelveOrLess</span> {</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> number <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">var</span> wrappedValue: <span class="type">Int</span> {</span><br><span class="line">        <span class="keyword">get</span> { <span class="keyword">return</span> number }</span><br><span class="line">        <span class="keyword">set</span> { number <span class="operator">=</span> <span class="built_in">min</span>(newValue, <span class="number">12</span>) }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `small-number-wrapper, property-wrapper-expansion`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @propertyWrapper</span><br><span class="line">-&gt; struct TwelveOrLess &#123;</span><br><span class="line">       private var number = 0</span><br><span class="line">       var wrappedValue: Int &#123;</span><br><span class="line">           get &#123; return number &#125;</span><br><span class="line">           set &#123; number = min(newValue, 12) &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  No init(wrappedValue:) in this example -- that's in a later example.
+  Always initializing the wrapped value is a simpler starting point.
+-->
+
+<p>setter 确保新值不大于 12，而 getter 返回存储的值。</p>
+<blockquote>
+<p>注意:<br>上例中 <code>number</code> 的声明被标记为 <code>private</code>，这确保了 <code>number</code> 只能在 <code>TwelveOrLess</code> 的实现中使用。其他地方的代码只能通过 <code>wrappedValue</code> 的 getter 和 setter 来访问这个值，而不能直接使用 <code>number</code>。关于 <code>private</code> 的更多信息，请参见 <a href="doc:AccessControl">doc:AccessControl</a>。</p>
+</blockquote>
+<!--
+  In this example,
+  the number is stored in the wrapper's private ``number`` property,
+  but you could write a version of ``EvenNumber``
+  that implements ``wrappedValue`` as a stored property
+  and uses ``didSet`` to ensure the number is always even.
+
+  However, the general framing we use in the docs
+  is that didSet is mostly for reacting to the new value,
+  not changing it,
+  so I'm not highlighting that fact here.
+  The order of operations for willSet, set, and didSet is well defined,
+  but might be something you have to pay attention to.
+-->
+
+<!--
+  - test: `stored-property-wrappedValue`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; @propertyWrapper</span><br><span class="line">&gt;&gt; struct TwelveOrLess &#123;</span><br><span class="line">&gt;&gt;     var wrappedValue: Int = 0 &#123;</span><br><span class="line">&gt;&gt;         didSet &#123;</span><br><span class="line">&gt;&gt;             if wrappedValue &gt; 12 &#123;</span><br><span class="line">&gt;&gt;                 wrappedValue = 12</span><br><span class="line">&gt;&gt;             &#125;</span><br><span class="line">&gt;&gt;         &#125;</span><br><span class="line">&gt;&gt;     &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&gt;&gt; struct SomeStructure &#123;</span><br><span class="line">&gt;&gt;     @TwelveOrLess var someNumber: Int</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&gt;&gt; var s = SomeStructure()</span><br><span class="line">&gt;&gt; print(s.someNumber)</span><br><span class="line">&lt;&lt; 0</span><br><span class="line">&gt;&gt; s.someNumber = 10</span><br><span class="line">&gt;&gt; print(s.someNumber)</span><br><span class="line">&lt;&lt; 10</span><br><span class="line">&gt;&gt; s.someNumber = 21</span><br><span class="line">&gt;&gt; print(s.someNumber)</span><br><span class="line">&lt;&lt; 12</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>可以通过在属性前作为特性写上包装器的名称来应用包装器。下面是一个存储矩形的结构体，使用 <code>TwelveOrLess</code> 属性包装器来确保其尺寸始终不超过 12：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">SmallRectangle</span> &#123;</span><br><span class="line">    <span class="meta">@TwelveOrLess</span> <span class="keyword">var</span> height: <span class="type">Int</span></span><br><span class="line">    <span class="meta">@TwelveOrLess</span> <span class="keyword">var</span> width: <span class="type">Int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> rectangle <span class="operator">=</span> <span class="type">SmallRectangle</span>()</span><br><span class="line"><span class="built_in">print</span>(rectangle.height)</span><br><span class="line"><span class="comment">// 打印 &quot;0&quot;</span></span><br><span class="line"></span><br><span class="line">rectangle.height <span class="operator">=</span> <span class="number">10</span></span><br><span class="line"><span class="built_in">print</span>(rectangle.height)</span><br><span class="line"><span class="comment">// 打印 &quot;10&quot;</span></span><br><span class="line"></span><br><span class="line">rectangle.height <span class="operator">=</span> <span class="number">24</span></span><br><span class="line"><span class="built_in">print</span>(rectangle.height)</span><br><span class="line"><span class="comment">// 打印 &quot;12&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `small-number-wrapper`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct SmallRectangle &#123;</span><br><span class="line">-&gt;     @TwelveOrLess var height: Int</span><br><span class="line">-&gt;     @TwelveOrLess var width: Int</span><br><span class="line">-&gt; &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; var rectangle = SmallRectangle()</span><br><span class="line">-&gt; print(rectangle.height)</span><br><span class="line">&lt;- 0</span><br><span class="line">---</span><br><span class="line">-&gt; rectangle.height = 10</span><br><span class="line">-&gt; print(rectangle.height)</span><br><span class="line">&lt;- 10</span><br><span class="line">---</span><br><span class="line">-&gt; rectangle.height = 24</span><br><span class="line">-&gt; print(rectangle.height)</span><br><span class="line">&lt;- 12</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>height</code> 和 <code>width</code> 属性的初始值来自 <code>TwelveOrLess</code> 的定义，其中将 <code>TwelveOrLess.number</code> 设置为0。<code>TwelveOrLess</code> 中的 setter 将 10 视为有效值，因此将数字 10 存储在 <code>rectangle.height</code> 中的操作能成功。然而，24 超出了 <code>TwelveOrLess</code> 允许的范围，因此尝试存储 24 最终会将 <code>rectangle.height</code> 设置为 12，这是允许的最大值。</p>
+<p>当为属性应用包装器时，编译器会生成代码，为包装器提供存储空间，并通过包装器提供对属性的访问。（属性包装器负责存储被包装的值，因此不会为此生成代码。）可以编写代码使用属性包装器的行为，而不必利用特殊的特性语法。例如，下面是前面代码示例中 <code>SmallRectangle</code> 的一个版本，它明确的将其属性包装在 <code>TwelveOrLess</code> 结构体中，而不是将 <code>@TwelveOrLess</code> 写作一个特性：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">SmallRectangle</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> _height <span class="operator">=</span> <span class="type">TwelveOrLess</span>()</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> _width <span class="operator">=</span> <span class="type">TwelveOrLess</span>()</span><br><span class="line">    <span class="keyword">var</span> height: <span class="type">Int</span> &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123; <span class="keyword">return</span> _height.wrappedValue &#125;</span><br><span class="line">        <span class="keyword">set</span> &#123; _height.wrappedValue <span class="operator">=</span> newValue &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> width: <span class="type">Int</span> &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123; <span class="keyword">return</span> _width.wrappedValue &#125;</span><br><span class="line">        <span class="keyword">set</span> &#123; _width.wrappedValue <span class="operator">=</span> newValue &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `property-wrapper-expansion`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct SmallRectangle &#123;</span><br><span class="line">       private var _height = TwelveOrLess()</span><br><span class="line">       private var _width = TwelveOrLess()</span><br><span class="line">       var height: Int &#123;</span><br><span class="line">           get &#123; return _height.wrappedValue &#125;</span><br><span class="line">           set &#123; _height.wrappedValue = newValue &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       var width: Int &#123;</span><br><span class="line">           get &#123; return _width.wrappedValue &#125;</span><br><span class="line">           set &#123; _width.wrappedValue = newValue &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>_height</code> 和 <code>_width</code> 属性存储了属性包装器 <code>TwelveOrLess</code> 的一个实例。<code>height</code> 和 <code>width</code> 的 getter 和 setter 包装了对 <code>wrappedValue</code> 属性的访问。</p>
+<h3 id="设置被包装属性的初始值"><a href="#设置被包装属性的初始值" class="headerlink" title="设置被包装属性的初始值"></a>设置被包装属性的初始值</h3><p>上面示例中的代码通过在 <code>TwelveOrLess</code> 的定义中为 <code>number</code> 赋予初始值来设置被包装属性的初始值。使用该属性包装器的代码不能为被 <code>TwelveOrLess</code> 包装的属性指定不同的初始值——例如，<code>SmallRectangle</code> 的定义不能为 <code>height</code> 或 <code>width</code> 赋予初始值。为了支持设置初始值或其他自定义，属性包装器需要添加一个构造器。这里是 <code>TwelveOrLess</code> 的扩展版本，名为 <code>SmallNumber</code>，它定义了可以设置被包装值和最大值的构造器：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@propertyWrapper</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">SmallNumber</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> maximum: <span class="type">Int</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> number: <span class="type">Int</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> wrappedValue: <span class="type">Int</span> &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123; <span class="keyword">return</span> number &#125;</span><br><span class="line">        <span class="keyword">set</span> &#123; number <span class="operator">=</span> <span class="built_in">min</span>(newValue, maximum) &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">init</span>() &#123;</span><br><span class="line">        maximum <span class="operator">=</span> <span class="number">12</span></span><br><span class="line">        number <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">wrappedValue</span>: <span class="type">Int</span>) &#123;</span><br><span class="line">        maximum <span class="operator">=</span> <span class="number">12</span></span><br><span class="line">        number <span class="operator">=</span> <span class="built_in">min</span>(wrappedValue, maximum)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">wrappedValue</span>: <span class="type">Int</span>, <span class="params">maximum</span>: <span class="type">Int</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.maximum <span class="operator">=</span> maximum</span><br><span class="line">        number <span class="operator">=</span> <span class="built_in">min</span>(wrappedValue, maximum)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `property-wrapper-init, property-wrapper-mixed-init`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @propertyWrapper</span><br><span class="line">-&gt; struct SmallNumber &#123;</span><br><span class="line">       private var maximum: Int</span><br><span class="line">       private var number: Int</span><br><span class="line">---</span><br><span class="line">       var wrappedValue: Int &#123;</span><br><span class="line">           get &#123; return number &#125;</span><br><span class="line">           set &#123; number = min(newValue, maximum) &#125;</span><br><span class="line">       &#125;</span><br><span class="line">---</span><br><span class="line">       init() &#123;</span><br><span class="line">           maximum = 12</span><br><span class="line">           number = 0</span><br><span class="line">       &#125;</span><br><span class="line">       init(wrappedValue: Int) &#123;</span><br><span class="line">           maximum = 12</span><br><span class="line">           number = min(wrappedValue, maximum)</span><br><span class="line">       &#125;</span><br><span class="line">       init(wrappedValue: Int, maximum: Int) &#123;</span><br><span class="line">           self.maximum = maximum</span><br><span class="line">           number = min(wrappedValue, maximum)</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  The initializers above could be written to use
+  init(wrappedValue:maximum:) as the designated initializer,
+  with the other two calling it instead of doing initialization.
+  However, in this case, the initialization logic is small enough
+  that the risk of bugs isn't significant,
+  and the reader hasn't seen init syntax/rules in detail yet
+  so it's clearer to make each init stand on its own.
+-->
+
+<p><code>SmallNumber</code> 的定义包括三个构造器——<code>init()</code>、<code>init(wrappedValue:)</code> 和 <code>init(wrappedValue:maximum:)</code>——下面的示例使用这些构造器来设置被包装值和最大值。关于初始化和构造器语法的更多信息，请参见 <a href="doc:Initialization">doc:Initialization</a>。</p>
+<p>当为属性应用包装器且未指定初始值时，Swift 使用 <code>init()</code> 构造器来设置包装器。例如：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">ZeroRectangle</span> {</span><br><span class="line">    <span class="meta">@SmallNumber</span> <span class="keyword">var</span> height: <span class="type">Int</span></span><br><span class="line">    <span class="meta">@SmallNumber</span> <span class="keyword">var</span> width: <span class="type">Int</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> zeroRectangle <span class="operator">=</span> <span class="type">ZeroRectangle</span>()</span><br><span class="line"><span class="built_in">print</span>(zeroRectangle.height, zeroRectangle.width)</span><br><span class="line"><span class="comment">// 打印 "0 0"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `property-wrapper-init`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct ZeroRectangle &#123;</span><br><span class="line">-&gt;     @SmallNumber var height: Int</span><br><span class="line">-&gt;     @SmallNumber var width: Int</span><br><span class="line">-&gt; &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; var zeroRectangle = ZeroRectangle()</span><br><span class="line">-&gt; print(zeroRectangle.height, zeroRectangle.width)</span><br><span class="line">&lt;- 0 0</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `property-wrapper-init`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct ZeroRectangle_equiv &#123;</span><br><span class="line">       private var _height = SmallNumber()</span><br><span class="line">       private var _width = SmallNumber()</span><br><span class="line">       var height: Int &#123;</span><br><span class="line">           get &#123; return _height.wrappedValue &#125;</span><br><span class="line">           set &#123; _height.wrappedValue = newValue &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       var width: Int &#123;</span><br><span class="line">           get &#123; return _width.wrappedValue &#125;</span><br><span class="line">           set &#123; _width.wrappedValue = newValue &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; var zeroRectangle_equiv = ZeroRectangle_equiv()</span><br><span class="line">-&gt; print(zeroRectangle_equiv.height, zeroRectangle_equiv.width)</span><br><span class="line">&lt;- 0 0</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>通过调用 <code>SmallNumber()</code> 创建了用于包装 <code>height</code> 和 <code>width</code> 的 <code>SmallNumber</code> 实例。该构造器中的代码使用默认值 0 和 12 设置了初始包装值和初始最大值。属性包装器仍然提供所有的初始值，就像前面在 <code>SmallRectangle</code> 中使用 <code>TwelveOrLess</code> 的示例一样。但与该示例不同，<code>SmallNumber</code> 还支持在声明属性时写入这些初始值。</p>
+<p>当为属性指定初始值时，Swift 使用 <code>init(wrappedValue:)</code> 构造器来设置包装器。例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">UnitRectangle</span> &#123;</span><br><span class="line">    <span class="meta">@SmallNumber</span> <span class="keyword">var</span> height: <span class="type">Int</span> <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">    <span class="meta">@SmallNumber</span> <span class="keyword">var</span> width: <span class="type">Int</span> <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> unitRectangle <span class="operator">=</span> <span class="type">UnitRectangle</span>()</span><br><span class="line"><span class="built_in">print</span>(unitRectangle.height, unitRectangle.width)</span><br><span class="line"><span class="comment">// 打印 &quot;1 1&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `property-wrapper-init`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct UnitRectangle &#123;</span><br><span class="line">-&gt;     @SmallNumber var height: Int = 1</span><br><span class="line">-&gt;     @SmallNumber var width: Int = 1</span><br><span class="line">-&gt; &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; var unitRectangle = UnitRectangle()</span><br><span class="line">-&gt; print(unitRectangle.height, unitRectangle.width)</span><br><span class="line">&lt;- 1 1</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `property-wrapper-init`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct UnitRectangle_equiv &#123;</span><br><span class="line">       private var _height = SmallNumber(wrappedValue: 1)</span><br><span class="line">       private var _width = SmallNumber(wrappedValue: 1)</span><br><span class="line">       var height: Int &#123;</span><br><span class="line">           get &#123; return _height.wrappedValue &#125;</span><br><span class="line">           set &#123; _height.wrappedValue = newValue &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       var width: Int &#123;</span><br><span class="line">           get &#123; return _width.wrappedValue &#125;</span><br><span class="line">           set &#123; _width.wrappedValue = newValue &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; var unitRectangle_equiv = UnitRectangle_equiv()</span><br><span class="line">-&gt; print(unitRectangle_equiv.height, unitRectangle_equiv.width)</span><br><span class="line">&lt;- 1 1</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>当在具有包装器的属性上写 <code>= 1</code> 时，这会被转换为调用 <code>init(wrappedValue:)</code> 构造器。用于包装 <code>height</code> 和 <code>width</code> 的 <code>SmallNumber</code> 实例通过调用 <code>SmallNumber(wrappedValue: 1)</code> 创建。构造器使用了这里指定的包装值，并使用默认的最大值 12。</p>
+<p>当在自定义特性后面的括号中写入参数时，Swift 使用接受这些参数的构造器来设置包装器。例如，如果提供了初始值和最大值，Swift 会使用 <code>init(wrappedValue:maximum:)</code> 构造器：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">NarrowRectangle</span> &#123;</span><br><span class="line">    <span class="meta">@SmallNumber</span>(wrappedValue: <span class="number">2</span>, maximum: <span class="number">5</span>) <span class="keyword">var</span> height: <span class="type">Int</span></span><br><span class="line">    <span class="meta">@SmallNumber</span>(wrappedValue: <span class="number">3</span>, maximum: <span class="number">4</span>) <span class="keyword">var</span> width: <span class="type">Int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> narrowRectangle <span class="operator">=</span> <span class="type">NarrowRectangle</span>()</span><br><span class="line"><span class="built_in">print</span>(narrowRectangle.height, narrowRectangle.width)</span><br><span class="line"><span class="comment">// 打印 &quot;2 3&quot;</span></span><br><span class="line"></span><br><span class="line">narrowRectangle.height <span class="operator">=</span> <span class="number">100</span></span><br><span class="line">narrowRectangle.width <span class="operator">=</span> <span class="number">100</span></span><br><span class="line"><span class="built_in">print</span>(narrowRectangle.height, narrowRectangle.width)</span><br><span class="line"><span class="comment">// 打印 &quot;5 4&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `property-wrapper-init`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct NarrowRectangle &#123;</span><br><span class="line">-&gt;     @SmallNumber(wrappedValue: 2, maximum: 5) var height: Int</span><br><span class="line">-&gt;     @SmallNumber(wrappedValue: 3, maximum: 4) var width: Int</span><br><span class="line">-&gt; &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; var narrowRectangle = NarrowRectangle()</span><br><span class="line">-&gt; print(narrowRectangle.height, narrowRectangle.width)</span><br><span class="line">&lt;- 2 3</span><br><span class="line">---</span><br><span class="line">-&gt; narrowRectangle.height = 100</span><br><span class="line">-&gt; narrowRectangle.width = 100</span><br><span class="line">-&gt; print(narrowRectangle.height, narrowRectangle.width)</span><br><span class="line">&lt;- 5 4</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `property-wrapper-init`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct NarrowRectangle_equiv &#123;</span><br><span class="line">       private var _height = SmallNumber(wrappedValue: 2, maximum: 5)</span><br><span class="line">       private var _width = SmallNumber(wrappedValue: 3, maximum: 4)</span><br><span class="line">       var height: Int &#123;</span><br><span class="line">           get &#123; return _height.wrappedValue &#125;</span><br><span class="line">           set &#123; _height.wrappedValue = newValue &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       var width: Int &#123;</span><br><span class="line">           get &#123; return _width.wrappedValue &#125;</span><br><span class="line">           set &#123; _width.wrappedValue = newValue &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; var narrowRectangle_equiv = NarrowRectangle_equiv()</span><br><span class="line">-&gt; print(narrowRectangle_equiv.height, narrowRectangle_equiv.width)</span><br><span class="line">&lt;- 2 3</span><br><span class="line">-&gt; narrowRectangle_equiv.height = 100</span><br><span class="line">-&gt; narrowRectangle_equiv.width = 100</span><br><span class="line">-&gt; print(narrowRectangle_equiv.height, narrowRectangle_equiv.width)</span><br><span class="line">&lt;- 5 4</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>用于包装 <code>height</code> 的 <code>SmallNumber</code> 实例是通过调用 <code>SmallNumber(wrappedValue: 2, maximum: 5)</code> 创建的，而用于包装 <code>width</code> 的实例是通过调用 <code>SmallNumber(wrappedValue: 3, maximum: 4)</code> 创建的。</p>
+<p>通过在属性包装器中包含参数，可以在包装器中设置初始状态或在创建时传递其他选项。这种语法是使用属性包装器的最通用方式，可以为特性提供所需的任何参数，这些参数会被传递给构造器。</p>
+<p>当包含属性包装器参数时，还可以通过赋值指定初始值。Swift 会将该赋值视为 <code>wrappedValue</code> 参数，并使用接受所包含参数的构造器。例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">MixedRectangle</span> &#123;</span><br><span class="line">    <span class="meta">@SmallNumber</span> <span class="keyword">var</span> height: <span class="type">Int</span> <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">    <span class="meta">@SmallNumber</span>(maximum: <span class="number">9</span>) <span class="keyword">var</span> width: <span class="type">Int</span> <span class="operator">=</span> <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> mixedRectangle <span class="operator">=</span> <span class="type">MixedRectangle</span>()</span><br><span class="line"><span class="built_in">print</span>(mixedRectangle.height)</span><br><span class="line"><span class="comment">// 打印 &quot;1&quot;</span></span><br><span class="line"></span><br><span class="line">mixedRectangle.height <span class="operator">=</span> <span class="number">20</span></span><br><span class="line"><span class="built_in">print</span>(mixedRectangle.height)</span><br><span class="line"><span class="comment">// 打印 &quot;12&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `property-wrapper-mixed-init`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct MixedRectangle &#123;</span><br><span class="line">-&gt;     @SmallNumber var height: Int = 1</span><br><span class="line">-&gt;     @SmallNumber(maximum: 9) var width: Int = 2</span><br><span class="line">-&gt; &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; var mixedRectangle = MixedRectangle()</span><br><span class="line">-&gt; print(mixedRectangle.height)</span><br><span class="line">&lt;- 1</span><br><span class="line">---</span><br><span class="line">-&gt; mixedRectangle.height = 20</span><br><span class="line">-&gt; print(mixedRectangle.height)</span><br><span class="line">&lt;- 12</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>用于包装 <code>height</code> 的 <code>SmallNumber</code> 实例是通过调用 <code>SmallNumber(wrappedValue: 1)</code> 创建的，使用默认的最大值 12。用于包装 <code>width</code> 的实例是通过调用 <code>SmallNumber(wrappedValue: 2, maximum: 9)</code> 创建的。</p>
+<h3 id="从属性包装器中呈现一个值"><a href="#从属性包装器中呈现一个值" class="headerlink" title="从属性包装器中呈现一个值"></a>从属性包装器中呈现一个值</h3><p>除了被包装的值之外，属性包装器还可以通过定义<em>被呈现值</em>来提供额外的功能——例如，管理数据库访问的属性包装器可以在其被呈现值上暴露一个 <code>flushDatabaseConnection()</code> 方法。被呈现值的名称与被包装值相同，只是以美元符号 (<code>$</code>) 开头。由于代码中不能定义以 <code>$</code> 开头的属性，因此被呈现值不会与定义的属性产生冲突。</p>
+<p>在上面的 <code>SmallNumber</code> 示例中，如果尝试将属性设置为一个过大的数字，属性包装器会在存储之前调整该数字。下面的代码向 <code>SmallNumber</code> 结构体添加了一个 <code>projectedValue</code> 属性，用于跟踪属性包装器在存储新值之前是否调整了该新值。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@propertyWrapper</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">SmallNumber</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> number: <span class="type">Int</span></span><br><span class="line">    <span class="keyword">private(set)</span> <span class="keyword">var</span> projectedValue: <span class="type">Bool</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> wrappedValue: <span class="type">Int</span> &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123; <span class="keyword">return</span> number &#125;</span><br><span class="line">        <span class="keyword">set</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> newValue <span class="operator">&gt;</span> <span class="number">12</span> &#123;</span><br><span class="line">                number <span class="operator">=</span> <span class="number">12</span></span><br><span class="line">                projectedValue <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                number <span class="operator">=</span> newValue</span><br><span class="line">                projectedValue <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">init</span>() &#123;</span><br><span class="line">        <span class="keyword">self</span>.number <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">        <span class="keyword">self</span>.projectedValue <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">SomeStructure</span> &#123;</span><br><span class="line">    <span class="meta">@SmallNumber</span> <span class="keyword">var</span> someNumber: <span class="type">Int</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> someStructure <span class="operator">=</span> <span class="type">SomeStructure</span>()</span><br><span class="line"></span><br><span class="line">someStructure.someNumber <span class="operator">=</span> <span class="number">4</span></span><br><span class="line"><span class="built_in">print</span>(someStructure.<span class="variable">$someNumber</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;false&quot;</span></span><br><span class="line"></span><br><span class="line">someStructure.someNumber <span class="operator">=</span> <span class="number">55</span></span><br><span class="line"><span class="built_in">print</span>(someStructure.<span class="variable">$someNumber</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;true&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `small-number-wrapper-projection`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @propertyWrapper</span><br><span class="line">-&gt; struct SmallNumber &#123;</span><br><span class="line">       private var number: Int</span><br><span class="line">       private(set) var projectedValue: Bool</span><br><span class="line">---</span><br><span class="line">       var wrappedValue: Int &#123;</span><br><span class="line">           get &#123; return number &#125;</span><br><span class="line">           set &#123;</span><br><span class="line">               if newValue &gt; 12 &#123;</span><br><span class="line">                   number = 12</span><br><span class="line">                   projectedValue = true</span><br><span class="line">               &#125; else &#123;</span><br><span class="line">                   number = newValue</span><br><span class="line">                   projectedValue = false</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">---</span><br><span class="line">       init() &#123;</span><br><span class="line">           self.number = 0</span><br><span class="line">           self.projectedValue = false</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; struct SomeStructure &#123;</span><br><span class="line">-&gt;     @SmallNumber var someNumber: Int</span><br><span class="line">-&gt; &#125;</span><br><span class="line">-&gt; var someStructure = SomeStructure()</span><br><span class="line">---</span><br><span class="line">-&gt; someStructure.someNumber = 4</span><br><span class="line">-&gt; print(someStructure.$someNumber)</span><br><span class="line">&lt;- false</span><br><span class="line">---</span><br><span class="line">-&gt; someStructure.someNumber = 55</span><br><span class="line">-&gt; print(someStructure.$someNumber)</span><br><span class="line">&lt;- true</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>写作 <code>someStructure.$someNumber</code> 时会访问包装器的被呈现值。存储像 4 这样的小数字后，<code>someStructure.$someNumber</code> 的值是 <code>false</code>。然而，在尝试存储过大的数字（如 55）后，被呈现值会变为 <code>true</code>。</p>
+<p>属性包装器可以将任何类型的值作为其被呈现值。在这个例子中，属性包装器只暴露了一条信息——数字是否被调整——因此它将这个布尔值作为被呈现值暴露出来。需要暴露更多信息的包装器可以返回某种其他类型的实例，或者返回 <code>self</code>，以将包装器的实例作为被呈现值暴露出来。</p>
+<p>当在类型的代码中（如属性的 getter 或实例方法）访问被呈现值时，可以省略属性名称前的 <code>self.</code>，就像访问其他属性一样。以下示例中的代码将围绕 <code>height</code> 和 <code>width</code> 的包装器的被呈现值分别引用为 <code>$height</code> 和 <code>$width</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">Size</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> small, large</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">SizedRectangle</span> &#123;</span><br><span class="line">    <span class="meta">@SmallNumber</span> <span class="keyword">var</span> height: <span class="type">Int</span></span><br><span class="line">    <span class="meta">@SmallNumber</span> <span class="keyword">var</span> width: <span class="type">Int</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">mutating</span> <span class="keyword">func</span> <span class="title function_">resize</span>(<span class="params">to</span> <span class="params">size</span>: <span class="type">Size</span>) -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">        <span class="keyword">switch</span> size &#123;</span><br><span class="line">        <span class="keyword">case</span> .small:</span><br><span class="line">            height <span class="operator">=</span> <span class="number">10</span></span><br><span class="line">            width <span class="operator">=</span> <span class="number">20</span></span><br><span class="line">        <span class="keyword">case</span> .large:</span><br><span class="line">            height <span class="operator">=</span> <span class="number">100</span></span><br><span class="line">            width <span class="operator">=</span> <span class="number">100</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$height</span> <span class="operator">||</span> <span class="variable">$width</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `small-number-wrapper-projection`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">-&gt; enum Size &#123;</span><br><span class="line">       case small, large</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; struct SizedRectangle &#123;</span><br><span class="line">-&gt;     @SmallNumber var height: Int</span><br><span class="line">-&gt;     @SmallNumber var width: Int</span><br><span class="line">---</span><br><span class="line">       mutating func resize(to size: Size) -&gt; Bool &#123;</span><br><span class="line">           switch size &#123;</span><br><span class="line">               case .small:</span><br><span class="line">                   height = 10</span><br><span class="line">                   width = 20</span><br><span class="line">               case .large:</span><br><span class="line">                   height = 100</span><br><span class="line">                   width = 100</span><br><span class="line">           &#125;</span><br><span class="line">           return $height || $width</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; var r = SizedRectangle()</span><br><span class="line">&gt;&gt; print(r.height, r.width)</span><br><span class="line">&lt;&lt; 0 0</span><br><span class="line">&gt;&gt; var adj = r.resize(to: .large)</span><br><span class="line">&gt;&gt; print(adj, r.height, r.width)</span><br><span class="line">&lt;&lt; true 12 12</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>由于属性包装器语法只是带有 getter 和 setter 的属性的语法糖，访问 <code>height</code> 和 <code>width</code> 的行为与访问其他属性相同。例如，<code>resize(to:)</code> 中的代码使用它们的属性包装器访问 <code>height</code> 和 <code>width</code>。如果调用 <code>resize(to: .large)</code>，那么 <code>.large</code> 的 switch 分支会将矩形的高度和宽度设置为 100。包装器会防止这些属性的值大于 12，并将被呈现值设置为 <code>true</code>，以记录它调整了这些值的事实。在 <code>resize(to:)</code> 的末尾，return 语句检查 <code>$height</code> 和 <code>$width</code> 以确定属性包装器是否调整了 <code>height</code> 或 <code>width</code>。</p>
+<h2 id="全局变量和局部变量"><a href="#全局变量和局部变量" class="headerlink" title="全局变量和局部变量"></a>全局变量和局部变量</h2><p>上面描述的用于计算和观察属性的功能同样适用于<em>全局变量</em>和<em>局部变量</em>。全局变量是定义在任何函数、方法、闭包或类型上下文之外的变量。局部变量是在函数、方法或闭包上下文中定义的变量。</p>
+<p>在前面的章节中遇到的全局变量和局部变量都是<em>存储变量</em>。存储变量与存储属性类似，为某种类型的值提供存储，并允许设置和获取该值。</p>
+<p>然而，也可以在全局或局部范围内定义<em>计算变量</em>并为存储变量定义观察器。计算变量计算它们的值，而不是存储它，并且它们的写法与计算属性相同。</p>
+<!--
+  - test: `computedVariables`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var a: Int &#123; get &#123; return 42 &#125; set &#123; print(&quot;set a to \(newValue)&quot;) &#125; &#125;</span><br><span class="line">-&gt; a = 37</span><br><span class="line">&lt;- set a to 37</span><br><span class="line">-&gt; print(a)</span><br><span class="line">&lt;- 42</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `observersForStoredVariables`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var a: Int = 0 &#123; willSet &#123; print(&quot;willSet&quot;) &#125; didSet &#123; print(&quot;didSet&quot;) &#125; &#125;</span><br><span class="line">-&gt; a = 42</span><br><span class="line">&lt;- willSet</span><br><span class="line">&lt;- didSet</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>注意:<br>全局常量和变量总是以类似于 <a href="doc:Properties#延时加载存储属性">doc:Properties#延时加载存储属性</a> 的方式被延迟计算。与延迟存储属性不同，全局常量和变量不需要用 <code>lazy</code> 修饰符标记。</p>
+<p>局部常量和变量从不延迟计算。</p>
+</blockquote>
+<p>可以将属性包装器应用于局部存储变量，但不能应用于全局变量或计算变量。例如，下面的代码中，<code>myNumber</code> 使用 <code>SmallNumber</code> 作为属性包装器。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">someFunction</span>() &#123;</span><br><span class="line">    <span class="meta">@SmallNumber</span> <span class="keyword">var</span> myNumber: <span class="type">Int</span> <span class="operator">=</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    myNumber <span class="operator">=</span> <span class="number">10</span></span><br><span class="line">    <span class="comment">// 这时 myNumber 是 10</span></span><br><span class="line"></span><br><span class="line">    myNumber <span class="operator">=</span> <span class="number">24</span></span><br><span class="line">    <span class="comment">// 这时 myNumber 是 12</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `property-wrapper-init`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func someFunction() &#123;</span><br><span class="line">-&gt;     @SmallNumber var myNumber: Int = 0</span><br><span class="line">---</span><br><span class="line">       myNumber = 10</span><br><span class="line">       // now myNumber is 10</span><br><span class="line">&gt;&gt;     print(myNumber)</span><br><span class="line">---</span><br><span class="line">       myNumber = 24</span><br><span class="line">       // now myNumber is 12</span><br><span class="line">&gt;&gt;     print(myNumber)</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; someFunction()</span><br><span class="line">&lt;&lt; 10</span><br><span class="line">&lt;&lt; 12</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>就像将 <code>SmallNumber</code> 应用于属性一样，将 <code>myNumber</code> 的值设置为 10 是有效的。由于属性包装器不允许超过 12 的值，它会将 <code>myNumber</code> 设置为 12，而不是 24。</p>
+<!--
+  The discussion of local variables with property wrappers
+  has to come later, because we need to use init(wrappedValue:)
+  to work around <rdar://problem/74616133>.
+-->
+
+<!--
+  TODO: clarify what we mean by "global variables" here.
+  According to [Contributor 6004], anything defined in a playground, REPL, or in main.swift
+  is a local variable in top-level code, not a global variable.
+-->
+
+<!--
+  TODO: this also makes it impossible (at present) to test the "always lazy" assertion.
+-->
+
+<h2 id="类型属性"><a href="#类型属性" class="headerlink" title="类型属性"></a>类型属性</h2><p>实例属性是属于特定类型实例的属性。每次创建该类型的新实例时，它都有自己的一组属性值，实例之间的属性相互独立。</p>
+<p>还可以定义属于类型本身的属性，而不是属于该类型的某个实例。无论创建多少个该类型的实例，这些属性都只有一份。这类属性称为<em>类型属性</em>。</p>
+<p>类型属性对于定义对特定类型的<em>所有</em>实例通用的值非常有用，例如所有实例都可以使用的常量属性（类似于 C 语言中的静态常量），或存储对该类型的所有实例都全局有效的值的变量属性（类似于 C 语言中的静态变量）。</p>
+<p>存储的类型属性可以是变量或常量。计算的类型属性始终像计算实例属性一样声明为变量属性。</p>
+<blockquote>
+<p>注意:<br>与存储实例属性不同，存储类型属性必须始终指定默认值。这是因为类型本身没有构造器，无法在初始化时为存储类型属性赋值。</p>
+<p>存储类型属性在第一次访问时会被延迟初始化。即使在多个线程同时访问时，也保证只会初始化一次，并且不需要用 <code>lazy</code> 修饰符标记。</p>
+</blockquote>
+<h3 id="类型属性语法"><a href="#类型属性语法" class="headerlink" title="类型属性语法"></a>类型属性语法</h3><p>在 C 和 Objective-C 中，定义与类型关联的静态常量和变量时，通常作为<em>全局</em>静态变量来定义。然而，在 Swift 中，类型属性是作为类型定义的一部分编写的，在类型的外部大括号内，每个类型属性都明确地限定在它所支持的类型范围内。</p>
+<p>使用 <code>static</code> 关键字定义类型属性。对于类类型的计算类型属性，可以使用 <code>class</code> 关键字，允许子类重写父类的实现。下面的示例展示了存储类型属性和计算类型属性的语法：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">SomeStructure</span> {</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> storedTypeProperty <span class="operator">=</span> <span class="string">"Some value."</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> computedTypeProperty: <span class="type">Int</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">SomeEnumeration</span> {</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> storedTypeProperty <span class="operator">=</span> <span class="string">"Some value."</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> computedTypeProperty: <span class="type">Int</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="number">6</span></span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SomeClass</span> {</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> storedTypeProperty <span class="operator">=</span> <span class="string">"Some value."</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> computedTypeProperty: <span class="type">Int</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="number">27</span></span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">var</span> <span class="title class_">overrideableComputedTypeProperty</span>: <span class="title class_">Int</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="number">107</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `typePropertySyntax`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct SomeStructure &#123;</span><br><span class="line">      static var storedTypeProperty = &quot;Some value.&quot;</span><br><span class="line">      static var computedTypeProperty: Int &#123;</span><br><span class="line">         return 1</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; enum SomeEnumeration &#123;</span><br><span class="line">      static var storedTypeProperty = &quot;Some value.&quot;</span><br><span class="line">      static var computedTypeProperty: Int &#123;</span><br><span class="line">         return 6</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; class SomeClass &#123;</span><br><span class="line">      static var storedTypeProperty = &quot;Some value.&quot;</span><br><span class="line">      static var computedTypeProperty: Int &#123;</span><br><span class="line">         return 27</span><br><span class="line">      &#125;</span><br><span class="line">      class var overrideableComputedTypeProperty: Int &#123;</span><br><span class="line">         return 107</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `classComputedTypePropertiesAreOverrideable`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class A &#123; class var cp: String &#123; return &quot;A&quot; &#125; &#125;</span><br><span class="line">-&gt; class B: A &#123; override class var cp: String &#123; return &quot;B&quot; &#125; &#125;</span><br><span class="line">-&gt; assert(A.cp == &quot;A&quot;)</span><br><span class="line">-&gt; assert(B.cp == &quot;B&quot;)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `staticComputedTypePropertiesAreFinal`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class A &#123; static var cp: String &#123; return &quot;A&quot; &#125; &#125;</span><br><span class="line">-&gt; class B: A &#123; override static var cp: String &#123; return &quot;B&quot; &#125; &#125;</span><br><span class="line">!$ error: cannot override static property</span><br><span class="line">!! class B: A &#123; override static var cp: String &#123; return &quot;B&quot; &#125; &#125;</span><br><span class="line">!!                                  ^</span><br><span class="line">!$ note: overridden declaration is here</span><br><span class="line">!! class A &#123; static var cp: String &#123; return &quot;A&quot; &#125; &#125;</span><br><span class="line">!!                      ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>注意:<br>上面的计算类型属性示例是针对只读计算类型属性的，但也可以使用与计算实例属性相同的语法定义读写计算类型属性。</p>
+</blockquote>
+<h3 id="获取和设置类型属性的值"><a href="#获取和设置类型属性的值" class="headerlink" title="获取和设置类型属性的值"></a>获取和设置类型属性的值</h3><p>类型属性的查询和设置使用点语法，就像实例属性一样。然而，类型属性是针对<em>类型</em>本身进行查询和设置的，而不是针对该类型的某个实例。例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="type">SomeStructure</span>.storedTypeProperty)</span><br><span class="line"><span class="comment">// 打印 &quot;Some value.&quot;</span></span><br><span class="line"><span class="type">SomeStructure</span>.storedTypeProperty <span class="operator">=</span> <span class="string">&quot;Another value.&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="type">SomeStructure</span>.storedTypeProperty)</span><br><span class="line"><span class="comment">// 打印 &quot;Another value.&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="type">SomeEnumeration</span>.computedTypeProperty)</span><br><span class="line"><span class="comment">// 打印 &quot;6&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="type">SomeClass</span>.computedTypeProperty)</span><br><span class="line"><span class="comment">// 打印 &quot;27&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `typePropertySyntax`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; print(SomeStructure.storedTypeProperty)</span><br><span class="line">&lt;- Some value.</span><br><span class="line">-&gt; SomeStructure.storedTypeProperty = &quot;Another value.&quot;</span><br><span class="line">-&gt; print(SomeStructure.storedTypeProperty)</span><br><span class="line">&lt;- Another value.</span><br><span class="line">-&gt; print(SomeEnumeration.computedTypeProperty)</span><br><span class="line">&lt;- 6</span><br><span class="line">-&gt; print(SomeClass.computedTypeProperty)</span><br><span class="line">&lt;- 27</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>接下来的示例使用了两个存储类型属性，作为一个结构体的一部分，用于模拟多个音频通道的音频电平仪。每个通道的音频电平都是一个介于 <code>0</code> 到 <code>10</code> 之间的整数（包括 <code>0</code> 和 <code>10</code>）。</p>
+<p>下图展示了如何将这两个音频通道组合在一起，以模拟一个立体声音频电平仪。当某个通道的音频电平为 <code>0</code> 时，该通道的指示灯全部熄灭；当音频电平为 <code>10</code> 时，该通道的指示灯全部点亮。在这个图中，左通道的当前电平为 <code>9</code>，右通道的当前电平为 <code>7</code>：</p>
+<p><img src="/staticPropertiesVUMeter"></p>
+<p>上述音频通道由 <code>AudioChannel</code> 结构体的实例表示：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">AudioChannel</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">let</span> thresholdLevel <span class="operator">=</span> <span class="number">10</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> maxInputLevelForAllChannels <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">var</span> currentLevel: <span class="type">Int</span> <span class="operator">=</span> <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">didSet</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> currentLevel <span class="operator">&gt;</span> <span class="type">AudioChannel</span>.thresholdLevel &#123;</span><br><span class="line">                <span class="comment">// 将当前音量限制在阈值之内</span></span><br><span class="line">                currentLevel <span class="operator">=</span> <span class="type">AudioChannel</span>.thresholdLevel</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> currentLevel <span class="operator">&gt;</span> <span class="type">AudioChannel</span>.maxInputLevelForAllChannels &#123;</span><br><span class="line">                <span class="comment">// 存储当前音量作为新的最大输入音量</span></span><br><span class="line">                <span class="type">AudioChannel</span>.maxInputLevelForAllChannels <span class="operator">=</span> currentLevel</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `staticProperties`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct AudioChannel &#123;</span><br><span class="line">      static let thresholdLevel = 10</span><br><span class="line">      static var maxInputLevelForAllChannels = 0</span><br><span class="line">      var currentLevel: Int = 0 &#123;</span><br><span class="line">         didSet &#123;</span><br><span class="line">            if currentLevel &gt; AudioChannel.thresholdLevel &#123;</span><br><span class="line">               // cap the new audio level to the threshold level</span><br><span class="line">               currentLevel = AudioChannel.thresholdLevel</span><br><span class="line">            &#125;</span><br><span class="line">            if currentLevel &gt; AudioChannel.maxInputLevelForAllChannels &#123;</span><br><span class="line">               // store this as the new overall maximum input level</span><br><span class="line">               AudioChannel.maxInputLevelForAllChannels = currentLevel</span><br><span class="line">            &#125;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>AudioChannel</code> 结构体定义了两个存储类型属性来支持其功能。第一个，<code>thresholdLevel</code>，定义了音频电平的最大阈值。对于所有 <code>AudioChannel</code> 实例，这个值是一个恒定的 <code>10</code>。如果输入的音频信号值高于 <code>10</code>，它将被限制在这个阈值内（如下所述）。</p>
+<p>第二个类型属性是一个名为 <code>maxInputLevelForAllChannels</code> 的变量存储属性，用于跟踪<em>任何</em> <code>AudioChannel</code> 实例所接收到的最大输入值。该属性初始值为 <code>0</code>。</p>
+<p><code>AudioChannel</code> 结构体还定义了一个存储实例属性，称为 <code>currentLevel</code>，表示通道当前的音频电平，范围从 <code>0</code> 到 <code>10</code>。</p>
+<p><code>currentLevel</code> 属性有一个 <code>didSet</code> 属性观察器，每当设置 <code>currentLevel</code> 时检查其值。这个观察器执行两个检查：</p>
+<ul>
+<li>如果 <code>currentLevel</code> 的新值大于允许的 <code>thresholdLevel</code>，属性观察器会将 <code>currentLevel</code> 限制在 <code>thresholdLevel</code>。</li>
+<li>如果 <code>currentLevel</code> 的新值（在任何限制之后）高于之前<em>任何</em> <code>AudioChannel</code> 实例接收到的值，属性观察器会将新的 <code>currentLevel</code> 值存储在 <code>maxInputLevelForAllChannels</code> 类型属性中。</li>
+</ul>
+<blockquote>
+<p>注意:<br>在这两个检查中的第一个中，<code>didSet</code> 观察器将 <code>currentLevel</code> 设置为不同的值。但这不会导致观察器再次被调用。</p>
+</blockquote>
+<p>可以使用 <code>AudioChannel</code> 结构体创建两个新的音频通道，称为 <code>leftChannel</code> 和 <code>rightChannel</code>，用于表示立体声音响系统的音频电平：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> leftChannel <span class="operator">=</span> <span class="type">AudioChannel</span>()</span><br><span class="line"><span class="keyword">var</span> rightChannel <span class="operator">=</span> <span class="type">AudioChannel</span>()</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `staticProperties`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var leftChannel = AudioChannel()</span><br><span class="line">-&gt; var rightChannel = AudioChannel()</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如果将<em>左</em>通道的 <code>currentLevel</code> 设置为 <code>7</code>，可以看到 <code>maxInputLevelForAllChannels</code> 类型属性更新为 <code>7</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">leftChannel.currentLevel <span class="operator">=</span> <span class="number">7</span></span><br><span class="line"><span class="built_in">print</span>(leftChannel.currentLevel)</span><br><span class="line"><span class="comment">// 打印 &quot;7&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="type">AudioChannel</span>.maxInputLevelForAllChannels)</span><br><span class="line"><span class="comment">// 打印 &quot;7&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `staticProperties`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; leftChannel.currentLevel = 7</span><br><span class="line">-&gt; print(leftChannel.currentLevel)</span><br><span class="line">&lt;- 7</span><br><span class="line">-&gt; print(AudioChannel.maxInputLevelForAllChannels)</span><br><span class="line">&lt;- 7</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如果尝试将<em>右</em>通道的 <code>currentLevel</code> 设置为 <code>11</code>，可以看到右通道的 <code>currentLevel</code> 属性被限制在最大值 <code>10</code>，并且 <code>maxInputLevelForAllChannels</code> 类型属性更新为 <code>10</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rightChannel.currentLevel <span class="operator">=</span> <span class="number">11</span></span><br><span class="line"><span class="built_in">print</span>(rightChannel.currentLevel)</span><br><span class="line"><span class="comment">// 打印 &quot;10&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="type">AudioChannel</span>.maxInputLevelForAllChannels)</span><br><span class="line"><span class="comment">// 打印 &quot;10&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `staticProperties`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; rightChannel.currentLevel = 11</span><br><span class="line">-&gt; print(rightChannel.currentLevel)</span><br><span class="line">&lt;- 10</span><br><span class="line">-&gt; print(AudioChannel.maxInputLevelForAllChannels)</span><br><span class="line">&lt;- 10</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+This source file is part of the Swift.org open source project
+
+Copyright (c) 2014 - 2022 Apple Inc. and the Swift project authors
+Licensed under Apache License v2.0 with Runtime Library Exception
+
+See https://swift.org/LICENSE.txt for license information
+See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
+-->
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>PROPERTIES</li>
+          
+  </ul>
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7"><span class="nav-number">1.</span> <span class="nav-text">属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%B6%E6%97%B6%E5%8A%A0%E8%BD%BD%E5%AD%98%E5%82%A8%E5%B1%9E%E6%80%A7"><span class="nav-number">1.0.1.</span> <span class="nav-text">延时加载存储属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%B1%9E%E6%80%A7%E5%92%8C%E5%AE%9E%E4%BE%8B%E5%8F%98%E9%87%8F"><span class="nav-number">1.0.2.</span> <span class="nav-text">存储属性和实例变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7"><span class="nav-number">1.1.</span> <span class="nav-text">计算属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8C%96-Setter-%E5%A3%B0%E6%98%8E"><span class="nav-number">1.1.1.</span> <span class="nav-text">简化 Setter 声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8C%96-Getter-%E5%A3%B0%E6%98%8E"><span class="nav-number">1.1.2.</span> <span class="nav-text">简化 Getter 声明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E8%A7%82%E5%AF%9F%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">属性观察器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E5%8C%85%E8%A3%85%E5%99%A8"><span class="nav-number">1.3.</span> <span class="nav-text">属性包装器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E5%B1%9E%E6%80%A7"><span class="nav-number">1.4.</span> <span class="nav-text">类型属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E5%B1%9E%E6%80%A7%E8%AF%AD%E6%B3%95"><span class="nav-number">1.4.1.</span> <span class="nav-text">类型属性语法</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

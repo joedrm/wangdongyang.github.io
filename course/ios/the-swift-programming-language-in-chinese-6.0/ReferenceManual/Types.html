@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="类型使用内置的命名类型和复合类型。 在 Swift 中，有两种类型:命名类型和复合类型。命名类型是在定义时可以赋予特定名称的类型。命名类型包括类、结构体、枚举和协议。例如，用户定义的名为 MyClass 的类的实例的类型为 MyClass。除了用户自定义的命名类型，Swift 标准库还定义了许多常用的命名类型，包括表示数组、字典和可选值的类型。 在很多编程语言中通常被认为是基本或原始的数据类型——">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/Types.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="类型使用内置的命名类型和复合类型。 在 Swift 中，有两种类型:命名类型和复合类型。命名类型是在定义时可以赋予特定名称的类型。命名类型包括类、结构体、枚举和协议。例如，用户定义的名为 MyClass 的类的实例的类型为 MyClass。除了用户自定义的命名类型，Swift 标准库还定义了许多常用的命名类型，包括表示数组、字典和可选值的类型。 在很多编程语言中通常被认为是基本或原始的数据类型——">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-08T08:32:48.736Z">
+<meta property="article:modified_time" content="2025-03-08T08:32:48.736Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/Types">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/">REFERENCEMANUAL</a></li>
+            <li>TYPES</li>
+          
+  </ul>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h1 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h1><p>使用内置的命名类型和复合类型。</p>
+<p>在 Swift 中，有两种类型:命名类型和复合类型。<br><em>命名类型</em>是在定义时可以赋予特定名称的类型。<br>命名类型包括类、结构体、枚举和协议。<br>例如，用户定义的名为 <code>MyClass</code> 的类的实例的类型为 <code>MyClass</code>。<br>除了用户自定义的命名类型，Swift 标准库还定义了许多常用的命名类型，包括表示数组、字典和可选值的类型。</p>
+<p>在很多编程语言中通常被认为是基本或原始的数据类型——例如表示数字、字符和字符串的类型——实际上是使用结构体在 Swift 标准库中定义和实现的命名类型。<br>因为这些基本数据类型是命名类型，所以您可以使用扩展声明(在<a href="doc:Extensions">doc:Extensions</a>和<a href="doc:Declarations#扩展声明">doc:Declarations#扩展声明</a>中讨论)来扩展它们的行为，以满足您程序的需求。</p>
+<p>复合类型指的是在 Swift 语言本身中定义的没有名称的类型。有两种复合类型:函数类型和元组类型。<br>复合类型可能包含命名类型和其他复合类型。<br>例如，元组类型 <code>(Int, (Int, Int))</code> 包含两个元素:第一个是命名类型 <code>Int</code>，第二个是另一个复合类型 <code>(Int, Int)</code>。</p>
+<p>您可以在命名类型或复合类型周围加上括号。<br>但是，在类型周围添加括号不会产生任何影响。<br>例如，<code>(Int)</code> 等同于 <code>Int</code>。</p>
+<p>本章讨论了 Swift 语言本身定义的类型，并描述了 Swift 的类型推断行为。</p>
+<blockquote>
+<p>类型的语法:</p>
+<blockquote>
+<p><em>type</em> → <em>function-type</em> \ &gt; <em>type</em> → <em>array-type</em> \ &gt; <em>type</em> → <em>dictionary-type</em> \ &gt; <em>type</em> → <em>type-identifier</em> \ &gt; <em>type</em> → <em>tuple-type</em> \ &gt; <em>type</em> → <em>optional-type</em> \ &gt; <em>type</em> → <em>implicitly-unwrapped-optional-type</em> \ &gt; <em>type</em> → <em>protocol-composition-type</em> \ &gt; <em>type</em> → <em>opaque-type</em> \ &gt; <em>type</em> → <em>boxed-protocol-type</em> \ &gt; <em>type</em> → <em>metatype-type</em> \ &gt; <em>type</em> → <em>any-type</em> \ &gt; <em>type</em> → <em>self-type</em> \ &gt; <em>type</em> → <strong><code>(</code></strong> <em>type</em> <strong><code>)</code></strong></p>
+</blockquote>
+</blockquote>
+<h2 id="类型注解"><a href="#类型注解" class="headerlink" title="类型注解"></a>类型注解</h2><p><em>类型注解</em>显式指定变量或表达式的类型。<br>类型注解以冒号 (<code>:</code>) 开头，以类型结尾，如下例所示:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> someTuple: (<span class="type">Double</span>, <span class="type">Double</span>) <span class="operator">=</span> (<span class="number">3.14159</span>, <span class="number">2.71828</span>)</span><br><span class="line"><span class="keyword">func</span> <span class="title function_">someFunction</span>(<span class="params">a</span>: <span class="type">Int</span>) { <span class="comment">/* ... */</span> }</span><br></pre></td></tr></tbody></table></figure>
+
+<p>在第一个示例中，表达式 <code>someTuple</code> 被指定为元组类型 <code>(Double, Double)</code>。<br>在第二个示例中，函数 <code>someFunction</code> 的参数 <code>a</code> 被指定为类型 <code>Int</code>。</p>
+<p>类型注解可以在类型之前包含一个可选的类型属性列表。</p>
+<blockquote>
+<p>类型注解的语法:</p>
+<blockquote>
+<p><em>type-annotation</em> → <strong><code>:</code></strong> <em>attributes</em><em>?</em> <em>type</em></p>
+</blockquote>
+</blockquote>
+<h2 id="类型标识符"><a href="#类型标识符" class="headerlink" title="类型标识符"></a>类型标识符</h2><p><em>类型标识符</em>指的是命名类型，或命名类型、复合类型的类型别名。</p>
+<p>大多数情况下，类型标识符直接指的是与标识符同名的命名类型。<br>例如，<code>Int</code> 是一个类型标识符，直接指的是命名类型 <code>Int</code>，类型标识符 <code>Dictionary&lt;String, Int&gt;</code> 直接指的是命名类型 <code>Dictionary&lt;String, Int&gt;</code>。</p>
+<p>有两种情况，类型标识符不是指与其同名的类型。<br>第一种情况，类型标识符指的是命名类型或复合类型的类型别名。<br>例如，在下面的示例中，类型注解中使用的 <code>Point</code> 指的是元组类型 <code>(Int, Int)</code>。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typealias</span> <span class="type">Point</span> <span class="operator">=</span> (<span class="type">Int</span>, <span class="type">Int</span>)</span><br><span class="line"><span class="keyword">let</span> origin: <span class="type">Point</span> <span class="operator">=</span> (<span class="number">0</span>, <span class="number">0</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>第二种情况，类型标识符使用点(.)语法来引用声明在其他模块中或嵌套在其他类型中的命名类型。例如，以下代码中的类型标识符引用了在 ExampleModule 模块中声明的命名类型 MyType。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> someValue: <span class="type">ExampleModule</span>.<span class="type">MyType</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>元组类型是一个用逗号分隔的类型列表，用括号括起来。你可以将元组类型用作函数的返回类型，以使函数能够返回包含多个值的单个元组。你还可以命名元组类型的元素，并使用这些名称来引用各个元素的值。元素名称由一个标识符后跟一个冒号(:)组成。有关演示这两个特性的示例，请参阅<a href="doc:Functions#多重返回值函数">doc:Functions#多重返回值函数</a>。当元组类型的元素有名称时，该名称是类型的一部分。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> someTuple <span class="operator">=</span> (top: <span class="number">10</span>, bottom: <span class="number">12</span>)  <span class="comment">// someTuple 的类型为 (top: Int, bottom: Int)</span></span><br><span class="line">someTuple <span class="operator">=</span> (top: <span class="number">4</span>, bottom: <span class="number">42</span>) <span class="comment">// OK: 名称匹配</span></span><br><span class="line">someTuple <span class="operator">=</span> (<span class="number">9</span>, <span class="number">99</span>)              <span class="comment">// OK: 名称被推断</span></span><br><span class="line">someTuple <span class="operator">=</span> (left: <span class="number">5</span>, right: <span class="number">5</span>)  <span class="comment">// 错误: 名称不匹配</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>除了 Void 是空元组类型 () 的类型别名外，所有元组类型都包含两个或更多类型。</p>
+<p>函数类型表示函数、方法或闭包的类型，由一个参数类型和返回类型组成，用箭头(-&gt;)分隔:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="operator">&lt;</span>#参数类型#<span class="operator">&gt;</span>) -&gt; <span class="operator">&lt;</span>#返回类型#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>参数类型是一个用逗号分隔的类型列表。由于返回类型可以是元组类型，函数类型支持返回多个值的函数和方法。</p>
+<p>函数类型 () -&gt; T (其中 T 是任何类型)的参数可以应用 autoclosure 属性，在调用时隐式创建闭包。这提供了一种语法上方便的方式，在调用函数时延迟表达式的计算，而无需编写显式闭包。有关 autoclosure 函数类型参数的示例，请参阅<a href="doc:Closures#自动闭包">doc:Closures#自动闭包</a>。</p>
+<p>函数类型可以在其参数类型中有可变参数。在语法上，可变参数由一个基本类型名后跟三个点(…)组成，如 Int…。可变参数被视为包含基本类型名元素的数组。例如，可变参数 Int… 被视为 [Int]。有关使用可变参数的示例，请参阅<a href="doc:Functions#可变参数">doc:Functions#可变参数</a>。</p>
+<p>要指定一个输入输出参数，需要在参数类型前加上 <code>inout</code> 关键字。你不能在可变参数或返回类型上使用 <code>inout</code> 关键字。输入输出参数在 <a href="doc:Functions#输入输出参数">doc:Functions#输入输出参数</a> 中有讨论。</p>
+<p>如果函数类型只有一个参数，且参数类型为元组，则在写该函数类型时必须给元组加括号。例如，<code>((Int, Int)) -&gt; Void</code> 是一个接受单个参数的函数类型，该参数的类型为 <code>(Int, Int)</code>，并且不返回任何值。相反，如果不加括号，<code>(Int, Int) -&gt; Void</code> 是一个接受两个 <code>Int</code> 参数并且不返回任何值的函数类型。同样，因为 <code>Void</code> 是 <code>()</code> 的类型别名，所以函数类型 <code>(Void) -&gt; Void</code> 与 <code>(()) -&gt; ()</code> 相同 — 一个接受单个参数为空元组的函数。这些类型与 <code>() -&gt; ()</code> 不同 — 一个不接受任何参数的函数。</p>
+<p>函数和方法中的参数名不是相应函数类型的一部分。例如:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">someFunction</span>(<span class="params">left</span>: <span class="type">Int</span>, <span class="params">right</span>: <span class="type">Int</span>) {}</span><br><span class="line"><span class="keyword">func</span> <span class="title function_">anotherFunction</span>(<span class="params">left</span>: <span class="type">Int</span>, <span class="params">right</span>: <span class="type">Int</span>) {}</span><br><span class="line"><span class="keyword">func</span> <span class="title function_">functionWithDifferentLabels</span>(<span class="params">top</span>: <span class="type">Int</span>, <span class="params">bottom</span>: <span class="type">Int</span>) {}</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> f <span class="operator">=</span> someFunction <span class="comment">// f 的类型是 (Int, Int) -&gt; Void，而不是 (left: Int, right: Int) -&gt; Void。</span></span><br><span class="line">f <span class="operator">=</span> anotherFunction <span class="comment">// OK  </span></span><br><span class="line">f <span class="operator">=</span> functionWithDifferentLabels <span class="comment">// OK</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">functionWithDifferentArgumentTypes</span>(<span class="params">left</span>: <span class="type">Int</span>, <span class="params">right</span>: <span class="type">String</span>) {}</span><br><span class="line">f <span class="operator">=</span> functionWithDifferentArgumentTypes <span class="comment">// 错误</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">functionWithDifferentNumberOfArguments</span>(<span class="params">left</span>: <span class="type">Int</span>, <span class="params">right</span>: <span class="type">Int</span>, <span class="params">top</span>: <span class="type">Int</span>) {}</span><br><span class="line">f <span class="operator">=</span> functionWithDifferentNumberOfArguments <span class="comment">// 错误</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>因为参数标签不是函数类型的一部分，所以在写函数类型时要省略它们。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> operation: (lhs: <span class="type">Int</span>, rhs: <span class="type">Int</span>) -&gt; <span class="type">Int</span> <span class="comment">// 错误</span></span><br><span class="line"><span class="keyword">var</span> operation: (<span class="keyword">_</span> lhs: <span class="type">Int</span>, <span class="keyword">_</span> rhs: <span class="type">Int</span>) -&gt; <span class="type">Int</span> <span class="comment">// OK</span></span><br><span class="line"><span class="keyword">var</span> operation: (<span class="type">Int</span>, <span class="type">Int</span>) -&gt; <span class="type">Int</span> <span class="comment">// OK</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>如果一个函数类型包含多个箭头(<code>-&gt;</code>)时，表示该函数类型实际上是一个高阶函数，它接受一些参数并返回另一个函数。在这种情况下，函数类型是从右向左进行分组的。例如，函数类型<code>(Int) -&gt; (Int) -&gt; Int</code>被理解为<code>(Int) -&gt; ((Int) -&gt; Int)</code> — 即一个接受<code>Int</code>参数并返回另一个接受<code>Int</code>参数并返回<code>Int</code>结果的函数。</p>
+<p>可能抛出或重新抛出错误的函数类型必须包含<code>throws</code>关键字。你可以在<code>throws</code>后面加上括号中的类型来指定函数抛出的错误类型。抛出的错误类型必须符合<code>Error</code>协议。写<code>throws</code>而不指定类型等同于写<code>throws(any Error)</code>。省略<code>throws</code>等同于写<code>throws(Never)</code>。函数抛出的错误类型可以是任何符合<code>Error</code>协议的类型，包括泛型类型、装箱协议类型和不透明类型。</p>
+<p>函数抛出的错误类型是该函数类型的一部分，错误类型之间的子类型关系意味着相应的函数类型也是子类型关系。例如，如果你声明了一个自定义的<code>MyError</code>类型，一些函数类型之间的关系如下，从超类型到子类型:</p>
+<ol>
+<li>抛出任何错误的函数，标记为<code>throws(any Error)</code> </li>
+<li>抛出特定错误的函数，标记为<code>throws(MyError)</code></li>
+<li>不抛出错误的函数，标记为<code>throws(Never)</code></li>
+</ol>
+<p>由于这些子类型关系:</p>
+<ul>
+<li>你可以在需要抛出函数的地方使用不抛出函数。</li>
+<li>你可以在需要抛出函数的地方使用抛出具体错误类型的函数。</li>
+<li>你可以在需要抛出更一般错误类型的函数的地方使用抛出更特定错误类型的函数。</li>
+</ul>
+<p>如果使用关联类型或泛型类型参数指定抛出的错误类型，那么该关联类型或泛型类型参数隐式地需要符合<code>Error</code>协议。</p>
+<p>异步函数的函数类型必须用<code>async</code>关键字标记。<code>async</code>关键字是函数类型的一部分，同步函数是异步函数的子类型。因此，你可以在需要异步函数的地方使用同步函数。</p>
+<p>非逃逸函数类型的参数不能存储在<code>Any</code>类型的属性、变量或常量中，因为这可能会导致值逃逸。值逃逸指的是将一个本应在特定作用域内使用的闭包逃逸到了该作用域之外，从而可能导致意外行为或内存泄漏。因此，Swift 对非逃逸闭包做了这个限制。</p>
+<p>一个非逃逸函数不能作为另一个非逃逸函数的参数传入。这个限制有助于 Swift 在编译时而不是运行时执行更多对内存访问冲突的检查。例如:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> external: (() -&gt; <span class="type">Void</span>) -&gt; <span class="type">Void</span> <span class="operator">=</span> { <span class="keyword">_</span> <span class="keyword">in</span> () } </span><br><span class="line"><span class="keyword">func</span> <span class="title function_">takesTwoFunctions</span>(<span class="params">first</span>: (() -&gt; <span class="type">Void</span>) -&gt; <span class="type">Void</span>, <span class="params">second</span>: (() -&gt; <span class="type">Void</span>) -&gt; <span class="type">Void</span>) {</span><br><span class="line">    first { first {} }       <span class="comment">// 错误</span></span><br><span class="line">    second { second {}  }    <span class="comment">// 错误</span></span><br><span class="line"></span><br><span class="line">    first { second {} }      <span class="comment">// 错误 </span></span><br><span class="line">    second { first {} }      <span class="comment">// 错误</span></span><br><span class="line"></span><br><span class="line">    first { external {} }    <span class="comment">// 正确</span></span><br><span class="line">    external { first {} }    <span class="comment">// 正确</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>在上述代码中，<code>takesTwoFunctions(first:second:)</code> 的两个参数都是函数。由于它们都没有标记为 <code>@escaping</code>，因此它们都是非逃逸的。</p>
+<p>上述代码中标记为”错误”的四个函数调用会导致编译器错误。因为 <code>first</code> 和 <code>second</code> 参数是非逃逸函数，所以它们不能被传递给另一个非逃逸函数参数。另一方面，标记为”正确”的两个函数调用不会导致编译器错误。这些函数调用没有违反限制，因为 <code>external</code> 不是 <code>takesTwoFunctions(first:second:)</code> 的参数之一。</p>
+<p>如果你需要避免这个限制，可以将其中一个参数标记为逃逸的，或者使用 <code>withoutActuallyEscaping(_:do:)</code> 函数临时将其中一个非逃逸函数参数转换为逃逸函数。有关避免内存访问冲突的信息，请参阅 <a href="doc:MemorySafety">doc:MemorySafety</a>。</p>
+<blockquote>
+<p>函数类型的语法:</p>
+<blockquote>
+<p><em>function-type</em> → <em>attributes</em><em>?</em> <em>function-type-argument-clause</em> <strong><code>async</code></strong><em>?</em> <em>throws-clause</em><em>?</em> <strong><code>-&gt;</code></strong> <em>type</em><br><em>function-type-argument-clause</em> → <strong><code>(</code></strong> <strong><code>)</code></strong> <br><em>function-type-argument-clause</em> → <strong><code>(</code></strong> <em>function-type-argument-list</em> <strong><code>...</code></strong><em>?</em> <strong><code>)</code></strong><br><em>function-type-argument-list</em> → <em>function-type-argument</em> | <em>function-type-argument</em> <strong><code>,</code></strong> <em>function-type-argument-list</em> <br><em>function-type-argument</em> → <em>attributes</em><em>?</em> <em>parameter-modifier</em><em>?</em> <em>type</em> | <em>argument-label</em> <em>type-annotation</em> <br><em>argument-label</em> → <em>identifier</em><br><em>throws-clause</em> → <strong><code>throws</code></strong> | <strong><code>throws</code></strong> <strong><code>(</code></strong> <em>type</em> <strong><code>)</code></strong></p>
+</blockquote>
+</blockquote>
+<p>func polymorphicF<t>(a: Int) -&gt; T { return a } 是一个泛型函数，可以返回任何类型的值。而 monomorphicF(a: Int) -&gt; Int { return a } 是一个单态函数，只能返回 Int 类型的值。</t></p>
+<p>var myMonomorphicF = monomorphicF 这种赋值是允许的。</p>
+<p>但是，以下赋值是不允许的:</p>
+<p>var myPolymorphicF = polymorphicF –&gt;</p>
+<h2 id="数组类型"><a href="#数组类型" class="headerlink" title="数组类型"></a>数组类型</h2><p>Swift 语言为 Swift 标准库 <code>Array&lt;Element&gt;</code> 类型提供了以下语法糖:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="operator">&lt;</span>#类型#<span class="operator">&gt;</span>]</span><br></pre></td></tr></tbody></table></figure>
+
+<p>换句话说，以下两个声明是等价的:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> someArray: <span class="type">Array</span>&lt;<span class="type">String</span>&gt; <span class="operator">=</span> [<span class="string">"Alex"</span>, <span class="string">"Brian"</span>, <span class="string">"Dave"</span>]</span><br><span class="line"><span class="keyword">let</span> someArray: [<span class="type">String</span>] <span class="operator">=</span> [<span class="string">"Alex"</span>, <span class="string">"Brian"</span>, <span class="string">"Dave"</span>]</span><br></pre></td></tr></tbody></table></figure>
+
+<p>在这两种情况下，常量 <code>someArray</code> 都被声明为一个字符串数组。可以通过使用方括号指定有效的索引值来访问数组的元素:<br><code>someArray[0]</code> 指的是索引为 0 的元素 <code>"Alex"</code>。</p>
+<p>你可以通过嵌套方括号对来创建多维数组，其中基本元素类型的名称包含在最内层的方括号对中。<br>例如，你可以使用三组方括号创建一个三维整数数组:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array3D: [[[<span class="type">Int</span>]]] <span class="operator">=</span> [[[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>]], [[<span class="number">5</span>, <span class="number">6</span>], [<span class="number">7</span>, <span class="number">8</span>]]]</span><br></pre></td></tr></tbody></table></figure>
+
+<p>当访问多维数组的元素时，最左边的下标索引指的是最外层数组中该索引处的元素。下一个向右的下标索引指的是嵌套一层的数组中该索引处的元素。以此类推。这意味着在上面的示例中，<code>array3D[0]</code> 指的是 <code>[[1, 2], [3, 4]]</code>、<code>array3D[0][1]</code> 指的是 <code>[3, 4]</code>、<code>array3D[0][1][1]</code> 指的是值 4。</p>
+<p>有关 Swift 标准库 <code>Array</code> 类型的详细讨论，请参阅 <a href="doc:CollectionTypes#数组">doc:CollectionTypes#数组</a>。</p>
+<blockquote>
+<p>数组类型的语法:</p>
+<blockquote>
+<p><em>array-type</em> → <strong><code>[</code></strong> <em>type</em> <strong><code>]</code></strong></p>
+</blockquote>
+</blockquote>
+<h2 id="字典类型"><a href="#字典类型" class="headerlink" title="字典类型"></a>字典类型</h2><p>Swift 语言为 Swift 标准库 <code>Dictionary&lt;Key, Value&gt;</code> 类型提供了以下语法糖:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="operator">&lt;</span>#键类型#<span class="operator">&gt;</span>: <span class="operator">&lt;</span>#值类型#<span class="operator">&gt;</span>] </span><br></pre></td></tr></tbody></table></figure>
+
+<p>换句话说，以下两个声明是等价的:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> someDictionary: [<span class="type">String</span>: <span class="type">Int</span>] <span class="operator">=</span> [<span class="string">"Alex"</span>: <span class="number">31</span>, <span class="string">"Paul"</span>: <span class="number">39</span>]</span><br><span class="line"><span class="keyword">let</span> someDictionary: <span class="type">Dictionary</span>&lt;<span class="type">String</span>, <span class="type">Int</span>&gt; <span class="operator">=</span> [<span class="string">"Alex"</span>: <span class="number">31</span>, <span class="string">"Paul"</span>: <span class="number">39</span>]</span><br></pre></td></tr></tbody></table></figure>
+
+<p>在这两种情况下，常量 <code>someDictionary</code> 都被声明为一个以字符串作为键、整数作为值的字典。</p>
+<p>可以通过在方括号中指定相应的键来访问字典的值:<code>someDictionary["Alex"]</code> 指的是与键 <code>"Alex"</code> 关联的值。<br>下标返回字典值类型的可选值。<br>如果指定的键不在字典中，下标将返回 <code>nil</code>。</p>
+<p>字典的键类型必须符合 Swift 标准库 <code>Hashable</code> 协议。</p>
+<p>有关 Swift 标准库 <code>Dictionary</code> 类型的详细讨论，请参阅 <a href="doc:CollectionTypes#字典">doc:CollectionTypes#字典</a>。</p>
+<blockquote>
+<p>字典类型的语法:</p>
+<blockquote>
+<p><em>dictionary-type</em> → <strong><code>[</code></strong> <em>type</em> <strong><code>:</code></strong> <em>type</em> <strong><code>]</code></strong></p>
+</blockquote>
+</blockquote>
+<h2 id="可选类型"><a href="#可选类型" class="headerlink" title="可选类型"></a>可选类型</h2><h2 id="可选类型-1"><a href="#可选类型-1" class="headerlink" title="可选类型"></a>可选类型</h2><p>Swift 语言将后缀 <code>?</code> 定义为命名类型 <code>Optional&lt;Wrapped&gt;</code> 的语法糖，该类型定义在 Swift 标准库中。换句话说，以下两个声明是等价的:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> optionalInteger: <span class="type">Int</span>?</span><br><span class="line"><span class="keyword">var</span> optionalInteger: <span class="type">Optional</span>&lt;<span class="type">Int</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>在这两种情况下，变量 <code>optionalInteger</code> 都被声明为可选整数类型。注意，类型和 <code>?</code> 之间不能有空格。</p>
+<p><code>Optional&lt;Wrapped&gt;</code> 类型是一个枚举，有两种情况 <code>none</code> 和 <code>some(Wrapped)</code>，用于表示值可能存在或不存在。任何类型都可以显式声明为(或隐式转换为)可选类型。如果在声明可选变量或属性时没有提供初始值，它的值会自动默认为 <code>nil</code>。</p>
+<p>如果一个可选类型的实例包含值，你可以使用后缀操作符 <code>!</code> 访问该值，如下所示:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">optionalInteger <span class="operator">=</span> <span class="number">42</span></span><br><span class="line">optionalInteger<span class="operator">!</span> <span class="comment">// 42</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>使用 <code>!</code> 操作符解包值为 <code>nil</code> 的可选值会导致运行时错误。</p>
+<p>你也可以使用可选链和可选绑定来有条件地对可选表达式执行操作。如果值为 <code>nil</code>，则不执行任何操作，因此也不会产生运行时错误。</p>
+<p>有关更多信息和示例说明如何使用可选类型，请参阅 <a href="doc:TheBasics#可选项">doc:TheBasics#可选项</a>。</p>
+<blockquote>
+<p>可选类型的语法:</p>
+<blockquote>
+<p><em>optional-type</em> → <em>type</em> <strong><code>?</code></strong></p>
+</blockquote>
+</blockquote>
+<h2 id="隐式解包可选类型"><a href="#隐式解包可选类型" class="headerlink" title="隐式解包可选类型"></a>隐式解包可选类型</h2><p>隐式解包是指在访问可选值时自动将其解包。Swift 语言将后缀 <code>!</code> 定义为命名类型 <code>Optional&lt;Wrapped&gt;</code> 的语法糖，该类型定义在 Swift 标准库中，附加行为是在访问时自动解包。如果尝试使用值为 <code>nil</code> 的隐式解包可选值，你会得到一个运行时错误。</p>
+<p>除了隐式解包行为外，以下两个声明是等价的:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> implicitlyUnwrappedString: <span class="type">String</span>!</span><br><span class="line"><span class="keyword">var</span> explicitlyUnwrappedString: <span class="type">Optional</span>&lt;<span class="type">String</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>注意，类型和 <code>!</code> 之间不能有空格。嵌套在元组类型或泛型类型(如字典或数组的元素类型)中的可选类型不能标记为隐式解包，因为隐式解包会改变包含该类型声明的含义。例如:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> tupleOfImplicitlyUnwrappedElements: (<span class="type">Int</span>!, <span class="type">Int</span>!)  <span class="comment">// 错误</span></span><br><span class="line"><span class="keyword">let</span> implicitlyUnwrappedTuple: (<span class="type">Int</span>, <span class="type">Int</span>)<span class="operator">!</span>             <span class="comment">// 正确</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> arrayOfImplicitlyUnwrappedElements: [<span class="type">Int</span>!]        <span class="comment">// 错误  </span></span><br><span class="line"><span class="keyword">let</span> implicitlyUnwrappedArray: [<span class="type">Int</span>]<span class="operator">!</span>                  <span class="comment">// 正确</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>由于隐式解包可选值与可选值具有相同的 <code>Optional&lt;Wrapped&gt;</code> 类型，因此在任何可以使用可选值的地方，也可以使用隐式解包可选值。例如，你可以将隐式解包可选值赋值给可选变量、常量和属性，反之亦然。</p>
+<p>与可选值一样，如果在声明隐式解包可选变量或属性时没有提供初始值，它的值会自动默认为 <code>nil</code>。</p>
+<p>使用可选链来有条件地对隐式解包可选表达式执行操作。如果值为 <code>nil</code>，则不执行任何操作，因此也不会产生运行时错误。</p>
+<p>有关隐式解包可选类型的更多信息，请参阅 <a href="doc:TheBasics#隐式解析可选类型">doc:TheBasics#隐式解析可选类型</a>。</p>
+<blockquote>
+<p>隐式解包可选类型的语法:</p>
+<blockquote>
+<p><em>implicitly-unwrapped-optional-type</em> → <em>type</em> <strong><code>!</code></strong>  </p>
+</blockquote>
+</blockquote>
+<h2 id="协议组合类型"><a href="#协议组合类型" class="headerlink" title="协议组合类型"></a>协议组合类型</h2><p>一个<em>协议组合类型</em>定义了一种类型，该类型符合指定协议列表中的每个协议。它也可以定义一种从给定类继承并符合指定协议列表中每个协议的类型。</p>
+<p>协议组合类型具有以下形式:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&lt;</span>#协议 <span class="number">1</span>#<span class="operator">&gt;</span> <span class="operator">&amp;</span> <span class="operator">&lt;</span>#协议 <span class="number">2</span>#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>协议组合类型允许你指定一个值的类型符合多个协议的要求，而无需显式定义一个新的命名协议来继承你希望该类型符合的每个协议。你可以使用协议组合类型<code>ProtocolA &amp; ProtocolB &amp; ProtocolC</code>而不是声明一个新的协议继承自<code>ProtocolA</code>、<code>ProtocolB</code>和<code>ProtocolC</code>。同样，你可以使用<code>SuperClass &amp; ProtocolA</code>而不是声明一个新的协议，该协议是<code>SuperClass</code>的子类并符合<code>ProtocolA</code>。</p>
+<p>协议组合列表中的每一项都是以下之一，列表最多可以包含一个类:</p>
+<ul>
+<li>类的名称</li>
+<li>协议的名称</li>
+<li>底层类型是协议组合类型、协议或类的类型别名</li>
+</ul>
+<p>当协议组合类型包含类型别名时，同一协议可能会在定义中出现多次，重复项会被忽略。例如，下面代码中<code>PQR</code>的定义等同于<code>P &amp; Q &amp; R</code>。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typealias</span> <span class="type">PQ</span> <span class="operator">=</span> <span class="type">P</span> &amp; <span class="type">Q</span></span><br><span class="line"><span class="keyword">typealias</span> <span class="type">PQR</span> <span class="operator">=</span> <span class="type">PQ</span> &amp; <span class="type">Q</span> &amp; <span class="type">R</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>一个<em>不透明类型</em>定义了一种符合协议或协议组合的类型，而不指定底层具体类型。不透明类型出现在函数或下标的返回类型中，或属性的类型中。不透明类型不能作为元组类型或泛型类型的一部分出现，例如数组的元素类型或可选类型的包装类型。</p>
+<p>不透明类型具有以下形式:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">some</span> <span class="operator">&lt;</span>#约束#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><em>约束</em>是类类型、协议类型、协议组合类型或<code>Any</code>。只有当值是符合列出的协议或协议组合的类型实例，或者从列出的类继承时，才能将该值用作不透明类型的实例。与不透明值交互的代码只能以<em>约束</em>定义的接口中的方式使用该值。</p>
+<p>在编译时，不透明类型的值具有特定的具体类型，Swift 可以使用该底层类型进行优化。但是，不透明类型形成了一个边界，关于该底层类型的信息不能跨越该边界。</p>
+<p>协议声明不能包含不透明类型。类不能将不透明类型用作非 final 方法的返回类型。使用不透明类型作为返回类型的函数必须返回共享单个底层类型的值。返回类型可以包括函数的泛型类型参数中的类型。例如，函数<code>someFunction&lt;T&gt;()</code>可以返回类型为<code>T</code>或<code>Dictionary&lt;String, T&gt;</code>的值。</p>
+<p>一个<em>装箱协议类型</em>定义了一种符合协议或协议组合的类型，该类型在程序运行时可以变化。装箱协议类型具有以下形式:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">any</span> <span class="operator">&lt;</span>#约束#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><em>约束</em>是协议类型、协议组合类型、协议类型的元类型或协议组合类型的元类型。</p>
+<p>在运行时，一个装箱协议类型是指可以存储任何符合该协议约束的类型值的类型。装箱协议类型的实例可以包含满足协议约束的任何类型的值。这种行为与不透明类型的工作方式形成对比，在不透明类型中，编译时已知某个特定的符合类型。</p>
+<p>在使用装箱协议类型时，需要通过一个额外的间接层级来访问值，这种间接访问的方式称为装箱。装箱通常需要单独的内存分配用于存储，并且访问时需要额外的间接层级，这在运行时会产生性能开销。  </p>
+<p>对 <code>Any</code> 或 <code>AnyObject</code> 类型应用 <code>any</code> 没有任何效果，因为这些类型已经是装箱协议类型。</p>
+<p>元类型指的是描述一个类型本身的类型，包括类类型、结构体类型、枚举类型和协议类型。</p>
+<p>类、结构体或枚举类型的元类型是该类型的名称后跟 .Type。协议类型的元类型(而不是运行时符合该协议的具体类型)是该协议的名称后跟 .Protocol。例如，类型 SomeClass 的元类型是 SomeClass.Type，协议 SomeProtocol 的元类型是 SomeProtocol.Protocol。</p>
+<p>你可以使用后缀 self 表达式以值的形式访问一个类型。例如，SomeClass.self 返回 SomeClass 本身，而不是 SomeClass 的实例。SomeProtocol.self 返回 SomeProtocol 本身，而不是运行时符合 SomeProtocol 的类型的实例。你可以使用 type(of:) 函数和一个类型的实例来访问该实例的动态运行时类型作为一个值，如下例所示:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SomeBaseClass</span> {</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">func</span> <span class="title class_">printClassName</span>() {</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"SomeBaseClass"</span>)</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SomeSubClass</span>: <span class="title class_">SomeBaseClass</span> {</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">class</span> <span class="title class_">func</span> <span class="title class_">printClassName</span>() {</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"SomeSubClass"</span>) </span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> someInstance: <span class="type">SomeBaseClass</span> <span class="operator">=</span> <span class="type">SomeSubClass</span>()</span><br><span class="line"><span class="comment">// someInstance 的编译时类型是 SomeBaseClass,</span></span><br><span class="line"><span class="comment">// someInstance 的运行时类型是 SomeSubClass</span></span><br><span class="line"><span class="built_in">type</span>(of: someInstance).printClassName() <span class="comment">// 打印 "SomeSubClass"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>使用初始化表达式可以从该类型的元类型值构造该类型的实例。对于类实例，被调用的初始化方法必须使用 required 关键字标记，或者该类被标记为 final 类。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">AnotherSubClass</span>: <span class="title class_">SomeBaseClass</span> {</span><br><span class="line">    <span class="keyword">let</span> string: <span class="type">String</span></span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">init</span>(<span class="params">string</span>: <span class="type">String</span>) {</span><br><span class="line">        <span class="keyword">self</span>.string <span class="operator">=</span> string</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">class</span> <span class="title class_">func</span> <span class="title class_">printClassName</span>() {</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"AnotherSubClass"</span>)</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> metatype: <span class="type">AnotherSubClass</span>.<span class="keyword">Type</span> <span class="operator">=</span> <span class="type">AnotherSubClass</span>.<span class="keyword">self</span></span><br><span class="line"><span class="keyword">let</span> anotherInstance <span class="operator">=</span> metatype.<span class="keyword">init</span>(string: <span class="string">"some string"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<!-- - test: `metatype-type`
+
+  <figure class="highlight plaintext"><figcaption><span>-> class AnotherSubClass: SomeBaseClass &#123; let string: String required init(string: String) &#123; self.string </span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&gt; 元类型语法:</span><br><span class="line">&gt; &gt; *metatype-type* → *type* **`.`** **`Type`** | *type* **`.`** **`Protocol`**  </span><br><span class="line"></span><br><span class="line">## Any 类型</span><br><span class="line"></span><br><span class="line">`Any` 类型可以包含来自所有其他类型的值。</span><br><span class="line">`Any` 可以用作以下任何类型实例的具体类型:</span><br><span class="line"></span><br><span class="line">- 类、结构或枚举</span><br><span class="line">- 元类型，如 `Int.self`</span><br><span class="line">- 具有任何类型组件的元组</span><br><span class="line">- 闭包或函数类型</span><br><span class="line"></span><br><span class="line">```swift</span><br><span class="line">let mixed: [Any] = [&quot;one&quot;, 2, true, (4, 5.3), &#123; () -&gt; Int in return 6 &#125;]</span><br></pre></td></tr></table></figure>
+
+<!-- - test: `any-type`
+
+  <figure class="highlight plaintext"><figcaption><span>-> let mixed: [Any] </span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">当您使用 `Any` 作为实例的具体类型时，您需要在访问其属性或方法之前将实例转换为已知类型。</span><br><span class="line">具有 `Any` 具体类型的实例保持其原始动态类型，并且可以使用类型转换运算符 --- `as`、`as?` 或 `as!` 转换为该类型。</span><br><span class="line">例如，使用 `as?` 有条件地将异构数组中的第一个对象向下转换为 `String`，如下所示:</span><br><span class="line"></span><br><span class="line">```swift</span><br><span class="line">if let first = mixed.first as? String &#123;</span><br><span class="line">  print(&quot;第一项 &#x27;\(first)&#x27; 是字符串。&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// 打印 &quot;第一项 &#x27;one&#x27; 是字符串。&quot;</span><br></pre></td></tr></table></figure>
+
+<!-- - test: `any-type`
+
+  <figure class="highlight plaintext"><figcaption><span>-> if let first </span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">  ``` --&gt;</span><br><span class="line"></span><br><span class="line">有关转换的更多信息，请参阅 &lt;doc:TypeCasting&gt;。</span><br><span class="line"></span><br><span class="line">`AnyObject` 协议类似于 `Any` 类型。</span><br><span class="line">所有类型都隐式符合 `AnyObject`。</span><br><span class="line">与由语言定义的 `Any` 不同， `AnyObject` 由 Swift 标准库定义。</span><br><span class="line">有关更多信息，请参阅 &lt;doc:Protocols#类专属协议&gt; 和 [`AnyObject`](https://developer.apple.com/documentation/swift/anyobject)。</span><br><span class="line"></span><br><span class="line">&gt; Any 类型语法:</span><br><span class="line">&gt; &gt; *any-type* → **`Any`**</span><br><span class="line"></span><br><span class="line">## Self 类型  </span><br><span class="line"></span><br><span class="line">`Self` 类型不是特定类型，而是让您方便地引用当前类型而无需重复或知道该类型的名称。</span><br><span class="line"></span><br><span class="line">在协议声明或协议成员声明中， `Self` 类型指的是最终符合该协议的类型。</span><br><span class="line"></span><br><span class="line">在结构、类或枚举声明中， `Self` 类型指的是由声明引入的类型。</span><br><span class="line">在类型成员的声明中， `Self` 类型指的是该类型。</span><br><span class="line">在类声明的成员中， `Self` 只能出现在以下位置:</span><br><span class="line"></span><br><span class="line">- 作为方法的返回类型</span><br><span class="line">- 作为只读下标的返回类型</span><br><span class="line">- 作为只读计算属性的类型</span><br><span class="line">- 在方法体内</span><br><span class="line"></span><br><span class="line">例如，下面的代码显示了一个实例方法 `f`，其返回类型是 `Self`。</span><br><span class="line"></span><br><span class="line">&lt;!-- - test: `self-in-class-cant-be-a-parameter-type`</span><br><span class="line"></span><br><span class="line">  ```swifttest -&gt; class C &#123; func f(c: Self) &#123; &#125; &#125; !$ error: covariant &#x27;Self&#x27; or &#x27;Self?&#x27; can only appear as the type of a property, subscript or method result; did you mean &#x27;C&#x27;?</span><br><span class="line">  !! class C &#123; func f(c: Self) &#123; &#125; &#125; !!                     ^~~~ !!                     C ``` --&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- - test: `self-in-class-can-be-a-subscript-param`</span><br><span class="line"></span><br><span class="line">  ```swifttest &gt;&gt; class C &#123; subscript(s: Int) -&gt; Self &#123; return self &#125; &#125; &gt;&gt; let c = C() &gt;&gt; _ = c[12] ``` --&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- - test: `self-in-class-can-be-a-computed-property-type`</span><br><span class="line"></span><br><span class="line">  ```swifttest &gt;&gt; class C &#123; var s: Self &#123; return self &#125; &#125; &gt;&gt; let c = C() &gt;&gt; _ = c.s ``` --&gt;</span><br><span class="line"></span><br><span class="line">上面的例子最后一部分展示了，`Self` 指的是 `z` 值的运行时类型 `子类`，而不是变量本身的编译时类型 `超类`。</span><br><span class="line"></span><br><span class="line">在嵌套类型声明中，`Self` 类型指的是最内层类型声明引入的类型。</span><br><span class="line"></span><br><span class="line">`Self` 类型指的是与 Swift 标准库中的 `type(of:)` 函数相同的类型。写 `Self.someStaticMember` 来访问当前类型的成员与写 `type(of: self).someStaticMember` 是一样的。</span><br><span class="line"></span><br><span class="line">&gt; Self 类型的语法:</span><br><span class="line">&gt; &gt; *self-type* → **`Self`**</span><br><span class="line"></span><br><span class="line">*类型继承子句* 用于指定命名类型继承自哪个类以及符合哪些协议。类型继承子句以冒号 (:) 开头，后跟一系列类型标识符。</span><br><span class="line"></span><br><span class="line">类可以继承自单个超类并符合任意数量的协议。在定义类时，超类的名称必须出现在类型标识符列表的首位，后跟该类必须符合的任意数量的协议。如果该类不继承自其他类，则列表可以从协议开始。有关类继承的扩展讨论和几个示例，请参阅 &lt;doc:Inheritance&gt;。</span><br><span class="line"></span><br><span class="line">其他命名类型只能继承自或符合一系列协议。协议类型可以继承自任意数量的其他协议。当一个协议类型继承自其他协议时，来自那些其他协议的要求会被聚合在一起，任何继承自当前协议的类型都必须符合所有这些要求。</span><br><span class="line"></span><br><span class="line">对于为枚举案例分配原始值的枚举定义，类型继承子句可以是指定这些原始值类型的单个命名类型。有关使用类型继承子句指定其原始值类型的枚举定义示例，请参阅 &lt;doc:Enumerations#原始值&gt;。</span><br><span class="line"></span><br><span class="line">&gt; 类型继承子句的语法:</span><br><span class="line">&gt; &gt; *type-inheritance-clause* → **`:`** *type-inheritance-list* </span><br><span class="line">&gt; &gt; *type-inheritance-list* → *attributes*_?_ *type-identifier* | *attributes*_?_ *type-identifier* **`,`** *type-inheritance-list*</span><br><span class="line"></span><br><span class="line">Swift 广泛使用 *类型推断*，允许你在代码中省略许多变量和表达式的类型或部分类型。</span><br><span class="line"></span><br><span class="line">例如，你可以写 `var x = 0`，而不是 `var x: Int = 0`，完全省略类型 —— 编译器正确推断 `x` 命名的是 `Int` 类型的值。</span><br><span class="line"></span><br><span class="line">同样，当完整类型可以从上下文推断出来时，你可以省略部分类型。例如，写下 `let dict: Dictionary = [&quot;A&quot;: 1]`更简洁，编译器会推断 `dict` 的类型是 `Dictionary&lt;String, Int&gt;`。</span><br><span class="line"></span><br><span class="line">在上面的两个示例中，类型信息从表达式树的叶子传递到根部。也就是说，`var x: Int = 0` 中 `x` 的类型是通过首先检查 `0` 的类型，然后将此类型信息传递至根 (变量 `x`) 来推断的。</span><br><span class="line"></span><br><span class="line">在 Swift 中，类型信息也可以从根向下流向叶子节点。例如，在下面的例子中，常量 `eFloat` 使得数字字面量 (`: Float`) 导致数字字面量 `2.71828` 被推断为 `Float` 类型，而不是 `Double` 类型。</span><br><span class="line"></span><br><span class="line">```swift</span><br><span class="line">let e = 2.71828 // e 的类型被推断为 Double</span><br><span class="line">let eFloat: Float = 2.71828 // eFloat 的类型为 Float</span><br></pre></td></tr></table></figure>
+
+<!-- - test: `type-inference`
+
+  ```swifttest 
+  -> let e = 2.71828 // e 的类型被推断为 Double
+  -> let eFloat: Float = 2.71828 // eFloat 的类型为 Float
+  ``` -->
+
+<p>Swift 的类型推断是在单个表达式或语句层级进行的。这意味着推断一个省略的类型或表达式中部分类型所需的所有信息，必须可从类型检查该表达式或其子表达式中获得。</p>
+<!-- TODO: Email Doug for a list of rules or situations describing when type-inference is allowed and when types must be fully typed.
+-->
+
+<!--
+This source file is part of the Swift.org open source project
+
+Copyright (c) 2014 - 2022 Apple Inc. and the Swift project authors
+Licensed under Apache License v2.0 with Runtime Library Exception
+
+See https://swift.org/LICENSE.txt for license information
+See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors -->
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/">REFERENCEMANUAL</a></li>
+            <li>TYPES</li>
+          
+  </ul>
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E6%B3%A8%E8%A7%A3"><span class="nav-number">1.1.</span> <span class="nav-text">类型注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E6%A0%87%E8%AF%86%E7%AC%A6"><span class="nav-number">1.2.</span> <span class="nav-text">类型标识符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.3.</span> <span class="nav-text">数组类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E5%85%B8%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.4.</span> <span class="nav-text">字典类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E9%80%89%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.5.</span> <span class="nav-text">可选类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E9%80%89%E7%B1%BB%E5%9E%8B-1"><span class="nav-number">1.6.</span> <span class="nav-text">可选类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%90%E5%BC%8F%E8%A7%A3%E5%8C%85%E5%8F%AF%E9%80%89%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.7.</span> <span class="nav-text">隐式解包可选类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE%E7%BB%84%E5%90%88%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.8.</span> <span class="nav-text">协议组合类型</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

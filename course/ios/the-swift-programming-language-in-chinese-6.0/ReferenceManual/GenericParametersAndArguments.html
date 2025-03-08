@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="泛型形参和实参将参数声明抽象化以脱离具体类型。 本节描述泛型类型、泛型函数和泛型构造器的形参和实参。在声明泛型类型、函数或构造器时，需要指定泛型可处理的类型形参。这些类型形参相当于占位符，当实例化泛型类型或调用泛型函数、初始化器时，会被具体的类型实参替换。 关于 Swift 语言中的“泛型”，参阅 doc:Generics.   泛型形参子句泛型形参子句 指定了泛型类型或函数的类型形参，以及对这些">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/GenericParametersAndArguments.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="泛型形参和实参将参数声明抽象化以脱离具体类型。 本节描述泛型类型、泛型函数和泛型构造器的形参和实参。在声明泛型类型、函数或构造器时，需要指定泛型可处理的类型形参。这些类型形参相当于占位符，当实例化泛型类型或调用泛型函数、初始化器时，会被具体的类型实参替换。 关于 Swift 语言中的“泛型”，参阅 doc:Generics.   泛型形参子句泛型形参子句 指定了泛型类型或函数的类型形参，以及对这些">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-08T08:32:48.732Z">
+<meta property="article:modified_time" content="2025-03-08T08:32:48.732Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/GenericParametersAndArguments">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/">REFERENCEMANUAL</a></li>
+            <li>GENERICPARAMETERSANDARGUMENTS</li>
+          
+  </ul>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h1 id="泛型形参和实参"><a href="#泛型形参和实参" class="headerlink" title="泛型形参和实参"></a>泛型形参和实参</h1><p>将参数声明抽象化以脱离具体类型。</p>
+<p>本节描述泛型类型、泛型函数和泛型构造器的形参和实参。在声明泛型类型、函数或构造器时，需要指定泛型可处理的类型形参。这些类型形参相当于占位符，当实例化泛型类型或调用泛型函数、初始化器时，会被具体的类型实参替换。</p>
+<p>关于 Swift 语言中的“泛型”，参阅 <a href="doc:Generics">doc:Generics</a>.</p>
+<!--
+  NOTE: Generic types are sometimes referred to as :newTerm:`parameterized types`
+  because they're declared with one or more type parameters.
+-->
+
+<h2 id="泛型形参子句"><a href="#泛型形参子句" class="headerlink" title="泛型形参子句"></a>泛型形参子句</h2><p><em>泛型形参子句</em> 指定了泛型类型或函数的类型形参，以及对这些形参的任何相关约束和要求。泛型形参用尖括号（&lt;&gt;）括起来，格式如下：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&lt;&lt;</span>#generic parameter list#<span class="operator">&gt;&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>多个<em>泛型形参</em>用逗号分开，每个形参的形式如下：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&lt;</span>#type parameter#<span class="operator">&gt;</span>: <span class="operator">&lt;</span>#constraint#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>泛型形参由一个<em>类型形参</em>和一个可选的<em>约束</em>组成。<em>类型形参</em>只是一个占位符（如 <code>T</code>，<code>U</code>，<code>V</code>，<code>Key</code>，<code>Value</code>等），用来表示类型。在声明类型、函数或构造器时（包括函数或构造器的签名），你可以访问这些类型形参及其任何关联的类型。</p>
+<p><em>约束</em>指定了类型形参要继承自特定类，或遵循某个协议或协议组合。例如：在下面的泛型函数中，泛型形参 <code>T: Comparable</code> 表示任何替代类型形参 <code>T</code> 的类型实参都必须遵循 <code>Comparable</code> 协议。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">simpleMax</span>&lt;<span class="type">T</span>: <span class="type">Comparable</span>&gt;(<span class="keyword">_</span> <span class="params">x</span>: <span class="type">T</span>, <span class="keyword">_</span> <span class="params">y</span>: <span class="type">T</span>) -&gt; <span class="type">T</span> {</span><br><span class="line">    <span class="keyword">if</span> x <span class="operator">&lt;</span> y {</span><br><span class="line">        <span class="keyword">return</span> y</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> x</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `generic-params`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func simpleMax&lt;T: Comparable&gt;(_ x: T, _ y: T) -&gt; T &#123;</span><br><span class="line">      if x &lt; y &#123;</span><br><span class="line">         return y</span><br><span class="line">      &#125;</span><br><span class="line">      return x</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>以<code>Int</code>和<code>Double</code>，因为都遵循 <code>Comparable</code> 协议，所以该函数可以接受这两种类型的参数。与泛型类型不同，调用泛型函数或构造器时，你不需要指定泛型实参子句。泛型实参的类型会根据传给函数或构造器的参数类型推断出来。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">simpleMax(<span class="number">17</span>, <span class="number">42</span>) <span class="comment">// T is inferred to be Int</span></span><br><span class="line">simpleMax(<span class="number">3.14159</span>, <span class="number">2.71828</span>) <span class="comment">// T is inferred to be Double</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `generic-params`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; let r0 =</span><br><span class="line">-&gt; simpleMax(17, 42) // T is inferred to be Int</span><br><span class="line">&gt;&gt; assert(r0 == 42)</span><br><span class="line">&gt;&gt; let r1 =</span><br><span class="line">-&gt; simpleMax(3.14159, 2.71828) // T is inferred to be Double</span><br><span class="line">&gt;&gt; assert(r1 == 3.14159)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  Rewrite the above to avoid bare expressions.
+  Tracking bug is <rdar://problem/35301593>
+-->
+
+<h3 id="泛型-Where-子句"><a href="#泛型-Where-子句" class="headerlink" title="泛型 Where 子句"></a>泛型 Where 子句</h3><p>你可以通过在类型或函数体的起始大括号前包含一个泛型<code>where</code>子句，来对类型形参及其相关类型指定额外的要求。泛型 <code>where</code>子句由<code>where</code>关键字组成，后跟一个或多个要求，多个<em>要求</em>用逗号进行分隔。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">where</span> <span class="operator">&lt;</span>#requirements#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>泛型 <code>where</code> 子句中的<em>要求</em>指明类型形参要继承自某个类或遵循某个协议或协议组合。虽然 <code>where</code> 子句为表达类型形参的简单约束提供了语法糖（比如，<code>&lt;T: Comparable&gt;</code> 等同于 <code>where T: Comparable</code> 等），但它可以用于为类型形参及其关联类型提供更复杂的约束。比如，你可以指定类型形参的关联类型遵循某个协议：<code>&lt;S: Sequence&gt; where S.Iterator.Element: Equatable</code>  指定了<code>S</code>遵循 <code>Sequence</code>协议，并且<code>S</code>的关联类型<code>S.Iterator.Element</code>遵循<code>Equatable</code>协议。此约束确保序列中的每个元素都是符合<code>Equatable</code>协议的。</p>
+<p>还可以使用 == 运算符来指定两个类型必须相同。例如，&nbsp;<code>&lt;S1: Sequence, S2: Sequence&gt; where S1.Iterator.Element == S2.Iterator.Element</code>，表示 S1 和 S2 都遵循 Sequence 协议，并且两个序列元素的类型必须相同。</p>
+<p>任何替代类型形参的类型实参都必须满足对该类型形参指定的所有约束与要求。</p>
+<p> <code>where</code>子句可以出现在包含类型形参的声明中，或作为声明的一部分，被嵌套另一个在含有类型形参的声明中。被嵌套的泛型 <code>where</code>子句依然可以指向包围它的声明中的类型形参，然而此时 <code>where</code>子句指定的要求仅用于它被声明的地方。</p>
+<p>如果外层的声明也有一个 <code>where</code> 子句，那么两个子句的要求会合并。在下面的示例中，<code>startsWithZero()</code>仅在 <code>Element</code> 同时遵循<code>someProtocol</code>和<code>Numeric</code>协议时可用。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">Collection</span> <span class="title class_">where</span> <span class="title class_">Element</span>: <span class="title class_">SomeProtocol</span> {</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">startsWithZero</span>() -&gt; <span class="type">Bool</span> <span class="keyword">where</span> <span class="type">Element</span>: <span class="type">Numeric</span> {</span><br><span class="line">        <span class="keyword">return</span> first <span class="operator">==</span> .zero</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `contextual-where-clauses-combine`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; protocol SomeProtocol &#123; &#125;</span><br><span class="line">&gt;&gt; extension Int: SomeProtocol &#123; &#125;</span><br><span class="line">-&gt; extension Collection where Element: SomeProtocol &#123;</span><br><span class="line">       func startsWithZero() -&gt; Bool where Element: Numeric &#123;</span><br><span class="line">           return first == .zero</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; print( [1, 2, 3].startsWithZero() )</span><br><span class="line">&lt;&lt; false</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `contextual-where-clause-combine-err`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; protocol SomeProtocol &#123; &#125;</span><br><span class="line">&gt;&gt; extension Bool: SomeProtocol &#123; &#125;</span><br><span class="line">---</span><br><span class="line">&gt;&gt; extension Collection where Element: SomeProtocol &#123;</span><br><span class="line">&gt;&gt;     func returnTrue() -&gt; Bool where Element == Bool &#123;</span><br><span class="line">&gt;&gt;         return true</span><br><span class="line">&gt;&gt;     &#125;</span><br><span class="line">&gt;&gt;     func returnTrue() -&gt; Bool where Element == Int &#123;</span><br><span class="line">&gt;&gt;         return true</span><br><span class="line">&gt;&gt;     &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">!$ error: no type for &#x27;Self.Element&#x27; can satisfy both &#x27;Self.Element == Int&#x27; and &#x27;Self.Element : SomeProtocol&#x27;</span><br><span class="line">!! func returnTrue() -&gt; Bool where Element == Int &#123;</span><br><span class="line">!!                                            ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>重载泛型函数或构造器，泛型形参子句中的类型形参必须有不同的约束或要求。当调用重载的泛型函数或构造器时，编译器会使用这些约束来决定调用哪个重载的函数或构造器。</p>
+<p>更多关于泛型 <code>where</code> 从句的内容和关于泛型函数声明的例子，参阅 <a href="doc:Generics#泛型-Where-语句">doc:Generics#泛型-Where-语句</a>.</p>
+<blockquote>
+<p>泛型形参子句的语法格式：</p>
+<p><em>泛型形参子句</em> → <strong><code>&lt;</code></strong> <em>泛型形参列表</em> <strong><code>&gt;</code></strong> <br><em>泛型形参列表</em> → <em>泛型形参</em> | <em>泛型形参</em> <strong><code>,</code></strong> <em>泛型形参列表</em> <br><em>泛型形参</em> → <em>类型名称</em> <br><em>泛型形参</em> → <em>类型名称</em> <strong><code>:</code></strong> <em>类型标识符</em> <br><em>泛型形参</em> → <em>类型名称</em> <strong><code>:</code></strong> <em>协议合成类型</em></p>
+<p><em>泛型 where 子句</em> → <strong><code>where</code></strong> <em>约束列表</em> <br><em>要求列表</em> → <em>要求</em> | <em>要求</em> <strong><code>,</code></strong> <em>要求列表</em> <br><em>要求</em> → <em>一致性要求</em> | <em>同类型要求</em></p>
+<p><em>一致性要求</em> → <em>类型标识符</em> <strong><code>:</code></strong> <em>类型标识符</em> <br><em>一致性要求</em> → <em>类型标识符</em> <strong><code>:</code></strong> <em>协议合成类型</em> <br><em>同类型要求</em> → <em>类型标识符</em> <strong><code>==</code></strong> <em>类型</em></p>
+</blockquote>
+<!--
+  NOTE: A conformance requirement can only have one type after the colon,
+  otherwise, you'd have a syntactic ambiguity
+  (a comma-separated list types inside of a comma-separated list of requirements).
+-->
+
+<h2 id="泛型实参子句"><a href="#泛型实参子句" class="headerlink" title="泛型实参子句"></a>泛型实参子句</h2><p><em>泛型实参</em> 指定了泛型类型的类型实参。泛型实参用尖括号（&lt;&gt;）包围，格式如下</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&lt;&lt;</span>#generic argument list#<span class="operator">&gt;&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>多个泛型实参用逗号分开。类型实参是实际具体类型的名称，用来替代泛型类型中对应的类型参数，从而得到该泛型类型的特定版本。下面的示例展示了 Swift 标准库中的泛型字典类型的简化版本：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Dictionary</span>&lt;<span class="title class_">Key</span>: <span class="title class_">Hashable</span>, <span class="title class_">Value</span>&gt;: <span class="title class_">Collection</span>, <span class="title class_">ExpressibleByDictionaryLiteral</span> {</span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  TODO: How are we supposed to wrap code lines like the above?
+-->
+
+<p>泛型<code>Dictionary</code>的特定版本<code>Dictionary&lt;String, Int&gt;</code>是通过具体的类型实参（<code>String</code>和<code>Int</code>）来替换泛型形参（<code>Key: Hashable</code>&nbsp;和&nbsp;<code>Value</code>）而形成的。每个类型实参必须满足它替换的泛型形参的所有约束，包括在泛型<code>where</code>子句中指定的额外要求。在上述例子中，<code>Key</code>类型形参要遵循<code>Hashable</code>协议，因此传入的实参<code>String</code>也要遵循<code>Hashable</code>协议。</p>
+<p>还可以用本身就是泛型类型的特定版本的类型实参替代类型形参（假设已满足合适的约束和关联类型要求）。例如，可以将 <code>Array&lt;Element&gt;</code>中的类型形参 <code>Element</code> 替换 Array 泛型专用版本 <code>Array&lt;Int&gt;</code> ，以形成一个元素本身是整数数组的二维数组。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arrayOfArrays: <span class="type">Array</span>&lt;<span class="type">Array</span>&lt;<span class="type">Int</span>&gt;&gt; <span class="operator">=</span> [[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], [<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]]</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `array-of-arrays`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let arrayOfArrays: Array&lt;Array&lt;Int&gt;&gt; = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>正如在<a href="doc:GenericParametersAndArguments#泛型形参子句">doc:GenericParametersAndArguments#泛型形参子句</a>中提到的，在指定泛型函数或构造器的类型实参时，不能使用泛型实参子句。</p>
+<blockquote>
+<p>泛型实参的语法格式：</p>
+<p><em>generic-argument-clause</em> → <strong><code>&lt;</code></strong> <em>generic-argument-list</em> <strong><code>&gt;</code></strong> <br><em>generic-argument-list</em> → <em>generic-argument</em> | <em>generic-argument</em> <strong><code>,</code></strong> <em>generic-argument-list</em> <br><em>generic-argument</em> → <em>type</em></p>
+</blockquote>
+<!--
+This source file is part of the Swift.org open source project
+
+Copyright (c) 2014 - 2022 Apple Inc. and the Swift project authors
+Licensed under Apache License v2.0 with Runtime Library Exception
+
+See https://swift.org/LICENSE.txt for license information
+See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
+-->
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/">REFERENCEMANUAL</a></li>
+            <li>GENERICPARAMETERSANDARGUMENTS</li>
+          
+  </ul>
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E5%BD%A2%E5%8F%82%E5%92%8C%E5%AE%9E%E5%8F%82"><span class="nav-number">1.</span> <span class="nav-text">泛型形参和实参</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E5%BD%A2%E5%8F%82%E5%AD%90%E5%8F%A5"><span class="nav-number">1.1.</span> <span class="nav-text">泛型形参子句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B-Where-%E5%AD%90%E5%8F%A5"><span class="nav-number">1.1.1.</span> <span class="nav-text">泛型 Where 子句</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E5%AE%9E%E5%8F%82%E5%AD%90%E5%8F%A5"><span class="nav-number">1.2.</span> <span class="nav-text">泛型实参子句</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

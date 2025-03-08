@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="语法总结完整语法一览。 词法结构 空白符语法： 空白符 → 空白符项 空白符可选 空白符项 → 换行符 空白符项 → 行内空格 空白符项 → 注释 空白符项 → 多行注释 空白符项 → U+0000, U+000B, 或 U+000C 换行符 → U+000A 换行符 → U+000D 换行符 → U+000D 后接 U+000A 行内空格 → 行内空格符 行内空格可选 行内空格符 → U+000">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/SummaryOfTheGrammar.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="语法总结完整语法一览。 词法结构 空白符语法： 空白符 → 空白符项 空白符可选 空白符项 → 换行符 空白符项 → 行内空格 空白符项 → 注释 空白符项 → 多行注释 空白符项 → U+0000, U+000B, 或 U+000C 换行符 → U+000A 换行符 → U+000D 换行符 → U+000D 后接 U+000A 行内空格 → 行内空格符 行内空格可选 行内空格符 → U+000">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-08T08:32:48.735Z">
+<meta property="article:modified_time" content="2025-03-08T08:32:48.735Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/SummaryOfTheGrammar">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/">REFERENCEMANUAL</a></li>
+            <li>SUMMARYOFTHEGRAMMAR</li>
+          
+  </ul>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h1 id="语法总结"><a href="#语法总结" class="headerlink" title="语法总结"></a>语法总结</h1><p>完整语法一览。</p>
+<h2 id="词法结构"><a href="#词法结构" class="headerlink" title="词法结构"></a>词法结构</h2><blockquote>
+<p>空白符语法：</p>
+<p><em>空白符</em> → <em>空白符项</em> <em>空白符</em>可选 <br><em>空白符项</em> → <em>换行符</em> <br><em>空白符项</em> → <em>行内空格</em> <br><em>空白符项</em> → <em>注释</em> <br><em>空白符项</em> → <em>多行注释</em> <br><em>空白符项</em> → U+0000, U+000B, 或 U+000C</p>
+<p><em>换行符</em> → U+000A <br><em>换行符</em> → U+000D <br><em>换行符</em> → U+000D 后接 U+000A</p>
+<p><em>行内空格</em> → <em>行内空格符</em> <em>行内空格</em>可选 <br><em>行内空格符</em> → U+0009 或 U+0020</p>
+<p><em>注释</em> → <strong><code>//</code></strong> <em>注释文本</em> <em>换行符</em> <br><em>多行注释</em> → <strong><code>/*</code></strong> <em>多行注释文本</em> <strong><code>*/</code></strong></p>
+<p><em>注释文本</em> → <em>注释文本项</em> <em>注释文本</em>可选 <br><em>注释文本项</em> → 除 U+000A 或 U+000D 外的任意 Unicode 标量值</p>
+<p><em>多行注释文本</em> → <em>多行注释文本项</em> <em>多行注释文本</em>可选 <br><em>多行注释文本项</em> → <em>多行注释</em> <br><em>多行注释文本项</em> → <em>注释文本项</em> <br><em>多行注释文本项</em> → 除 <strong><code>/*</code></strong> 或 <strong><code>*/</code></strong> 外的任意 Unicode 标量值</p>
+</blockquote>
+<blockquote>
+<p>标识符语法：</p>
+<p><em>标识符</em> → <em>标识符头（Head）</em> <em>标识符字符集</em>可选 <br><em>标识符</em> → <strong><code>`</code>** *标识符头（Head）* *标识符字符集*可选 **<code>`</code></strong> <br><em>标识符</em> → <em>隐式参数名</em> <br><em>标识符</em> → <em>属性包装器呈现值</em> <br><em>标识符集</em> → <em>标识符</em> | <em>标识符</em> <strong><code>,</code></strong> <em>标识符集</em></p>
+<p><em>标识符头（Head）</em> → A 到 Z 的大写或小写字母 <br><em>标识符头（Head）</em> → <strong><code>_</code></strong> <br><em>标识符头（Head）</em> → U+00A8, U+00AA, U+00AD, U+00AF, U+00B2–U+00B5, 或 U+00B7–U+00BA <br><em>标识符头（Head）</em> → U+00BC–U+00BE, U+00C0–U+00D6, U+00D8–U+00F6, 或 U+00F8–U+00FF <br><em>标识符头（Head）</em> → U+0100–U+02FF, U+0370–U+167F, U+1681–U+180D, 或 U+180F–U+1DBF <br><em>标识符头（Head）</em> → U+1E00–U+1FFF <br><em>标识符头（Head）</em> → U+200B–U+200D, U+202A–U+202E, U+203F–U+2040, U+2054, 或 U+2060–U+206F <br><em>标识符头（Head）</em> → U+2070–U+20CF, U+2100–U+218F, U+2460–U+24FF, 或 U+2776–U+2793 <br><em>标识符头（Head）</em> → U+2C00–U+2DFF 或 U+2E80–U+2FFF <br><em>标识符头（Head）</em> → U+3004–U+3007, U+3021–U+302F, U+3031–U+303F, 或 U+3040–U+D7FF <br><em>标识符头（Head）</em> → U+F900–U+FD3D, U+FD40–U+FDCF, U+FDF0–U+FE1F, 或 U+FE30–U+FE44 <br><em>标识符头（Head）</em> → U+FE47–U+FFFD <br><em>标识符头（Head）</em> → U+10000–U+1FFFD, U+20000–U+2FFFD, U+30000–U+3FFFD, 或 U+40000–U+4FFFD <br><em>标识符头（Head）</em> → U+50000–U+5FFFD, U+60000–U+6FFFD, U+70000–U+7FFFD, 或 U+80000–U+8FFFD <br><em>标识符头（Head）</em> → U+90000–U+9FFFD, U+A0000–U+AFFFD, U+B0000–U+BFFFD, 或 U+C0000–U+CFFFD <br><em>标识符头（Head）</em> → U+D0000–U+DFFFD 或 U+E0000–U+EFFFD</p>
+<p><em>标识符字符</em> → 数字 0 到 9 <br><em>标识符字符</em> → U+0300–U+036F, U+1DC0–U+1DFF, U+20D0–U+20FF, 或 U+FE20–U+FE2F <br><em>标识符字符</em> → <em>标识符头（Head）</em> <br><em>标识符字符集</em> → <em>标识符字符项</em> <em>标识符字符集</em>可选</p>
+<p><em>隐式参数名</em> → <strong><code>$</code></strong> <em>十进制数字</em> <br><em>属性包装器呈现值</em> → <strong><code>$</code></strong> <em>标识符字符集</em></p>
+</blockquote>
+<blockquote>
+<p>字面量语法：</p>
+<p><em>字面量</em> → <em>数字字面量</em> | <em>字符串字面量</em> | <em>正则表达式字面量</em> | <em>布尔字面量</em> | <em>空字面量</em></p>
+<p><em>数字字面量</em> → <strong><code>-</code></strong> 可选 <em>整型字面量</em> | <strong><code>-</code></strong> 可选 <em>浮点型字面量</em> <br><em>布尔字面量</em> → <strong><code>true</code></strong> | <strong><code>false</code></strong> <br><em>空字面量</em> → <strong><code>nil</code></strong></p>
+</blockquote>
+<blockquote>
+<p>整型字面量语法：</p>
+<p><em>整型字面量</em> → <em>二进制字面量</em> <br><em>整型字面量</em> → <em>八进制字面量</em> <br><em>整型字面量</em> → <em>十进制字面量</em> <br><em>整型字面量</em> → <em>十六进制字面量</em></p>
+<p><em>二进制字面量</em> → <strong><code>0b</code></strong> <em>二进制数字</em> <em>二进制字面量字符</em> 可选 <br><em>二进制数字</em> → 数字 0 或 1 <br><em>二进制字面量字符</em> → <em>二进制数字</em> | <strong><code>_</code></strong> <br><em>二进制字面量字符</em> → <em>二进制字面量字符</em> <em>二进制字面量字符</em> 可选</p>
+<p><em>八进制字面量</em> → <strong><code>0o</code></strong> <em>八进制数字</em> <em>八进制字面量字符</em> 可选 <br><em>八进制数字</em> → 数字 0 到 7 <br><em>八进制字面量字符</em> → <em>八进制数字</em> | <strong><code>_</code></strong> <br><em>八进制字面量字符</em> → <em>八进制字面量字符</em> <em>八进制字面量字符</em> 可选</p>
+<p><em>十进制字面量</em> → <em>十进制数字</em> <em>十进制字面量字符</em> 可选 <br><em>十进制数字</em> → 数字 0 到 9 <br><em>十进制数字</em> → <em>十进制数字</em> <em>十进制数字</em> 可选 <br><em>十进制字面量字符</em> → <em>十进制数字</em> | <strong><code>_</code></strong> <br><em>十进制字面量字符</em> → <em>十进制字面量字符</em> <em>十进制字面量字符</em> 可选</p>
+<p><em>十六进制字面量</em> → <strong><code>0x</code></strong> <em>十六进制数字</em> <em>十六进制字面量字符</em> 可选 <br><em>十六进制数字</em> → 数字 0 到 9，a 到 f，或 A 到 F <br><em>十六进制字面量字符</em> → <em>十六进制数字</em> | <strong><code>_</code></strong> <br><em>十六进制字面量字符</em> → <em>十六进制字面量字符</em> <em>十六进制字面量字符</em> 可选</p>
+</blockquote>
+<blockquote>
+<p>浮点型字面量语法：</p>
+<p><em>浮点型字面量</em> → <em>十进制字面量</em> <em>十进制分数</em> 可选 <em>十进制指数</em> 可选 <br><em>浮点型字面量</em> → <em>十六进制字面量</em> <em>十六进制分数</em> 可选 <em>十六进制指数</em></p>
+<p><em>十进制分数</em> → <strong><code>.</code></strong> <em>十进制字面量</em> <br><em>十进制指数</em> → <em>浮点数 e</em> <em>正负号</em> 可选 <em>十进制字面量</em></p>
+<p><em>十六进制分数</em> → <strong><code>.</code></strong> <em>十六进制数字</em> <em>十六进制字面量字符</em> 可选 <br><em>十六进制指数</em> → <em>浮点数 p</em> <em>正负号</em> 可选 <em>十进制字面量</em></p>
+<p><em>浮点数 e</em> → <strong><code>e</code></strong> | <strong><code>E</code></strong> <br><em>浮点数 p</em> → <strong><code>p</code></strong> | <strong><code>P</code></strong> <br><em>正负号</em> → <strong><code>+</code></strong> | <strong><code>-</code></strong></p>
+</blockquote>
+<blockquote>
+<p>字符串字面量语法：</p>
+<p><em>字符串字面量</em> → <em>静态字符串字面量</em> | <em>插值字符串字面量</em></p>
+<p><em>字符串开分隔定界符</em> → <em>字符串扩展分隔符</em> 可选 <strong><code>"</code></strong> <br><em>字符串闭分隔定界符</em> → <strong><code>"</code></strong> <em>字符串扩展分隔符</em> 可选</p>
+<p><em>静态字符串字面量</em> → <em>字符串开分隔定界符</em> <em>引用文本</em> 可选 <em>字符串闭分隔定界符</em> <br><em>静态字符串字面量</em> → <em>多行字符串开分隔定界符</em> <em>多行引用文本</em> 可选 <em>多行字符串闭分隔定界符</em></p>
+<p><em>多行字符串开分隔定界符</em> → <em>字符串扩展分隔符</em> 可选 <strong><code>"""</code></strong> <br><em>多行字符串闭分隔定界符</em> → <strong><code>"""</code></strong> <em>字符串扩展分隔符</em> 可选 <br><em>字符串扩展分隔符</em> → <strong><code>#</code></strong> <em>字符串扩展分隔符</em> 可选</p>
+<p><em>引用文本</em> → <em>引用文本项</em> <em>引用文本</em> 可选 <br><em>引用文本项</em> → <em>转义字符</em> <br><em>引用文本项</em> → 任何 Unicode 标量值，除了 **<code>"</code><strong>、</strong><code>\</code>**、U+000A 或 U+000D</p>
+<p><em>多行引用文本</em> → <em>多行引用文本项</em> <em>多行引用文本</em> 可选 <br><em>多行引用文本项</em> → <em>转义字符</em> <br><em>多行引用文本项</em> → 任何 Unicode 标量值，除了 <strong><code>\</code></strong> <br><em>多行引用文本项</em> → <em>转义换行符</em></p>
+<p><em>插值字符串字面量</em> → <em>字符串开分隔定界符</em> <em>插值文本</em> 可选 <em>字符串闭分隔定界符</em> <br><em>插值字符串字面量</em> → <em>多行字符串开分隔定界符</em> <em>多行插值文本</em> 可选 <em>多行字符串闭分隔定界符</em></p>
+<p><em>插值文本</em> → <em>插值文本项</em> <em>插值文本</em> 可选 <br><em>插值文本项</em> → <strong><code>\(</code></strong> <em>表达式</em> <strong><code>)</code></strong> | <em>引用文本项</em></p>
+<p><em>多行插值文本</em> → <em>多行插值文本项</em> <em>多行插值文本</em> 可选 <br><em>多行插值文本项</em> → <strong><code>\(</code></strong> <em>表达式</em> <strong><code>)</code></strong> | <em>多行引用文本项</em></p>
+<p><em>转义序列</em> → <strong><code>\</code></strong> <em>字符串扩展分隔符</em> <br><em>转义字符</em> → <em>转义序列</em> <strong><code>0</code></strong> | <em>转义序列</em> <strong><code>\</code></strong> | <em>转义序列</em> <strong><code>t</code></strong> | <em>转义序列</em> <strong><code>n</code></strong> | <em>转义序列</em> <strong><code>r</code></strong> | <em>转义序列</em> <strong><code>"</code></strong> | <em>转义序列</em> <strong><code>'</code></strong> <br><em>转义字符</em> → <em>转义序列</em> <strong><code>u</code></strong> <strong><code>{</code></strong> <em>unicode-标量-数字</em> <strong><code>}</code></strong> <br><em>unicode-标量-数字</em> → 一到八位十六进制数字</p>
+<p><em>转义换行符</em> → <em>转义序列</em> <em>内联空格</em> 可选 <em>换行符</em></p>
+</blockquote>
+<blockquote>
+<p>正则表达式字面量语法：</p>
+<p><em>正则表达式字面量</em> → <em>正则表达式字面量开分隔定界符</em> <em>正则表达式</em> <em>正则表达式字面量闭分隔定界符</em> <br><em>正则表达式</em> → 任何正则表达式</p>
+<p><em>正则表达式字面量开分隔定界符</em> → <em>正则表达式扩展分隔符</em> 可选 <strong><code>/</code></strong> <br><em>正则表达式字面量闭分隔定界符</em> → <strong><code>/</code></strong> <em>正则表达式扩展分隔符</em> 可选</p>
+<p><em>正则表达式扩展分隔符</em> → <strong><code>#</code></strong> <em>正则表达式扩展分隔符</em> 可选</p>
+</blockquote>
+<blockquote>
+<p>运算符语法：</p>
+<p><em>运算符</em> → <em>运算符头</em> <em>运算符字符集</em> 可选 <br><em>运算符</em> → <em>点运算符头</em> <em>点运算符字符集</em></p>
+<p><em>运算符头</em> → <strong><code>/</code></strong> | <strong><code>=</code></strong> | <strong><code>-</code></strong> | <strong><code>+</code></strong> | <strong><code>!</code></strong> | <strong><code>*</code></strong> | <strong><code>%</code></strong> | <strong><code>&lt;</code></strong> | <strong><code>&gt;</code></strong> | <strong><code>&amp;</code></strong> | <strong><code>|</code></strong> | <strong><code>^</code></strong> | <strong><code>~</code></strong> | <strong><code>?</code></strong> <br><em>运算符头</em> → U+00A1–U+00A7 <br><em>运算符头</em> → U+00A9 或 U+00AB <br><em>运算符头</em> → U+00AC 或 U+00AE <br><em>运算符头</em> → U+00B0–U+00B1 <br><em>运算符头</em> → U+00B6、U+00BB、U+00BF、U+00D7 或 U+00F7 <br><em>运算符头</em> → U+2016–U+2017 <br><em>运算符头</em> → U+2020–U+2027 <br><em>运算符头</em> → U+2030–U+203E <br><em>运算符头</em> → U+2041–U+2053 <br><em>运算符头</em> → U+2055–U+205E <br><em>运算符头</em> → U+2190–U+23FF <br><em>运算符头</em> → U+2500–U+2775 <br><em>运算符头</em> → U+2794–U+2BFF <br><em>运算符头</em> → U+2E00–U+2E7F <br><em>运算符头</em> → U+3001–U+3003 <br><em>运算符头</em> → U+3008–U+3020 <br><em>运算符头</em> → U+3030</p>
+<p><em>运算符字符</em> → <em>运算符头</em> <br><em>运算符字符</em> → U+0300–U+036F <br><em>运算符字符</em> → U+1DC0–U+1DFF <br><em>运算符字符</em> → U+20D0–U+20FF <br><em>运算符字符</em> → U+FE00–U+FE0F <br><em>运算符字符</em> → U+FE20–U+FE2F <br><em>运算符字符</em> → U+E0100–U+E01EF <br><em>运算符字符集</em> → <em>运算符字符</em> <em>运算符字符集</em> 可选</p>
+<p><em>点运算符头</em> → <strong><code>.</code></strong> <br><em>点运算符字符</em> → <strong><code>.</code></strong> | <em>运算符字符</em> <br><em>点运算符字符集</em> → <em>点运算符字符</em> <em>点运算符字符集</em> 可选</p>
+<p><em>中缀运算符</em> → <em>运算符</em> <br><em>前缀运算符</em> → <em>运算符</em> <br><em>后缀运算符</em> → <em>运算符</em></p>
+</blockquote>
+<h2 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h2><blockquote>
+<p>类型语法：</p>
+<p><em>类型</em> → <em>函数类型</em> <br><em>类型</em> → <em>数组类型</em> <br><em>类型</em> → <em>字典类型</em> <br><em>类型</em> → <em>类型标识符</em> <br><em>类型</em> → <em>元组类型</em> <br><em>类型</em> → <em>可选类型</em> <br><em>类型</em> → <em>隐式解析可选类型</em> <br><em>类型</em> → <em>协议合成类型</em> <br><em>类型</em> → <em>不透明类型</em> <br><em>类型</em> → <em>元类型</em> <br><em>类型</em> → <em>任意类型</em> <br><em>类型</em> → <em>自身类型</em> <br><em>类型</em> → <strong><code>(</code></strong> <em>type</em> <strong><code>)</code></strong></p>
+</blockquote>
+<blockquote>
+<p>类型注释语法：</p>
+<p><em>类型注释</em> → <strong><code>:</code></strong> <em>属性（Attributes）</em> 可选 <strong><code>inout</code></strong> 可选 <em>类型</em></p>
+</blockquote>
+<blockquote>
+<p>类型标识符语法：</p>
+<p><em>类型标识符</em> → <em>类型名</em> <em>泛型实参子句</em> 可选 | <em>类型名</em> <em>泛型实参子句</em> 可选 <strong><code>.</code></strong> <em>类型标识符</em> <br><em>类型名</em> → <em>标识符</em></p>
+</blockquote>
+<blockquote>
+<p>元组类型语法：</p>
+<p><em>元组类型</em> → <strong><code>(</code></strong> <strong><code>)</code></strong> | <strong><code>(</code></strong> <em>元组类型元素</em> <strong><code>,</code></strong> <em>元组类型元素集</em> <strong><code>)</code></strong> <br><em>元组类型元素集</em> → <em>元组类型元素</em> | <em>元组类型元素</em> <strong><code>,</code></strong> <em>元组类型元素集</em> <br><em>元组类型元素</em> → <em>元素名</em> <em>类型注释</em> | <em>类型</em> <br><em>元素名</em> → <em>标识符</em></p>
+</blockquote>
+<blockquote>
+<p>函数类型语法：</p>
+<p><em>函数类型</em> → <em>属性</em> 可选 <em>函数类型子句</em> <strong><code>async</code></strong> 可选 <em>throws</em> 可选 <strong><code>-&gt;</code></strong> <em>类型</em></p>
+<p><em>函数类型子句</em> → <strong><code>(</code></strong> <strong><code>)</code></strong> <br><em>函数类型子句</em> → <strong><code>(</code></strong> <em>函数类型参数集</em> <strong><code>...</code></strong> 可选 <strong><code>)</code></strong></p>
+<p><em>函数类型参数集</em> → <em>函数类型参数</em> | <em>函数类型参数</em> <strong><code>,</code></strong> <em>函数类型参数集</em> <br><em>函数类型参数</em> → <em>属性</em> 可选 <strong><code>inout</code></strong> 可选 <em>类型</em> | <em>参数标签</em> <em>类型注释</em> <br><em>参数标签</em> → <em>标识符</em></p>
+<p><em>throws 子句</em> → <strong><code>throws</code></strong> | <strong><code>throws</code></strong> <strong><code>(</code></strong> <em>类型</em> <strong><code>)</code></strong></p>
+</blockquote>
+<blockquote>
+<p>数组类型语法：</p>
+<p><em>数组类型</em> → <strong><code>[</code></strong> <em>类型</em> <strong><code>]</code></strong></p>
+</blockquote>
+<blockquote>
+<p>字典类型语法：</p>
+<p><em>字典类型</em> → <strong><code>[</code></strong> <em>类型</em> <strong><code>:</code></strong> <em>类型</em> <strong><code>]</code></strong></p>
+</blockquote>
+<blockquote>
+<p>可选类型语法：</p>
+<p><em>可选类型</em> → <em>类型</em> <strong><code>?</code></strong></p>
+</blockquote>
+<blockquote>
+<p>隐式解析可选类型语法：</p>
+<p><em>隐式解析可选类型</em> → <em>类型</em> <strong><code>!</code></strong></p>
+</blockquote>
+<blockquote>
+<p>协议合成类型语法：</p>
+<p><em>协议合成类型</em> → <em>类型标识符</em> <strong><code>&amp;</code></strong> <em>协议合成延续</em> <br><em>协议合成延续</em> → <em>类型标识符</em> | <em>协议合成类型</em></p>
+</blockquote>
+<blockquote>
+<p>不透明类型语法：</p>
+<p><em>不透明类型</em> → <strong><code>some</code></strong> <em>类型</em></p>
+</blockquote>
+<blockquote>
+<p>被包装的协议类型语法：</p>
+<p><em>被包装的协议类型</em> → <strong><code>any</code></strong> <em>类型</em></p>
+</blockquote>
+<blockquote>
+<p>元类型语法：</p>
+<p><em>元类型</em> → <em>类型</em> <strong><code>.</code></strong> <strong><code>Type</code></strong> | <em>类型</em> <strong><code>.</code></strong> <strong><code>Protocol</code></strong></p>
+</blockquote>
+<blockquote>
+<p>任意类型语法：</p>
+<p><em>任意类型</em> → <strong><code>Any</code></strong></p>
+</blockquote>
+<blockquote>
+<p>自身类型语法：</p>
+<p><em>自身类型</em> → <strong><code>Self</code></strong></p>
+</blockquote>
+<blockquote>
+<p>类型继承子句语法：</p>
+<p><em>类型继承子句</em> → <strong><code>:</code></strong> <em>类型继承集</em> <br><em>类型继承集</em> → <em>属性</em> 可选 <em>类型标识符</em> | <em>属性</em> 可选 <em>类型标识符</em> <strong><code>,</code></strong> <em>类型继承集</em></p>
+</blockquote>
+<h2 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h2><blockquote>
+<p>表达式语法：</p>
+<p><em>表达式</em> → <em>try 运算符</em> 可选 <em>await 运算符</em> 可选 <em>前缀表达式</em> <em>中缀表达式</em> 可选</p>
+</blockquote>
+<blockquote>
+<p>前缀表达式语法：</p>
+<p><em>前缀表达式</em> → <em>前缀运算符</em> 可选 <em>后缀表达式</em> <br><em>前缀表达式</em> → <em>输入输出表达式</em></p>
+</blockquote>
+<blockquote>
+<p>输入输出表达式语法：</p>
+<p><em>输入输出表达式</em> → <strong><code>&amp;</code></strong> <em>基础表达式</em></p>
+</blockquote>
+<blockquote>
+<p>try 表达式语法：</p>
+<p><em>try 运算符</em> → <strong><code>try</code></strong> | <strong><code>try</code></strong> <strong><code>?</code></strong> | <strong><code>try</code></strong> <strong><code>!</code></strong></p>
+</blockquote>
+<blockquote>
+<p>await 表达式语法：</p>
+<p><em>await 运算符</em> → <strong><code>await</code></strong></p>
+</blockquote>
+<blockquote>
+<p>中缀表达式语法：</p>
+<p><em>中缀表达式</em> → <em>中缀运算符</em> <em>前缀表达式</em> <br><em>中缀表达式</em> → <em>赋值运算符</em> <em>try 运算符</em> 可选 <em>await 运算符</em> 可选 <em>前缀表达式</em> <br><em>中缀表达式</em> → <em>条件运算符</em> <em>try 运算符</em> 可选 <em>await 运算符</em> 可选 <em>前缀表达式</em> <br><em>中缀表达式</em> → <em>类型转换运算符</em> <br><em>中缀表达式</em> → <em>中缀表达式</em> <em>中缀表达式</em> 可选</p>
+</blockquote>
+<blockquote>
+<p>赋值运算符语法：</p>
+<p><em>赋值运算符</em> → <strong><code>=</code></strong></p>
+</blockquote>
+<blockquote>
+<p>条件运算符语法：</p>
+<p><em>条件运算符</em> → <strong><code>?</code></strong> <em>表达式</em> <strong><code>:</code></strong></p>
+</blockquote>
+<blockquote>
+<p>类型转换运算符语法：</p>
+<p><em>类型转换运算符</em> → <strong><code>is</code></strong> <em>类型</em> <br><em>类型转换运算符</em> → <strong><code>as</code></strong> <em>类型</em> <br><em>类型转换运算符</em> → <strong><code>as</code></strong> <strong><code>?</code></strong> <em>类型</em> <br><em>类型转换运算符</em> → <strong><code>as</code></strong> <strong><code>!</code></strong> <em>类型</em></p>
+</blockquote>
+<blockquote>
+<p>基础表达式语法：</p>
+<p><em>基础表达式</em> → <em>标识符</em> <em>泛型实参子句</em> 可选 <br><em>基础表达式</em> → <em>字面量表达式</em> <br><em>基础表达式</em> → <em>self 表达式</em> <br><em>基础表达式</em> → <em>父类表达式</em> <br><em>基础表达式</em> → <em>条件表达式</em> <br><em>基础表达式</em> → <em>闭包表达式</em> <br><em>基础表达式</em> → <em>圆括号表达式</em> <br><em>基础表达式</em> → <em>元组表达式</em> <br><em>基础表达式</em> → <em>隐式成员表达式</em> <br><em>基础表达式</em> → <em>通配符表达式</em> <br><em>基础表达式</em> → <em>宏展开表达式</em> <br><em>基础表达式</em> → <em>key-path 表达式</em> <br><em>基础表达式</em> → <em>选择器表达式</em> <br><em>基础表达式</em> → <em>key-path 字符串表达式</em></p>
+</blockquote>
+<blockquote>
+<p>字面量表达式语法：</p>
+<p><em>字面量表达式</em> → <em>字面量</em> <br><em>字面量表达式</em> → <em>数组字面量</em> | <em>字典字面量</em> | <em>playground 字面量</em></p>
+<p><em>数组字面量</em> → <strong><code>[</code></strong> <em>数组字面量项</em> 可选 <strong><code>]</code></strong> <br><em>数组字面量项</em> → <em>数组字面量项</em> <strong><code>,</code></strong> 可选 | <em>数组字面量项</em> <strong><code>,</code></strong> <em>数组字面量项</em> <br><em>数组字面量项</em> → <em>表达式</em></p>
+<p><em>字典字面量</em> → <strong><code>[</code></strong> <em>字典字面量项</em> <strong><code>]</code></strong> | <strong><code>[</code></strong> <strong><code>:</code></strong> <strong><code>]</code></strong> <br><em>字典字面量项</em> → <em>字典字面量项</em> <strong><code>,</code></strong> 可选 | <em>字典字面量项</em> <strong><code>,</code></strong> <em>字典字面量项</em> <br><em>字典字面量项</em> → <em>表达式</em> <strong><code>:</code></strong> <em>表达式</em></p>
+<p><em>playground 字面量</em> → <strong><code>#colorLiteral</code></strong> <strong><code>(</code></strong> <strong><code>red</code></strong> <strong><code>:</code></strong> <em>表达式</em> <strong><code>,</code></strong> <strong><code>green</code></strong> <strong><code>:</code></strong> <em>表达式</em> <strong><code>,</code></strong> <strong><code>blue</code></strong> <strong><code>:</code></strong> <em>表达式</em> <strong><code>,</code></strong> <strong><code>alpha</code></strong> <strong><code>:</code></strong> <em>表达式</em> <strong><code>)</code></strong> <br><em>playground 字面量</em> → <strong><code>#fileLiteral</code></strong> <strong><code>(</code></strong> <strong><code>resourceName</code></strong> <strong><code>:</code></strong> <em>表达式</em> <strong><code>)</code></strong> <br><em>playground 字面量</em> → <strong><code>#imageLiteral</code></strong> <strong><code>(</code></strong> <strong><code>resourceName</code></strong> <strong><code>:</code></strong> <em>表达式</em> <strong><code>)</code></strong></p>
+</blockquote>
+<blockquote>
+<p>self 表达式语法：</p>
+<p><em>self 表达式</em> → <strong><code>self</code></strong> | <em>self 方法表达式</em> | <em>self 下标表达式</em> | <em>self 构造器表达式</em></p>
+<p><em>self 方法表达式</em> → <strong><code>self</code></strong> <strong><code>.</code></strong> <em>标识符</em> <br><em>self 下标表达式</em> → <strong><code>self</code></strong> <strong><code>[</code></strong> <em>函数调用参数表</em> <strong><code>]</code></strong> <br><em>self 构造器表达式</em> → <strong><code>self</code></strong> <strong><code>.</code></strong> <strong><code>init</code></strong></p>
+</blockquote>
+<blockquote>
+<p>父类表达式语法：</p>
+<p><em>父类表达式</em> → <em>父类方法表达式</em> | <em>父类下标表达式</em> | <em>父类构造器表达式</em></p>
+<p><em>父类方法表达式</em> → <strong><code>super</code></strong> <strong><code>.</code></strong> <em>标识符</em> <br><em>父类下标表达式</em> → <strong><code>super</code></strong> <strong><code>[</code></strong> <em>函数调用参数表</em> <strong><code>]</code></strong> <br><em>父类构造器表达式</em> → <strong><code>super</code></strong> <strong><code>.</code></strong> <strong><code>init</code></strong></p>
+</blockquote>
+<blockquote>
+<p>条件表达式语法：</p>
+<p><em>条件表达式</em> → <em>if 表达式</em> | <em>switch 表达式</em></p>
+<p><em>if 表达式</em> → <strong><code>if</code></strong> <em>条件集</em> <strong><code>{</code></strong> <em>语句</em> <strong><code>}</code></strong> <em>if 表达式后续</em> <br><em>if 表达式后续</em> → <strong><code>else</code></strong> <em>if 表达式</em> <br><em>if 表达式后续</em> → <strong><code>else</code></strong> <strong><code>{</code></strong> <em>语句</em> <strong><code>}</code></strong></p>
+<p><em>switch 表达式</em> → <strong><code>switch</code></strong> <em>表达式</em> <strong><code>{</code></strong> <em>switch表 达式 case</em> <strong><code>}</code></strong> <br><em>switch 表达式 case</em> → <em>switch 表达式 case</em> <em>switch 表达式 case</em> 可选 <br><em>switch case 表达式</em> → <em>case 标签</em> <em>语句</em> <br><em>switch case 表达式</em> → <em>default 标签</em> <em>语句</em></p>
+</blockquote>
+<blockquote>
+<p>闭包表达式语法：</p>
+<p><em>闭包表达式</em> → <strong><code>{</code></strong> <em>属性</em> 可选 <em>闭包签名</em> 可选 <em>语句</em> 可选 <strong><code>}</code></strong></p>
+<p><em>闭包签名</em> → <em>捕获列表</em> 可选 <em>闭包参数子句</em> <strong><code>async</code></strong> 可选 <em>throws</em> 可选 <em>函数结果</em> 可选 <strong><code>in</code></strong> <br><em>闭包签名</em> → <em>捕获列表</em> <strong><code>in</code></strong></p>
+<p><em>闭包参数子句</em> → <strong><code>(</code></strong> <strong><code>)</code></strong> | <strong><code>(</code></strong> <em>闭包参数集</em> <strong><code>)</code></strong> | <em>标识符集</em> <br><em>闭包参数集</em> → <em>闭包参数</em> | <em>闭包参数</em> <strong><code>,</code></strong> <em>闭包参数集</em> <br><em>闭包参数</em> → <em>闭包参数名</em> <em>类型注释</em> 可选 <br><em>闭包参数</em> → <em>闭包参数名</em> <em>类型注释</em> <strong><code>...</code></strong> <br><em>闭包参数名</em> → <em>标识符</em></p>
+<p><em>捕获列表</em> → <strong><code>[</code></strong> <em>捕获列表项</em> <strong><code>]</code></strong> <br><em>捕获列表项</em> → <em>捕获列表项</em> | <em>捕获列表项</em> <strong><code>,</code></strong> <em>捕获列表项</em> <br><em>捕获列表项</em> → <em>捕获说明符</em> 可选 <em>标识符</em> <br><em>捕获列表项</em> → <em>捕获说明符</em> 可选 <em>标识符</em> <strong><code>=</code></strong> <em>表达式</em> <br><em>捕获列表项</em> → <em>捕获说明符</em> 可选 <em>self 表达式</em> <br><em>捕获说明符</em> → <strong><code>weak</code></strong> | <strong><code>unowned</code></strong> | <strong><code>unowned(safe)</code></strong> | <strong><code>unowned(unsafe)</code></strong></p>
+</blockquote>
+<blockquote>
+<p>隐式成员表达式语法：</p>
+<p><em>隐式成员表达式</em> → <strong><code>.</code></strong> <em>标识符</em> <br><em>隐式成员表达式</em> → <strong><code>.</code></strong> <em>标识符</em> <strong><code>.</code></strong> <em>后缀表达式</em></p>
+</blockquote>
+<blockquote>
+<p>圆括号表达式语法：</p>
+<p><em>圆括号表达式</em> → <strong><code>(</code></strong> <em>表达式</em> <strong><code>)</code></strong></p>
+</blockquote>
+<blockquote>
+<p>元组表达式语法：</p>
+<p><em>元组表达式</em> → <strong><code>(</code></strong> <strong><code>)</code></strong> | <strong><code>(</code></strong> <em>元组元素</em> <strong><code>,</code></strong> <em>元组元素集</em> <strong><code>)</code></strong> <br><em>元组元素集</em> → <em>元组元素</em> | <em>元组元素</em> <strong><code>,</code></strong> <em>元组元素集</em> <br><em>元组元素</em> → <em>表达式</em> | <em>标识符</em> <strong><code>:</code></strong> <em>表达式</em></p>
+</blockquote>
+<blockquote>
+<p>通配符表达式语法：</p>
+<p><em>通配符表达式</em> → <strong><code>_</code></strong></p>
+</blockquote>
+<blockquote>
+<p>宏展开表达式语法：</p>
+<p><em>宏展开表达式</em> → <strong><code>#</code></strong> <em>标识符</em> <em>泛型参数子句</em> 可选 <em>函数调用参数子句</em> 可选 <em>尾随闭包</em> 可选</p>
+</blockquote>
+<blockquote>
+<p>key-path 表达式语法：</p>
+<p><em>key-path 表达式</em> → <strong><code>\</code></strong> <em>类型</em> 可选 <strong><code>.</code></strong> <em>key-path 组件</em> <br><em>key-path 组件</em> → <em>key-path 组件</em> | <em>key-path 组件</em> <strong><code>.</code></strong> <em>key-path 组件</em> <br><em>key-path 组件</em> → <em>标识符</em> <em>key-path 后缀</em> 可选 | <em>key-path 后缀</em></p>
+<p><em>key-path 后缀</em> → <em>key-path 后缀</em> <em>key-path 后缀</em> 可选 <br><em>key-path 后缀</em> → <strong><code>?</code></strong> | <strong><code>!</code></strong> | <strong><code>self</code></strong> | <strong><code>[</code></strong> <em>函数调用参数集</em> <strong><code>]</code></strong></p>
+</blockquote>
+<blockquote>
+<p>选择器表达式语法：</p>
+<p><em>选择器表达式</em> → <strong><code>#selector</code></strong> <strong><code>(</code></strong> <em>表达式</em> <strong><code>)</code></strong> <br><em>选择器表达式</em> → <strong><code>#selector</code></strong> <strong><code>(</code></strong> <strong><code>getter:</code></strong> <em>表达式</em> <strong><code>)</code></strong> <br><em>选择器表达式</em> → <strong><code>#selector</code></strong> <strong><code>(</code></strong> <strong><code>setter:</code></strong> <em>表达式</em> <strong><code>)</code></strong></p>
+</blockquote>
+<blockquote>
+<p>key-path 字符串表达式语法：</p>
+<p><em>key-path 字符串表达式</em> → <strong><code>#keyPath</code></strong> <strong><code>(</code></strong> <em>表达式</em> <strong><code>)</code></strong></p>
+</blockquote>
+<blockquote>
+<p>后缀表达式语法：</p>
+<p><em>后缀表达式</em> → <em>基本表达式</em> <br><em>后缀表达式</em> → <em>后缀表达式</em> <em>后缀运算符</em> <br><em>后缀表达式</em> → <em>函数调用表达式</em> <br><em>后缀表达式</em> → <em>构造器表达式</em> <br><em>后缀表达式</em> → <em>显式成员表达式</em> <br><em>后缀表达式</em> → <em>后缀 self 表达式</em> <br><em>后缀表达式</em> → <em>下标表达式</em> <br><em>后缀表达式</em> → <em>强制取值表达式</em> <br><em>后缀表达式</em> → <em>可选链式表达式</em></p>
+</blockquote>
+<blockquote>
+<p>函数调用表达式语法：</p>
+<p><em>函数调用表达式</em> → <em>后缀表达式</em> <em>函数调用参数子句</em> <br><em>函数调用表达式</em> → <em>后缀表达式</em> <em>函数调用参数子句</em> 可选 <em>尾随闭包</em></p>
+<p><em>函数调用参数子句</em> → <strong><code>(</code></strong> <strong><code>)</code></strong> | <strong><code>(</code></strong> <em>函数调用参数集</em> <strong><code>)</code></strong> <br><em>函数调用参数集</em> → <em>函数调用参数</em> | <em>函数调用参数</em> <strong><code>,</code></strong> <em>函数调用参数集</em> <br><em>函数调用参数</em> → <em>表达式</em> | <em>标识符</em> <strong><code>:</code></strong> <em>表达式</em> <br><em>函数调用参数</em> → <em>运算符</em> | <em>标识符</em> <strong><code>:</code></strong> <em>运算符</em></p>
+<p><em>尾随闭包</em> → <em>闭包表达式</em> <em>带标签的尾随闭包</em> 可选 <br><em>带标签的尾随闭包</em> → <em>带标签的尾随闭包</em> <em>带标签的尾随闭包</em> 可选 <br><em>带标签的尾随闭包</em> → <em>标识符</em> <strong><code>:</code></strong> <em>闭包表达式</em></p>
+</blockquote>
+<blockquote>
+<p>构造器表达式语法：</p>
+<p><em>构造器表达式</em> → <em>后缀表达式</em> <strong><code>.</code></strong> <strong><code>init</code></strong> <br><em>构造器表达式</em> → <em>后缀表达式</em> <strong><code>.</code></strong> <strong><code>init</code></strong> <strong><code>(</code></strong> <em>参数名</em> <strong><code>)</code></strong></p>
+</blockquote>
+<blockquote>
+<p>显式成员表达式语法：</p>
+<p><em>显式成员表达式</em> → <em>后缀表达式</em> <strong><code>.</code></strong> <em>十进制数字</em> <br><em>显式成员表达式</em> → <em>后缀表达式</em> <strong><code>.</code></strong> <em>标识符</em> <em>泛型参数子句</em> 可选 <br><em>显式成员表达式</em> → <em>后缀表达式</em> <strong><code>.</code></strong> <em>标识符</em> <strong><code>(</code></strong> <em>参数名</em> <strong><code>)</code></strong> <br><em>显式成员表达式</em> → <em>后缀表达式</em> <em>条件编译块</em></p>
+<p><em>参数名</em> → <em>参数名</em> <em>参数名</em> 可选 <br><em>参数名</em> → <em>标识符</em> <strong><code>:</code></strong></p>
+</blockquote>
+<blockquote>
+<p>后缀 self表达式语法：</p>
+<p><em>后缀 self 表达式</em> → <em>后缀表达式</em> <strong><code>.</code></strong> <strong><code>self</code></strong></p>
+</blockquote>
+<blockquote>
+<p>下标表达式语法：</p>
+<p><em>下标表达式</em> → <em>后缀表达式</em> <strong><code>[</code></strong> <em>函数调用参数集</em> <strong><code>]</code></strong></p>
+</blockquote>
+<blockquote>
+<p>强制取值表达式语法：</p>
+<p><em>强制取值表达式</em> → <em>后缀表达式</em> <strong><code>!</code></strong></p>
+</blockquote>
+<blockquote>
+<p>可选链式表达式语法：</p>
+<p><em>可选链式表达式</em> → <em>后缀表达式</em> <strong><code>?</code></strong></p>
+</blockquote>
+<h2 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h2><blockquote>
+<p>语句语法：</p>
+<p><em>语句</em> → <em>表达式</em> <strong><code>;</code></strong> 可选 <br><em>语句</em> → <em>声明</em> <strong><code>;</code></strong> 可选 <br><em>语句</em> → <em>循环语句</em> <strong><code>;</code></strong> 可选 <br><em>语句</em> → <em>分支语句</em> <strong><code>;</code></strong> 可选 <br><em>语句</em> → <em>标签语句</em> <strong><code>;</code></strong> 可选 <br><em>语句</em> → <em>控制转移语句</em> <strong><code>;</code></strong> 可选 <br><em>语句</em> → <em>延迟语句</em> <strong><code>;</code></strong> 可选 <br><em>语句</em> → <em>执行语句</em> <strong><code>;</code></strong> 可选 <br><em>语句</em> → <em>编译控制语句</em> <br><em>语句集</em> → <em>语句</em> <em>语句集</em> 可选</p>
+</blockquote>
+<blockquote>
+<p>循环语句语法：</p>
+<p><em>循环语句</em> → <em>for-in 语句</em> <br><em>循环语句</em> → <em>while 语句</em> <br><em>循环语句</em> → <em>repeat-while 语句</em></p>
+</blockquote>
+<blockquote>
+<p>for-in 语句语法：</p>
+<p><em>for-in 语句</em> → <strong><code>for</code></strong> <strong><code>case</code></strong> 可选 <em>模式</em> <strong><code>in</code></strong> <em>表达式</em> <em>where 子句</em> 可选 <em>代码块</em></p>
+</blockquote>
+<blockquote>
+<p>while 语句语法：</p>
+<p><em>while 语句</em> → <strong><code>while</code></strong> <em>条件集</em> <em>代码块</em></p>
+<p><em>条件集</em> → <em>条件</em> | <em>条件</em> <strong><code>,</code></strong> <em>条件集</em> <br><em>条件</em> → <em>表达式</em> | <em>可用性条件</em> | <em>case 条件</em> | <em>可选绑定条件</em></p>
+<p><em>case 条件</em> → <strong><code>case</code></strong> <em>模式</em> <em>构造器</em> <br><em>可选绑定条件</em> → <strong><code>let</code></strong> <em>模式</em> <em>构造器</em> 可选 | <strong><code>var</code></strong> <em>模式</em> <em>构造器</em> 可选</p>
+</blockquote>
+<blockquote>
+<p>repeat-while 语句语法：</p>
+<p><em>repeat-while 语句</em> → <strong><code>repeat</code></strong> <em>代码块</em> <strong><code>while</code></strong> <em>表达式</em></p>
+</blockquote>
+<blockquote>
+<p>分支语句语法：</p>
+<p><em>分支语句</em> → <em>if 语句</em> <br><em>分支语句</em> → <em>guard 语句</em> <br><em>分支语句</em> → <em>switch 语句</em></p>
+</blockquote>
+<blockquote>
+<p>if 语句语法：</p>
+<p><em>if 语句</em> → <strong><code>if</code></strong> <em>条件集</em> <em>代码块</em> <em>else 子句</em> 可选 <br><em>else 子句</em> → <strong><code>else</code></strong> <em>代码块</em> | <strong><code>else</code></strong> <em>if 语句</em></p>
+</blockquote>
+<blockquote>
+<p>guard 语句语法：</p>
+<p><em>guard 语句</em> → <strong><code>guard</code></strong> <em>条件集</em> <strong><code>else</code></strong> <em>代码块</em></p>
+</blockquote>
+<blockquote>
+<p>switch 语句语法：</p>
+<p><em>switch 语句</em> → <strong><code>switch</code></strong> <em>表达式</em> <strong><code>{</code></strong> <em>switch 语句</em> 可选 <strong><code>}</code></strong> <br><em>switch 语句</em> → <em>switch 语句</em> <em>switch 语句</em> 可选 <br><em>switch 语句</em> → <em>case 标签</em> <em>语句集</em> <br><em>switch 语句</em> → <em>default 标签</em> <em>语句集</em> <br><em>switch 语句</em> → <em>条件 switch 语句</em></p>
+<p><em>case 标签</em> → <em>属性</em> 可选 <strong><code>case</code></strong> <em>case 项集</em> <strong><code>:</code></strong> <br><em>case 项集</em> → <em>模式</em> <em>where 子句</em> 可选 | <em>模式</em> <em>where 子句</em> 可选 <strong><code>,</code></strong> <em>case 项集</em> <br><em>default 标签</em> → <em>属性</em> 可选 <strong><code>default</code></strong> <strong><code>:</code></strong></p>
+<p><em>where 子句</em> → <strong><code>where</code></strong> <em>where 表达式</em> <br><em>where 表达式</em> → <em>表达式</em></p>
+<p><em>条件 switch 语句</em> → <em>switch-if 指令子句</em> <em>switch-elseif 指令子句集</em> 可选 <em>switch-else 指令子句</em> 可选 <em>endif 指令</em> <br><em>switch-if 指令子句</em> → <em>if 指令</em> <em>编译条件</em> <em>switch-case 集</em> 可选 <br><em>switch-elseif 指令子句</em> → <em>elseif 指令子句</em> <em>switch-elseif 指令子句集</em> 可选 <br><em>switch-elseif 指令子句</em> → <em>elseif 指令</em> <em>编译条件</em> <em>switch-case 集</em> 可选 <br><em>switch-else 指令子句</em> → <em>else 指令</em> <em>switch-case 集</em> 可选</p>
+</blockquote>
+<blockquote>
+<p>标签语句语法：</p>
+<p><em>标签语句</em> → <em>语句标签</em> <em>循环语句</em> <br><em>标签语句</em> → <em>语句标签</em> <em>if 语句</em> <br><em>标签语句</em> → <em>语句标签</em> <em>switch 语句</em> <br><em>标签语句</em> → <em>语句标签</em> <em>do 语句</em></p>
+<p><em>语句标签</em> → <em>标签名</em> <strong><code>:</code></strong> <br><em>标签名</em> → <em>标识符</em></p>
+</blockquote>
+<blockquote>
+<p>控制转移语句语法：</p>
+<p><em>控制转移语句</em> → <em>break 语句</em> <br><em>控制转移语句</em> → <em>continue 语句</em> <br><em>控制转移语句</em> → <em>fallthrough 语句</em> <br><em>控制转移语句</em> → <em>return 语句</em> <br><em>控制转移语句</em> → <em>throw 语句</em></p>
+</blockquote>
+<blockquote>
+<p>break 语句语法：</p>
+<p><em>break 语句</em> → <strong><code>break</code></strong> <em>标签名</em> 可选</p>
+</blockquote>
+<blockquote>
+<p>continue 语句语法：</p>
+<p><em>continue 语句</em> → <strong><code>continue</code></strong> <em>标签名</em> 可选</p>
+</blockquote>
+<blockquote>
+<p>fallthrough 语句语法：</p>
+<p><em>fallthrough 语句</em> → <strong><code>fallthrough</code></strong></p>
+</blockquote>
+<blockquote>
+<p>return 语句语法：</p>
+<p><em>return 语句</em> → <strong><code>return</code></strong> <em>表达式</em> 可选</p>
+</blockquote>
+<blockquote>
+<p>throw 语句语法：</p>
+<p><em>throw 语句</em> → <strong><code>throw</code></strong> <em>表达式</em></p>
+</blockquote>
+<blockquote>
+<p>defer 语句语法：</p>
+<p><em>defer 语句</em> → <strong><code>defer</code></strong> <em>代码块</em></p>
+</blockquote>
+<blockquote>
+<p>do 语句语法：</p>
+<p><em>do 语句</em> → <strong><code>do</code></strong> <em>throws 子句</em> 可选 <em>代码块</em> <em>catch 子句</em> 可选 <br><em>catch 子句集</em> → <em>catch 子句</em> <em>catch 子句</em> 可选 <br><em>catch 子句</em> → <strong><code>catch</code></strong> <em>catch 模式集</em> 可选 <em>代码块</em> <br><em>catch 模式集</em> → <em>catch 模式</em> | <em>catch 模式</em> <strong><code>,</code></strong> <em>catch 模式集</em> <br><em>catch 模式</em> → <em>模式</em> <em>where 子句</em> 可选</p>
+</blockquote>
+<blockquote>
+<p>编译控制语句语法：</p>
+<p><em>编译控制语句</em> → <em>条件编译块</em> <br><em>编译控制语句</em> → <em>行控制语句</em> <br><em>编译控制语句</em> → <em>诊断语句</em></p>
+</blockquote>
+<blockquote>
+<p>条件编译块语法：</p>
+<p><em>条件编译块</em> → <em>if 指令子句</em> <em>elseif 指令子句集</em> 可选 <em>else 指令子句</em> 可选 <em>endif 指令</em></p>
+<p><em>if 指令子句</em> → <em>if 指令</em> <em>编译条件</em> <em>语句集</em> 可选 <br><em>elseif 指令子句</em> → <em>elseif 指令子句</em> <em>elseif 指令子句集</em> 可选 <br><em>elseif 指令子句</em> → <em>elseif 指令</em> <em>编译条件</em> <em>语句集</em> 可选 <br><em>else 指令子句</em> → <em>else 指令</em> <em>语句集</em> 可选 <br><em>if 指令</em> → <strong><code>#if</code></strong> <br><em>elseif 指令</em> → <strong><code>#elseif</code></strong> <br><em>else 指令</em> → <strong><code>#else</code></strong> <br><em>endif 指令</em> → <strong><code>#endif</code></strong></p>
+<p><em>编译条件</em> → <em>平台条件</em> <br><em>编译条件</em> → <em>标识符</em> <br><em>编译条件</em> → <em>布尔字面量</em> <br><em>编译条件</em> → <strong><code>(</code></strong> <em>编译条件</em> <strong><code>)</code></strong> <br><em>编译条件</em> → <strong><code>!</code></strong> <em>编译条件</em> <br><em>编译条件</em> → <em>编译条件</em> <strong><code>&amp;&amp;</code></strong> <em>编译条件</em> <br><em>编译条件</em> → <em>编译条件</em> <strong><code>||</code></strong> <em>编译条件</em></p>
+<p><em>平台条件</em> → <strong><code>os</code></strong> <strong><code>(</code></strong> <em>操作系统</em> <strong><code>)</code></strong> <br><em>平台条件</em> → <strong><code>arch</code></strong> <strong><code>(</code></strong> <em>体系结构</em> <strong><code>)</code></strong> <br><em>平台条件</em> → <strong><code>swift</code></strong> <strong><code>(</code></strong> <strong><code>&gt;=</code></strong> <em>swift 版本</em> <strong><code>)</code></strong> | <strong><code>swift</code></strong> <strong><code>(</code></strong> <strong><code>&lt;</code></strong> <em>swift 版本</em> <strong><code>)</code></strong> <br><em>平台条件</em> → <strong><code>compiler</code></strong> <strong><code>(</code></strong> <strong><code>&gt;=</code></strong> <em>swift 版本</em> <strong><code>)</code></strong> | <strong><code>compiler</code></strong> <strong><code>(</code></strong> <strong><code>&lt;</code></strong> <em>swift 版本</em> <strong><code>)</code></strong> <br><em>平台条件</em> → <strong><code>canImport</code></strong> <strong><code>(</code></strong> <em>导入路径</em> <strong><code>)</code></strong> <br><em>平台条件</em> → <strong><code>targetEnvironment</code></strong> <strong><code>(</code></strong> <em>环境</em> <strong><code>)</code></strong></p>
+<p><em>操作系统</em> → <strong><code>macOS</code></strong> | <strong><code>iOS</code></strong> | <strong><code>watchOS</code></strong> | <strong><code>tvOS</code></strong> | <strong><code>visionOS</code></strong> | <strong><code>Linux</code></strong> | <strong><code>Windows</code></strong> <br><em>体系结构</em> → <strong><code>i386</code></strong> | <strong><code>x86_64</code></strong> | <strong><code>arm</code></strong> | <strong><code>arm64</code></strong> <br><em>swift 版本</em> → <em>十进制数字</em> <em>swift 版本后缀</em> 可选 <br><em>swift 版本后缀</em> → <strong><code>.</code></strong> <em>十进制数字</em> <em>swift 版本后缀</em> 可选 <br><em>环境</em> → <strong><code>simulator</code></strong> | <strong><code>macCatalyst</code></strong></p>
+</blockquote>
+<blockquote>
+<p>行控制语句语法：</p>
+<p><em>行控制语句</em> → <strong><code>#sourceLocation</code></strong> <strong><code>(</code></strong> <strong><code>file:</code></strong> <em>文件路径</em> <strong><code>,</code></strong> <strong><code>line:</code></strong> <em>行号</em> <strong><code>)</code></strong> <br><em>行控制语句</em> → <strong><code>#sourceLocation</code></strong> <strong><code>(</code></strong> <strong><code>)</code></strong> <br><em>行号</em> → 大于零的十进制整数 <br><em>文件路径</em> → <em>静态字符串字面量</em></p>
+</blockquote>
+<blockquote>
+<p>可用性条件语法：</p>
+<p><em>可用性条件</em> → <strong><code>#available</code></strong> <strong><code>(</code></strong> <em>可用性参数</em> <strong><code>)</code></strong> <br><em>可用性条件</em> → <strong><code>#unavailable</code></strong> <strong><code>(</code></strong> <em>可用性参数</em> <strong><code>)</code></strong> <br><em>可用性参数</em> → <em>可用性参数</em> | <em>可用性参数</em> <strong><code>,</code></strong> <em>可用性参数</em> <br><em>可用性参数</em> → <em>平台名</em> <em>平台版本</em> <br><em>可用性参数</em> → <strong><code>*</code></strong></p>
+<p><em>平台名</em> → <strong><code>iOS</code></strong> | <strong><code>iOSApplicationExtension</code></strong> <br><em>平台名</em> → <strong><code>macOS</code></strong> | <strong><code>macOSApplicationExtension</code></strong> <br><em>平台名</em> → <strong><code>macCatalyst</code></strong> | <strong><code>macCatalystApplicationExtension</code></strong> <br><em>平台名</em> → <strong><code>watchOS</code></strong> | <strong><code>watchOSApplicationExtension</code></strong> <br><em>平台名</em> → <strong><code>tvOS</code></strong> | <strong><code>tvOSApplicationExtension</code></strong> <br><em>平台名</em> → <strong><code>visionOS</code></strong> | <strong><code>visionOSApplicationExtension</code></strong> <br><em>平台版本</em> → <em>十进制数字</em> <br><em>平台版本</em> → <em>十进制数字</em> <strong><code>.</code></strong> <em>十进制数字</em> <br><em>平台版本</em> → <em>十进制数字</em> <strong><code>.</code></strong> <em>十进制数字</em> <strong><code>.</code></strong> <em>十进制数字</em></p>
+</blockquote>
+<h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><blockquote>
+<p>声明语法：</p>
+<p><em>声明</em> → <em>导入声明</em> <br><em>声明</em> → <em>常量声明</em> <br><em>声明</em> → <em>变量声明</em> <br><em>声明</em> → <em>类型别名声明</em> <br><em>声明</em> → <em>函数声明</em> <br><em>声明</em> → <em>枚举声明</em> <br><em>声明</em> → <em>结构体声明</em> <br><em>声明</em> → <em>类声明</em> <br><em>声明</em> → <em>actor 声明</em> <br><em>声明</em> → <em>协议声明</em> <br><em>声明</em> → <em>构造器声明</em> <br><em>声明</em> → <em>析构器声明</em> <br><em>声明</em> → <em>扩展声明</em> <br><em>声明</em> → <em>下标声明</em> <br><em>声明</em> → <em>运算符声明</em> <br><em>声明</em> → <em>优先级组声明</em></p>
+</blockquote>
+<blockquote>
+<p>顶级声明语法：</p>
+<p><em>顶级声明</em> → <em>语句集</em> 可选</p>
+</blockquote>
+<blockquote>
+<p>代码块语法：</p>
+<p><em>代码块</em> → <strong><code>{</code></strong> <em>语句集</em> 可选 <strong><code>}</code></strong></p>
+</blockquote>
+<blockquote>
+<p>导入声明语法：</p>
+<p><em>导入声明</em> → <em>属性</em> 可选 <strong><code>import</code></strong> <em>导入类型</em> 可选 <em>导入路径</em></p>
+<p><em>导入类型</em> → <strong><code>typealias</code></strong> | <strong><code>struct</code></strong> | <strong><code>class</code></strong> | <strong><code>enum</code></strong> | <strong><code>protocol</code></strong> | <strong><code>let</code></strong> | <strong><code>var</code></strong> | <strong><code>func</code></strong> <br><em>导入路径</em> → <em>标识符</em> | <em>标识符</em> <strong><code>.</code></strong> <em>导入路径</em></p>
+</blockquote>
+<blockquote>
+<p>常量声明语法：</p>
+<p><em>常量声明</em> → <em>属性</em> 可选 <em>声明修饰符</em> 可选 <strong><code>let</code></strong> <em>模式构造器集</em></p>
+<p><em>模式构造器集</em> → <em>模式构造器</em> | <em>模式构造器</em> <strong><code>,</code></strong> <em>模式构造器集</em> <br><em>模式构造器</em> → <em>模式</em> <em>构造器</em> 可选 <br><em>构造器</em> → <strong><code>=</code></strong> <em>表达式</em></p>
+</blockquote>
+<blockquote>
+<p>变量声明语法：</p>
+<p><em>变量声明</em> → <em>变量声明头</em> <em>模式构造器集</em> <br><em>变量声明</em> → <em>变量声明头</em> <em>变量名</em> <em>类型注解</em> <em>代码块</em> <br><em>变量声明</em> → <em>变量声明头</em> <em>变量名</em> <em>类型注解</em> <em>getter-setter</em> <br><em>变量声明</em> → <em>变量声明头</em> <em>变量名</em> <em>类型注解</em> <em>getter-setter 关键字（Keyword）块</em> <br><em>变量声明</em> → <em>变量声明头</em> <em>变量名</em> <em>构造器</em> <em>willSet-didSet 块</em> <br><em>变量声明</em> → <em>变量声明头</em> <em>变量名</em> <em>类型注解</em> <em>构造器</em> 可选 <em>willSet-didSet 块</em></p>
+<p><em>变量声明头</em> → <em>属性</em> 可选 <em>声明修饰符</em> 可选 <strong><code>var</code></strong> <br><em>变量名</em> → <em>标识符</em></p>
+<p><em>getter-setter</em> → <em>代码块</em> <br><em>getter-setter</em> → <strong><code>{</code></strong> <em>getter 子句</em> <em>setter 子句</em> 可选 <strong><code>}</code></strong> <br><em>getter-setter</em> → <strong><code>{</code></strong> <em>setter 子句</em> <em>getter 子句</em> <strong><code>}</code></strong> <br><em>getter 子句</em> → <em>属性</em> 可选 <em>可变性修饰符</em> 可选 <strong><code>get</code></strong> <em>代码块</em> <br><em>setter 子句</em> → <em>属性</em> 可选 <em>可变性修饰符</em> 可选 <strong><code>set</code></strong> <em>setter 名</em> 可选 <em>代码块</em> <br><em>setter 名</em> → <strong><code>(</code></strong> <em>标识符</em> <strong><code>)</code></strong></p>
+<p><em>getter-setter 关键字（Keyword）块</em> → <strong><code>{</code></strong> <em>getter 关键字子句</em> <em>setter 关键字子句</em> 可选 <strong><code>}</code></strong> <br><em>getter-setter 关键字（Keyword）块</em> → <strong><code>{</code></strong> <em>setter关键字子句</em> <em>getter 关键字子句</em> <strong><code>}</code></strong> <br><em>getter 关键字子句</em> → <em>属性</em> 可选 <em>可变性修饰符</em> 可选 <strong><code>get</code></strong> <br><em>setter 关键字子句</em> → <em>属性</em> 可选 <em>可变性修饰符</em> 可选 <strong><code>set</code></strong></p>
+<p><em>willSet-didSet 块</em> → <strong><code>{</code></strong> <em>willSet 子句</em> <em>didSet 子句</em> 可选 <strong><code>}</code></strong> <br><em>willSet-didSet 块</em> → <strong><code>{</code></strong> <em>didSet 子句</em> <em>willSet 子句</em> 可选 <strong><code>}</code></strong> <br><em>willSet 子句</em> → <em>属性</em> 可选 <strong><code>willSet</code></strong> <em>setter 名</em> 可选 <em>代码块</em> <br><em>didSet 子句</em> → <em>属性</em> 可选 <strong><code>didSet</code></strong> <em>setter 名</em> 可选 <em>代码块</em></p>
+</blockquote>
+<blockquote>
+<p>类型别名声明语法：</p>
+<p><em>类型别名声明</em> → <em>属性</em> 可选 <em>访问级别修饰符</em> 可选 <strong><code>typealias</code></strong> <em>类型别名名</em> <em>泛型参数子句</em> 可选 <em>类型别名赋值</em> <br><em>类型别名名</em> → <em>标识符</em> <br><em>类型别名赋值</em> → <strong><code>=</code></strong> <em>类型</em></p>
+</blockquote>
+<blockquote>
+<p>函数声明语法：</p>
+<p><em>函数声明</em> → <em>函数头</em> <em>函数名</em> <em>泛型参数子句</em> 可选 <em>函数签名</em> <em>泛型 where 子句</em> 可选 <em>函数体</em> 可选</p>
+<p><em>函数头</em> → <em>属性</em> 可选 <em>声明修饰符</em> 可选 <strong><code>func</code></strong> <br><em>函数名</em> → <em>标识符</em> | <em>运算符</em></p>
+<p><em>函数签名</em> → <em>参数子句</em> <strong><code>async</code></strong> 可选 <em>throws 子句</em> 可选 <em>函数结果</em> 可选 <br><em>函数签名</em> → <em>参数子句</em> <strong><code>async</code></strong> 可选 <strong><code>rethrows</code></strong> <em>函数结果</em> 可选 <br><em>函数结果</em> → <strong><code>-&gt;</code></strong> <em>属性</em> 可选 <em>类型</em> <br><em>函数体</em> → <em>代码块</em></p>
+<p><em>参数子句</em> → <strong><code>(</code></strong> <strong><code>)</code></strong> | <strong><code>(</code></strong> <em>参数集</em> <strong><code>)</code></strong> <br><em>参数集</em> → <em>参数</em> | <em>参数</em> <strong><code>,</code></strong> <em>参数集</em> <br><em>参数</em> → <em>外部参数名</em> 可选 <em>本地参数名</em> <em>参数类型注解</em> <em>默认参数子句</em> 可选 <br><em>参数</em> → <em>外部参数名</em> 可选 <em>本地参数名</em> <em>参数类型注解</em> <br><em>参数</em> → <em>外部参数名</em> 可选 <em>本地参数名</em> <em>参数类型注解</em> <strong><code>...</code></strong></p>
+<p><em>外部参数名</em> → <em>标识符</em> <br><em>本地参数名</em> → <em>标识符</em> <br><em>参数类型注解</em> → <strong><code>:</code></strong> <em>属性</em> 可选 <em>参数修饰符</em> 可选 <em>类型</em> <br><em>参数修饰符</em> → <strong><code>inout</code></strong> | <strong><code>borrowing</code></strong> | <strong><code>consuming</code></strong> <br><em>默认参数子句</em> → <strong><code>=</code></strong> <em>表达式</em></p>
+</blockquote>
+<blockquote>
+<p>枚举声明语法：</p>
+<p><em>枚举声明</em> → <em>属性</em> 可选 <em>访问级别修饰符</em> 可选 <em>联合式枚举</em> <br><em>枚举声明</em> → <em>属性</em> 可选 <em>访问级别修饰符</em> 可选 <em>原始值式枚举</em></p>
+<p><em>联合式枚举</em> → <strong><code>indirect</code></strong> 可选 <strong><code>enum</code></strong> <em>枚举名</em> <em>泛型参数子句</em> 可选 <em>类型继承子句</em> 可选 <em>泛型 where 子句</em> 可选 <strong><code>{</code></strong> <em>联合式枚举成员</em> 可选 <strong><code>}</code></strong> <br><em>联合式枚举成员</em> → <em>联合式枚举成员</em> <em>联合式枚举成员</em> 可选 <br><em>联合式枚举成员</em> → <em>声明</em> | <em>联合式枚举 case 子句</em> | <em>编译控制语句</em> <br><em>联合式枚举 case 子句</em> → <em>属性</em> 可选 <strong><code>indirect</code></strong> 可选 <strong><code>case</code></strong> <em>联合式枚举 case 集</em> <br><em>联合式枚举 case 集</em> → <em>联合式枚举 case</em> | <em>联合式枚举 case</em> <strong><code>,</code></strong> <em>联合式枚举 case 集</em> <br><em>联合式枚举 case</em> → <em>枚举case名</em> <em>元组类型</em> 可选 <br><em>枚举名</em> → <em>标识符</em> <br><em>枚举 case 名</em> → <em>标识符</em></p>
+<p><em>原始值式枚举</em> → <strong><code>enum</code></strong> <em>枚举名</em> <em>泛型参数子句</em> 可选 <em>类型继承子句</em> <em>泛型 where 子句</em> 可选 <strong><code>{</code></strong> <em>原始值式枚举成员</em><br><em>原始值式枚举成员集</em> → <em>原始值式枚举成员</em> <em>原始值式枚举成员集</em>可选 <br><em>原始值式枚举成员集</em> → <em>声明</em> | <em>原始值式枚举 case 子句</em> | <em>编译控制语句</em> <br><em>原始值式枚举 case 子句</em> → <em>属性</em>可选 <strong><code>case</code></strong> <em>原始值式枚举 case 集</em> <br><em>原始值式枚举 case 集</em> → <em>原始值式枚举 case</em> | <em>原始值式枚举 case</em> <strong><code>,</code></strong> <em>原始值式枚举 case 集</em> <br><em>原始值式枚举 case</em> → <em>枚举 case 名</em> <em>原始值赋值</em>可选 <br><em>原始值赋值</em> → <strong><code>=</code></strong> <em>原始值字面量</em> <br><em>原始值字面量</em> → <em>数值字面量</em> | <em>静态字符串字面量</em> | <em>布尔字面量</em></p>
+</blockquote>
+<blockquote>
+<p>结构声明语法：</p>
+<p><em>结构声明</em> → <em>属性</em>可选 <em>访问级别修饰符</em>可选 <strong><code>struct</code></strong> <em>结构名</em> <em>泛型参数子句</em>可选 <em>类型继承子句</em>可选 <em>泛型 where 子句</em>可选 <em>结构主体</em> <br><em>结构名</em> → <em>标识符</em> <br><em>结构主体</em> → <strong><code>{</code></strong> <em>结构成员集</em>可选 <strong><code>}</code></strong></p>
+<p><em>结构成员集</em> → <em>结构成员</em> <em>结构成员集</em>可选 <br><em>结构成员</em> → <em>声明</em> | <em>编译控制语句</em></p>
+</blockquote>
+<blockquote>
+<p>类声明语法：</p>
+<p><em>类声明</em> → <em>属性</em>可选 <em>访问级别修饰符</em>可选 <strong><code>final</code></strong> 可选 <strong><code>class</code></strong> <em>类名</em> <em>泛型参数子句</em>可选 <em>类型继承子句</em>可选 <em>泛型 where 子句</em>可选 <em>类主体</em> <br><em>类声明</em> → <em>属性</em>可选 <strong><code>final</code></strong> <em>访问级别修饰符</em>可选 <strong><code>class</code></strong> <em>类名</em> <em>泛型参数子句</em>可选 <em>类型继承子句</em>可选 <em>泛型 where子句</em>可选 <em>类主体</em> <br><em>类名</em> → <em>标识符</em> <br><em>类主体</em> → <strong><code>{</code></strong> <em>类成员</em>可选 <strong><code>}</code></strong></p>
+<p><em>类成员</em> → <em>类成员</em> <em>类成员</em>可选 <br><em>类成员</em> → <em>声明</em> | <em>编译控制语句</em></p>
+</blockquote>
+<blockquote>
+<p>actor 声明语法：</p>
+<p><em>actor 声明</em> → <em>属性</em>可选 <em>访问级别修饰符</em>可选 <strong><code>actor</code></strong> <em>actor 名</em> <em>泛型参数子句</em>可选 <em>类型继承子句</em>可选 <em>泛型 where 子句</em>可选 <em>actor 主体</em> <br><em>actor 名</em> → <em>标识符</em> <br><em>actor 主体</em> → <strong><code>{</code></strong> <em>actor 成员</em>可选 <strong><code>}</code></strong></p>
+<p><em>actor 成员</em> → <em>actor 成员</em> <em>actor 成员</em>可选 <br><em>actor 成员</em> → <em>声明</em> | <em>编译控制语句</em></p>
+</blockquote>
+<blockquote>
+<p>协议声明语法：</p>
+<p><em>协议声明</em> → <em>属性</em>可选 <em>访问级别修饰符</em>可选 <strong><code>protocol</code></strong> <em>协议名</em> <em>类型继承子句</em>可选 <em>泛型 where 子句</em>可选 <em>协议主体</em> <br><em>协议名</em> → <em>标识符</em> <br><em>协议主体</em> → <strong><code>{</code></strong> <em>协议成员</em>可选 <strong><code>}</code></strong></p>
+<p><em>协议成员</em> → <em>协议成员</em> <em>协议成员</em>可选 <br><em>协议成员</em> → <em>协议成员声明</em> | <em>编译控制语句</em></p>
+<p><em>协议成员声明</em> → <em>协议属性声明</em> <br><em>协议成员声明</em> → <em>协议方法声明</em> <br><em>协议成员声明</em> → <em>协议构造器声明</em> <br><em>协议成员声明</em> → <em>协议下标声明</em> <br><em>协议成员声明</em> → <em>协议关联类型声明</em> <br><em>协议成员声明</em> → <em>类型别名声明</em></p>
+</blockquote>
+<blockquote>
+<p>协议属性声明语法：</p>
+<p><em>协议属性声明</em> → <em>变量声明头</em> <em>变量名</em> <em>类型注解</em> <em>getter-setter 关键字块</em></p>
+</blockquote>
+<blockquote>
+<p>协议方法声明语法：</p>
+<p><em>协议方法声明</em> → <em>函数头</em> <em>函数名</em> <em>泛型参数子句</em>可选 <em>函数签名</em> <em>泛型 where 子句</em>可选</p>
+</blockquote>
+<blockquote>
+<p>协议构造器声明语法：</p>
+<p><em>协议构造器声明</em> → <em>构造器头</em> <em>泛型参数子句</em>可选 <em>参数子句</em> <em>抛出子句</em>可选 <em>泛型 where 子句</em>可选 <br><em>协议构造器声明</em> → <em>构造器头</em> <em>泛型参数子句</em>可选 <em>参数子句</em> <strong><code>rethrows</code></strong> <em>泛型 where 子句</em>可选</p>
+</blockquote>
+<blockquote>
+<p>协议下标声明语法：</p>
+<p><em>协议下标声明</em> → <em>下标头</em> <em>下标结果</em> <em>泛型 where 子句</em>可选 <em>getter-setter 关键字块</em></p>
+</blockquote>
+<blockquote>
+<p>协议关联类型声明语法：</p>
+<p><em>协议关联类型声明</em> → <em>属性</em>可选 <em>访问级别修饰符</em>可选 <strong><code>associatedtype</code></strong> <em>类型别名名</em> <em>类型继承子句</em>可选 <em>类型别名赋值</em>可选 <em>泛型 where 子句</em>可选</p>
+</blockquote>
+<blockquote>
+<p>构造器声明语法：</p>
+<p><em>构造器声明</em> → <em>构造器头</em> <em>泛型参数子句</em>可选 <em>参数子句</em> <strong><code>async</code></strong> 可选 <em>抛出子句</em>可选 <em>泛型 where 子句</em>可选 <em>构造器主体</em> <br><em>构造器声明</em> → <em>构造器头</em> <em>泛型参数子句</em>可选 <em>参数子句</em> <strong><code>async</code></strong> 可选 <strong><code>rethrows</code></strong> <em>泛型 where 子句</em>可选 <em>构造器主体</em> <br><em>构造器头</em> → <em>属性</em>可选 <em>声明修饰符</em>可选 <strong><code>init</code></strong> <br><em>构造器头</em> → <em>属性</em>可选 <em>声明修饰符</em>可选 <strong><code>init</code></strong> <strong><code>?</code></strong> <br><em>构造器头</em> → <em>属性</em>可选 <em>声明修饰符</em>可选 <strong><code>init</code></strong> <strong><code>!</code></strong> <br><em>构造器主体</em> → <em>代码块</em></p>
+</blockquote>
+<blockquote>
+<p>析构器声明语法：</p>
+<p><em>析构器声明</em> → <em>属性</em>可选 <strong><code>deinit</code></strong> <em>代码块</em></p>
+</blockquote>
+<blockquote>
+<p>扩展声明语法：</p>
+<p><em>扩展声明</em> → <em>属性</em>可选 <em>访问级别修饰符</em>可选 <strong><code>extension</code></strong> <em>类型标识符</em> <em>类型继承子句</em>可选 <em>泛型 where 子句</em>可选 <em>扩展主体</em> <br><em>扩展主体</em> → <strong><code>{</code></strong> <em>扩展成员</em>可选 <strong><code>}</code></strong></p>
+<p><em>扩展成员</em> → <em>扩展成员</em> <em>扩展成员</em>可选 <br><em>扩展成员</em> → <em>声明集</em> | <em>编译控制语句</em></p>
+</blockquote>
+<blockquote>
+<p>下标声明语法：</p>
+<p><em>下标声明</em> → <em>下标头</em> <em>下标结果</em> <em>泛型 where 子句</em>可选 <em>代码块</em> <br><em>下标声明</em> → <em>下标头</em> <em>下标结果</em> <em>泛型 where 子句</em>可选 <em>getter-setter 块</em> <br><em>下标声明</em> → <em>下标头</em> <em>下标结果</em> <em>泛型 where 子句</em>可选 <em>getter-setter 关键字块</em> <br><em>下标头</em> → <em>属性</em>可选 <em>声明修饰符</em>可选 <strong><code>subscript</code></strong> <em>泛型参数子句</em>可选 <em>参数子句</em> <br><em>下标结果</em> → <strong><code>-&gt;</code></strong> <em>特性</em>可选 <em>类型</em></p>
+</blockquote>
+<blockquote>
+<p>宏声明语法：</p>
+<p><em>宏声明</em> → <em>宏头</em> <em>标识符</em> <em>泛型参数子句</em>可选 <em>宏签名</em> <em>宏定义</em>可选 <em>泛型 where子句</em> <br><em>宏头</em> → <em>属性</em>可选 <em>声明修饰符</em>可选 <strong><code>macro</code></strong>  <br><em>宏签名</em> → <em>参数子句</em> <em>宏函数签名结果</em>可选 <br><em>宏函数签名结果</em> → <strong><code>-&gt;</code></strong> <em>类型</em> <br><em>宏定义</em> → <strong><code>=</code></strong> <em>表达式</em></p>
+</blockquote>
+<blockquote>
+<p>运算符声明语法：</p>
+<p><em>运算符声明</em> → <em>前缀运算符声明</em> | <em>后缀运算符声明</em> | <em>中缀运算符声明</em></p>
+<p><em>前缀运算符声明</em> → <strong><code>prefix</code></strong> <strong><code>operator</code></strong> <em>运算符</em> <br><em>后缀运算符声明</em> → <strong><code>postfix</code></strong> <strong><code>operator</code></strong> <em>运算符</em> <br><em>中缀运算符声明</em> → <strong><code>infix</code></strong> <strong><code>operator</code></strong> <em>运算符</em> <em>中缀运算符组</em>可选</p>
+<p><em>中缀运算符组</em> → <strong><code>:</code></strong> <em>优先级组名</em></p>
+</blockquote>
+<blockquote>
+<p>优先级组声明语法：</p>
+<p><em>优先级组声明</em> → <strong><code>precedencegroup</code></strong> <em>优先级组名</em> <strong><code>{</code></strong> <em>优先级组属性</em>可选 <strong><code>}</code></strong></p>
+<p><em>优先级组属性</em> → <em>优先级组属性</em> <em>优先级组属性</em>可选 <br><em>优先级组属性</em> → <em>优先级组关系</em> <br><em>优先级组属性</em> → <em>优先级组赋值</em> <br><em>优先级组属性</em> → <em>优先级组结合</em></p>
+<p><em>优先级组关系</em> → <strong><code>higherThan</code></strong> <strong><code>:</code></strong> <em>优先级组名集</em> <br><em>优先级组关系</em> → <strong><code>lowerThan</code></strong> <strong><code>:</code></strong> <em>优先级组名集</em></p>
+<p><em>优先级组赋值</em> → <strong><code>assignment</code></strong> <strong><code>:</code></strong> <em>布尔字面量</em></p>
+<p><em>优先级组结合</em> → <strong><code>associativity</code></strong> <strong><code>:</code></strong> <strong><code>left</code></strong> <br><em>优先级组结合</em> → <strong><code>associativity</code></strong> <strong><code>:</code></strong> <strong><code>right</code></strong> <br><em>优先级组结合</em> → <strong><code>associativity</code></strong> <strong><code>:</code></strong> <strong><code>none</code></strong></p>
+<p><em>优先级组名集</em> → <em>优先级组名</em> | <em>优先级组名</em> <strong><code>,</code></strong> <em>优先级组名</em> <br><em>优先级组名</em> → <em>标识符</em></p>
+</blockquote>
+<blockquote>
+<p>声明修饰符语法：</p>
+<p><em>声明修饰符</em> → <strong><code>class</code></strong> | <strong><code>convenience</code></strong> | <strong><code>dynamic</code></strong> | <strong><code>final</code></strong> | <strong><code>infix</code></strong> | <strong><code>lazy</code></strong> | <strong><code>optional</code></strong> | <strong><code>override</code></strong> | <strong><code>postfix</code></strong> | <strong><code>prefix</code></strong> | <strong><code>required</code></strong> | <strong><code>static</code></strong> | <strong><code>unowned</code></strong> | <strong><code>unowned</code></strong> <strong><code>(</code></strong> <strong><code>safe</code></strong> <strong><code>)</code></strong> | <strong><code>unowned</code></strong> <strong><code>(</code></strong> <strong><code>unsafe</code></strong> <strong><code>)</code></strong> | <strong><code>weak</code></strong> <br><em>声明修饰符</em> → <em>访问级别修饰符</em> <br><em>声明修饰符</em> → <em>可变性修饰符</em> <br><em>声明修饰符</em> → <em>actor 隔离修饰符</em> <br><em>声明修饰符</em> → <em>声明修饰符</em> <em>声明修饰符</em>可选</p>
+<p><em>访问级别修饰符</em> → <strong><code>private</code></strong> | <strong><code>private</code></strong> <strong><code>(</code></strong> <strong><code>set</code></strong> <strong><code>)</code></strong> <br><em>访问级别修饰符</em> → <strong><code>fileprivate</code></strong> | <strong><code>fileprivate</code></strong> <strong><code>(</code></strong> <strong><code>set</code></strong> <strong><code>)</code></strong> <br><em>访问级别修饰符</em> → <strong><code>internal</code></strong> | <strong><code>internal</code></strong> <strong><code>(</code></strong> <strong><code>set</code></strong> <strong><code>)</code></strong> <br><em>访问级别修饰符</em> → <strong><code>package</code></strong> | <strong><code>package</code></strong> <strong><code>(</code></strong> <strong><code>set</code></strong> <strong><code>)</code></strong> <br><em>访问级别修饰符</em> → <strong><code>public</code></strong> | <strong><code>public</code></strong> <strong><code>(</code></strong> <strong><code>set</code></strong> <strong><code>)</code></strong> <br><em>访问级别修饰符</em> → <strong><code>open</code></strong> | <strong><code>open</code></strong> <strong><code>(</code></strong> <strong><code>set</code></strong> <strong><code>)</code></strong></p>
+<p><em>可变性修饰符</em> → <strong><code>mutating</code></strong> | <strong><code>nonmutating</code></strong></p>
+<p><em>actor 隔离修饰符</em> → <strong><code>nonisolated</code></strong></p>
+</blockquote>
+<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><blockquote>
+<p>属性语法：</p>
+<p><em>属性</em> → <strong><code>@</code></strong> <em>属性名</em> <em>属性参数子句</em>可选 <br><em>属性名</em> → <em>标识符</em> <br><em>属性参数子句</em> → <strong><code>(</code></strong> <em>平衡令牌</em>可选 <strong><code>)</code></strong> <br><em>属性</em> → <em>属性</em> <em>属性</em>可选</p>
+<p><em>平衡令牌集</em> → <em>平衡令牌</em> <em>平衡令牌集</em>可选 <br><em>平衡令牌</em> → <strong><code>(</code></strong> <em>平衡令牌集</em>可选 <strong><code>)</code></strong> <br><em>平衡令牌</em> → <strong><code>[</code></strong> <em>平衡令牌集</em>可选 <strong><code>]</code></strong> <br><em>平衡令牌</em> → <strong><code>{</code></strong> <em>平衡令牌集</em>可选 <strong><code>}</code></strong> <br><em>平衡令牌</em> → 任何标识符、关键字、字面量或运算符 <br><em>平衡令牌</em> → 任何标点符号，除了 <strong><code>(</code></strong>,  <strong><code>)</code></strong>,  <strong><code>[</code></strong>,  <strong><code>]</code></strong>,  <strong><code>{</code></strong>, 或  <strong><code>}</code></strong></p>
+</blockquote>
+<h2 id="模式"><a href="#模式" class="headerlink" title="模式"></a>模式</h2><blockquote>
+<p>模式语法：</p>
+<p><em>模式</em> → <em>通配符模式</em> <em>类型注解</em>可选 <br><em>模式</em> → <em>标识符模式</em> <em>类型注解</em>可选 <br><em>模式</em> → <em>值绑定模式</em> <br><em>模式</em> → <em>元组模式</em> <em>类型注解</em>可选 <br><em>模式</em> → <em>枚举 case 模式</em> <br><em>模式</em> → <em>可选模式</em> <br><em>模式</em> → <em>类型转换模式</em> <br><em>模式</em> → <em>表达式模式</em></p>
+</blockquote>
+<blockquote>
+<p>通配符模式语法：</p>
+<p><em>通配符模式</em> → <strong><code>_</code></strong></p>
+</blockquote>
+<blockquote>
+<p>标识符模式语法：</p>
+<p><em>标识符模式</em> → <em>标识符</em></p>
+</blockquote>
+<blockquote>
+<p>值绑定模式语法：</p>
+<p><em>值绑定模式</em> → <strong><code>var</code></strong> <em>模式</em> | <strong><code>let</code></strong> <em>模式</em></p>
+</blockquote>
+<blockquote>
+<p>元组模式语法：</p>
+<p><em>元组模式</em> → <strong><code>(</code></strong> <em>元组模式元素集</em>可选 <strong><code>)</code></strong> <br><em>元组模式元素集</em> → <em>元组模式元素</em> | <em>元组模式元素</em> <strong><code>,</code></strong> <em>元组模式元素集</em> <br><em>元组模式元素</em> → <em>模式</em> | <em>标识符</em> <strong><code>:</code></strong> <em>模式</em></p>
+</blockquote>
+<blockquote>
+<p>枚举 case 模式语法：</p>
+<p><em>枚举 case 模式</em> → <em>类型标识符</em>可选 <strong><code>.</code></strong> <em>枚举 case 名</em> <em>元组模式</em>可选</p>
+</blockquote>
+<blockquote>
+<p>可选模式语法：</p>
+<p><em>可选模式</em> → <em>标识符模式</em> <strong><code>?</code></strong></p>
+</blockquote>
+<blockquote>
+<p>类型转换模式语法：</p>
+<p><em>类型转换模式</em> → <em>is 模式</em> | <em>as 模式</em> <br><em>is 模式</em> → <strong><code>is</code></strong> <em>类型</em> <br><em>as 模式</em> → <em>模式</em> <strong><code>as</code></strong> <em>类型</em></p>
+</blockquote>
+<blockquote>
+<p>表达式模式语法：</p>
+<p><em>表达式模式</em> → <em>表达式</em></p>
+</blockquote>
+<h2 id="泛型参数和参数"><a href="#泛型参数和参数" class="headerlink" title="泛型参数和参数"></a>泛型参数和参数</h2><blockquote>
+<p>泛型参数子句语法：</p>
+<p><em>泛型参数子句</em> → <strong><code>&lt;</code></strong> <em>泛型参数集</em> <strong><code>&gt;</code></strong> <br><em>泛型参数集</em> → <em>泛型参数</em> | <em>泛型参数</em> <strong><code>,</code></strong> <em>泛型参数集</em> <br><em>泛型参数</em> → <em>类型名</em> <br><em>泛型参数</em> → <em>类型名</em> <strong><code>:</code></strong> <em>类型标识符</em> <br><em>泛型参数</em> → <em>类型名</em> <strong><code>:</code></strong> <em>协议组合类型</em></p>
+<p><em>泛型 where子句</em> → <strong><code>where</code></strong> <em>需求集</em> <br><em>需求集</em> → <em>需求</em> | <em>需求</em> <strong><code>,</code></strong> <em>需求集</em> <br><em>需求</em> → <em>符合要求</em> | <em>同类型要求</em></p>
+<p><em>符合要求</em> → <em>类型标识符</em> <strong><code>:</code></strong> <em>类型标识符</em> <br><em>符合要求</em> → <em>类型标识符</em> <strong><code>:</code></strong> <em>协议组合类型</em> <br><em>同类型要求</em> → <em>类型标识符</em> <strong><code>==</code></strong> <em>类型</em></p>
+</blockquote>
+<blockquote>
+<p>泛型参数子句语法：</p>
+<p><em>泛型参数子句</em> → <strong><code>&lt;</code></strong> <em>泛型参数集</em> <strong><code>&gt;</code></strong> <br><em>泛型参数集</em> → <em>泛型参数</em> | <em>泛型参数</em> <strong><code>,</code></strong> <em>泛型参数集</em> <br><em>泛型参数</em> → <em>类型</em></p>
+</blockquote>
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/">REFERENCEMANUAL</a></li>
+            <li>SUMMARYOFTHEGRAMMAR</li>
+          
+  </ul>
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95%E6%80%BB%E7%BB%93"><span class="nav-number">1.</span> <span class="nav-text">语法总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%8D%E6%B3%95%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">词法结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.4.</span> <span class="nav-text">语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E"><span class="nav-number">1.5.</span> <span class="nav-text">声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7"><span class="nav-number">1.6.</span> <span class="nav-text">属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.7.</span> <span class="nav-text">模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E5%8F%82%E6%95%B0%E5%92%8C%E5%8F%82%E6%95%B0"><span class="nav-number">1.8.</span> <span class="nav-text">泛型参数和参数</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

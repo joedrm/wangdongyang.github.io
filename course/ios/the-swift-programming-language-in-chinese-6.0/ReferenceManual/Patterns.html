@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="模式模式代表单个值或者复合值的结构。例如，元组 (1, 2) 的结构是由逗号分隔的，包含两个元素的列表。因为模式代表一种值的结构，而不是特定的某个值，你可以利用模式来匹配各种各样的值。比如，(x, y) 可以匹配元组 (1, 2)，以及任何含两个元素的元组。除了利用模式匹配一个值以外，你可以从复合值中提取出部分或全部值，然后分别把各个部分的值和一个常量或变量绑定起来。 Swift 中的模式分为两类">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/Patterns.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="模式模式代表单个值或者复合值的结构。例如，元组 (1, 2) 的结构是由逗号分隔的，包含两个元素的列表。因为模式代表一种值的结构，而不是特定的某个值，你可以利用模式来匹配各种各样的值。比如，(x, y) 可以匹配元组 (1, 2)，以及任何含两个元素的元组。除了利用模式匹配一个值以外，你可以从复合值中提取出部分或全部值，然后分别把各个部分的值和一个常量或变量绑定起来。 Swift 中的模式分为两类">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-08T08:32:48.734Z">
+<meta property="article:modified_time" content="2025-03-08T08:32:48.734Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/Patterns">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/">REFERENCEMANUAL</a></li>
+            <li>PATTERNS</li>
+          
+  </ul>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h1 id="模式"><a href="#模式" class="headerlink" title="模式"></a>模式</h1><p>模式代表单个值或者复合值的结构。例如，元组 <code>(1, 2)</code> 的结构是由逗号分隔的，包含两个元素的列表。因为模式代表一种值的结构，而不是特定的某个值，你可以利用模式来匹配各种各样的值。比如，<code>(x, y)</code> 可以匹配元组 <code>(1, 2)</code>，以及任何含两个元素的元组。除了利用模式匹配一个值以外，你可以从复合值中提取出部分或全部值，然后分别把各个部分的值和一个常量或变量绑定起来。</p>
+<p>Swift 中的模式分为两类：一种能成功匹配任何类型的值，另一种在运行时匹配某个特定值时可能会失败。</p>
+<p>第一类模式用于解构简单变量、常量和可选绑定中的值。此类模式包括通配符模式、标识符模式，以及包含前两种模式的值绑定模式和元组模式。你可以为这类模式指定一个类型注解，从而限制它们只能匹配某种特定类型的值。</p>
+<p>第二类模式用于全模式匹配，这种情况下你试图匹配的值在运行时可能不存在。此类模式包括枚举用例模式、可选模式、表达式模式和类型转换模式。你在 <code>switch</code> 语句的 <code>case</code> 标签中，<code>do</code> 语句的 <code>catch</code> 子句中，或者在 <code>if</code>、<code>while</code>、<code>guard</code> 和 <code>for-in</code> 语句的 <code>case</code> 条件句中使用这类模式。</p>
+<blockquote>
+<p>模式语法:</p>
+<p><em>pattern</em> → <em>wildcard-pattern</em> <em>type-annotation</em><em>?</em> <br><em>pattern</em> → <em>identifier-pattern</em> <em>type-annotation</em><em>?</em> <br><em>pattern</em> → <em>value-binding-pattern</em> <br><em>pattern</em> → <em>tuple-pattern</em> <em>type-annotation</em><em>?</em> <br><em>pattern</em> → <em>enum-case-pattern</em> <br><em>pattern</em> → <em>optional-pattern</em> <br><em>pattern</em> → <em>type-casting-pattern</em> <br><em>pattern</em> → <em>expression-pattern</em></p>
+</blockquote>
+<h2 id="通配符模式"><a href="#通配符模式" class="headerlink" title="通配符模式"></a>通配符模式</h2><p><em>通配符模式</em>由一个下划线（<code>_</code>）构成，用于匹配并忽略任何值。当你想忽略被匹配的值时可以使用该模式。例如，下面这段代码在闭区间 1…3 中迭代，每次迭代都忽略该区间的当前值：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> <span class="keyword">_</span> <span class="keyword">in</span> <span class="number">1</span><span class="operator">...</span><span class="number">3</span> {</span><br><span class="line">    <span class="comment">// Do something three times.</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote>
+<p>通配符模式的语法:</p>
+<p><em>wildcard-pattern</em> → <strong><code>_</code></strong></p>
+</blockquote>
+<h2 id="标识符模式"><a href="#标识符模式" class="headerlink" title="标识符模式"></a>标识符模式</h2><p><em>标识符模式</em>匹配任何值，并将匹配的值和一个变量或常量绑定起来。例如，在下面的常量声明中，<code>someValue</code> 是一个标识符模式，匹配了 <code>Int</code> 类型的 <code>42</code>：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> someValue <span class="operator">=</span> <span class="number">42</span></span><br></pre></td></tr></tbody></table></figure>
+<p>当匹配成功时,值 <code>42</code> 被绑定（分配）到常量名称 <code>someValue</code> .</p>
+<p>如果一个变量或常量声明的左边是一个标识符模式，那么这个标识符模式是值绑定模式的子模式。</p>
+<blockquote>
+<p>标识符模式语法</p>
+<p><em>identifier-pattern</em> → <em>identifier</em></p>
+</blockquote>
+<h2 id="值绑定模式"><a href="#值绑定模式" class="headerlink" title="值绑定模式"></a>值绑定模式</h2><p><em>值绑定模式</em>把匹配到的值绑定给一个变量或常量。把匹配到的值绑定给常量时，用关键字 <code>let</code>，绑定给变量时，用关键字 <code>var</code>。</p>
+<p>在值绑定模式中的标识符模式会把新命名的变量或常量与匹配到的值做绑定。例如，你可以拆开一个元组，然后把每个元素绑定到相应的标识符模式中。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> point <span class="operator">=</span> (<span class="number">3</span>, <span class="number">2</span>)</span><br><span class="line"><span class="keyword">switch</span> point {</span><br><span class="line"><span class="comment">// 将 point 中的元素绑定到 x 和 y</span></span><br><span class="line"><span class="keyword">case</span> <span class="keyword">let</span> (x, y):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"The point is at (<span class="subst">\(x)</span>, <span class="subst">\(y)</span>)."</span>)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 打印 "The point is at (3, 2)."</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>在上面的示例中， <code>let</code> 分配给元组模式<code>(x, y)</code> 中的每个标识符模式。因此， <code>switch</code> 语句中 <code>case let (x, y):</code> 和 <code>case (let x, let y):</code> 的匹配效果是一样的。</p>
+<blockquote>
+<p>值绑定模式语法</p>
+<p><em>value-binding-pattern</em> → <strong><code>var</code></strong> <em>pattern</em> | <strong><code>let</code></strong> <em>pattern</em></p>
+</blockquote>
+<h2 id="元组模式"><a href="#元组模式" class="headerlink" title="元组模式"></a>元组模式</h2><p><em>元组模式</em>是由逗号分隔的，具有零个或多个模式的列表，并由一对圆括号括起来。元组模式匹配相应元组类型的值。</p>
+<p>你可以使用类型注解去限制一个元组模式能匹配哪种元组类型。例如，在常量声明 let (x, y): (Int, Int) = (1, 2) 中的元组模式 (x, y): (Int, Int) 只匹配两个元素都是 Int 类型的元组。</p>
+<p>当元组模式用作 <code>for-in</code> 语句或变量或常量声明中的模式时，它只能包含通配符模式、标识符模式、可选模式或包含这些模式的其他元组模式。例如，以下代码无效，因为元组模式 <code>(x, 0)</code> 中的元素 <code>0</code> 是表达式模式：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> points <span class="operator">=</span> [(<span class="number">0</span>, <span class="number">0</span>), (<span class="number">1</span>, <span class="number">0</span>), (<span class="number">1</span>, <span class="number">1</span>), (<span class="number">2</span>, <span class="number">0</span>), (<span class="number">2</span>, <span class="number">1</span>)]</span><br><span class="line"><span class="comment">// 下面的代码是错误的</span></span><br><span class="line"><span class="keyword">for</span> (x, <span class="number">0</span>) <span class="keyword">in</span> points {</span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>只包含一个元素的元组模式的圆括号没有效果，模式只匹配这个单个元素的类型。举例来说，下面的语句是等效的：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a <span class="operator">=</span> <span class="number">2</span>        <span class="comment">// a: Int = 2</span></span><br><span class="line"><span class="keyword">let</span> (a) <span class="operator">=</span> <span class="number">2</span>      <span class="comment">// a: Int = 2</span></span><br><span class="line"><span class="keyword">let</span> (a): <span class="type">Int</span> <span class="operator">=</span> <span class="number">2</span> <span class="comment">// a: Int = 2</span></span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote>
+<p>元组模式语法:</p>
+<p><em>tuple-pattern</em> → <strong><code>(</code></strong> <em>tuple-pattern-element-list</em><em>?</em> <strong><code>)</code></strong> <br><em>tuple-pattern-element-list</em> → <em>tuple-pattern-element</em> | <em>tuple-pattern-element</em> <strong><code>,</code></strong> <em>tuple-pattern-element-list</em> <br><em>tuple-pattern-element</em> → <em>pattern</em> | <em>identifier</em> <strong><code>:</code></strong> <em>pattern</em></p>
+</blockquote>
+<h2 id="枚举用例模式"><a href="#枚举用例模式" class="headerlink" title="枚举用例模式"></a>枚举用例模式</h2><p><em>枚举用例模式</em>匹配现有的某个枚举类型的某个用例。枚举用例模式出现在 <code>switch</code> 语句中的 <code>case</code> 标签中，以及 <code>if</code>、<code>while</code>、<code>guard</code> 和 <code>for-in</code> 语句的 <code>case</code> 条件中。</p>
+<p>如果你准备匹配的枚举用例有任何关联的值，则相应的枚举用例模式必须指定一个包含每个关联值元素的元组模式。关于使用 <code>switch</code> 语句来匹配包含关联值的枚举用例的例子，请参阅<a href="doc:Enumerations#关联值">doc:Enumerations#关联值</a>.</p>
+<p>枚举用例模式同样会匹配那些被包装成可选值的用例。简化的语法能将可选模式过滤掉。注意，由于 <code>Optional</code> 是枚举实现的，<code>.none</code> 和 <code>.some</code> 都会作为枚举类型的用例出现在 switch 中。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">SomeEnum</span> { <span class="keyword">case</span> left, right }</span><br><span class="line"><span class="keyword">let</span> x: <span class="type">SomeEnum</span>? <span class="operator">=</span> .left</span><br><span class="line"><span class="keyword">switch</span> x {</span><br><span class="line"><span class="keyword">case</span> .left:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Turn left"</span>)</span><br><span class="line"><span class="keyword">case</span> .right:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Turn right"</span>)</span><br><span class="line"><span class="keyword">case</span> <span class="literal">nil</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Keep going straight"</span>)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 打印 "Turn left"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote>
+<p>枚举用例模式语法:</p>
+<p><em>enum-case-pattern</em> → <em>type-identifier</em><em>?</em> <strong><code>.</code></strong> <em>enum-case-name</em> <em>tuple-pattern</em><em>?</em></p>
+</blockquote>
+<h2 id="可选模式"><a href="#可选模式" class="headerlink" title="可选模式"></a>可选模式</h2><p>可选模式匹配包装在一个 <code>Optional(Wrapped)</code> 或者 <code>ExplicitlyUnwrappedOptional(Wrapped)</code> 枚举中的 <code>Some(Wrapped)</code> 用例中的值。可选模式由一个标识符模式和紧随其后的一个问号组成，可以像枚举用例模式一样使用。</p>
+<p>由于可选模式是 <code>Optional</code> 和 <code>ImplicitlyUnwrappedOptional</code> 枚举用例模式的语法糖，下面两种写法是等效的：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> someOptional: <span class="type">Int</span>? <span class="operator">=</span> <span class="number">42</span></span><br><span class="line"><span class="comment">// 使用枚举用例模式匹配</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">case</span> .some(<span class="keyword">let</span> x) <span class="operator">=</span> someOptional {</span><br><span class="line">    <span class="built_in">print</span>(x)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用可选模式匹配</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">case</span> <span class="keyword">let</span> x<span class="operator">?</span> <span class="operator">=</span> someOptional {</span><br><span class="line">    <span class="built_in">print</span>(x)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>可选模式为 <code>for-in</code> 语句提供了一种迭代数组的简便方式，只为数组中非 <code>nil</code> 的元素执行循环体。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arrayOfOptionalInts: [<span class="type">Int</span>?] <span class="operator">=</span> [<span class="literal">nil</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="literal">nil</span>, <span class="number">5</span>]</span><br><span class="line"><span class="comment">// 只匹配非 nil 的元素</span></span><br><span class="line"><span class="keyword">for</span> <span class="keyword">case</span> <span class="keyword">let</span> number<span class="operator">?</span> <span class="keyword">in</span> arrayOfOptionalInts {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Found a <span class="subst">\(number)</span>"</span>)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// Found a 2</span></span><br><span class="line"><span class="comment">// Found a 3</span></span><br><span class="line"><span class="comment">// Found a 5</span></span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote>
+<p>可选模式语法:</p>
+<p><em>optional-pattern</em> → <em>identifier-pattern</em> <strong><code>?</code></strong></p>
+</blockquote>
+<h2 id="类型转换模式"><a href="#类型转换模式" class="headerlink" title="类型转换模式"></a>类型转换模式</h2><p>有两种类型转换模式： <code>is</code> 模式和<code>as</code> 模式。 <code>is</code> 模式仅出现在<code>switch</code> 语句 case 标签中. <code>is</code> 和 <code>as</code> 模式具有以下形式:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">is</span> <span class="operator">&lt;</span>#类型#<span class="operator">&gt;</span></span><br><span class="line"><span class="operator">&lt;</span>#pattern#<span class="operator">&gt;</span> <span class="keyword">as</span> <span class="operator">&lt;</span>#type#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>is</code> 模式仅当一个值的类型在运行时和 <code>is</code> 模式右边的指定类型一致，或者是其子类的情况下，才会匹配这个值。<code>is</code> 模式和 <code>is</code> 运算符有相似表现，它们都进行类型转换，但是 <code>is</code> 模式没有返回类型。</p>
+<p><code>as</code> 模式仅当一个值的类型在运行时和 <code>as</code> 模式右边的指定类型一致，或者是其子类的情况下，才会匹配这个值。如果匹配成功，被匹配的值的类型被转换成 <code>as</code> 模式右边指定的类型。</p>
+<p>关于使用 <code>switch</code> 语句配合 <code>is</code> 模式和 <code>as</code> 模式来匹配值的例子，请参阅<a href="doc:TypeCasting#Any-和-AnyObject-的类型转换">doc:TypeCasting#Any-和-AnyObject-的类型转换</a>.</p>
+<blockquote>
+<p>类型转换模式语法</p>
+<p><em>type-casting-pattern</em> → <em>is-pattern</em> | <em>as-pattern</em> <br><em>is-pattern</em> → <strong><code>is</code></strong> <em>type</em> <br><em>as-pattern</em> → <em>pattern</em> <strong><code>as</code></strong> <em>type</em></p>
+</blockquote>
+<h2 id="表达式模式"><a href="#表达式模式" class="headerlink" title="表达式模式"></a>表达式模式</h2><p><em>表达式模式</em>代表表达式的值。表达式模式只出现在 <code>switch</code> 语句中的 <code>case</code> 标签中。</p>
+<p>表达式模式代表的表达式会使用 Swift 标准库中的 <code>~=</code> 运算符与输入表达式的值进行比较。如果 <code>~=</code> 运算符返回 <code>true</code>，则匹配成功。默认情况下，<code>~=</code> 运算符使用 <code>==</code> 运算符来比较两个相同类型的值。它也可以将一个整型数值与一个 Range 实例中的一段整数区间做匹配，正如下面这个例子所示：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> point <span class="operator">=</span> (<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="keyword">switch</span> point {</span><br><span class="line"><span class="keyword">case</span> (<span class="number">0</span>, <span class="number">0</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"(0, 0) is at the origin."</span>)</span><br><span class="line"><span class="keyword">case</span> (<span class="operator">-</span><span class="number">2</span><span class="operator">...</span><span class="number">2</span>, <span class="operator">-</span><span class="number">2</span><span class="operator">...</span><span class="number">2</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"(<span class="subst">\(point.<span class="number">0</span>)</span>, <span class="subst">\(point.<span class="number">1</span>)</span>) is near the origin."</span>)</span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"The point is at (<span class="subst">\(point.<span class="number">0</span>)</span>, <span class="subst">\(point.<span class="number">1</span>)</span>)."</span>)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 打印"(1, 2) is near the origin."</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>你可以重载 <code>~=</code> 运算符来提供自定义的表达式匹配行为。比如你可以重写上面的例子，将 <code>point</code> 表达式与字符串形式表示的点进行比较。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  重载 ~= 运算符对字符串和整数进行比较</span></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">~=</span> (<span class="params">pattern</span>: <span class="type">String</span>, <span class="params">value</span>: <span class="type">Int</span>) -&gt; <span class="type">Bool</span> {</span><br><span class="line">    <span class="keyword">return</span> pattern <span class="operator">==</span> <span class="string">"<span class="subst">\(value)</span>"</span></span><br><span class="line">}</span><br><span class="line"><span class="keyword">switch</span> point {</span><br><span class="line"><span class="keyword">case</span> (<span class="string">"0"</span>, <span class="string">"0"</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"(0, 0) is at the origin."</span>)</span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"The point is at (<span class="subst">\(point.<span class="number">0</span>)</span>, <span class="subst">\(point.<span class="number">1</span>)</span>)."</span>)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 打印 "The point is at (1, 2)."</span></span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote>
+<p>表达式模式语法:</p>
+<p><em>expression-pattern</em> → <em>expression</em></p>
+</blockquote>
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/">REFERENCEMANUAL</a></li>
+            <li>PATTERNS</li>
+          
+  </ul>
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E9%85%8D%E7%AC%A6%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">通配符模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E8%AF%86%E7%AC%A6%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">标识符模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%80%BC%E7%BB%91%E5%AE%9A%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">值绑定模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%83%E7%BB%84%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.4.</span> <span class="nav-text">元组模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%9A%E4%B8%BE%E7%94%A8%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.5.</span> <span class="nav-text">枚举用例模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E9%80%89%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.6.</span> <span class="nav-text">可选模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.7.</span> <span class="nav-text">类型转换模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.8.</span> <span class="nav-text">表达式模式</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

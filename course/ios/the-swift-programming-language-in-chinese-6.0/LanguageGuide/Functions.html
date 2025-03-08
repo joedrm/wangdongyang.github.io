@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="函数定义和调用函数，标注参数并使用其返回值。 函数(Functions) 是执行特定任务的独立代码块。你可以通过给函数命名来标识某个函数的功能，这个名字可以被用来在需要的时候“调用”这个函数来完成它的任务。 Swift 的统一函数语法非常灵活，从没有形参名称的简单 C 风格函数到每个形参都有局部和外部参数名的复杂 Objective-C 风格方法，它都能表达。形参可以提供默认值，以简化函数调用，也">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/Functions.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="函数定义和调用函数，标注参数并使用其返回值。 函数(Functions) 是执行特定任务的独立代码块。你可以通过给函数命名来标识某个函数的功能，这个名字可以被用来在需要的时候“调用”这个函数来完成它的任务。 Swift 的统一函数语法非常灵活，从没有形参名称的简单 C 风格函数到每个形参都有局部和外部参数名的复杂 Objective-C 风格方法，它都能表达。形参可以提供默认值，以简化函数调用，也">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-08T08:32:48.698Z">
+<meta property="article:modified_time" content="2025-03-08T08:32:48.698Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/Functions">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>FUNCTIONS</li>
+          
+  </ul>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><p>定义和调用函数，标注参数并使用其返回值。</p>
+<p><strong>函数(Functions)</strong> 是执行特定任务的独立代码块。你可以通过给函数命名来标识某个函数的功能，这个名字可以被用来在需要的时候“调用”这个函数来完成它的任务。</p>
+<p>Swift 的统一函数语法非常灵活，从没有形参名称的简单 C 风格函数到每个形参都有局部和外部参数名的复杂 Objective-C 风格方法，它都能表达。形参可以提供默认值，以简化函数调用，也可以作为 in-out 参数传递，在函数执行完毕后，传入的变量值将被修改。</p>
+<p>Swift 中的每个函数都有一个类型，由函数的形参值类型和返回值类型组成。您可以像使用 Swift 中的其他类型一样使用该类型，这样就可以简单地将函数作为形参传递给其他函数，也可以从其他函数返回函数。或者还可以在其他函数中编写函数，以便在嵌套函数作用域中封装功能。</p>
+<h2 id="定义和调用函数"><a href="#定义和调用函数" class="headerlink" title="定义和调用函数"></a>定义和调用函数</h2><p>定义函数时，您可以定义一个或多个有名字和类型的值，作为函数的输入，即 <strong>形参</strong>。您还可以选择性地定义某种类型的值作为函数执行结束时的输出，即函数的 <strong>返回类型</strong>。</p>
+<p>每个函数都有一个 <strong>函数名</strong>，它描述了函数执行的任务。要使用函数，您需要使用函数名“调用”该函数，并向其传递与函数形参类型相匹配的输入值（称为 <strong>实参</strong>）。函数的实参必须与函数形参表里的顺序一致。</p>
+<p>下面示例中的函数名为 ‘greet(person:)’，因为它要做的就是接收一个人的姓名作为输入，并返回对这个人的问候语句。为此，您需要定义一个名为 <code>person</code> 的 <code>String</code> 输入参数值，以及一个包含对该人的问候语的 <code>String</code> 类型返回值：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">greet</span>(<span class="params">person</span>: <span class="type">String</span>) -&gt; <span class="type">String</span> {</span><br><span class="line">    <span class="keyword">let</span> greeting <span class="operator">=</span> <span class="string">"Hello, "</span> <span class="operator">+</span> person <span class="operator">+</span> <span class="string">"!"</span></span><br><span class="line">    <span class="keyword">return</span> greeting</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `definingAndCalling`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func greet(person: String) -&gt; String &#123;</span><br><span class="line">      let greeting = &quot;Hello, &quot; + person + &quot;!&quot;</span><br><span class="line">      return greeting</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>所有这些信息都汇总起来成为函数的 <strong>定义(definition)</strong> ，并以 <strong>func</strong> 作为前缀。使用 <strong>返回箭头</strong> <code>-&gt;</code>（连字符后跟一个直角括号），后面跟要返回的类型名称，来表示函数的返回类型。</p>
+<p>定义描述了函数的作用、期望接收的内容以及完成后的返回内容。有了定义，就可以在代码的其他地方明确地调用函数：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(greet(person: <span class="string">&quot;Anna&quot;</span>))</span><br><span class="line"><span class="comment">// 打印 &quot;Hello, Anna!&quot;</span></span><br><span class="line"><span class="built_in">print</span>(greet(person: <span class="string">&quot;Brian&quot;</span>))</span><br><span class="line"><span class="comment">// 打印 &quot;Hello, Brian!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `definingAndCalling`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; print(greet(person: &quot;Anna&quot;))</span><br><span class="line">&lt;- Hello, Anna!</span><br><span class="line">-&gt; print(greet(person: &quot;Brian&quot;))</span><br><span class="line">&lt;- Hello, Brian!</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>调用 <code>greet(person:)</code> 函数时，请在 <code>person</code> 参数标签后传递 <code>String</code> 值，例如 <code>greet(person: &quot;Anna&quot;)</code> 。由于函数返回的是 <code>String</code> 类型的值，因此 <code>greet(person:)</code> 可以被包含在 <code>print(_:separator:terminator:)</code> 的调用中，用来输出这个函数的返回值，如上所示。</p>
+<blockquote>
+<p>注意: <code>print(_:separator:terminator:)</code> 函数的第一个参数并没有设置一个标签，而其他的参数是可选的，因为他们已经有了默认值。<br>关于这些函数语法上的变化详见下方 <a href="doc:Functions#函数参数标签和参数名称">doc:Functions#函数参数标签和参数名称</a> 和 <a href="doc:Functions#默认参数值">doc:Functions#默认参数值</a>。</p>
+</blockquote>
+<p>在 <code>greet(person:)</code> 的函数体中，先定义了一个新的名为 <code>greeting</code> 的 <code>String</code> 常量，并将其设置为简单的问候信息。然后用 <code>return</code> 关键字把这个问候返回出去。一旦 <code>return greeting</code> 被调用，该函数执行完毕并返回 <code>greeting</code> 的当前值。</p>
+<p>您可以使用不同的输入值多次调用 <code>greet(person:)</code> 函数。上面的示例显示了在输入值为 <code>&quot;Anna&quot;</code> 和 <code>&quot;Brian&quot;</code> 时调用该函数的结果。在每种情况下，函数都会返回一个定制的问候语。</p>
+<p>为了简化这个函数的定义，可以将消息的创建和返回语句合并为一行：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">greetAgain</span>(<span class="params">person</span>: <span class="type">String</span>) -&gt; <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Hello again, &quot;</span> <span class="operator">+</span> person <span class="operator">+</span> <span class="string">&quot;!&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(greetAgain(person: <span class="string">&quot;Anna&quot;</span>))</span><br><span class="line"><span class="comment">// 打印 &quot;Hello again, Anna!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `definingAndCalling`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func greetAgain(person: String) -&gt; String &#123;</span><br><span class="line">      return &quot;Hello again, &quot; + person + &quot;!&quot;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; print(greetAgain(person: &quot;Anna&quot;))</span><br><span class="line">&lt;- Hello again, Anna!</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="函数参数与返回值"><a href="#函数参数与返回值" class="headerlink" title="函数参数与返回值"></a>函数参数与返回值</h2><p>Swift 中的函数参数和返回值非常灵活。您可以定义任何函数，从只带有单个未命名参数的简单实用程序函数，到带有丰富参数名和不同参数选项的复杂函数。</p>
+<h3 id="无参数函数"><a href="#无参数函数" class="headerlink" title="无参数函数"></a>无参数函数</h3><p>函数可以没有参数。下面这个函数就是一个无参数函数，每次它被调用时，总是返回固定的 <code>String</code> 消息：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">sayHelloWorld</span>() -&gt; <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;hello, world&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(sayHelloWorld())</span><br><span class="line"><span class="comment">// 打印 &quot;hello, world&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `functionsWithoutParameters`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func sayHelloWorld() -&gt; String &#123;</span><br><span class="line">      return &quot;hello, world&quot;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; print(sayHelloWorld())</span><br><span class="line">&lt;- hello, world</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>即使函数不需要任何参数，在函数定义的名称后仍需要加上括号。在调用函数时，函数名后面也要加上一对空括号。</p>
+<h3 id="多参数函数"><a href="#多参数函数" class="headerlink" title="多参数函数"></a>多参数函数</h3><p>函数可以有多个输入参数，这些参数写在函数的括号内，用逗号隔开。</p>
+<p>下面的函数将一个人的名字和他是否被问候过作为输入，并返回适合该人的问候语：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">greet</span>(<span class="params">person</span>: <span class="type">String</span>, <span class="params">alreadyGreeted</span>: <span class="type">Bool</span>) -&gt; <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> alreadyGreeted &#123;</span><br><span class="line">        <span class="keyword">return</span> greetAgain(person: person)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> greet(person: person)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(greet(person: <span class="string">&quot;Tim&quot;</span>, alreadyGreeted: <span class="literal">true</span>))</span><br><span class="line"><span class="comment">// 打印 &quot;Hello again, Tim!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `definingAndCalling`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func greet(person: String, alreadyGreeted: Bool) -&gt; String &#123;</span><br><span class="line">       if alreadyGreeted &#123;</span><br><span class="line">           return greetAgain(person: person)</span><br><span class="line">       &#125; else &#123;</span><br><span class="line">           return greet(person: person)</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; print(greet(person: &quot;Tim&quot;, alreadyGreeted: true))</span><br><span class="line">&lt;- Hello again, Tim!</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>您通过将标有 <code>person</code> 的 <code>String</code> 参数值和标有 <code>alreadyGreeted</code> 的 <code>Bool</code> 参数值同时传递给 <code>greet(person:alreadyGreeted:)</code> 函数，并用逗号隔开来调用它。请注意，该函数不同于前面章节中的 <code>greet(person:)</code> 函数。虽然这两个函数的名称都以 <code>greet</code> 开头，但 <code>greet(person:alreadyGreeted:)</code> 函数需要两个参数，而 <code>greet(person:)</code> 函数只需要一个参数。</p>
+<h3 id="无返回值函数"><a href="#无返回值函数" class="headerlink" title="无返回值函数"></a>无返回值函数</h3><p>函数无需定义返回类型。下面是 <code>greet(person:)</code> 函数的另一个版本，它直接打印了一个 <code>String</code> 值，而不是返回它：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">greet</span>(<span class="params">person</span>: <span class="type">String</span>) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Hello, <span class="subst">\(person)</span>!&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line">greet(person: <span class="string">&quot;Dave&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;Hello, Dave!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `functionsWithoutReturnValues`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func greet(person: String) &#123;</span><br><span class="line">      print(&quot;Hello, \(person)!&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; greet(person: &quot;Dave&quot;)</span><br><span class="line">&lt;- Hello, Dave!</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>因为这个函数不需要返回值，所以这个函数的定义中没有返回箭头（<code>-&gt;</code>）和返回类型。</p>
+<blockquote>
+<p>注意:<br>严格来说，这个版本的 <code>greet(person:)</code> 函数 <strong>确实</strong> 仍然返回一个值，即使没有定义返回值。<br>没有定义返回类型的函数会返回 <code>Void</code> 类型的特殊值。<br>这是一个空元组，写成 <code>()</code>。</p>
+</blockquote>
+<p>函数被调用时，其返回值可被忽略：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">printAndCount</span>(<span class="params">string</span>: <span class="type">String</span>) -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(string)</span><br><span class="line">    <span class="keyword">return</span> string.count</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">func</span> <span class="title function_">printWithoutCounting</span>(<span class="params">string</span>: <span class="type">String</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">_</span> <span class="operator">=</span> printAndCount(string: string)</span><br><span class="line">&#125;</span><br><span class="line">printAndCount(string: <span class="string">&quot;hello, world&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;hello, world&quot; 并返回 12</span></span><br><span class="line">printWithoutCounting(string: <span class="string">&quot;hello, world&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;hello, world&quot; 但没有返回值</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `functionsWithoutReturnValues`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func printAndCount(string: String) -&gt; Int &#123;</span><br><span class="line">      print(string)</span><br><span class="line">      return string.count</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; func printWithoutCounting(string: String) &#123;</span><br><span class="line">      let _ = printAndCount(string: string)</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; let a =</span><br><span class="line">-&gt; printAndCount(string: &quot;hello, world&quot;)</span><br><span class="line">&lt;&lt; hello, world</span><br><span class="line">&gt;&gt; assert(a == 12)</span><br><span class="line">// prints &quot;hello, world&quot; and returns a value of 12</span><br><span class="line">-&gt; printWithoutCounting(string: &quot;hello, world&quot;)</span><br><span class="line">&lt;&lt; hello, world</span><br><span class="line">// prints &quot;hello, world&quot; but doesn&#x27;t return a value</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  Rewrite the above to avoid bare expressions.
+  Tracking bug is <rdar://problem/35301593>
+-->
+
+<p>第一个函数 <code>printAndCount(string:)</code> 打印一个字符串并返回 <code>Int</code> 类型的字符数。第二个函数 <code>printWithoutCounting(string:)</code> 调用了第一个函数，但是忽略了它的返回值。当第二个函数被调用时，消息依然会被第一个函数打印，但是返回值不会被用到。</p>
+<blockquote>
+<p>注意:<br>返回值可以被忽略，但定义了有返回值的函数必须返回一个值，如果在函数定义底部没有返回任何值，将导致编译时错误。</p>
+</blockquote>
+<!--
+FIXME Unless the function is marked @discardableResult,
+ignoring its return value triggers a compile-time warning.
+
+If the returned value is coincidental
+marking with @discardableResult is good,
+like array.removeFirst(...) ---
+otherwise, using `_ = foo()` at the call site is better.
+-->
+
+<h3 id="多重返回值函数"><a href="#多重返回值函数" class="headerlink" title="多重返回值函数"></a>多重返回值函数</h3><p>你可以用元组（tuple）类型让多个值作为一个复合值从函数中返回。</p>
+<p>下面的示例定义了一个名为 <code>minMax(array:)</code> 的函数，用于查找 <code>Int</code> 数组中最小值和最大值：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">minMax</span>(<span class="params">array</span>: [<span class="type">Int</span>]) -&gt; (min: <span class="type">Int</span>, max: <span class="type">Int</span>) {</span><br><span class="line">    <span class="keyword">var</span> currentMin <span class="operator">=</span> array[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">var</span> currentMax <span class="operator">=</span> array[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> value <span class="keyword">in</span> array[<span class="number">1</span><span class="operator">..&lt;</span>array.count] {</span><br><span class="line">        <span class="keyword">if</span> value <span class="operator">&lt;</span> currentMin {</span><br><span class="line">            currentMin <span class="operator">=</span> value</span><br><span class="line">        } <span class="keyword">else</span> <span class="keyword">if</span> value <span class="operator">&gt;</span> currentMax {</span><br><span class="line">            currentMax <span class="operator">=</span> value</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> (currentMin, currentMax)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `tupleTypesAsReturnTypes`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func minMax(array: [Int]) -&gt; (min: Int, max: Int) &#123;</span><br><span class="line">      var currentMin = array[0]</span><br><span class="line">      var currentMax = array[0]</span><br><span class="line">      for value in array[1..&lt;array.count] &#123;</span><br><span class="line">         if value &lt; currentMin &#123;</span><br><span class="line">            currentMin = value</span><br><span class="line">         &#125; else if value &gt; currentMax &#123;</span><br><span class="line">            currentMax = value</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      return (currentMin, currentMax)</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>minMax(array:)</code> 函数返回一个包含两个 <code>Int</code> 值的元组。这些值被标记为 <code>min</code> 和 <code>max</code> 以便在查询函数返回值时可以通过名称访问它们。</p>
+<p>在 <code>minMax(array:)</code> 的函数体中，在开始的时候设置两个工作变量 <code>currentMin</code> 和 <code>currentMax</code> 的值为数组中的第一个数。然后函数会遍历数组中剩余的值并检查该值是否分别小于或大于 <code>currentMin</code> 和 <code>currentMax</code>。最后数组中的最小值与最大值作为一个包含两个 <code>Int</code> 值的元组返回。</p>
+<p>由于元组的成员值已经被命名，因此可以使用点语法访问它们，以获取最小值和最大值：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> bounds <span class="operator">=</span> minMax(array: [<span class="number">8</span>, <span class="operator">-</span><span class="number">6</span>, <span class="number">2</span>, <span class="number">109</span>, <span class="number">3</span>, <span class="number">71</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;min is <span class="subst">\(bounds.min)</span> and max is <span class="subst">\(bounds.max)</span>&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;min is -6 and max is 109&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `tupleTypesAsReturnTypes`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let bounds = minMax(array: [8, -6, 2, 109, 3, 71])</span><br><span class="line">-&gt; print(&quot;min is \(bounds.min) and max is \(bounds.max)&quot;)</span><br><span class="line">&lt;- min is -6 and max is 109</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>请注意，元组的成员无需在元组从函数中返回时命名，因为它们的名字已经在函数返回类型中指定了。</p>
+<h4 id="可选元组返回类型"><a href="#可选元组返回类型" class="headerlink" title="可选元组返回类型"></a>可选元组返回类型</h4><p>如果函数返回的元组类型有可能整个元组都“没有值”，你可以使用 <strong>可选</strong> 元组返回类型反映整个元组可以是 <code>nil</code> 的事实。您可以通过在元组类型的结尾括号后放置问号来定义可选的元组返回类型，例如 <code>(Int, Int)?</code> 或 <code>(String, Int, Bool)?</code>。</p>
+<blockquote>
+<p>注意: 可选元组类型如 <code>(Int, Int)?</code> 与元组包含可选类型如 <code>(Int?, Int?)</code> 是不同的。<br>可选的元组类型，整个元组是可选的，而不只是元组中的每个元素值。</p>
+</blockquote>
+<p>上面的 <code>minMax(array:)</code> 函数返回一个包含两个 <code>Int</code> 值的元组。但是，该函数没有对传入的数组执行任何安全检查。如果 <code>array</code> 参数为一个空数组，则上面定义的 <code>minMax(array:)</code> 函数在尝试访问 <code>array[0]</code> 时将触发运行时错误。</p>
+<p>为了安全地处理空数组问题，将 <code>minMax(array:)</code> 函数改写为使用可选元组返回类型，并且当数组为空时返回 <code>nil</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">minMax</span>(<span class="params">array</span>: [<span class="type">Int</span>]) -&gt; (min: <span class="type">Int</span>, max: <span class="type">Int</span>)<span class="operator">?</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> array.isEmpty &#123; <span class="keyword">return</span> <span class="literal">nil</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> currentMin <span class="operator">=</span> array[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">var</span> currentMax <span class="operator">=</span> array[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> value <span class="keyword">in</span> array[<span class="number">1</span><span class="operator">..&lt;</span>array.count] &#123;</span><br><span class="line">        <span class="keyword">if</span> value <span class="operator">&lt;</span> currentMin &#123;</span><br><span class="line">            currentMin <span class="operator">=</span> value</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> value <span class="operator">&gt;</span> currentMax &#123;</span><br><span class="line">            currentMax <span class="operator">=</span> value</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (currentMin, currentMax)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `tupleTypesAsReturnTypes2`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func minMax(array: [Int]) -&gt; (min: Int, max: Int)? &#123;</span><br><span class="line">      if array.isEmpty &#123; return nil &#125;</span><br><span class="line">      var currentMin = array[0]</span><br><span class="line">      var currentMax = array[0]</span><br><span class="line">      for value in array[1..&lt;array.count] &#123;</span><br><span class="line">         if value &lt; currentMin &#123;</span><br><span class="line">            currentMin = value</span><br><span class="line">         &#125; else if value &gt; currentMax &#123;</span><br><span class="line">            currentMax = value</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      return (currentMin, currentMax)</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>您可以使用可选绑定来检查此版本的 <code>minMax(array:)</code> 函数是返回实际元组值还是 <code>nil</code> 值：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> bounds <span class="operator">=</span> minMax(array: [<span class="number">8</span>, <span class="operator">-</span><span class="number">6</span>, <span class="number">2</span>, <span class="number">109</span>, <span class="number">3</span>, <span class="number">71</span>]) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;min is <span class="subst">\(bounds.min)</span> and max is <span class="subst">\(bounds.max)</span>&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;min is -6 and max is 109&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `tupleTypesAsReturnTypes2`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; if let bounds = minMax(array: [8, -6, 2, 109, 3, 71]) &#123;</span><br><span class="line">      print(&quot;min is \(bounds.min) and max is \(bounds.max)&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- min is -6 and max is 109</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="隐式返回的函数"><a href="#隐式返回的函数" class="headerlink" title="隐式返回的函数"></a>隐式返回的函数</h3><p>如果函数的整个主体是一个表达式，则函数隐式返回该表达式。例如，下面的两个函数具有相同的行为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">greeting</span>(<span class="params">for</span> <span class="params">person</span>: <span class="type">String</span>) -&gt; <span class="type">String</span> &#123;</span><br><span class="line">    <span class="string">&quot;Hello, &quot;</span> <span class="operator">+</span> person <span class="operator">+</span> <span class="string">&quot;!&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(greeting(for: <span class="string">&quot;Dave&quot;</span>))</span><br><span class="line"><span class="comment">// 打印 &quot;Hello, Dave!&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">anotherGreeting</span>(<span class="params">for</span> <span class="params">person</span>: <span class="type">String</span>) -&gt; <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Hello, &quot;</span> <span class="operator">+</span> person <span class="operator">+</span> <span class="string">&quot;!&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(anotherGreeting(for: <span class="string">&quot;Dave&quot;</span>))</span><br><span class="line"><span class="comment">// 打印 &quot;Hello, Dave!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `implicit-func-return`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func greeting(for person: String) -&gt; String &#123;</span><br><span class="line">      &quot;Hello, &quot; + person + &quot;!&quot;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; print(greeting(for: &quot;Dave&quot;))</span><br><span class="line">&lt;- Hello, Dave!</span><br><span class="line">---</span><br><span class="line">-&gt; func anotherGreeting(for person: String) -&gt; String &#123;</span><br><span class="line">      return &quot;Hello, &quot; + person + &quot;!&quot;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; print(anotherGreeting(for: &quot;Dave&quot;))</span><br><span class="line">&lt;- Hello, Dave!</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>greeting(for:)</code> 函数的完整定义就是它返回的问候信息，这意味着它可以使用这种较短的形式。<code>anotherGreeting(for:)</code> 函数使用 <code>return</code> 关键字返回相同的问候信息但显得函数更长。如果您编写的函数只有一行 <code>return</code> ，则可以省略 <code>return</code> 。</p>
+<p>正如你将会在 <a href="doc:Properties#简化-Setter-声明">doc:Properties#简化-Setter-声明</a> 里看到的，属性的 getter 也可以使用隐式返回。</p>
+<blockquote>
+<p>注意:<br>作为隐式返回值编写的代码必须返回某个值。<br>例如，你不能使用 <code>print(13)</code> 作为隐式返回值。<br>然而，你可以使用不返回值的函数（如 <code>fatalError(&quot;Oh no!&quot;)</code>）作为隐式返回值，因为 Swift 知道它们并不会产生任何隐式返回。</p>
+</blockquote>
+<!--
+  - test: `implicit-return-print-instead`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// This is ok:</span><br><span class="line">&gt;&gt; func testFatal() -&gt; Int &#123;</span><br><span class="line">&gt;&gt;     fatalError(&quot;Oh no!&quot;)</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">---</span><br><span class="line">// But not this:</span><br><span class="line">&gt;&gt; func testPrint() -&gt; Int &#123;</span><br><span class="line">&gt;&gt;     print(13)</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">!$ error: cannot convert return expression of type &#x27;()&#x27; to return type &#x27;Int&#x27;</span><br><span class="line">!! print(13)</span><br><span class="line">!! ^~~~~~~~~</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="函数参数标签和参数名称"><a href="#函数参数标签和参数名称" class="headerlink" title="函数参数标签和参数名称"></a>函数参数标签和参数名称</h2><p>每个函数参数都有一个 <strong>参数标签（argument label）</strong> 和 <strong>参数名称（parameter name）</strong>。参数标签在调用函数时使用；调用的时候需要将函数的参数标签写在对应的参数前面。参数名称用于函数的实现；默认情况下，函数参数使用参数名称来作为它们的参数标签。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">someFunction</span>(<span class="params">firstParameterName</span>: <span class="type">Int</span>, <span class="params">secondParameterName</span>: <span class="type">Int</span>) &#123;</span><br><span class="line">    <span class="comment">// 在函数体内，firstParameterName 和 secondParameterName 代表参数中的第一个和第二个参数值</span></span><br><span class="line">&#125;</span><br><span class="line">someFunction(firstParameterName: <span class="number">1</span>, secondParameterName: <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `functionParameterNames`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func someFunction(firstParameterName: Int, secondParameterName: Int) &#123;</span><br><span class="line">      // In the function body, firstParameterName and secondParameterName</span><br><span class="line">      // refer to the argument values for the first and second parameters.</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; someFunction(firstParameterName: 1, secondParameterName: 2)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>所有参数都必须有唯一的名称。虽然多个参数有可能具有相同的参数标签，但唯一的参数标签有助于提高代码的可读性。</p>
+<!--
+  - test: `non-unique-external-name`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func foo(external a: Int, external b: Int) &#123;&#125;</span><br><span class="line">-&gt; foo(external: 7, external: 12)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="指定参数标签"><a href="#指定参数标签" class="headerlink" title="指定参数标签"></a>指定参数标签</h3><p>在参数名之前写入参数标签，用空格隔开：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">someFunction</span>(<span class="params">argumentLabel</span> <span class="params">parameterName</span>: <span class="type">Int</span>) &#123;</span><br><span class="line">    <span class="comment">// In the function body, parameterName refers to the argument value</span></span><br><span class="line">    <span class="comment">// for that parameter.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `externalParameterNames`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func someFunction(argumentLabel parameterName: Int) &#123;</span><br><span class="line">      // In the function body, parameterName refers to the argument value</span><br><span class="line">      // for that parameter.</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>下面是 <code>greet(person:)</code> 函数的一个变体，它接收一个人的名字和家乡，并返回一个问候语：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">greet</span>(<span class="params">person</span>: <span class="type">String</span>, <span class="params">from</span> <span class="params">hometown</span>: <span class="type">String</span>) -&gt; <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Hello <span class="subst">\(person)</span>!  Glad you could visit from <span class="subst">\(hometown)</span>.&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(greet(person: <span class="string">&quot;Bill&quot;</span>, from: <span class="string">&quot;Cupertino&quot;</span>))</span><br><span class="line"><span class="comment">// 打印 &quot;Hello Bill!  Glad you could visit from Cupertino.&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `externalParameterNames`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func greet(person: String, from hometown: String) -&gt; String &#123;</span><br><span class="line">       return &quot;Hello \(person)!  Glad you could visit from \(hometown).&quot;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; print(greet(person: &quot;Bill&quot;, from: &quot;Cupertino&quot;))</span><br><span class="line">&lt;- Hello Bill!  Glad you could visit from Cupertino.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>参数标签的使用能够让一个函数在调用时更有表达力，更类似自然语言，并且仍保持了函数内部的可读性以及清晰的意图。</p>
+<h3 id="省略参数标签"><a href="#省略参数标签" class="headerlink" title="省略参数标签"></a>省略参数标签</h3><p>如果不需要参数的参数标签，请写一个下划线（<code>_</code>）来代替该参数的显式参数标签。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">someFunction</span>(<span class="keyword">_</span> <span class="params">firstParameterName</span>: <span class="type">Int</span>, <span class="params">secondParameterName</span>: <span class="type">Int</span>) &#123;</span><br><span class="line">    <span class="comment">// 在函数体内，firstParameterName 和 secondParameterName 代表参数中的第一个和第二个参数值</span></span><br><span class="line">&#125;</span><br><span class="line">someFunction(<span class="number">1</span>, secondParameterName: <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `omittedExternalParameterNames`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func someFunction(_ firstParameterName: Int, secondParameterName: Int) &#123;</span><br><span class="line">      // In the function body, firstParameterName and secondParameterName</span><br><span class="line">      // refer to the argument values for the first and second parameters.</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; someFunction(1, secondParameterName: 2)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如果参数有参数标签，则在调用函数时 <strong>必须</strong> 使用标签来标示参数。</p>
+<h3 id="默认参数值"><a href="#默认参数值" class="headerlink" title="默认参数值"></a>默认参数值</h3><p>你可以在函数体中通过给参数赋值来为任意一个 <strong>参数定义默认值（Deafult Value）</strong>。如果定义了默认值，您就可以在调用函数时省略该参数。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">someFunction</span>(<span class="params">parameterWithoutDefault</span>: <span class="type">Int</span>, <span class="params">parameterWithDefault</span>: <span class="type">Int</span> <span class="operator">=</span> <span class="number">12</span>) &#123;</span><br><span class="line">    <span class="comment">// 如果你在调用时候不传第二个参数，parameterWithDefault 会值为 12 传入到函数体中。</span></span><br><span class="line">&#125;</span><br><span class="line">someFunction(parameterWithoutDefault: <span class="number">3</span>, parameterWithDefault: <span class="number">6</span>) <span class="comment">// parameterWithDefault is 6</span></span><br><span class="line">someFunction(parameterWithoutDefault: <span class="number">4</span>) <span class="comment">// parameterWithDefault is 12</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `omittedExternalParameterNames`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func someFunction(parameterWithoutDefault: Int, parameterWithDefault: Int = 12) &#123;</span><br><span class="line">      // If you omit the second argument when calling this function, then</span><br><span class="line">      // the value of parameterWithDefault is 12 inside the function body.</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; someFunction(parameterWithoutDefault: 3, parameterWithDefault: 6) // parameterWithDefault is 6</span><br><span class="line">-&gt; someFunction(parameterWithoutDefault: 4) // parameterWithDefault is 12</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>将不带有默认值的参数放在函数参数列表的最前。没有缺省值的参数通常对函数的意义更为重要–将它们写在前面，无论是否省略了任何缺省参数，都能更容易地识别出调用的是同一个函数。</p>
+<h3 id="可变参数"><a href="#可变参数" class="headerlink" title="可变参数"></a>可变参数</h3><p><strong>可变参数（variadic parameter）</strong> 接受零个或多个指定类型的值。使用可变参数可以指定在调用函数时，参数可以传入不同数量的输入值。通过在参数类型名称后插入三个句点字符（<code>...</code>）来编写可变参数。</p>
+<p>可变参数的值将在函数体中变为相应类型的数组。例如，名称为 <code>numbers</code> 和类型为 <code>Double...</code> 的可变参数，在函数体中以名为 <code>numbers</code> 类型为 <code>[Double]</code> 的数组常量形式提供。</p>
+<p>下面的示例计算任意长度数字列表的 <strong>算术平均数（arithmetic mean）</strong>（也称为 <strong>平均值（average）</strong>）：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">arithmeticMean</span>(<span class="keyword">_</span> <span class="params">numbers</span>: <span class="type">Double</span>...) -&gt; <span class="type">Double</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> total: <span class="type">Double</span> <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> number <span class="keyword">in</span> numbers &#123;</span><br><span class="line">        total <span class="operator">+=</span> number</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> total <span class="operator">/</span> <span class="type">Double</span>(numbers.count)</span><br><span class="line">&#125;</span><br><span class="line">arithmeticMean(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line"><span class="comment">// 返回 3.0，是这 5 个数的平均数</span></span><br><span class="line">arithmeticMean(<span class="number">3</span>, <span class="number">8.25</span>, <span class="number">18.75</span>)</span><br><span class="line"><span class="comment">// 返回 10.0，是这 3 个数的平均数</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `variadicParameters`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func arithmeticMean(_ numbers: Double...) -&gt; Double &#123;</span><br><span class="line">      var total: Double = 0</span><br><span class="line">      for number in numbers &#123;</span><br><span class="line">         total += number</span><br><span class="line">      &#125;</span><br><span class="line">      return total / Double(numbers.count)</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; let r0 =</span><br><span class="line">-&gt; arithmeticMean(1, 2, 3, 4, 5)</span><br><span class="line">/&gt; returns \(r0), which is the arithmetic mean of these five numbers</span><br><span class="line">&lt;/ returns 3.0, which is the arithmetic mean of these five numbers</span><br><span class="line">&gt;&gt; let r1 =</span><br><span class="line">-&gt; arithmeticMean(3, 8.25, 18.75)</span><br><span class="line">/&gt; returns \(r1), which is the arithmetic mean of these three numbers</span><br><span class="line">&lt;/ returns 10.0, which is the arithmetic mean of these three numbers</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  Rewrite the above to avoid bare expressions.
+  Tracking bug is <rdar://problem/35301593>
+-->
+
+<p>一个函数可以有多个可变参数。可变参数之后的第一个形参必须有参数标签。通过参数标签，可以清楚地知道哪些参数传递给可变参数，哪些参数传递给可变参数之后的形参。</p>
+<!--
+  - test: `variadic-parameters-and-labels`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// Labeled, immediately after</span><br><span class="line">&gt;&gt; func f(_ a: Int..., b: String) &#123;&#125;</span><br><span class="line">---</span><br><span class="line">// Unlabeled, not immediately after</span><br><span class="line">&gt;&gt; func g(_ a: Int..., b: String, _ c: Int) &#123;&#125;</span><br><span class="line">---</span><br><span class="line">// Multiple</span><br><span class="line">&gt;&gt; func h(_a: Int..., b: String, _ c: Int..., d: String) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `variadic-parameters-and-labels-failure`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// Unlabeled, immediately after</span><br><span class="line">&gt;&gt; func f(_ a: Int..., _ b: String) &#123;&#125;</span><br><span class="line">!$ error: a parameter following a variadic parameter requires a label</span><br><span class="line">!! func f(_ a: Int..., _ b: String) &#123;&#125;</span><br><span class="line">!! ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="输入输出参数"><a href="#输入输出参数" class="headerlink" title="输入输出参数"></a>输入输出参数</h3><p>函数参数默认为常量。在函数体中更改函数参数的值会导致编译时错误。这意味着您不能错误地更改参数的值。如果您希望函数修改参数的值，并希望这些更改在函数调用结束后仍然有效，请将该参数定义为 <strong>in-out parameter（输入输出参数）</strong>。</p>
+<p>您可以通过在参数类型前添加 <code>inout</code> 关键字来编写输入输出参数。输入输出参数有一个值，该值 <strong>传入</strong> 给函数，被函数修改后，然后被 <strong>传出</strong> 函数，以替换原来的值。有关传入传出参数行为及相关编译器优化的详细讨论，请参阅 <a href="doc:Declarations#In-Out-参数">doc:Declarations#In-Out-参数</a>。</p>
+<p>你只能传递变量给输入输出参数。不能传入常量或者字面量，因为这些是不能被修改的。当传入的参数作为输入输出参数时，需要在参数名前加 （<code>&amp;</code>） 符，表示这个值可以被函数修改。</p>
+<blockquote>
+<p>注意:<br>输入输出参数不能有默认值，而且可变参数不能标记为 <code>inout</code>。</p>
+</blockquote>
+<p>下例中，<code>swapTwoInts(_:_:)</code> 函数有两个分别叫做 <code>a</code> 和 <code>b</code> 的输入输出参数：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">swapTwoInts</span>(<span class="keyword">_</span> <span class="params">a</span>: <span class="keyword">inout</span> <span class="type">Int</span>, <span class="keyword">_</span> <span class="params">b</span>: <span class="keyword">inout</span> <span class="type">Int</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> temporaryA <span class="operator">=</span> a</span><br><span class="line">    a <span class="operator">=</span> b</span><br><span class="line">    b <span class="operator">=</span> temporaryA</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `inoutParameters`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func swapTwoInts(_ a: inout Int, _ b: inout Int) &#123;</span><br><span class="line">      let temporaryA = a</span><br><span class="line">      a = b</span><br><span class="line">      b = temporaryA</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>swapTwoInts(_:_:)</code> 函数简单地交换 <code>a</code> 与 <code>b</code> 的值。该函数先将 <code>a</code> 的值存到一个临时常量 <code>temporaryA</code> 中，然后将 <code>b</code> 的值赋给 <code>a</code>，最后将 <code>temporaryA</code> 赋值给 <code>b</code>。</p>
+<p>您可以使用两个类型为 <code>Int</code> 的变量调用 <code>swapTwoInts(_:_:)</code> 函数来交换它们的值。请注意，<code>someInt</code> 和 <code>anotherInt</code> 在传递给 <code>swapTwoInts(_：_:)</code> 函数前，都加了 &amp; 前缀：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> someInt <span class="operator">=</span> <span class="number">3</span></span><br><span class="line"><span class="keyword">var</span> anotherInt <span class="operator">=</span> <span class="number">107</span></span><br><span class="line">swapTwoInts(<span class="operator">&amp;</span>someInt, <span class="operator">&amp;</span>anotherInt)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;someInt is now <span class="subst">\(someInt)</span>, and anotherInt is now <span class="subst">\(anotherInt)</span>&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;someInt is now 107, and anotherInt is now 3&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `inoutParameters`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var someInt = 3</span><br><span class="line">-&gt; var anotherInt = 107</span><br><span class="line">-&gt; swapTwoInts(&amp;someInt, &amp;anotherInt)</span><br><span class="line">-&gt; print(&quot;someInt is now \(someInt), and anotherInt is now \(anotherInt)&quot;)</span><br><span class="line">&lt;- someInt is now 107, and anotherInt is now 3</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>上面的示例展示了 <code>someInt</code> 和 <code>anotherInt</code> 的原始值被 <code>swapTwoInt(_：_:)</code> 函数修改，即使它们是在函数体外定义的。</p>
+<blockquote>
+<p>注意:<br>输入输出参数和函数的返回值是不一样的。<br>上面的 <code>swapTwoInts</code> 函数并没有定义任何返回类型或返回值，但仍然修改了 <code>someInt</code> 和 <code>anotherInt</code> 的值。<br>输入输出参数是函数在其函数体范围之外产生影响的另一种方式。</p>
+</blockquote>
+<!--
+  TODO: you can pass a subproperty of something as an inout reference.
+  Would be great to show an example of this as a way to avoid temporary variables.
+-->
+
+<h2 id="函数类型"><a href="#函数类型" class="headerlink" title="函数类型"></a>函数类型</h2><p>每个函数都有一个特定的 <strong>函数类型</strong>，由函数的参数类型和返回类型组成。</p>
+<p>例如：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">addTwoInts</span>(<span class="keyword">_</span> <span class="params">a</span>: <span class="type">Int</span>, <span class="keyword">_</span> <span class="params">b</span>: <span class="type">Int</span>) -&gt; <span class="type">Int</span> {</span><br><span class="line">    <span class="keyword">return</span> a <span class="operator">+</span> b</span><br><span class="line">}</span><br><span class="line"><span class="keyword">func</span> <span class="title function_">multiplyTwoInts</span>(<span class="keyword">_</span> <span class="params">a</span>: <span class="type">Int</span>, <span class="keyword">_</span> <span class="params">b</span>: <span class="type">Int</span>) -&gt; <span class="type">Int</span> {</span><br><span class="line">    <span class="keyword">return</span> a <span class="operator">*</span> b</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `functionTypes`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func addTwoInts(_ a: Int, _ b: Int) -&gt; Int &#123;</span><br><span class="line">      return a + b</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; print(type(of: addTwoInts))</span><br><span class="line">&lt;&lt; (Int, Int) -&gt; Int</span><br><span class="line">-&gt; func multiplyTwoInts(_ a: Int, _ b: Int) -&gt; Int &#123;</span><br><span class="line">      return a * b</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; print(type(of: multiplyTwoInts))</span><br><span class="line">&lt;&lt; (Int, Int) -&gt; Int</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>此示例定义了两个简单的数学函数，分别称为 <code>addTwoInt</code> 和 <code>multiplyTwoInt</code>。这些函数分别接收两个 <code>Int</code> 值，并返回一个 <code>Int</code> 值，执行有关的数学运算的结果。</p>
+<p>这两个函数的类型都是 <code>(Int, Int) -&gt; Int</code>。这可以理解为：</p>
+<p>“这个函数类型有两个 <code>Int</code> 型的参数并返回一个 <code>Int</code> 型的值”。</p>
+<p>下面是另一个例子，一个没有参数或返回值的函数：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">printHelloWorld</span>() &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;hello, world&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `functionTypes`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func printHelloWorld() &#123;</span><br><span class="line">      print(&quot;hello, world&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; print(type(of: printHelloWorld))</span><br><span class="line">&lt;&lt; () -&gt; ()</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>该函数的类型是 <code>() -&gt; Void</code>，或“没有参数，并返回 <code>Void</code> 类型的函数”。</p>
+<h3 id="使用函数类型"><a href="#使用函数类型" class="headerlink" title="使用函数类型"></a>使用函数类型</h3><p>在 Swift 中，您可以像使用其他类型一样使用函数类型。例如，你可以定义一个类型为函数的常量或变量，并将适当的函数赋值给它：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> mathFunction: (<span class="type">Int</span>, <span class="type">Int</span>) -&gt; <span class="type">Int</span> <span class="operator">=</span> addTwoInts</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `functionTypes`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var mathFunction: (Int, Int) -&gt; Int = addTwoInts</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>这可以理解为：</p>
+<p>”定义一个叫做 <code>mathFunction</code> 的变量，类型是‘接收两个 <code>Int</code> 值并返回一个 <code>Int</code> 值的函数’。将此新变量设置为引用名为 <code>addTwoInts</code> 的函数”。</p>
+<p><code>addTwoInts(_:_:)</code> 函数与 <code>mathFunction</code> 变量具有相同的类型，所以这个赋值过程在 Swift 类型检查（type-check）中是允许的。</p>
+<p>现在，你可以用 <code>mathFunction</code> 来调用被赋值的函数了：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Result: <span class="subst">\(mathFunction(<span class="number">2</span>, <span class="number">3</span>))</span>&quot;</span>)</span><br><span class="line"><span class="comment">// Prints &quot;Result: 5&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `functionTypes`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; print(&quot;Result: \(mathFunction(2, 3))&quot;)</span><br><span class="line">&lt;- Result: 5</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>与非函数类型相同，具有相同匹配类型的不同函数也可以分配给同一个变量：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mathFunction <span class="operator">=</span> multiplyTwoInts</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Result: <span class="subst">\(mathFunction(<span class="number">2</span>, <span class="number">3</span>))</span>&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;Result: 6&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `functionTypes`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; mathFunction = multiplyTwoInts</span><br><span class="line">-&gt; print(&quot;Result: \(mathFunction(2, 3))&quot;)</span><br><span class="line">&lt;- Result: 6</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>与其他类型一样，当您将函数赋值给常量或变量时，可以让 Swift 来推断函数类型：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> anotherMathFunction <span class="operator">=</span> addTwoInts</span><br><span class="line"><span class="comment">// anotherMathFunction 被推断为 (Int, Int) -&gt; Int 类型</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `functionTypes`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let anotherMathFunction = addTwoInts</span><br><span class="line">&gt;&gt; print(type(of: anotherMathFunction))</span><br><span class="line">&lt;&lt; (Int, Int) -&gt; Int</span><br><span class="line">// anotherMathFunction is inferred to be of type (Int, Int) -&gt; Int</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  TODO: talk about defining typealiases for function types somewhere?
+-->
+
+<h3 id="函数类型作为参数类型"><a href="#函数类型作为参数类型" class="headerlink" title="函数类型作为参数类型"></a>函数类型作为参数类型</h3><p>您可以使用函数类型例如 <code>(Int, Int) -&gt; Int</code> 作为另一个函数的参数类型。这样你可以将函数的一部分实现留给函数的调用者来提供。</p>
+<p>下面是一个打印上述数学函数结果的示例：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">printMathResult</span>(<span class="keyword">_</span> <span class="params">mathFunction</span>: (<span class="type">Int</span>, <span class="type">Int</span>) -&gt; <span class="type">Int</span>, <span class="keyword">_</span> <span class="params">a</span>: <span class="type">Int</span>, <span class="keyword">_</span> <span class="params">b</span>: <span class="type">Int</span>) {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Result: <span class="subst">\(mathFunction(a, b))</span>"</span>)</span><br><span class="line">}</span><br><span class="line">printMathResult(addTwoInts, <span class="number">3</span>, <span class="number">5</span>)</span><br><span class="line"><span class="comment">// 打印 "Result: 8"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `functionTypes`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func printMathResult(_ mathFunction: (Int, Int) -&gt; Int, _ a: Int, _ b: Int) &#123;</span><br><span class="line">      print(&quot;Result: \(mathFunction(a, b))&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; printMathResult(addTwoInts, 3, 5)</span><br><span class="line">&lt;- Result: 8</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>此示例定义了 <code>printMathResult(_:_:_:)</code> 函数，它有三个参数。第一个参数名为 <code>mathFunction</code>, 其类型为 <code>(Int, Int) -&gt; Int</code>。您可以传入任何这种类型的函数作为第一个参数。第二个和第三个参数分别为 <code>a</code> 和 <code>b</code>，它们都是 <code>Int</code> 类型。这些值将用作所提供数学函数的两个输入值。</p>
+<p>当 <code>printMathResult(_:_:_:)</code> 被调用时，它被传入 <code>addTwoInts(_:_:)</code> 函数以及整数值 <code>3</code> 和 <code>5</code>。它用传入的 <code>3</code> 和 <code>5</code> 调用传入的函数，并输出结果：<code>8</code>。</p>
+<p><code>printMathResult(_:_:_:)</code> 的作用是打印调用适当类型数学函数的结果。它不关心传入函数是如何实现的，重要的是函数的类型是不是正确的。这使得 <code>printMathResult(_:_:_:)</code> 能够以类型安全的方式将其部分功能移交给函数的调用者。</p>
+<h3 id="函数类型作为返回类型"><a href="#函数类型作为返回类型" class="headerlink" title="函数类型作为返回类型"></a>函数类型作为返回类型</h3><p>你可以将函数类型作为另一个函数的返回类型。方法是在返回函数的返回箭头（<code>-&gt;</code>）后紧接着写入一个完整的函数类型。</p>
+<p>下一个示例定义了两个简单函数，分别称为 <code>stepForward(_:)</code> 和 <code>stepBackward(_:)</code>。<code>stepForward(_:)</code> 函数返回的值比输入值大 1，而 <code>stepBackward(_:)</code> 函数返回的值比输入值小 1。这两个函数的类型都是 <code>(Int) -&gt; Int</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">stepForward</span>(<span class="keyword">_</span> <span class="params">input</span>: <span class="type">Int</span>) -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> input <span class="operator">+</span> <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">func</span> <span class="title function_">stepBackward</span>(<span class="keyword">_</span> <span class="params">input</span>: <span class="type">Int</span>) -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> input <span class="operator">-</span> <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `functionTypes`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func stepForward(_ input: Int) -&gt; Int &#123;</span><br><span class="line">      return input + 1</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; func stepBackward(_ input: Int) -&gt; Int &#123;</span><br><span class="line">      return input - 1</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如下名为 <code>chooseStepFunction(backward:)</code> 的函数，它的返回类型是 <code>(Int) -&gt; Int</code>。<code>chooseStepFunction(backward:)</code> 根据布尔值 <code>backward</code> 来返回 <code>stepForward(_:)</code> 函数或 <code>stepBackward(_:)</code> 函数：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">chooseStepFunction</span>(<span class="params">backward</span>: <span class="type">Bool</span>) -&gt; (<span class="type">Int</span>) -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> backward <span class="operator">?</span> stepBackward : stepForward</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `functionTypes`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func chooseStepFunction(backward: Bool) -&gt; (Int) -&gt; Int &#123;</span><br><span class="line">      return backward ? stepBackward : stepForward</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>您现在可以用 <code>chooseStepFunction(backward:)</code> 来获得一个前进或后退方向的函数：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> currentValue <span class="operator">=</span> <span class="number">3</span></span><br><span class="line"><span class="keyword">let</span> moveNearerToZero <span class="operator">=</span> chooseStepFunction(backward: currentValue <span class="operator">&gt;</span> <span class="number">0</span>)</span><br><span class="line"><span class="comment">// moveNearerToZero 现在指向 stepBackward() 函数。</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `functionTypes`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var currentValue = 3</span><br><span class="line">-&gt; let moveNearerToZero = chooseStepFunction(backward: currentValue &gt; 0)</span><br><span class="line">&gt;&gt; print(type(of: moveNearerToZero))</span><br><span class="line">&lt;&lt; (Int) -&gt; Int</span><br><span class="line">// moveNearerToZero now refers to the stepBackward() function</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>上面的示例确定是否需要一个正步长或负步长来使 <code>currentValue</code> 的变量逐渐趋近于零。<code>currentValue</code> 的初始值为 3，这意味着 <code>currentValue &gt; 0</code> 返回 <code>true</code>，这使得 <code>chooseStepFunction(backward:)</code> 返回 <code>stepBackward(_:)</code> 函数。返回函数的引用存储在了 <code>moveNearerToZero</code> 的常量中。</p>
+<p>现在， <code>moveNearerToZero</code> 指向了正确的函数，它可以用来计数归零：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Counting to zero:&quot;</span>)</span><br><span class="line"><span class="comment">// Counting to zero:</span></span><br><span class="line"><span class="keyword">while</span> currentValue <span class="operator">!=</span> <span class="number">0</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;<span class="subst">\(currentValue)</span>... &quot;</span>)</span><br><span class="line">    currentValue <span class="operator">=</span> moveNearerToZero(currentValue)</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;zero!&quot;</span>)</span><br><span class="line"><span class="comment">// 3...</span></span><br><span class="line"><span class="comment">// 2...</span></span><br><span class="line"><span class="comment">// 1...</span></span><br><span class="line"><span class="comment">// zero!</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `functionTypes`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; print(&quot;Counting to zero:&quot;)</span><br><span class="line">&lt;/ Counting to zero:</span><br><span class="line">-&gt; while currentValue != 0 &#123;</span><br><span class="line">      print(&quot;\(currentValue)... &quot;)</span><br><span class="line">      currentValue = moveNearerToZero(currentValue)</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; print(&quot;zero!&quot;)</span><br><span class="line">&lt;/ 3...</span><br><span class="line">&lt;/ 2...</span><br><span class="line">&lt;/ 1...</span><br><span class="line">&lt;/ zero!</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="嵌套函数"><a href="#嵌套函数" class="headerlink" title="嵌套函数"></a>嵌套函数</h2><p>到目前为止，您在本章中遇到的所有函数都是 <strong>全局函数（global functions）</strong>，它们定义在全局域中。您还可以在其他函数的主体中定义函数，即 <strong>嵌套函数（nested functions）</strong>。</p>
+<p>默认情况下，嵌套函数是对外界不可见的，但仍可被其外围函数（enclosing function）调用。外围函数也可以返回它的某个嵌套函数，以便在另一个作用域中使用这个函数。</p>
+<p>您可以重写上面的 <code>chooseStepFunction(backward:)</code> 示例，以使用并返回嵌套函数：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">chooseStepFunction</span>(<span class="params">backward</span>: <span class="type">Bool</span>) -&gt; (<span class="type">Int</span>) -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">stepForward</span>(<span class="params">input</span>: <span class="type">Int</span>) -&gt; <span class="type">Int</span> &#123; <span class="keyword">return</span> input <span class="operator">+</span> <span class="number">1</span> &#125;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">stepBackward</span>(<span class="params">input</span>: <span class="type">Int</span>) -&gt; <span class="type">Int</span> &#123; <span class="keyword">return</span> input <span class="operator">-</span> <span class="number">1</span> &#125;</span><br><span class="line">    <span class="keyword">return</span> backward <span class="operator">?</span> stepBackward : stepForward</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> currentValue <span class="operator">=</span> <span class="operator">-</span><span class="number">4</span></span><br><span class="line"><span class="keyword">let</span> moveNearerToZero <span class="operator">=</span> chooseStepFunction(backward: currentValue <span class="operator">&gt;</span> <span class="number">0</span>)</span><br><span class="line"><span class="comment">// moveNearerToZero 现在引用了嵌套的 stepForward() 函数</span></span><br><span class="line"><span class="keyword">while</span> currentValue <span class="operator">!=</span> <span class="number">0</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;<span class="subst">\(currentValue)</span>... &quot;</span>)</span><br><span class="line">    currentValue <span class="operator">=</span> moveNearerToZero(currentValue)</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;zero!&quot;</span>)</span><br><span class="line"><span class="comment">// -4...</span></span><br><span class="line"><span class="comment">// -3...</span></span><br><span class="line"><span class="comment">// -2...</span></span><br><span class="line"><span class="comment">// -1...</span></span><br><span class="line"><span class="comment">// zero!</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `nestedFunctions`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func chooseStepFunction(backward: Bool) -&gt; (Int) -&gt; Int &#123;</span><br><span class="line">      func stepForward(input: Int) -&gt; Int &#123; return input + 1 &#125;</span><br><span class="line">      func stepBackward(input: Int) -&gt; Int &#123; return input - 1 &#125;</span><br><span class="line">      return backward ? stepBackward : stepForward</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; var currentValue = -4</span><br><span class="line">-&gt; let moveNearerToZero = chooseStepFunction(backward: currentValue &gt; 0)</span><br><span class="line">&gt;&gt; print(type(of: moveNearerToZero))</span><br><span class="line">&lt;&lt; (Int) -&gt; Int</span><br><span class="line">// moveNearerToZero now refers to the nested stepForward() function</span><br><span class="line">-&gt; while currentValue != 0 &#123;</span><br><span class="line">      print(&quot;\(currentValue)... &quot;)</span><br><span class="line">      currentValue = moveNearerToZero(currentValue)</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; print(&quot;zero!&quot;)</span><br><span class="line">&lt;/ -4...</span><br><span class="line">&lt;/ -3...</span><br><span class="line">&lt;/ -2...</span><br><span class="line">&lt;/ -1...</span><br><span class="line">&lt;/ zero!</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+This source file is part of the Swift.org open source project
+
+Copyright (c) 2014 - 2022 Apple Inc. and the Swift project authors
+Licensed under Apache License v2.0 with Runtime Library Exception
+
+See https://swift.org/LICENSE.txt for license information
+See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
+-->
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>FUNCTIONS</li>
+          
+  </ul>
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E5%92%8C%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">定义和调用函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E9%87%8D%E8%BF%94%E5%9B%9E%E5%80%BC%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.1.</span> <span class="nav-text">多重返回值函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">函数类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.2.1.</span> <span class="nav-text">函数类型作为参数类型</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

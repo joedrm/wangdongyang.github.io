@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="词法结构使用语法的最低层级组件。 Swift 的 词法结构 描述了哪些字符序列构成了语言中的合法标记（tokens）。这些合法标记构成了语言的最低层级构建块，并在后续章节中用于描述语言的其他部分。一个标记可以由标识符、关键字、标点符号、字面量或运算符组成。 在大多数情况下，这些标记是从 Swift 源文件的字符中生成的，生成过程考虑了输入文本中最长的可能子字符串，并受以下语法规则的约束。这种行为策">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/LexicalStructure.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="词法结构使用语法的最低层级组件。 Swift 的 词法结构 描述了哪些字符序列构成了语言中的合法标记（tokens）。这些合法标记构成了语言的最低层级构建块，并在后续章节中用于描述语言的其他部分。一个标记可以由标识符、关键字、标点符号、字面量或运算符组成。 在大多数情况下，这些标记是从 Swift 源文件的字符中生成的，生成过程考虑了输入文本中最长的可能子字符串，并受以下语法规则的约束。这种行为策">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-08T08:32:48.733Z">
+<meta property="article:modified_time" content="2025-03-08T08:32:48.733Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/LexicalStructure">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/">REFERENCEMANUAL</a></li>
+            <li>LEXICALSTRUCTURE</li>
+          
+  </ul>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h1 id="词法结构"><a href="#词法结构" class="headerlink" title="词法结构"></a>词法结构</h1><p>使用语法的最低层级组件。</p>
+<p>Swift 的 <em>词法结构</em> 描述了哪些字符序列构成了语言中的合法标记（tokens）。这些合法标记构成了语言的最低层级构建块，并在后续章节中用于描述语言的其他部分。一个标记可以由标识符、关键字、标点符号、字面量或运算符组成。</p>
+<p>在大多数情况下，这些标记是从 Swift 源文件的字符中生成的，生成过程考虑了输入文本中最长的可能子字符串，并受以下语法规则的约束。这种行为策略被称为 <em>最长匹配策略（longest match）</em> 或 <em>最大吞噬策略（maximal munch）</em>。</p>
+<h2 id="空白和注释"><a href="#空白和注释" class="headerlink" title="空白和注释"></a>空白和注释</h2><p>空白字符有两个用途：在源文件中分隔标记，并区分前缀、后缀和中缀运算符（参见 <a href="doc:LexicalStructure#运算符">doc:LexicalStructure#运算符</a>），除此之外，空白字符会被忽略。以下字符被视为空白字符：空格 (U+0020)、换行符 (U+000A)、回车符 (U+000D)、水平制表符 (U+0009)、垂直制表符 (U+000B)、换页符 (U+000C) 和空字符 (U+0000)。</p>
+<!--
+  Whitespace characters are listed roughly from
+  most salient/common to least,
+  not in order of Unicode scalar value.
+-->
+
+<p>编译器将注释视为空白字符。单行注释以 <code>//</code> 开头，并持续到换行符 (U+000A) 或回车符 (U+000D)。多行注释以 <code>/*</code> 开头，以 <code>*/</code> 结束。多行注释可以嵌套，但注释符号必须头尾匹配。</p>
+<p>注释中可以包含额外的格式和标记，如 <a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/Xcode/Reference/xcode_markup_formatting_ref/index.html">标记格式参考</a> 中所述。</p>
+<blockquote>
+<p>空白字符的语法:</p>
+<p><em>whitespace</em> → <em>whitespace-item</em> <em>whitespace</em><em>?</em> <br><em>whitespace-item</em> → <em>line-break</em> <br><em>whitespace-item</em> → <em>inline-space</em> <br><em>whitespace-item</em> → <em>comment</em> <br><em>whitespace-item</em> → <em>multiline-comment</em> <br><em>whitespace-item</em> → U+0000、U+000B 或 U+000C</p>
+<p><em>line-break</em> → U+000A <br><em>line-break</em> → U+000D <br><em>line-break</em> → U+000D 后跟 U+000A</p>
+<p><em>inline-spaces</em> → <em>inline-space</em> <em>inline-spaces</em><em>?</em> <br><em>inline-space</em> → U+0009 或 U+0020</p>
+<p><em>comment</em> → <strong><code>//</code></strong> <em>comment-text</em> <em>line-break</em> <br><em>multiline-comment</em> → <strong><code>/*</code></strong> <em>multiline-comment-text</em> <strong><code>*/</code></strong></p>
+<p><em>comment-text</em> → <em>comment-text-item</em> <em>comment-text</em><em>?</em> <br><em>comment-text-item</em> → 除 U+000A 或 U+000D 之外的任意 Unicode 标量值</p>
+<p><em>multiline-comment-text</em> → <em>multiline-comment-text-item</em> <em>multiline-comment-text</em><em>?</em> <br><em>multiline-comment-text-item</em> → <em>multiline-comment</em> <br><em>multiline-comment-text-item</em> → <em>comment-text-item</em> <br><em>multiline-comment-text-item</em> → 除 <strong><code>/*</code></strong> 或 <strong><code>*/</code></strong> 之外的任意 Unicode 标量值</p>
+</blockquote>
+<h2 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h2><p><em>标识符</em> 以大写或小写字母 A 到 Z、下划线 (<code>_</code>)、基本多语言平面（Basic Multilingual Plane）的非组合字母数字 Unicode 字符（Noncombining Alphanumeric Unicode Character），或基本多语言平面之外但不在私用区（Private Use Area）的字符开头。在第一个字符之后，还允许使用数字和组合 Unicode 字符（Combining Unicode Character）。</p>
+<p>即使声明具有 <code>public</code> 访问级别修饰符，也应将以下内容视为仅内部使用：以下划线开头的标识符、第一个参数标签以下划线开头的下标操作，以及第一个参数标签以下划线开头的构造函数。这个约定允许框架作者以此方式标记某个 API 的一部分内容，以防止客户端与之交互或依赖，尽管某些限制要求这些声明是公开可访问的。此外，以两个下划线开头的标识符需保留给 Swift 编译器和标准库使用。</p>
+<p>要将保留字用作标识符，可以在其前后加上反引号（`）。例如，<code>class</code> 不是一个合法的标识符，但 <code>`class`</code> 是合法的。反引号不被视为标识符的一部分；<code>`x`</code> 和 <code>x</code> 具有相同的指代含义。</p>
+<!--
+The paragraph above produces a link-resolution warning
+because of a known issue with ` in code voice.
+
+https://github.com/apple/swift-book/issues/71
+https://github.com/apple/swift-markdown/issues/93
+-->
+
+<p>在没有显式参数名称的闭包中，参数会被隐式命名为 <code>$0</code>、<code>$1</code>、<code>$2</code> 等。这些名称在闭包的范围内是合法的标识符。</p>
+<p>编译器会为具有属性包装器投射（Property Wrapper Projection）的属性合成以美元符号 (<code>$</code>) 开头的标识符。你的代码可以与这些标识符交互，但你不能声明带有该前缀的标识符。有关更多信息，请参阅 <a href="doc:Attributes">doc:Attributes</a> 章节的 <a href="doc:Attributes#propertyWrapper">doc:Attributes#propertyWrapper</a> 部分。</p>
+<!--
+  The cross reference above includes both the section and chapter because,
+  even though "propertyWrapper" is the title of the section,
+  the section name isn't title case so it doesn't necessarily look like a title.
+-->
+
+<!--
+The formal grammar below for 'identifier'
+produces a link-resolution warning
+because of a known issue with ` in code voice.
+
+https://github.com/apple/swift-book/issues/71
+https://github.com/apple/swift-markdown/issues/93
+-->
+
+<blockquote>
+<p>标识符的语法:</p>
+<p><em>identifier</em> → <em>identifier-head</em> <em>identifier-characters</em><em>?</em> <br><em>identifier</em> → <strong><code>`</code>** *identifier-head* *identifier-characters*_?_ **<code>`</code></strong> <br><em>identifier</em> → <em>implicit-parameter-name</em> <br><em>identifier</em> → <em>property-wrapper-projection</em> <br><em>identifier-list</em> → <em>identifier</em> | <em>identifier</em> <strong><code>,</code></strong> <em>identifier-list</em></p>
+<p><em>identifier-head</em> → 大写或小写字母 A 到 Z <br><em>identifier-head</em> → <strong><code>_</code></strong> <br><em>identifier-head</em> → U+00A8、U+00AA、U+00AD、U+00AF、U+00B2–U+00B5 或 U+00B7–U+00BA <br><em>identifier-head</em> → U+00BC–U+00BE、U+00C0–U+00D6、U+00D8–U+00F6 或 U+00F8–U+00FF <br><em>identifier-head</em> → U+0100–U+02FF、U+0370–U+167F、U+1681–U+180D 或 U+180F–U+1DBF <br><em>identifier-head</em> → U+1E00–U+1FFF <br><em>identifier-head</em> → U+200B–U+200D、U+202A–U+202E、U+203F–U+2040、U+2054 或 U+2060–U+206F <br><em>identifier-head</em> → U+2070–U+20CF、U+2100–U+218F、U+2460–U+24FF 或 U+2776–U+2793 <br><em>identifier-head</em> → U+2C00–U+2DFF 或 U+2E80–U+2FFF <br><em>identifier-head</em> → U+3004–U+3007、U+3021–U+302F、U+3031–U+303F 或 U+3040–U+D7FF <br><em>identifier-head</em> → U+F900–U+FD3D、U+FD40–U+FDCF、U+FDF0–U+FE1F 或 U+FE30–U+FE44 <br><em>identifier-head</em> → U+FE47–U+FFFD <br><em>identifier-head</em> → U+10000–U+1FFFD、U+20000–U+2FFFD、U+30000–U+3FFFD 或 U+40000–U+4FFFD <br><em>identifier-head</em> → U+50000–U+5FFFD、U+60000–U+6FFFD、U+70000–U+7FFFD 或 U+80000–U+8FFFD <br><em>identifier-head</em> → U+90000–U+9FFFD、U+A0000–U+AFFFD、U+B0000–U+BFFFD 或 U+C0000–U+CFFFD <br><em>identifier-head</em> → U+D0000–U+DFFFD 或 U+E0000–U+EFFFD</p>
+<p><em>identifier-character</em> → 数字 0 到 9 <br><em>identifier-character</em> → U+0300–U+036F、U+1DC0–U+1DFF、U+20D0–U+20FF 或 U+FE20–U+FE2F <br><em>identifier-character</em> → <em>identifier-head</em> <br><em>identifier-characters</em> → <em>identifier-character</em> <em>identifier-characters</em><em>?</em></p>
+<p><em>implicit-parameter-name</em> → <strong><code>$</code></strong> <em>decimal-digits</em> <br><em>property-wrapper-projection</em> → <strong><code>$</code></strong> <em>identifier-characters</em></p>
+</blockquote>
+<h2 id="关键字和标点符号"><a href="#关键字和标点符号" class="headerlink" title="关键字和标点符号"></a>关键字和标点符号</h2><p>以下关键字是保留字，不能用作标识符，除非用反引号将它们转义，如上文 <a href="doc:LexicalStructure#标识符">doc:LexicalStructure#标识符</a> 中所述。除了 <code>inout</code>、<code>var</code> 和 <code>let</code> 之外，其他关键字可以作为函数声明或函数调用中的参数名称，而无需使用反引号进行转义。当成员名称与关键字相同时，引用该成员时不需要使用反引号进行转义，除非在引用成员与使用关键字之间存在歧义——例如，<code>self</code>、<code>Type</code> 和 <code>Protocol</code> 在显式成员表达式中具有特殊含义，因此在这种情况下必须用反引号将它们转义。</p>
+<!--
+  - test: `keywords-without-backticks`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func f(x: Int, in y: Int) &#123;</span><br><span class="line">      print(x+y)</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `var-requires-backticks`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func g(`var` x: Int) &#123;&#125;</span><br><span class="line">-&gt; func f(var x: Int) &#123;&#125;</span><br><span class="line">!$ warning: &#x27;var&#x27; in this position is interpreted as an argument label</span><br><span class="line">!! func f(var x: Int) &#123;&#125;</span><br><span class="line">!!        ^~~</span><br><span class="line">!!        `var`</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `let-requires-backticks`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func g(`let` x: Int) &#123;&#125;</span><br><span class="line">-&gt; func f(let x: Int) &#123;&#125;</span><br><span class="line">!$ warning: &#x27;let&#x27; in this position is interpreted as an argument label</span><br><span class="line">!! func f(let x: Int) &#123;&#125;</span><br><span class="line">!!        ^~~</span><br><span class="line">!!        `let`</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `inout-requires-backticks`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func g(`inout` x: Int) &#123;&#125;</span><br><span class="line">-&gt; func f(inout x: Int) &#123;&#125;</span><br><span class="line">!$ error: &#x27;inout&#x27; before a parameter name is not allowed, place it before the parameter type instead</span><br><span class="line">!! func f(inout x: Int) &#123;&#125;</span><br><span class="line">!!        ^~~~~</span><br><span class="line">!!                 inout</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  NOTE: This list of language keywords and punctuation
+  is derived from the file "swift/include/swift/Parse/Tokens.def"
+  and from "utils/gyb_syntax_support/Token.py",
+  which generates the TokenKinds.def file.
+
+  Last updated at Swift commit 2f1987567f5, for Swift 5.4.
+-->
+
+<ul>
+<li>用于声明的关键字：<code>associatedtype</code>、<code>borrowing</code>、<code>class</code>、<code>consuming</code>、<code>deinit</code>、<code>enum</code>、<code>extension</code>、<code>fileprivate</code>、<code>func</code>、<code>import</code>、<code>init</code>、<code>inout</code>、<code>internal</code>、<code>let</code>、<code>nonisolated</code>、<code>open</code>、<code>operator</code>、<code>private</code>、<code>precedencegroup</code>、<code>protocol</code>、<code>public</code>、<code>rethrows</code>、<code>static</code>、<code>struct</code>、<code>subscript</code>、<code>typealias</code> 和 <code>var</code>。</li>
+</ul>
+<!--
+  Token.py doesn't include 'open' but DeclNodes.py does.
+-->
+
+<ul>
+<li>用于语句的关键字：<code>break</code>、<code>case</code>、<code>catch</code>、<code>continue</code>、<code>default</code>、<code>defer</code>、<code>do</code>、<code>else</code>、<code>fallthrough</code>、<code>for</code>、<code>guard</code>、<code>if</code>、<code>in</code>、<code>repeat</code>、<code>return</code>、<code>throw</code>、<code>switch</code>、<code>where</code> 和 <code>while</code>。</li>
+<li>用于表达式和类型的关键字：<code>Any</code>、<code>as</code>、<code>await</code>、<code>catch</code>、<code>false</code>、<code>is</code>、<code>nil</code>、<code>rethrows</code>、<code>self</code>、<code>Self</code>、<code>super</code>、<code>throw</code>、<code>throws</code>、<code>true</code> 和 <code>try</code>。</li>
+<li>用于模式的关键字：<code>_</code>。</li>
+<li>以井号 (<code>#</code>) 开头的关键字：<code>#available</code>、<code>#colorLiteral</code>、<code>#else</code>、<code>#elseif</code>、<code>#endif</code>、<code>#fileLiteral</code>、<code>#if</code>、<code>#imageLiteral</code>、<code>#keyPath</code>、<code>#selector</code>、<code>#sourceLocation</code>、<code>#unavailable</code>。</li>
+</ul>
+<blockquote>
+<p>注意:<br>在 Swift 5.9 之前，以下关键字是保留字：<code>#column</code>、<code>#dsohandle</code>、<code>#error</code>、<code>#fileID</code>、<code>#filePath</code>、<code>#file</code>、<code>#function</code>、<code>#line</code> 和 <code>#warning</code>。<br>它们现在已经在 Swift 标准库中实现为宏：<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/column()"><code>column</code></a>、<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/dsohandle()"><code>dsohandle</code></a>、<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/error(_:)"><code>error(_:)</code></a>、<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/fileID()"><code>fileID</code></a>、<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/filePath()"><code>filePath</code></a>、<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/file()"><code>file</code></a>、<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/function()"><code>function</code></a>、<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/line()"><code>line</code></a> 以及 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/warning(_:)"><code>warning(_:)</code></a>。</p>
+</blockquote>
+<!--
+  Token.py includes #assert,
+  which looks like it's part of an experimental feature
+  based on the pound_assert_disabled diagnostic's error message:
+  #assert is an experimental feature that is currently disabled
+-->
+
+<!--
+  Token.py includes #fileID,
+  which looks like it's part of a future feature related to
+  -enable-experimental-concise-pound-file (see also Swift commit 0e569f5d9e66)
+-->
+
+<!--
+  Token.py includes 'yield' as a keyword,
+  which looks like it's related to a future feature around memory ownership.
+-->
+
+<ul>
+<li>在特定上下文中保留的关键字：<code>associativity</code>、<code>async</code>,<code>convenience</code>、<code>didSet</code>、<code>dynamic</code>、<code>final</code>、<code>get</code>、<code>indirect</code>、<code>infix</code>、<code>lazy</code>、<code>left</code>、<code>mutating</code>、<code>none</code>、<code>nonmutating</code>、<code>optional</code>、<code>override</code>、<code>package</code>、<code>postfix</code>、<code>precedence</code>、<code>prefix</code>、<code>Protocol</code>、<code>required</code>、<code>right</code>、<code>set</code>、<code>some</code>、<code>Type</code>、<code>unowned</code>、<code>weak</code> 和 <code>willSet</code>。除了在语法中的特定上下文出现之外，它们可以被当作标识符使用。</li>
+</ul>
+<!--
+  NOTE: The list of context-sensitive keywords above
+  is derived from the file "swift/include/swift/AST/Attr.def"
+  where they're marked CONTEXTUAL_SIMPLE_DECL_ATTR.
+  However, not all context-sensitive keywords appear there;
+-->
+
+<p>以下符号被保留为标点符号，不能用作自定义运算符：<code>(</code>、<code>)</code>、<code>{</code>、<code>}</code>、<code>[</code>、<code>]</code>、<code>.</code>、<code>,</code>、<code>:</code>、<code>;</code>、<code>=</code>、<code>@</code>、<code>#</code>、<code>&amp;</code>（作为前缀运算符）、<code>-&gt;</code>、<code>`</code>、<code>?</code> 和 <code>!</code>（作为后缀运算符）。</p>
+<h2 id="字面量"><a href="#字面量" class="headerlink" title="字面量"></a>字面量</h2><p><em>字面量</em> 是某种类型值的源代码表示形式，例如数字或字符串。</p>
+<p>以下是一些字面量的示例：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">42</span>               <span class="comment">// 整数字面量</span></span><br><span class="line"><span class="number">3.14159</span>          <span class="comment">// 浮点数字面量</span></span><br><span class="line"><span class="string">"Hello, world!"</span>  <span class="comment">// 字符串字面量</span></span><br><span class="line"><span class="operator">/</span><span class="type">Hello</span>, <span class="operator">.*/</span>      <span class="comment">// 正则表达式字面量</span></span><br><span class="line"><span class="literal">true</span>             <span class="comment">// 布尔字面量</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `basic-literals`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; let r0 =</span><br><span class="line">-&gt; 42               // Integer literal</span><br><span class="line">&gt;&gt; let r1 =</span><br><span class="line">-&gt; 3.14159          // Floating-point literal</span><br><span class="line">&gt;&gt; let r2 =</span><br><span class="line">-&gt; &quot;Hello, world!&quot;  // String literal</span><br><span class="line">&gt;&gt; let r4 =</span><br><span class="line">-&gt; /Hello, .*/      // Regular expression literal</span><br><span class="line">&gt;&gt; let r3 =</span><br><span class="line">-&gt; true             // Boolean literal</span><br><span class="line">&gt;&gt; for x in [r0, r1, r2, r3] as [Any] &#123; print(type(of: x)) &#125;</span><br><span class="line">&lt;&lt; Int</span><br><span class="line">&lt;&lt; Double</span><br><span class="line">&lt;&lt; String</span><br><span class="line">&lt;&lt; Bool</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  Refactor the above if possible to avoid using bare expressions.
+  Tracking bug is <rdar://problem/35301593>
+-->
+
+<p>字面量本身没有类型。相反，字面量被解析为具有无限精度，Swift 的类型推断机制会尝试为字面量推断出一个类型。例如，在声明 <code>let x: Int8 = 42</code> 中，Swift 使用显式的类型注解（<code>: Int8</code>）来推断整数字面量 <code>42</code> 的类型为 <code>Int8</code>。如果没有适当的类型信息可用，Swift 会推断该字面量的类型为 Swift 标准库中定义的默认字面量类型之一，如下表所示。在为字面量值指定类型注解时，注解的类型必须是可以从该字面量值实例化的类型。也就是说，该类型必须遵循下表中列出的 Swift 标准库协议。</p>
+<table>
+<thead>
+<tr>
+<th>字面量</th>
+<th>默认类型</th>
+<th>协议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>整数</td>
+<td><code>Int</code></td>
+<td><code>ExpressibleByIntegerLiteral</code></td>
+</tr>
+<tr>
+<td>浮点数</td>
+<td><code>Double</code></td>
+<td><code>ExpressibleByFloatLiteral</code></td>
+</tr>
+<tr>
+<td>字符串</td>
+<td><code>String</code></td>
+<td><code>ExpressibleByStringLiteral</code>，对于只包含单个 Unicode 标量的字符串字面量，使用 <code>ExpressibleByUnicodeScalarLiteral</code>，对于只包含单个扩展字形簇（extended grapheme cluster）的字符串字面量，使用 <code>ExpressibleByExtendedGraphemeClusterLiteral</code></td>
+</tr>
+<tr>
+<td>正则表达式</td>
+<td><code>Regex</code></td>
+<td>无</td>
+</tr>
+<tr>
+<td>布尔值</td>
+<td><code>Bool</code></td>
+<td><code>ExpressibleByBooleanLiteral</code></td>
+</tr>
+</tbody></table>
+<p>例如，在声明 <code>let str = "Hello, world"</code> 中，字符串字面量 <code>"Hello, world"</code> 的默认推断类型是 <code>String</code>。同样，<code>Int8</code> 遵循 <code>ExpressibleByIntegerLiteral</code> 协议，因此可以在声明 <code>let x: Int8 = 42</code> 中用于整数字面量 <code>42</code> 的类型注解。</p>
+<!--
+  The list of ExpressibleBy... protocols above also appears in Declarations_EnumerationsWithRawCaseValues.
+  ExpressibleByNilLiteral is left out of the list because conformance to it isn't recommended.
+  There is no protocol for regex literal in the list because the stdlib intentionally omits that.
+-->
+
+<blockquote>
+<p>字面量的语法:</p>
+<p><em>literal</em> → <em>numeric-literal</em> | <em>string-literal</em> | <em>regular-expression-literal</em> | <em>boolean-literal</em> | <em>nil-literal</em></p>
+<p><em>numeric-literal</em> → <strong><code>-</code></strong><em>?</em> <em>integer-literal</em> | <strong><code>-</code></strong><em>?</em> <em>floating-point-literal</em> <br><em>boolean-literal</em> → <strong><code>true</code></strong> | <strong><code>false</code></strong> <br><em>nil-literal</em> → <strong><code>nil</code></strong></p>
+</blockquote>
+<h3 id="整数字面量"><a href="#整数字面量" class="headerlink" title="整数字面量"></a>整数字面量</h3><p><em>整数字面量</em> 表示具有未指定精度的整数值。默认情况下，整数字面量以十进制表示；你可以使用前缀指定其他进制。二进制字面量以 <code>0b</code> 开头，八进制字面量以 <code>0o</code> 开头，十六进制字面量以 <code>0x</code> 开头。</p>
+<p>十进制字面量包含数字 <code>0</code> 到 <code>9</code>。二进制字面量包含 <code>0</code> 和 <code>1</code>，八进制字面量包含 <code>0</code> 到 <code>7</code>，而十六进制字面量则包含 <code>0</code> 到 <code>9</code> 以及大写或小写的 <code>A</code> 到 <code>F</code>。</p>
+<p>负整数字面量通过在整数字面量前加上负号 (<code>-</code>) 来表示，如 <code>-42</code>。</p>
+<p>为了提高可读性，数字之间允许使用下划线 (<code>_</code>)，但它们会被忽略，因此不会影响字面量的值。整数字面量可以以前导零 (<code>0</code>) 开头，但这些零同样会被忽略，不会影响字面量的进制或值。</p>
+<p>除非另有说明，否则整数字面量的默认推断类型是 Swift 标准库类型 <code>Int</code>。Swift 标准库还定义了用于表示各种大小的有符号和无符号整数的类型，详细内容请参阅 <a href="doc:TheBasics#整数">doc:TheBasics#整数</a>。</p>
+<!--
+  TR: The prose assumes underscores only belong between digits.
+  Is there a reason to allow them at the end of a literal?
+  Java and Ruby both require underscores to be between digits.
+  Also, are adjacent underscores meant to be allowed, like 5__000?
+  (REPL supports them as of swift-1.21 but it seems odd.)
+-->
+
+<!--
+  NOTE: Updated the syntax-grammar to reflect [Contributor 7746]'s comment in
+  <rdar://problem/15181997> Teach the compiler about a concept of negative integer literals.
+  This feels very strange from a grammatical point of view.
+  Update: This is a parser hack, not a lexer hack. Therefore,
+  it's not part of the grammar for integer literal, contrary to [Contributor 2562]'s claim.
+  (Doug confirmed this, 4/2/2014.)
+-->
+
+<blockquote>
+<p>整数字面量的语法:</p>
+<p><em>integer-literal</em> → <em>binary-literal</em> <br><em>integer-literal</em> → <em>octal-literal</em> <br><em>integer-literal</em> → <em>decimal-literal</em> <br><em>integer-literal</em> → <em>hexadecimal-literal</em></p>
+<p><em>binary-literal</em> → <strong><code>0b</code></strong> <em>binary-digit</em> <em>binary-literal-characters</em><em>?</em> <br><em>binary-digit</em> → 数字 0 或 1 <br><em>binary-literal-character</em> → <em>binary-digit</em> | <strong><code>_</code></strong> <br><em>binary-literal-characters</em> → <em>binary-literal-character</em> <em>binary-literal-characters</em><em>?</em></p>
+<p><em>octal-literal</em> → <strong><code>0o</code></strong> <em>octal-digit</em> <em>octal-literal-characters</em><em>?</em> <br><em>octal-digit</em> → 数字 0 到 7 <br><em>octal-literal-character</em> → <em>octal-digit</em> | <strong><code>_</code></strong> <br><em>octal-literal-characters</em> → <em>octal-literal-character</em> <em>octal-literal-characters</em><em>?</em></p>
+<p><em>decimal-literal</em> → <em>decimal-digit</em> <em>decimal-literal-characters</em><em>?</em> <br><em>decimal-digit</em> → 数字 0 到 9 <br><em>decimal-digits</em> → <em>decimal-digit</em> <em>decimal-digits</em><em>?</em> <br><em>decimal-literal-character</em> → <em>decimal-digit</em> | <strong><code>_</code></strong> <br><em>decimal-literal-characters</em> → <em>decimal-literal-character</em> <em>decimal-literal-characters</em><em>?</em></p>
+<p><em>hexadecimal-literal</em> → <strong><code>0x</code></strong> <em>hexadecimal-digit</em> <em>hexadecimal-literal-characters</em><em>?</em> <br><em>hexadecimal-digit</em> → 数字 0 到 7, 字母 a 到 f 或字母 A 到 F <br><em>hexadecimal-literal-character</em> → <em>hexadecimal-digit</em> | <strong><code>_</code></strong> <br><em>hexadecimal-literal-characters</em> → <em>hexadecimal-literal-character</em> <em>hexadecimal-literal-characters</em><em>?</em></p>
+</blockquote>
+<h3 id="浮点数字面量"><a href="#浮点数字面量" class="headerlink" title="浮点数字面量"></a>浮点数字面量</h3><p><em>浮点数字面量</em> 表示具有未指定精度的浮点值。</p>
+<p>默认情况下，浮点数字面量以十进制形式表示（无前缀），但也可以以十六进制形式表示（带有 <code>0x</code> 前缀）。</p>
+<p>十进制浮点数字面量由一串十进制数字序列组成，后面可以跟一个十进制小数部分、十进制指数部分或两者兼有。十进制小数部分由一个小数点 (<code>.</code>) 和紧随其后的一串十进制数字序列组成。指数部分以大写或小写的 <code>e</code> 为前缀，后面跟一串十进制数字，表示在 <code>e</code> 前面的值要乘以的 10 的幂。例如，<code>1.25e2</code> 表示 1.25 x 10²，结果为 <code>125.0</code>。类似地，<code>1.25e-2</code> 表示 1.25 x 10⁻²，结果为 <code>0.0125</code>。</p>
+<p>十六进制浮点数字面量由一个 <code>0x</code> 前缀、一个可选的十六进制小数部分和一个十六进制指数部分组成。十六进制小数部分由一个小数点和紧随其后的一串十六进制数字序列组成。指数部分以大写或小写的 <code>p</code> 为前缀，后面跟一串十进制数字，表示在 <code>p</code> 前面的值要乘以的 2 的幂。例如，<code>0xFp2</code> 表示 15 x 2²，结果为 <code>60</code>。类似地，<code>0xFp-2</code> 表示 15 x 2⁻²，结果为 <code>3.75</code>。</p>
+<p>负浮点数字面量通过在浮点数字面量前加上负号 (<code>-</code>) 来表示，如 <code>-42.5</code>。</p>
+<p>为了提高可读性，数字之间允许使用下划线 (<code>_</code>)，但它们会被忽略，因此不会影响字面量的值。浮点数字面量可以以前导零 (<code>0</code>) 开头，但这些零同样会被忽略，不会影响字面量的进制或值。</p>
+<p>除非另有说明，否则浮点数字面量的默认推断类型是 Swift 标准库类型 <code>Double</code>，它表示 64 位浮点数。Swift 标准库还定义了 <code>Float</code> 类型，它表示 32 位浮点数。</p>
+<blockquote>
+<p>浮点数字面量的语法:</p>
+<p><em>floating-point-literal</em> → <em>decimal-literal</em> <em>decimal-fraction</em><em>?</em> <em>decimal-exponent</em><em>?</em> <br><em>floating-point-literal</em> → <em>hexadecimal-literal</em> <em>hexadecimal-fraction</em><em>?</em> <em>hexadecimal-exponent</em></p>
+<p><em>decimal-fraction</em> → <strong><code>.</code></strong> <em>decimal-literal</em> <br><em>decimal-exponent</em> → <em>floating-point-e</em> <em>sign</em><em>?</em> <em>decimal-literal</em></p>
+<p><em>hexadecimal-fraction</em> → <strong><code>.</code></strong> <em>hexadecimal-digit</em> <em>hexadecimal-literal-characters</em><em>?</em> <br><em>hexadecimal-exponent</em> → <em>floating-point-p</em> <em>sign</em><em>?</em> <em>decimal-literal</em></p>
+<p><em>floating-point-e</em> → <strong><code>e</code></strong> | <strong><code>E</code></strong> <br><em>floating-point-p</em> → <strong><code>p</code></strong> | <strong><code>P</code></strong> <br><em>sign</em> → <strong><code>+</code></strong> | <strong><code>-</code></strong></p>
+</blockquote>
+<h3 id="字符串字面量"><a href="#字符串字面量" class="headerlink" title="字符串字面量"></a>字符串字面量</h3><p>字符串字面量是由引号包围的一串字符序列。单行字符串字面量由双引号包围，其形式如下：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"&lt;#characters#&gt;"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>字符串字面量不能包含未转义的双引号（<code>"</code>）、未转义的反斜杠（<code>\</code>）、回车符或换行符。</p>
+<p>多行字符串字面量由三个双引号包围，其形式如下：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">&lt;#characters#&gt;</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>与单行字符串字面量不同，多行字符串字面量可以包含未转义的双引号（<code>"</code>）、回车符和换行符。但它不能包含连续三个未转义的双引号。</p>
+<p>开启多行字符串字面量的 <code>"""</code> 之后的换行符不属于字符串的一部分。结束字面量的 <code>"""</code> 之前的换行符也不属于字符串的一部分。要创建一个以换行符开始或结束的多行字符串字面量，请在其第一行或最后一行写一个空行。</p>
+<p>多行字符串字面量可以使用任意组合的空格和制表符进行缩进，这些缩进不会包含在字符串中。结束字面量的 <code>"""</code> 确定了缩进的长度：字面量中的每一个非空行开头的缩进必须与结束 <code>"""</code> 之前的缩进完全相同。制表符和空格之间不会有相互转换。在该缩进之后可以包含额外的空格和制表符，这些空格和制表符会出现在字符串中。</p>
+<p>多行字符串字面量中的换行符会被标准化为使用行分隔符。即使源文件中包含混合的回车符和换行符，字符串中的所有换行符也会变为一致。</p>
+<p>在多行字符串字面量中，在行末尾写一个反斜杠 (<code>\</code>) 会将其后的换行符从字符串中忽略。任何在反斜杠和换行符之间的空白也会被忽略。你可以使用这种语法在源代码中硬折叠一个多行字符串字面量，而不会改变结果字符串的值。</p>
+<p>特殊字符可以通过以下转义序列包含在单行和多行字符串字面量中：</p>
+<ul>
+<li>空字符 (<code>\0</code>)</li>
+<li>反斜杠 (<code>\\</code>)</li>
+<li>水平制表符 (<code>\t</code>)</li>
+<li>换行符 (<code>\n</code>)</li>
+<li>回车符 (<code>\r</code>)</li>
+<li>双引号 (<code>\"</code>)</li>
+<li>单引号 (<code>\'</code>)</li>
+<li>Unicode 标量 (<code>\u{</code><em>n</em><code>}</code>)，其中 <em>n</em> 是一个包含一到八位数字的十六进制数字</li>
+</ul>
+<!--
+  The behavior of \n and \r isn't the same as C.
+  We specify exactly what those escapes mean.
+  The behavior on C is platform dependent --
+  in text mode, \n maps to the platform's line separator
+  which could be CR or LF or CRLF.
+-->
+
+<p>表达式的值可以通过在反斜杠 (<code>\</code>) 后面加上用括号括起来的表达式插入到字符串字面量中。插值表达式可以包含字符串字面量，但不能包含未转义的反斜杠、回车符或换行符。</p>
+<p>例如，以下所有字符串字面量具有相同的值：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"1 2 3"</span></span><br><span class="line"><span class="string">"1 2 <span class="subst">\(<span class="string">"3"</span>)</span>"</span></span><br><span class="line"><span class="string">"1 2 <span class="subst">\(<span class="number">3</span>)</span>"</span></span><br><span class="line"><span class="string">"1 2 <span class="subst">\(<span class="number">1</span> <span class="operator">+</span> <span class="number">2</span>)</span>"</span></span><br><span class="line"><span class="keyword">let</span> x <span class="operator">=</span> <span class="number">3</span>; <span class="string">"1 2 <span class="subst">\(x)</span>"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `string-literals`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; let r0 =</span><br><span class="line">-&gt; &quot;1 2 3&quot;</span><br><span class="line">&gt;&gt; let r1 =</span><br><span class="line">-&gt; &quot;1 2 \(&quot;3&quot;)&quot;</span><br><span class="line">&gt;&gt; assert(r0 == r1)</span><br><span class="line">&gt;&gt; let r2 =</span><br><span class="line">-&gt; &quot;1 2 \(3)&quot;</span><br><span class="line">&gt;&gt; assert(r0 == r2)</span><br><span class="line">&gt;&gt; let r3 =</span><br><span class="line">-&gt; &quot;1 2 \(1 + 2)&quot;</span><br><span class="line">&gt;&gt; assert(r0 == r3)</span><br><span class="line">-&gt; let x = 3; &quot;1 2 \(x)&quot;</span><br><span class="line">&gt;&gt; assert(r0 == &quot;1 2 \(x)&quot;)</span><br><span class="line">!$ warning: string literal is unused</span><br><span class="line">!! let x = 3; &quot;1 2 \(x)&quot;</span><br><span class="line">!!            ^~~~~~~~~~</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  Refactor the above if possible to avoid using bare expressions.
+  Tracking bug is <rdar://problem/35301593>
+-->
+
+<p>由扩展定界符包围的字符串是由引号和一组或多组配对的井号（<code>#</code>）包围的一串字符序列。由扩展定界符包围的字符串具有以下形式：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">#"&lt;#characters#&gt;"#</span></span><br><span class="line"></span><br><span class="line"><span class="string">#"""</span></span><br><span class="line"><span class="string">&lt;#characters#&gt;</span></span><br><span class="line"><span class="string">"""#</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>由扩展定界符包围的字符串中的特殊字符在结果字符串中显示为普通字符而不是特殊字符。你可以使用扩展定界符来创建包含通常会产生特殊效果字符的字符串，这些特殊效果比如有生成字符串插值、开启转义序列或终止字符串。</p>
+<p>以下示例展示了一个字符串字面量和一个由扩展定界符包围的字符串，它们创建了等价的字符串值：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> string <span class="operator">=</span> <span class="string">#"\(x) \ " \u{2603}"#</span></span><br><span class="line"><span class="keyword">let</span> escaped <span class="operator">=</span> <span class="string">"<span class="subst">\\</span>(x) <span class="subst">\\</span> <span class="subst">\"</span> <span class="subst">\\</span>u{2603}"</span></span><br><span class="line"><span class="built_in">print</span>(string)</span><br><span class="line"><span class="comment">// 打印 "\(x) \ " \u{2603}"</span></span><br><span class="line"><span class="built_in">print</span>(string <span class="operator">==</span> escaped)</span><br><span class="line"><span class="comment">// 打印 "true"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `extended-string-delimiters`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let string = #&quot;\(x) \ &quot; \u&#123;2603&#125;&quot;#</span><br><span class="line">-&gt; let escaped = &quot;\\(x) \\ \&quot; \\u&#123;2603&#125;&quot;</span><br><span class="line">-&gt; print(string)</span><br><span class="line">&lt;- \(x) \ &quot; \u&#123;2603&#125;</span><br><span class="line">-&gt; print(string == escaped)</span><br><span class="line">&lt;- true</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如果你使用多个井号来形成由扩展定界符包围的字符串，不要在井号之间放置空格：</p>
+<!--
+  - test: `extended-string-delimiters`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; print(###&quot;Line 1\###nLine 2&quot;###) // OK</span><br><span class="line">&lt;&lt; Line 1</span><br><span class="line">&lt;&lt; Line 2</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">###&quot;Line 1<span class="subst">\###n</span>Line 2&quot;###</span>) <span class="comment">// 正确</span></span><br><span class="line"><span class="built_in">print</span>(# # <span class="string">#&quot;Line 1\# # #nLine 2&quot;#</span> # #) <span class="comment">// 错误</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `extended-string-delimiters-err`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; print(###&quot;Line 1\###nLine 2&quot;###) // OK</span><br><span class="line">-&gt; print(# # #&quot;Line 1\# # #nLine 2&quot;# # #) // Error</span><br><span class="line">!$ error: expected expression in list of expressions</span><br><span class="line">!! print(# # #&quot;Line 1\# # #nLine 2&quot;# # #) // Error</span><br><span class="line">!! ^</span><br><span class="line">!$ error: invalid escape sequence in literal</span><br><span class="line">!! print(# # #&quot;Line 1\# # #nLine 2&quot;# # #) // Error</span><br><span class="line">!! ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>使用扩展定界符创建的多行字符串字面量具有与常规多行字符串字面量相同的缩进要求。</p>
+<p>默认情况下，字符串字面量的推断类型为 <code>String</code>。</p>
+<p>有关 <code>String</code> 类型的更多信息，请参见 <a href="doc:StringsAndCharacters">doc:StringsAndCharacters</a> 和 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/string"><code>String</code></a>。</p>
+<p>字符串字面量通过 <code>+</code> 运算符连接时，连接操作在编译时完成。<br>例如，以下示例中 <code>textA</code> 和 <code>textB</code> 的值是相同的——没有发生运行时的连接操作。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> textA <span class="operator">=</span> <span class="string">&quot;Hello &quot;</span> <span class="operator">+</span> <span class="string">&quot;world&quot;</span></span><br><span class="line"><span class="keyword">let</span> textB <span class="operator">=</span> <span class="string">&quot;Hello world&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `concatenated-strings`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let textA = &quot;Hello &quot; + &quot;world&quot;</span><br><span class="line">-&gt; let textB = &quot;Hello world&quot;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>字符串字面量的语法:</p>
+<p><em>string-literal</em> → <em>static-string-literal</em> | <em>interpolated-string-literal</em></p>
+<p><em>string-literal-opening-delimiter</em> → <em>extended-string-literal-delimiter</em><em>?</em> <strong><code>&quot;</code></strong> <br><em>string-literal-closing-delimiter</em> → <strong><code>&quot;</code></strong> <em>extended-string-literal-delimiter</em><em>?</em></p>
+<p><em>static-string-literal</em> → <em>string-literal-opening-delimiter</em> <em>quoted-text</em><em>?</em> <em>string-literal-closing-delimiter</em> <br><em>static-string-literal</em> → <em>multiline-string-literal-opening-delimiter</em> <em>multiline-quoted-text</em><em>?</em> <em>multiline-string-literal-closing-delimiter</em></p>
+<p><em>multiline-string-literal-opening-delimiter</em> → <em>extended-string-literal-delimiter</em><em>?</em> <strong><code>&quot;&quot;&quot;</code></strong> <br><em>multiline-string-literal-closing-delimiter</em> → <strong><code>&quot;&quot;&quot;</code></strong> <em>extended-string-literal-delimiter</em><em>?</em> <br><em>extended-string-literal-delimiter</em> → <strong><code>#</code></strong> <em>extended-string-literal-delimiter</em><em>?</em></p>
+<p><em>quoted-text</em> → <em>quoted-text-item</em> <em>quoted-text</em><em>?</em> <br><em>quoted-text-item</em> → <em>escaped-character</em> <br><em>quoted-text-item</em> → 除 **<code>&quot;</code><strong>、</strong><code>\</code>**、U+000A 或 U+000D 以外的任何 Unicode 标量值</p>
+<p><em>multiline-quoted-text</em> → <em>multiline-quoted-text-item</em> <em>multiline-quoted-text</em><em>?</em> <br><em>multiline-quoted-text-item</em> → <em>escaped-character</em> <br><em>multiline-quoted-text-item</em> → 除 <strong><code>\</code></strong> 以外的任何 Unicode 标量值 <br><em>multiline-quoted-text-item</em> → <em>escaped-newline</em></p>
+<p><em>interpolated-string-literal</em> → <em>string-literal-opening-delimiter</em> <em>interpolated-text</em><em>?</em> <em>string-literal-closing-delimiter</em> <br><em>interpolated-string-literal</em> → <em>multiline-string-literal-opening-delimiter</em> <em>multiline-interpolated-text</em><em>?</em> <em>multiline-string-literal-closing-delimiter</em></p>
+<p><em>interpolated-text</em> → <em>interpolated-text-item</em> <em>interpolated-text</em><em>?</em> <br><em>interpolated-text-item</em> → <strong><code>\(</code></strong> <em>expression</em> <strong><code>)</code></strong> | <em>quoted-text-item</em></p>
+<p><em>multiline-interpolated-text</em> → <em>multiline-interpolated-text-item</em> <em>multiline-interpolated-text</em><em>?</em> <br><em>multiline-interpolated-text-item</em> → <strong><code>\(</code></strong> <em>expression</em> <strong><code>)</code></strong> | <em>multiline-quoted-text-item</em></p>
+<p><em>escape-sequence</em> → <strong><code>\</code></strong> <em>extended-string-literal-delimiter</em> <br><em>escaped-character</em> → <em>escape-sequence</em> <strong><code>0</code></strong> | <em>escape-sequence</em> <strong><code>\</code></strong> | <em>escape-sequence</em> <strong><code>t</code></strong> | <em>escape-sequence</em> <strong><code>n</code></strong> | <em>escape-sequence</em> <strong><code>r</code></strong> | <em>escape-sequence</em> <strong><code>&quot;</code></strong> | <em>escape-sequence</em> <strong><code>&#39;</code></strong> <br><em>escaped-character</em> → <em>escape-sequence</em> <strong><code>u</code></strong> <strong><code>&#123;</code></strong> <em>unicode-scalar-digits</em> <strong><code>&#125;</code></strong> <br><em>unicode-scalar-digits</em> → 一到八位十六进制数字</p>
+<p><em>escaped-newline</em> → <em>escape-sequence</em> <em>inline-spaces</em><em>?</em> <em>line-break</em></p>
+</blockquote>
+<!--
+  Quoted text resolves to a sequence of escaped characters by way of
+  the quoted-text rule which allows repetition; no need to allow
+  repetition in the quoted-text/escaped-character rule too.
+-->
+
+<!--
+  Now that single quotes are gone, we don't have a character literal.
+  Because we may one bring them back, here's the old grammar for them:
+
+  textual-literal -> character-literal | string-literal
+
+  character-literal -> ``'`` quoted-character ``'``
+  quoted-character -> escaped-character
+  quoted-character -> Any Unicode scalar value except ``'``, ``\``, U+000A, or U+000D
+-->
+
+<h3 id="正则表达式字面量"><a href="#正则表达式字面量" class="headerlink" title="正则表达式字面量"></a>正则表达式字面量</h3><p>正则表达式字面量是一串被斜杠（<code>/</code>）包围的一串字符序列，形式如下：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">/&lt;</span>#regular expression#<span class="operator">&gt;/</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>正则表达式字面量不能以未转义的制表符或空格开头，也不能包含未转义的斜杠（<code>/</code>）、回车符或换行符。</p>
+<p>在正则表达式字面量中，反斜杠被视为正则表达式的一部分，而不仅仅是像在字符串字面量中那样作为转义字符。它表示后续的特殊字符应按字面理解，或者后续的非特殊字符应按特殊方式处理。例如，<code>/\(/</code> 匹配一个左括号，而 <code>/\d/</code> 匹配一个数字。</p>
+<!--
+  OUTLINE
+
+  Doc comments on Regex struct don't have more syntax details,
+  or a cross reference to where you can learn more.
+  We probably need at least some baseline coverage
+  of the supported syntax here.
+  (Unified dialect/superset of POSIX + PCRE 2 + Oniguruma + .NET)
+
+  https://github.com/apple/swift-experimental-string-processing/blob/main/Sources/_StringProcessing/Regex/Core.swift
+
+  Regex literals and the DSL take different approaches to captures.
+  The literals give you more type safety.
+  The DSL lets you access stuff by name.
+
+  From SE-0354:
+  A regex literal may be used with a prefix operator,
+  e.g `let r = ^^/x/` is parsed as `let r = ^^(/x/)`.
+  In this case,
+  when encountering operator characters containing `/` in an expression position,
+  the characters up to the first `/` are split into a prefix operator,
+  and regex literal parsing continues as normal.
+-->
+
+<p>由扩展定界符包围的正则表达式字面量是一串被斜杠（<code>/</code>）和一组或多组配对的井号（<code>#</code>）包围的字符序列。使用扩展定界符包围的正则表达式字面量有以下形式：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#<span class="operator">/&lt;</span>#regular expression#<span class="operator">&gt;/</span>#</span><br><span class="line"></span><br><span class="line">#<span class="operator">/</span></span><br><span class="line"><span class="operator">&lt;</span>#regular expression#<span class="operator">&gt;</span></span><br><span class="line"><span class="operator">/</span>#</span><br></pre></td></tr></tbody></table></figure>
+
+<p>使用扩展定界符的正则表达式字面量可以以未转义的空格或制表符开头，可以包含未转义的斜杠（<code>/</code>），并且可以跨多行。在多行正则表达式字面量中，开始定界符必须在一行的末尾，结束定界符必须独立占一行。在多行正则表达式字面量内部，扩展正则表达式语法默认启用——具体来说，空白字符将被忽略，并允许使用注释。</p>
+<!--
+  TODO As details about the multiline syntax shake out during SE review,
+  like indentation and whitespace,
+  add them above or spin out a separate paragraph.
+-->
+
+<p>如果使用多个井号来形成由扩展定界符包围的正则表达式字面量，不要在井号之间留有空格：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> regex1 <span class="operator">=</span> ##<span class="operator">/</span>abc<span class="operator">/</span>##       <span class="comment">// 正确</span></span><br><span class="line"><span class="keyword">let</span> regex2 <span class="operator">=</span> # #<span class="operator">/</span>abc<span class="operator">/</span># #     <span class="comment">// 错误</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `extended-regex-delimiters-err`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let regex1 = ##/abc/##       // OK</span><br><span class="line">-&gt; let regex2 = # #/abc/# #     // Error</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如果你需要创建一个空的正则表达式字面量，则必须使用扩展定界符语法。</p>
+<blockquote>
+<p>正则表达式字面量的语法:</p>
+<p><em>regular-expression-literal</em> → <em>regular-expression-literal-opening-delimiter</em> <em>regular-expression</em> <em>regular-expression-literal-closing-delimiter</em> <br><em>regular-expression</em> → 任何正则表达式</p>
+<p><em>regular-expression-literal-opening-delimiter</em> → <em>extended-regular-expression-literal-delimiter</em><em>?</em> <strong><code>/</code></strong> <br><em>regular-expression-literal-closing-delimiter</em> → <strong><code>/</code></strong> <em>extended-regular-expression-literal-delimiter</em><em>?</em></p>
+<p><em>extended-regular-expression-literal-delimiter</em> → <strong><code>#</code></strong> <em>extended-regular-expression-literal-delimiter</em><em>?</em></p>
+</blockquote>
+<h2 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h2><p>Swift 标准库定义了许多运算符供你使用，其中许多运算符在 <a href="doc:BasicOperators">doc:BasicOperators</a> 和 <a href="doc:AdvancedOperators">doc:AdvancedOperators</a> 中进行了讨论。本节描述了哪些字符可以用于定义自定义运算符。</p>
+<p>自定义运算符可以用这些 ASCII 字符之一开头：<code>/</code>、<code>=</code>、<code>-</code>、<code>+</code>、<code>!</code>、<code>*</code>、<code>%</code>、<code>&lt;</code>、<code>&gt;</code>、<code>&amp;</code>、<code>|</code>、<code>^</code>、<code>?</code> 或 <code>~</code>，或者是定义在下面语法中的 Unicode 字符（其中包括来自 <em>数学运算符（Mathematical Operators）</em>、<em>杂项符号（Miscellaneous Symbols）</em> 和 <em>装饰符号（Dingbats）</em> Unicode 块的字符等）之一。在第一个字符之后，还允许使用组合 Unicode 字符（Combining Unicode Character）。</p>
+<p>你还可以定义以点（<code>.</code>）开头的自定义运算符。这些运算符可以包含额外的点。例如，<code>.+.</code> 被视为一个单一的运算符。如果一个运算符不是以点开头的，则它不能在其他地方包含点。例如，<code>+.+</code> 被视为 <code>+</code> 运算符后跟 <code>.+</code> 运算符。</p>
+<!--
+  - test: `dot-operator-must-start-with-dot`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; infix operator +.+ ;</span><br><span class="line">!$ error: consecutive statements on a line must be separated by &#x27;;&#x27;</span><br><span class="line">!! infix operator +.+ ;</span><br><span class="line">!!                 ^</span><br><span class="line">!!                 ;</span><br><span class="line">!$ error: operator with postfix spacing cannot start a subexpression</span><br><span class="line">!! infix operator +.+ ;</span><br><span class="line">!!                 ^</span><br><span class="line">!$ error: expected expression</span><br><span class="line">!! infix operator +.+ ;</span><br><span class="line">!!                    ^</span><br><span class="line">&gt;&gt; infix operator .+</span><br><span class="line">&gt;&gt; infix operator .+.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>虽然你可以定义包含问号 (<code>?</code>) 的自定义运算符，但它们不能仅由单个问号字符组成。此外，尽管运算符可以包含感叹号 (<code>!</code>)，但后缀运算符不能以问号或感叹号开头。</p>
+<!--
+  - test: `postfix-operators-dont-need-unique-prefix`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; struct Num &#123; var value: Int &#125;</span><br><span class="line">   postfix operator +</span><br><span class="line">   postfix operator +*</span><br><span class="line">   postfix func + (x: Num) -&gt; Int &#123; return x.value + 1 &#125;</span><br><span class="line">   postfix func +* (x: Num) -&gt; Int &#123; return x.value * 100 &#125;</span><br><span class="line">&gt;&gt; let n = Num(value: 5)</span><br><span class="line">&gt;&gt; print(n+)</span><br><span class="line">&lt;&lt; 6</span><br><span class="line">&gt;&gt; print(n+*)</span><br><span class="line">&lt;&lt; 500</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `postfix-operator-cant-start-with-question-mark`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; postfix operator ?+</span><br><span class="line">&gt;&gt; postfix func ?+ (x: Int) -&gt; Int &#123;</span><br><span class="line">       if x &gt; 10 &#123;</span><br><span class="line">           return x</span><br><span class="line">       &#125;</span><br><span class="line">       return x + 1</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; print(1?+)</span><br><span class="line">!$ error: postfix operator names starting with &#x27;?&#x27; or &#x27;!&#x27; are disallowed to avoid collisions with built-in unwrapping operators</span><br><span class="line">!! postfix operator ?+</span><br><span class="line">!!                  ^</span><br><span class="line">!$ error: &#x27;+&#x27; is not a postfix unary operator</span><br><span class="line">!! print(1?+)</span><br><span class="line">!!         ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>注意: 标记符号 <code>=</code>、<code>-&gt;</code>、<code>//</code>、<code>/*</code>、<code>*/</code>、<code>.</code>，以及前缀运算符 <code>&lt;</code>、<code>&amp;</code> 和 <code>?</code>，中缀运算符 <code>?</code>，后缀运算符 <code>&gt;</code>、<code>!</code> 和 <code>?</code> 都是保留标记符号。<br>这些标记符号不能被重载，也不能用作自定义运算符。</p>
+</blockquote>
+<p>运算符周围的空白用来确定运算符是作为前缀运算符、后缀运算符还是中缀运算符使用。这种行为遵循以下规则：</p>
+<ul>
+<li>如果运算符两边都有空白或都没有空白，则它被视为中缀运算符。例如，表达式 <code>a+++b</code> 和 <code>a +++ b</code> 中的 <code>+++</code> 被视为中缀运算符。</li>
+<li>如果运算符左边有空白而右边没有空白，则它被视为前缀一元运算符。例如，表达式 <code>a +++b</code> 中的 <code>+++</code> 被视为前缀一元运算符。</li>
+<li>如果运算符右边有空白而左边没有空白，则它被视为后缀一元运算符。例如，表达式 <code>a+++ b</code> 中的 <code>+++</code> 被视为后缀一元运算符。</li>
+<li>如果运算符左边没有空白但紧跟在它后面的是一个点号 (<code>.</code>)，则它被视为后缀一元运算符。例如，表达式 <code>a+++.b</code> 中的 <code>+++</code> 被视为后缀一元运算符（解释为 <code>a+++ .b</code> 而非 <code>a +++ .b</code>）。</li>
+</ul>
+<p>在这些规则中，运算符前的字符 <code>(</code>、<code>[</code> 和 <code>&#123;</code>，运算符后的字符 <code>)</code>、<code>]</code> 和 <code>&#125;</code>，以及字符 <code>,</code>、<code>;</code> 和 <code>:</code> 也被视为空白。</p>
+<p>如果预定义的 <code>!</code> 或 <code>?</code> 运算符左边没有空白，无论右边是否有空白，它都会被视为后缀运算符。要使用 <code>?</code> 作为可选链运算符（Optional-Chaining Operator），它左边必须没有空白。要在三元条件运算符 (<code>?</code> <code>:</code>) 中使用它，则必须在左右两边都有空白。</p>
+<p>如果中缀运算符的其中一个参数是正则表达式字面量，则该运算符的左右两边都必须有空白。</p>
+<p>在某些构造中，以 <code>&lt;</code> 或 <code>&gt;</code> 开头的运算符可能会被拆分为两个或多个标记符号。拆分后剩余的部分会以同样的规则处理，并可能再次被拆分。这意味着在 <code>Dictionary&lt;String, Array&lt;Int&gt;&gt;</code> 这样的构造中，你不需要添加空白来消除闭合 <code>&gt;</code> 符号之间的歧义。在这个例子中，闭合的 <code>&gt;</code> 符号不会被视为单个标记符号，也不会被错误解释为位移 <code>&gt;&gt;</code> 运算符。</p>
+<!--
+  NOTE: Once the parser sees a < it goes into a pre-scanning lookahead mode.  It
+  matches < and > and looks at what token comes after the > -- if it's a . or
+  a ( it treats the <...> as a generic parameter list, otherwise it treats
+  them as less than and greater than.
+
+  This fails to parse things like x<!2>>(1+2) but it's the same as C#.  So
+  don't write that.
+
+  We call out the > > vs >> because
+  C++ typically needs whitespace to resolve the ambiguity.
+-->
+
+<p>要了解如何定义新的自定义操作符，请参阅 <a href="doc:AdvancedOperators#自定义运算符">doc:AdvancedOperators#自定义运算符</a> 和 <a href="doc:Declarations#操作符声明">doc:Declarations#操作符声明</a>。要了解如何重载现有的操作符，请参阅 <a href="doc:AdvancedOperators#Operator-Methods">doc:AdvancedOperators#Operator-Methods</a>。</p>
+<!--
+  NOTE: The ? is a reserved punctuation.  Optional-chaining (foo?.bar) is actually a
+  monad -- the ? is actually a monadic bind operator.  It is like a burrito.
+  The current list of reserved punctuation is in Tokens.def.
+-->
+
+<blockquote>
+<p>操作符的语法:</p>
+<p><em>operator</em> → <em>operator-head</em> <em>operator-characters</em><em>?</em> <br><em>operator</em> → <em>dot-operator-head</em> <em>dot-operator-characters</em></p>
+<p><em>operator-head</em> → <strong><code>/</code></strong> | <strong><code>=</code></strong> | <strong><code>-</code></strong> | <strong><code>+</code></strong> | <strong><code>!</code></strong> | <strong><code>*</code></strong> | <strong><code>%</code></strong> | <strong><code>&lt;</code></strong> | <strong><code>&gt;</code></strong> | <strong><code>&amp;</code></strong> | <strong><code>|</code></strong> | <strong><code>^</code></strong> | <strong><code>~</code></strong> | <strong><code>?</code></strong> <br><em>operator-head</em> → U+00A1–U+00A7 <br><em>operator-head</em> → U+00A9 或 U+00AB <br><em>operator-head</em> → U+00AC 或 U+00AE <br><em>operator-head</em> → U+00B0–U+00B1 <br><em>operator-head</em> → U+00B6、U+00BB、U+00BF、U+00D7 或 U+00F7 <br><em>operator-head</em> → U+2016–U+2017 <br><em>operator-head</em> → U+2020–U+2027 <br><em>operator-head</em> → U+2030–U+203E <br><em>operator-head</em> → U+2041–U+2053 <br><em>operator-head</em> → U+2055–U+205E <br><em>operator-head</em> → U+2190–U+23FF <br><em>operator-head</em> → U+2500–U+2775 <br><em>operator-head</em> → U+2794–U+2BFF <br><em>operator-head</em> → U+2E00–U+2E7F <br><em>operator-head</em> → U+3001–U+3003 <br><em>operator-head</em> → U+3008–U+3020 <br><em>operator-head</em> → U+3030</p>
+<p><em>operator-character</em> → <em>operator-head</em> <br><em>operator-character</em> → U+0300–U+036F <br><em>operator-character</em> → U+1DC0–U+1DFF <br><em>operator-character</em> → U+20D0–U+20FF <br><em>operator-character</em> → U+FE00–U+FE0F <br><em>operator-character</em> → U+FE20–U+FE2F <br><em>operator-character</em> → U+E0100–U+E01EF <br><em>operator-characters</em> → <em>operator-character</em> <em>operator-characters</em><em>?</em></p>
+<p><em>dot-operator-head</em> → <strong><code>.</code></strong> <br><em>dot-operator-character</em> → <strong><code>.</code></strong> | <em>operator-character</em> <br><em>dot-operator-characters</em> → <em>dot-operator-character</em> <em>dot-operator-characters</em><em>?</em></p>
+<p><em>infix-operator</em> → <em>operator</em> <br><em>prefix-operator</em> → <em>operator</em> <br><em>postfix-operator</em> → <em>operator</em></p>
+</blockquote>
+<!--
+This source file is part of the Swift.org open source project
+
+Copyright (c) 2014 - 2022 Apple Inc. and the Swift project authors
+Licensed under Apache License v2.0 with Runtime Library Exception
+
+See https://swift.org/LICENSE.txt for license information
+See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
+-->
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/">REFERENCEMANUAL</a></li>
+            <li>LEXICALSTRUCTURE</li>
+          
+  </ul>
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%8D%E6%B3%95%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">词法结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A9%BA%E7%99%BD%E5%92%8C%E6%B3%A8%E9%87%8A"><span class="nav-number">1.1.</span> <span class="nav-text">空白和注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E8%AF%86%E7%AC%A6"><span class="nav-number">1.2.</span> <span class="nav-text">标识符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E5%AD%97%E5%92%8C%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7"><span class="nav-number">1.3.</span> <span class="nav-text">关键字和标点符号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E9%9D%A2%E9%87%8F"><span class="nav-number">1.4.</span> <span class="nav-text">字面量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E6%95%B0%E5%AD%97%E9%9D%A2%E9%87%8F"><span class="nav-number">1.4.1.</span> <span class="nav-text">整数字面量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E6%95%B0%E5%AD%97%E9%9D%A2%E9%87%8F"><span class="nav-number">1.4.2.</span> <span class="nav-text">浮点数字面量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%AD%97%E9%9D%A2%E9%87%8F"><span class="nav-number">1.4.3.</span> <span class="nav-text">字符串字面量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%AD%97%E9%9D%A2%E9%87%8F"><span class="nav-number">1.4.4.</span> <span class="nav-text">正则表达式字面量</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="A Swift TourExplore the features and syntax of Swift. Tradition suggests that the first program in a new languageshould print the words “Hello, world!” on the screen.In Swift, this can be done in a si">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/GuidedTour/GuidedTour.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="A Swift TourExplore the features and syntax of Swift. Tradition suggests that the first program in a new languageshould print the words “Hello, world!” on the screen.In Swift, this can be done in a si">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-08T08:32:48.762Z">
+<meta property="article:modified_time" content="2025-03-08T08:32:48.761Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/GuidedTour/GuidedTour">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/GuidedTour/">GUIDEDTOUR</a></li>
+            <li>GUIDEDTOUR</li>
+          
+  </ul>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h1 id="A-Swift-Tour"><a href="#A-Swift-Tour" class="headerlink" title="A Swift Tour"></a>A Swift Tour</h1><p>Explore the features and syntax of Swift.</p>
+<p>Tradition suggests that the first program in a new language<br>should print the words “Hello, world!” on the screen.<br>In Swift, this can be done in a single line:</p>
+<!--
+  K&R uses “hello, world”.
+  It seems worth breaking with tradition to use proper casing.
+-->
+
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">"Hello, world!"</span>)</span><br><span class="line"><span class="comment">// Prints "Hello, world!"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; print(&quot;Hello, world!&quot;)</span><br><span class="line">&lt;- Hello, world!</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>This syntax should look familiar if you know another language —<br>in Swift, this line of code is a complete program.<br>You don’t need to import a separate library for functionality like<br>outputting text or handling strings.<br>Code written at global scope is used<br>as the entry point for the program,<br>so you don’t need a <code>main()</code> function.<br>You also don’t need to write semicolons<br>at the end of every statement.</p>
+<p>This tour gives you enough information<br>to start writing code in Swift<br>by showing you how to accomplish a variety of programming tasks.<br>Don’t worry if you don’t understand something —<br>everything introduced in this tour<br>is explained in detail in the rest of this book.</p>
+<h2 id="Simple-Values"><a href="#Simple-Values" class="headerlink" title="Simple Values"></a>Simple Values</h2><p>Use <code>let</code> to make a constant and <code>var</code> to make a variable.<br>The value of a constant<br>doesn’t need to be known at compile time,<br>but you must assign it a value exactly once.<br>This means you can use constants to name a value<br>that you determine once but use in many places.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myVariable <span class="operator">=</span> <span class="number">42</span></span><br><span class="line">myVariable <span class="operator">=</span> <span class="number">50</span></span><br><span class="line"><span class="keyword">let</span> myConstant <span class="operator">=</span> <span class="number">42</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var myVariable = 42</span><br><span class="line">-&gt; myVariable = 50</span><br><span class="line">-&gt; let myConstant = 42</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>A constant or variable must have the same type<br>as the value you want to assign to it.<br>However, you don’t always have to write the type explicitly.<br>Providing a value when you create a constant or variable<br>lets the compiler infer its type.<br>In the example above,<br>the compiler infers that <code>myVariable</code> is an integer<br>because its initial value is an integer.</p>
+<p>If the initial value doesn’t provide enough information<br>(or if there isn’t an initial value),<br>specify the type by writing it after the variable,<br>separated by a colon.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> implicitInteger <span class="operator">=</span> <span class="number">70</span></span><br><span class="line"><span class="keyword">let</span> implicitDouble <span class="operator">=</span> <span class="number">70.0</span></span><br><span class="line"><span class="keyword">let</span> explicitDouble: <span class="type">Double</span> <span class="operator">=</span> <span class="number">70</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let implicitInteger = 70</span><br><span class="line">-&gt; let implicitDouble = 70.0</span><br><span class="line">-&gt; let explicitDouble: Double = 70</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment: Create a constant with<br>an explicit type of <code>Float</code> and a value of <code>4</code>.</p>
+</blockquote>
+<p>Values are never implicitly converted to another type.<br>If you need to convert a value to a different type,<br>explicitly make an instance of the desired type.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> label <span class="operator">=</span> <span class="string">&quot;The width is &quot;</span></span><br><span class="line"><span class="keyword">let</span> width <span class="operator">=</span> <span class="number">94</span></span><br><span class="line"><span class="keyword">let</span> widthLabel <span class="operator">=</span> label <span class="operator">+</span> <span class="type">String</span>(width)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let label = &quot;The width is &quot;</span><br><span class="line">-&gt; let width = 94</span><br><span class="line">-&gt; let widthLabel = label + String(width)</span><br><span class="line">&gt;&gt; print(widthLabel)</span><br><span class="line">&lt;&lt; The width is 94</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment: Try removing the conversion to <code>String</code> from the last line.<br>What error do you get?</p>
+</blockquote>
+<!--
+  TODO: Discuss with Core Writers ---
+  are these experiments that make you familiar with errors
+  helping you learn something?
+-->
+
+<p>There’s an even simpler way to include values in strings:<br>Write the value in parentheses,<br>and write a backslash (<code>\</code>) before the parentheses.<br>For example:</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> apples <span class="operator">=</span> <span class="number">3</span></span><br><span class="line"><span class="keyword">let</span> oranges <span class="operator">=</span> <span class="number">5</span></span><br><span class="line"><span class="keyword">let</span> appleSummary <span class="operator">=</span> <span class="string">"I have <span class="subst">\(apples)</span> apples."</span></span><br><span class="line"><span class="keyword">let</span> fruitSummary <span class="operator">=</span> <span class="string">"I have <span class="subst">\(apples <span class="operator">+</span> oranges)</span> pieces of fruit."</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let apples = 3</span><br><span class="line">-&gt; let oranges = 5</span><br><span class="line">-&gt; let appleSummary = &quot;I have \(apples) apples.&quot;</span><br><span class="line">&gt;&gt; print(appleSummary)</span><br><span class="line">&lt;&lt; I have 3 apples.</span><br><span class="line">-&gt; let fruitSummary = &quot;I have \(apples + oranges) pieces of fruit.&quot;</span><br><span class="line">&gt;&gt; print(fruitSummary)</span><br><span class="line">&lt;&lt; I have 8 pieces of fruit.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment: Use <code>\()</code> to<br>include a floating-point calculation in a string<br>and to include someone’s name in a greeting.</p>
+</blockquote>
+<p>Use three double quotation marks (<code>&quot;&quot;&quot;</code>) for strings<br>that take up multiple lines.<br>Indentation at the start of each quoted line is removed,<br>as long as it matches the indentation of the closing quotation marks.<br>For example:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> quotation <span class="operator">=</span> <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Even though there&#x27;s whitespace to the left,</span></span><br><span class="line"><span class="string">        the actual lines aren&#x27;t indented.</span></span><br><span class="line"><span class="string">            Except for this line.</span></span><br><span class="line"><span class="string">        Double quotes (&quot;) can appear without being escaped.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        I still have <span class="subst">\(apples <span class="operator">+</span> oranges)</span> pieces of fruit.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let quotation = &quot;&quot;&quot;</span><br><span class="line">   I said &quot;I have \(apples) apples.&quot;</span><br><span class="line">   And then I said &quot;I have \(apples + oranges) pieces of fruit.&quot;</span><br><span class="line">   &quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  Can't show an example of indentation in the triple-quoted string above.
+  <rdar://problem/49129068> Swift code formatting damages indentation
+-->
+
+<p>Create arrays and dictionaries using brackets (<code>[]</code>),<br>and access their elements by writing<br>the index or key in brackets.<br>A comma is allowed after the last element.</p>
+<!--
+  REFERENCE
+  The list of fruits comes from the colors that the original iMac came in,
+  following the initial launch of the iMac in Bondi Blue, ordered by SKU --
+  which also lines up with the order they appeared in ads:
+
+       M7389LL/A (266 MHz Strawberry)
+       M7392LL/A (266 MHz Lime)
+       M7391LL/A (266 MHz Tangerine)
+       M7390LL/A (266 MHz Grape)
+       M7345LL/A (266 MHz Blueberry)
+
+       M7441LL/A (333 MHz Strawberry)
+       M7444LL/A (333 MHz Lime)
+       M7443LL/A (333 MHz Tangerine)
+       M7442LL/A (333 MHz Grape)
+       M7440LL/A (333 MHz Blueberry)
+-->
+
+<!--
+  REFERENCE
+  Occupations is a reference to Firefly,
+  specifically to Mal's joke about Jayne's job on the ship.
+
+  Can't find the specific episode,
+  but it shows up in several lists of Firefly "best of" quotes:
+
+  Mal: Jayne, you will keep a civil tongue in that mouth, or I will sew it shut.
+       Is there an understanding between us?
+  Jayne: You don't pay me to talk pretty. [...]
+  Mal: Walk away from this table. Right now.
+  [Jayne loads his plate with food and leaves]
+  Simon: What *do* you pay him for?
+  Mal: What?
+  Simon: I was just wondering what his job is - on the ship.
+  Mal: Public relations.
+-->
+
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fruits <span class="operator">=</span> [<span class="string">"strawberries"</span>, <span class="string">"limes"</span>, <span class="string">"tangerines"</span>]</span><br><span class="line">fruits[<span class="number">1</span>] <span class="operator">=</span> <span class="string">"grapes"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> occupations <span class="operator">=</span> [</span><br><span class="line">    <span class="string">"Malcolm"</span>: <span class="string">"Captain"</span>,</span><br><span class="line">    <span class="string">"Kaylee"</span>: <span class="string">"Mechanic"</span>,</span><br><span class="line"> ]</span><br><span class="line">occupations[<span class="string">"Jayne"</span>] <span class="operator">=</span> <span class="string">"Public Relations"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var fruits = [&quot;strawberries&quot;, &quot;limes&quot;, &quot;tangerines&quot;]</span><br><span class="line">-&gt; fruits[1] = &quot;grapes&quot;</span><br><span class="line">---</span><br><span class="line">-&gt; var occupations = [</span><br><span class="line">       &quot;Malcolm&quot;: &quot;Captain&quot;,</span><br><span class="line">       &quot;Kaylee&quot;: &quot;Mechanic&quot;,</span><br><span class="line">    ]</span><br><span class="line">-&gt; occupations[&quot;Jayne&quot;] = &quot;Public Relations&quot;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!-- Apple Books screenshot begins here. -->
+
+<p>Arrays automatically grow as you add elements.</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fruits.append(<span class="string">"blueberries"</span>)</span><br><span class="line"><span class="built_in">print</span>(fruits)</span><br><span class="line"><span class="comment">// Prints "["strawberries", "grapes", "tangerines", "blueberries"]"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; fruits.append(&quot;blueberries&quot;)</span><br><span class="line">-&gt; print(fruits)</span><br><span class="line">&lt;- [&quot;strawberries&quot;, &quot;grapes&quot;, &quot;tangerines&quot;, &quot;blueberries&quot;]</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>You also use brackets to write an empty array or dictionary.<br>For an array, write <code>[]</code>,<br>and for a dictionary, write <code>[:]</code>.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fruits <span class="operator">=</span> []</span><br><span class="line">occupations <span class="operator">=</span> [:]</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; fruits = []</span><br><span class="line">-&gt; occupations = [:]</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>If you’re assigning an empty array or dictionary to a new variable,<br>or another place where there isn’t any type information,<br>you need to specify the type.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> emptyArray: [<span class="type">String</span>] <span class="operator">=</span> []</span><br><span class="line"><span class="keyword">let</span> emptyDictionary: [<span class="type">String</span>: <span class="type">Float</span>] <span class="operator">=</span> [:]</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let emptyArray: [String] = []</span><br><span class="line">-&gt; let emptyDictionary: [String: Float] = [:]</span><br><span class="line">---</span><br><span class="line">-&gt; let anotherEmptyArray = [String]()</span><br><span class="line">-&gt; let emptyDictionary = [String: Float]()</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="Control-Flow"><a href="#Control-Flow" class="headerlink" title="Control Flow"></a>Control Flow</h2><p>Use <code>if</code> and <code>switch</code> to make conditionals,<br>and use <code>for</code>-<code>in</code>, <code>while</code>, and <code>repeat</code>-<code>while</code><br>to make loops.<br>Parentheses around the condition or loop variable are optional.<br>Braces around the body are required.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> individualScores <span class="operator">=</span> [<span class="number">75</span>, <span class="number">43</span>, <span class="number">103</span>, <span class="number">87</span>, <span class="number">12</span>]</span><br><span class="line"><span class="keyword">var</span> teamScore <span class="operator">=</span> <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> score <span class="keyword">in</span> individualScores &#123;</span><br><span class="line">    <span class="keyword">if</span> score <span class="operator">&gt;</span> <span class="number">50</span> &#123;</span><br><span class="line">        teamScore <span class="operator">+=</span> <span class="number">3</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        teamScore <span class="operator">+=</span> <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(teamScore)</span><br><span class="line"><span class="comment">// Prints &quot;11&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let individualScores = [75, 43, 103, 87, 12]</span><br><span class="line">-&gt; var teamScore = 0</span><br><span class="line">-&gt; for score in individualScores &#123;</span><br><span class="line">       if score &gt; 50 &#123;</span><br><span class="line">           teamScore += 3</span><br><span class="line">       &#125; else &#123;</span><br><span class="line">           teamScore += 1</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; print(teamScore)</span><br><span class="line">&lt;- 11</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  REFERENCE
+  Jelly babies are a candy/sweet that was closely associated
+  with past incarnations of the Doctor in Dr. Who.
+-->
+
+<!--
+  -> let haveJellyBabies = true
+  -> if haveJellyBabies {
+     }
+  <! Would you like a jelly baby?
+-->
+
+<p>In an <code>if</code> statement,<br>the conditional must be a Boolean expression —<br>this means that code such as <code>if score { ... }</code> is an error,<br>not an implicit comparison to zero.</p>
+<p>You can write <code>if</code> or <code>switch</code><br>after the equal sign (<code>=</code>) of an assignment<br>or after <code>return</code>,<br>to choose a value based on the condition.</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> scoreDecoration <span class="operator">=</span> <span class="keyword">if</span> teamScore <span class="operator">&gt;</span> <span class="number">10</span> {</span><br><span class="line">    <span class="string">"🎉"</span></span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">    <span class="string">""</span></span><br><span class="line">}</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Score:"</span>, teamScore, scoreDecoration)</span><br><span class="line"><span class="comment">// Prints "Score: 11 🎉"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>You can use <code>if</code> and <code>let</code> together<br>to work with values that might be missing.<br>These values are represented as optionals.<br>An optional value either contains a value<br>or contains <code>nil</code> to indicate that a value is missing.<br>Write a question mark (<code>?</code>) after the type of a value<br>to mark the value as optional.</p>
+<!-- Apple Books screenshot ends here. -->
+
+<!--
+  REFERENCE
+  John Appleseed is a stock Apple fake name,
+  going back at least to the contacts database
+  that ships with the SDK in the simulator.
+-->
+
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> optionalString: <span class="type">String</span>? <span class="operator">=</span> <span class="string">"Hello"</span></span><br><span class="line"><span class="built_in">print</span>(optionalString <span class="operator">==</span> <span class="literal">nil</span>)</span><br><span class="line"><span class="comment">// Prints "false"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> optionalName: <span class="type">String</span>? <span class="operator">=</span> <span class="string">"John Appleseed"</span></span><br><span class="line"><span class="keyword">var</span> greeting <span class="operator">=</span> <span class="string">"Hello!"</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> name <span class="operator">=</span> optionalName {</span><br><span class="line">    greeting <span class="operator">=</span> <span class="string">"Hello, <span class="subst">\(name)</span>"</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var optionalString: String? = &quot;Hello&quot;</span><br><span class="line">-&gt; print(optionalString == nil)</span><br><span class="line">&lt;- false</span><br><span class="line">---</span><br><span class="line">-&gt; var optionalName: String? = &quot;John Appleseed&quot;</span><br><span class="line">-&gt; var greeting = &quot;Hello!&quot;</span><br><span class="line">-&gt; if let name = optionalName &#123;</span><br><span class="line">       greeting = &quot;Hello, \(name)&quot;</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; print(greeting)</span><br><span class="line">&lt;&lt; Hello, John Appleseed</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment: Change <code>optionalName</code> to <code>nil</code>.<br>What greeting do you get?<br>Add an <code>else</code> clause that sets a different greeting<br>if <code>optionalName</code> is <code>nil</code>.</p>
+</blockquote>
+<p>If the optional value is <code>nil</code>,<br>the conditional is <code>false</code> and the code in braces is skipped.<br>Otherwise, the optional value is unwrapped and assigned<br>to the constant after <code>let</code>,<br>which makes the unwrapped value available<br>inside the block of code.</p>
+<p>Another way to handle optional values<br>is to provide a default value using the <code>??</code> operator.<br>If the optional value is missing,<br>the default value is used instead.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> nickname: <span class="type">String</span>? <span class="operator">=</span> <span class="literal">nil</span></span><br><span class="line"><span class="keyword">let</span> fullName: <span class="type">String</span> <span class="operator">=</span> <span class="string">&quot;John Appleseed&quot;</span></span><br><span class="line"><span class="keyword">let</span> informalGreeting <span class="operator">=</span> <span class="string">&quot;Hi <span class="subst">\(nickname <span class="operator">??</span> fullName)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let nickname: String? = nil</span><br><span class="line">-&gt; let fullName: String = &quot;John Appleseed&quot;</span><br><span class="line">-&gt; let informalGreeting = &quot;Hi \(nickname ?? fullName)&quot;</span><br><span class="line">&gt;&gt; print(informalGreeting)</span><br><span class="line">&lt;&lt; Hi John Appleseed</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>You can use a shorter spelling to unwrap a value,<br>using the same name for that unwrapped value.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> nickname &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Hey, <span class="subst">\(nickname)</span>&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Doesn&#x27;t print anything, because nickname is nil.</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; if let nickname &#123;</span><br><span class="line">       print(&quot;Hey, \(nickname)&quot;)</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>Switches support any kind of data<br>and a wide variety of comparison operations —<br>they aren’t limited to integers<br>and tests for equality.</p>
+<!--
+  REFERENCE
+  The vegetables and foods made from vegetables
+  were just a convenient choice for a switch statement.
+  They have various properties
+  and fit with the apples & oranges used in an earlier example.
+-->
+
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> vegetable <span class="operator">=</span> <span class="string">"red pepper"</span></span><br><span class="line"><span class="keyword">switch</span> vegetable {</span><br><span class="line"><span class="keyword">case</span> <span class="string">"celery"</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Add some raisins and make ants on a log."</span>)</span><br><span class="line"><span class="keyword">case</span> <span class="string">"cucumber"</span>, <span class="string">"watercress"</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"That would make a good tea sandwich."</span>)</span><br><span class="line"><span class="keyword">case</span> <span class="keyword">let</span> x <span class="keyword">where</span> x.hasSuffix(<span class="string">"pepper"</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Is it a spicy <span class="subst">\(x)</span>?"</span>)</span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Everything tastes good in soup."</span>)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// Prints "Is it a spicy red pepper?"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let vegetable = &quot;red pepper&quot;</span><br><span class="line">-&gt; switch vegetable &#123;</span><br><span class="line">       case &quot;celery&quot;:</span><br><span class="line">           print(&quot;Add some raisins and make ants on a log.&quot;)</span><br><span class="line">       case &quot;cucumber&quot;, &quot;watercress&quot;:</span><br><span class="line">           print(&quot;That would make a good tea sandwich.&quot;)</span><br><span class="line">       case let x where x.hasSuffix(&quot;pepper&quot;):</span><br><span class="line">           print(&quot;Is it a spicy \(x)?&quot;)</span><br><span class="line">       default:</span><br><span class="line">           print(&quot;Everything tastes good in soup.&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- Is it a spicy red pepper?</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment: Try removing the default case.<br>What error do you get?</p>
+</blockquote>
+<p>Notice how <code>let</code> can be used in a pattern<br>to assign the value that matched the pattern<br>to a constant.</p>
+<p>After executing the code inside the switch case that matched,<br>the program exits from the switch statement.<br>Execution doesn’t continue to the next case,<br>so you don’t need to explicitly break out of the switch<br>at the end of each case’s code.</p>
+<!--
+  Omitting mention of "fallthrough" keyword.
+  It's in the guide/reference if you need it.
+-->
+
+<p>You use <code>for</code>-<code>in</code> to iterate over items in a dictionary<br>by providing a pair of names to use<br>for each key-value pair.<br>Dictionaries are an unordered collection,<br>so their keys and values are iterated over<br>in an arbitrary order.</p>
+<!--
+  REFERENCE
+  Prime, square, and Fibonacci numbers
+  are just convenient sets of numbers
+  that many developers are already familiar with
+  that we can use for some simple math.
+-->
+
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> interestingNumbers <span class="operator">=</span> [</span><br><span class="line">    <span class="string">"Prime"</span>: [<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">13</span>],</span><br><span class="line">    <span class="string">"Fibonacci"</span>: [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>],</span><br><span class="line">    <span class="string">"Square"</span>: [<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>],</span><br><span class="line">]</span><br><span class="line"><span class="keyword">var</span> largest <span class="operator">=</span> <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">_</span>, numbers) <span class="keyword">in</span> interestingNumbers {</span><br><span class="line">    <span class="keyword">for</span> number <span class="keyword">in</span> numbers {</span><br><span class="line">        <span class="keyword">if</span> number <span class="operator">&gt;</span> largest {</span><br><span class="line">            largest <span class="operator">=</span> number</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="built_in">print</span>(largest)</span><br><span class="line"><span class="comment">// Prints "25"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let interestingNumbers = [</span><br><span class="line">       &quot;Prime&quot;: [2, 3, 5, 7, 11, 13],</span><br><span class="line">       &quot;Fibonacci&quot;: [1, 1, 2, 3, 5, 8],</span><br><span class="line">       &quot;Square&quot;: [1, 4, 9, 16, 25],</span><br><span class="line">   ]</span><br><span class="line">-&gt; var largest = 0</span><br><span class="line">-&gt; for (_, numbers) in interestingNumbers &#123;</span><br><span class="line">       for number in numbers &#123;</span><br><span class="line">           if number &gt; largest &#123;</span><br><span class="line">               largest = number</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; print(largest)</span><br><span class="line">&lt;- 25</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment: Replace the <code>_</code> with a variable name,<br>and keep track of which kind of number was the largest.</p>
+</blockquote>
+<p>Use <code>while</code> to repeat a block of code until a condition changes.<br>The condition of a loop can be at the end instead,<br>ensuring that the loop is run at least once.</p>
+<!--
+  REFERENCE
+  This example is rather skeletal -- m and n are pretty boring.
+  I couldn't come up with anything suitably interesting at the time though,
+  so I just went ahead and used this.
+-->
+
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> n <span class="operator">=</span> <span class="number">2</span></span><br><span class="line"><span class="keyword">while</span> n <span class="operator">&lt;</span> <span class="number">100</span> {</span><br><span class="line">    n <span class="operator">*=</span> <span class="number">2</span></span><br><span class="line">}</span><br><span class="line"><span class="built_in">print</span>(n)</span><br><span class="line"><span class="comment">// Prints "128"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> m <span class="operator">=</span> <span class="number">2</span></span><br><span class="line"><span class="keyword">repeat</span> {</span><br><span class="line">    m <span class="operator">*=</span> <span class="number">2</span></span><br><span class="line">} <span class="keyword">while</span> m <span class="operator">&lt;</span> <span class="number">100</span></span><br><span class="line"><span class="built_in">print</span>(m)</span><br><span class="line"><span class="comment">// Prints "128"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var n = 2</span><br><span class="line">-&gt; while n &lt; 100 &#123;</span><br><span class="line">       n *= 2</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; print(n)</span><br><span class="line">&lt;- 128</span><br><span class="line">---</span><br><span class="line">-&gt; var m = 2</span><br><span class="line">-&gt; repeat &#123;</span><br><span class="line">       m *= 2</span><br><span class="line">   &#125; while m &lt; 100</span><br><span class="line">-&gt; print(m)</span><br><span class="line">&lt;- 128</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment:<br>Change the condition from <code>m &lt; 100</code> to <code>m &lt; 0</code><br>to see how <code>while</code> and <code>repeat</code>-<code>while</code> behave differently<br>when the loop condition is already false.</p>
+</blockquote>
+<p>You can keep an index in a loop<br>by using <code>..&lt;</code> to make a range of indexes.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> total <span class="operator">=</span> <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span><span class="operator">..&lt;</span><span class="number">4</span> &#123;</span><br><span class="line">    total <span class="operator">+=</span> i</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(total)</span><br><span class="line"><span class="comment">// Prints &quot;6&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var total = 0</span><br><span class="line">-&gt; for i in 0..&lt;4 &#123;</span><br><span class="line">       total += i</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; print(total)</span><br><span class="line">&lt;- 6</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>Use <code>..&lt;</code> to make a range that omits its upper value,<br>and use <code>...</code> to make a range that includes both values.</p>
+<h2 id="Functions-and-Closures"><a href="#Functions-and-Closures" class="headerlink" title="Functions and Closures"></a>Functions and Closures</h2><p>Use <code>func</code> to declare a function.<br>Call a function by following its name<br>with a list of arguments in parentheses.<br>Use <code>-&gt;</code> to separate the parameter names and types<br>from the function’s return type.</p>
+<!--
+  REFERENCE
+  Bob is used as just a generic name,
+  but also a callout to Alex's dad.
+  Tuesday is used on the assumption that lots of folks would be reading
+  on the Tuesday after the WWDC keynote.
+-->
+
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">greet</span>(<span class="params">person</span>: <span class="type">String</span>, <span class="params">day</span>: <span class="type">String</span>) -&gt; <span class="type">String</span> {</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Hello <span class="subst">\(person)</span>, today is <span class="subst">\(day)</span>."</span></span><br><span class="line">}</span><br><span class="line">greet(person: <span class="string">"Bob"</span>, day: <span class="string">"Tuesday"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func greet(person: String, day: String) -&gt; String &#123;</span><br><span class="line">       return &quot;Hello \(person), today is \(day).&quot;</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; let greetBob =</span><br><span class="line">-&gt; greet(person: &quot;Bob&quot;, day: &quot;Tuesday&quot;)</span><br><span class="line">&gt;&gt; print(greetBob)</span><br><span class="line">&lt;&lt; Hello Bob, today is Tuesday.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment: Remove the <code>day</code> parameter.<br>Add a parameter to include today’s lunch special in the greeting.</p>
+</blockquote>
+<p>By default,<br>functions use their parameter names<br>as labels for their arguments.<br>Write a custom argument label before the parameter name,<br>or write <code>_</code> to use no argument label.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">greet</span>(<span class="keyword">_</span> <span class="params">person</span>: <span class="type">String</span>, <span class="params">on</span> <span class="params">day</span>: <span class="type">String</span>) -&gt; <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Hello <span class="subst">\(person)</span>, today is <span class="subst">\(day)</span>.&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">greet(<span class="string">&quot;John&quot;</span>, on: <span class="string">&quot;Wednesday&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func greet(_ person: String, on day: String) -&gt; String &#123;</span><br><span class="line">       return &quot;Hello \(person), today is \(day).&quot;</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; let greetJohn =</span><br><span class="line">-&gt; greet(&quot;John&quot;, on: &quot;Wednesday&quot;)</span><br><span class="line">&gt;&gt; print(greetJohn)</span><br><span class="line">&lt;&lt; Hello John, today is Wednesday.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>Use a tuple to make a compound value —<br>for example, to return multiple values from a function.<br>The elements of a tuple can be referred to<br>either by name or by number.</p>
+<!--
+  REFERENCE
+  Min, max, and sum are convenient for this example
+  because they're all simple operations
+  that are performed on the same kind of data.
+  This gives the function a reason to return a tuple.
+-->
+
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">calculateStatistics</span>(<span class="params">scores</span>: [<span class="type">Int</span>]) -&gt; (min: <span class="type">Int</span>, max: <span class="type">Int</span>, sum: <span class="type">Int</span>) {</span><br><span class="line">    <span class="keyword">var</span> min <span class="operator">=</span> scores[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">var</span> max <span class="operator">=</span> scores[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">var</span> sum <span class="operator">=</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> score <span class="keyword">in</span> scores {</span><br><span class="line">        <span class="keyword">if</span> score <span class="operator">&gt;</span> max {</span><br><span class="line">            max <span class="operator">=</span> score</span><br><span class="line">        } <span class="keyword">else</span> <span class="keyword">if</span> score <span class="operator">&lt;</span> min {</span><br><span class="line">            min <span class="operator">=</span> score</span><br><span class="line">        }</span><br><span class="line">        sum <span class="operator">+=</span> score</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (min, max, sum)</span><br><span class="line">}</span><br><span class="line"><span class="keyword">let</span> statistics <span class="operator">=</span> calculateStatistics(scores: [<span class="number">5</span>, <span class="number">3</span>, <span class="number">100</span>, <span class="number">3</span>, <span class="number">9</span>])</span><br><span class="line"><span class="built_in">print</span>(statistics.sum)</span><br><span class="line"><span class="comment">// Prints "120"</span></span><br><span class="line"><span class="built_in">print</span>(statistics.<span class="number">2</span>)</span><br><span class="line"><span class="comment">// Prints "120"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func calculateStatistics(scores: [Int]) -&gt; (min: Int, max: Int, sum: Int) &#123;</span><br><span class="line">       var min = scores[0]</span><br><span class="line">       var max = scores[0]</span><br><span class="line">       var sum = 0</span><br><span class="line"></span><br><span class="line">       for score in scores &#123;</span><br><span class="line">           if score &gt; max &#123;</span><br><span class="line">               max = score</span><br><span class="line">           &#125; else if score &lt; min &#123;</span><br><span class="line">               min = score</span><br><span class="line">           &#125;</span><br><span class="line">           sum += score</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       return (min, max, sum)</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let statistics = calculateStatistics(scores: [5, 3, 100, 3, 9])</span><br><span class="line">&gt;&gt; print(statistics)</span><br><span class="line">&lt;&lt; (min: 3, max: 100, sum: 120)</span><br><span class="line">-&gt; print(statistics.sum)</span><br><span class="line">&lt;- 120</span><br><span class="line">-&gt; print(statistics.2)</span><br><span class="line">&lt;- 120</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>Functions can be nested.<br>Nested functions have access to variables<br>that were declared in the outer function.<br>You can use nested functions<br>to organize the code in a function<br>that’s long or complex.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">returnFifteen</span>() -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> y <span class="operator">=</span> <span class="number">10</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">add</span>() &#123;</span><br><span class="line">        y <span class="operator">+=</span> <span class="number">5</span></span><br><span class="line">    &#125;</span><br><span class="line">    add()</span><br><span class="line">    <span class="keyword">return</span> y</span><br><span class="line">&#125;</span><br><span class="line">returnFifteen()</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func returnFifteen() -&gt; Int &#123;</span><br><span class="line">       var y = 10</span><br><span class="line">       func add() &#123;</span><br><span class="line">           y += 5</span><br><span class="line">       &#125;</span><br><span class="line">       add()</span><br><span class="line">       return y</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; let fifteen =</span><br><span class="line">-&gt; returnFifteen()</span><br><span class="line">&gt;&gt; print(fifteen)</span><br><span class="line">&lt;&lt; 15</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>Functions are a first-class type.<br>This means that a function can return another function as its value.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">makeIncrementer</span>() -&gt; ((<span class="type">Int</span>) -&gt; <span class="type">Int</span>) &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">addOne</span>(<span class="params">number</span>: <span class="type">Int</span>) -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> <span class="operator">+</span> number</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> addOne</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> increment <span class="operator">=</span> makeIncrementer()</span><br><span class="line">increment(<span class="number">7</span>)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func makeIncrementer() -&gt; ((Int) -&gt; Int) &#123;</span><br><span class="line">       func addOne(number: Int) -&gt; Int &#123;</span><br><span class="line">           return 1 + number</span><br><span class="line">       &#125;</span><br><span class="line">       return addOne</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; var increment = makeIncrementer()</span><br><span class="line">&gt;&gt; let incrementResult =</span><br><span class="line">-&gt; increment(7)</span><br><span class="line">&gt;&gt; print(incrementResult)</span><br><span class="line">&lt;&lt; 8</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>A function can take another function as one of its arguments.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">hasAnyMatches</span>(<span class="params">list</span>: [<span class="type">Int</span>], <span class="params">condition</span>: (<span class="type">Int</span>) -&gt; <span class="type">Bool</span>) -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> list &#123;</span><br><span class="line">        <span class="keyword">if</span> condition(item) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">func</span> <span class="title function_">lessThanTen</span>(<span class="params">number</span>: <span class="type">Int</span>) -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> number <span class="operator">&lt;</span> <span class="number">10</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> numbers <span class="operator">=</span> [<span class="number">20</span>, <span class="number">19</span>, <span class="number">7</span>, <span class="number">12</span>]</span><br><span class="line">hasAnyMatches(list: numbers, condition: lessThanTen)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func hasAnyMatches(list: [Int], condition: (Int) -&gt; Bool) -&gt; Bool &#123;</span><br><span class="line">       for item in list &#123;</span><br><span class="line">           if condition(item) &#123;</span><br><span class="line">               return true</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       return false</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; func lessThanTen(number: Int) -&gt; Bool &#123;</span><br><span class="line">       return number &lt; 10</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; var numbers = [20, 19, 7, 12]</span><br><span class="line">&gt;&gt; let anyMatches =</span><br><span class="line">-&gt; hasAnyMatches(list: numbers, condition: lessThanTen)</span><br><span class="line">&gt;&gt; print(anyMatches)</span><br><span class="line">&lt;&lt; true</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>Functions are actually a special case of closures:<br>blocks of code that can be called later.<br>The code in a closure has access to things like variables and functions<br>that were available in the scope where the closure was created,<br>even if the closure is in a different scope when it’s executed —<br>you saw an example of this already with nested functions.<br>You can write a closure without a name<br>by surrounding code with braces (<code>&#123;&#125;</code>).<br>Use <code>in</code> to separate the arguments and return type from the body.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">numbers.map(&#123; (number: <span class="type">Int</span>) -&gt; <span class="type">Int</span> <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">let</span> result <span class="operator">=</span> <span class="number">3</span> <span class="operator">*</span> number</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; let numbersMap =</span><br><span class="line">-&gt; numbers.map(&#123; (number: Int) -&gt; Int in</span><br><span class="line">       let result = 3 * number</span><br><span class="line">       return result</span><br><span class="line">   &#125;)</span><br><span class="line">&gt;&gt; print(numbersMap)</span><br><span class="line">&lt;&lt; [60, 57, 21, 36]</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment: Rewrite the closure to return zero for all odd numbers.</p>
+</blockquote>
+<p>You have several options for writing closures more concisely.<br>When a closure’s type is already known,<br>such as the callback for a delegate,<br>you can omit the type of its parameters,<br>its return type, or both.<br>Single statement closures implicitly return the value<br>of their only statement.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> mappedNumbers <span class="operator">=</span> numbers.map(&#123; number <span class="keyword">in</span> <span class="number">3</span> <span class="operator">*</span> number &#125;)</span><br><span class="line"><span class="built_in">print</span>(mappedNumbers)</span><br><span class="line"><span class="comment">// Prints &quot;[60, 57, 21, 36]&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let mappedNumbers = numbers.map(&#123; number in 3 * number &#125;)</span><br><span class="line">-&gt; print(mappedNumbers)</span><br><span class="line">&lt;- [60, 57, 21, 36]</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>You can refer to parameters by number instead of by name —<br>this approach is especially useful in very short closures.<br>A closure passed as the last argument to a function<br>can appear immediately after the parentheses.<br>When a closure is the only argument to a function,<br>you can omit the parentheses entirely.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> sortedNumbers <span class="operator">=</span> numbers.sorted &#123; <span class="variable">$0</span> <span class="operator">&gt;</span> <span class="variable">$1</span> &#125;</span><br><span class="line"><span class="built_in">print</span>(sortedNumbers)</span><br><span class="line"><span class="comment">// Prints &quot;[20, 19, 12, 7]&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let sortedNumbers = numbers.sorted &#123; $0 &gt; $1 &#125;</span><br><span class="line">-&gt; print(sortedNumbers)</span><br><span class="line">&lt;- [20, 19, 12, 7]</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  Called sorted() on a variable rather than a literal to work around an issue in Xcode.  See <rdar://17540974>.
+-->
+
+<!--
+  Omitted sort(foo, <) because it often causes a spurious warning in Xcode.  See <rdar://17047529>.
+-->
+
+<!--
+  Omitted custom operators as "advanced" topics.
+-->
+
+<h2 id="Objects-and-Classes"><a href="#Objects-and-Classes" class="headerlink" title="Objects and Classes"></a>Objects and Classes</h2><p>Use <code>class</code> followed by the class’s name to create a class.<br>A property declaration in a class is written the same way<br>as a constant or variable declaration,<br>except that it’s in the context of a class.<br>Likewise, method and function declarations are written the same way.</p>
+<!--
+  REFERENCE
+  Shapes are used as the example object
+  because they're familiar and they have a sense of properties
+  and a sense of inheritance/subcategorization.
+  They're not a perfect fit --
+  they might be better off modeled as structures --
+  but that wouldn't let them inherit behavior.
+-->
+
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Shape</span> {</span><br><span class="line">    <span class="keyword">var</span> numberOfSides <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">simpleDescription</span>() -&gt; <span class="type">String</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"A shape with <span class="subst">\(numberOfSides)</span> sides."</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class Shape &#123;</span><br><span class="line">       var numberOfSides = 0</span><br><span class="line">       func simpleDescription() -&gt; String &#123;</span><br><span class="line">           return &quot;A shape with \(numberOfSides) sides.&quot;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; print(Shape().simpleDescription())</span><br><span class="line">&lt;&lt; A shape with 0 sides.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment: Add a constant property with <code>let</code>,<br>and add another method that takes an argument.</p>
+</blockquote>
+<p>Create an instance of a class<br>by putting parentheses after the class name.<br>Use dot syntax to access<br>the properties and methods of the instance.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> shape <span class="operator">=</span> <span class="type">Shape</span>()</span><br><span class="line">shape.numberOfSides <span class="operator">=</span> <span class="number">7</span></span><br><span class="line"><span class="keyword">var</span> shapeDescription <span class="operator">=</span> shape.simpleDescription()</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var shape = Shape()</span><br><span class="line">-&gt; shape.numberOfSides = 7</span><br><span class="line">-&gt; var shapeDescription = shape.simpleDescription()</span><br><span class="line">&gt;&gt; print(shapeDescription)</span><br><span class="line">&lt;&lt; A shape with 7 sides.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>This version of the <code>Shape</code> class is missing something important:<br>an initializer to set up the class when an instance is created.<br>Use <code>init</code> to create one.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">NamedShape</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> numberOfSides: <span class="type">Int</span> <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">name</span>: <span class="type">String</span>) &#123;</span><br><span class="line">       <span class="keyword">self</span>.name <span class="operator">=</span> name</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">simpleDescription</span>() -&gt; <span class="type">String</span> &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="string">&quot;A shape with <span class="subst">\(numberOfSides)</span> sides.&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class NamedShape &#123;</span><br><span class="line">       var numberOfSides: Int = 0</span><br><span class="line">       var name: String</span><br><span class="line">---</span><br><span class="line">       init(name: String) &#123;</span><br><span class="line">          self.name = name</span><br><span class="line">       &#125;</span><br><span class="line">---</span><br><span class="line">       func simpleDescription() -&gt; String &#123;</span><br><span class="line">          return &quot;A shape with \(numberOfSides) sides.&quot;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; print(NamedShape(name: &quot;test name&quot;).name)</span><br><span class="line">&lt;&lt; test name</span><br><span class="line">&gt;&gt; print(NamedShape(name: &quot;test name&quot;).simpleDescription())</span><br><span class="line">&lt;&lt; A shape with 0 sides.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>Notice how <code>self</code> is used to distinguish the <code>name</code> property<br>from the <code>name</code> argument to the initializer.<br>The arguments to the initializer are passed like a function call<br>when you create an instance of the class.<br>Every property needs a value assigned —<br>either in its declaration (as with <code>numberOfSides</code>)<br>or in the initializer (as with <code>name</code>).</p>
+<p>Use <code>deinit</code> to create a deinitializer<br>if you need to perform some cleanup<br>before the object is deallocated.</p>
+<p>Subclasses include their superclass name<br>after their class name,<br>separated by a colon.<br>There’s no requirement for classes to subclass any standard root class,<br>so you can include or omit a superclass as needed.</p>
+<p>Methods on a subclass that override the superclass’s implementation<br>are marked with <code>override</code> —<br>overriding a method by accident, without <code>override</code>,<br>is detected by the compiler as an error.<br>The compiler also detects methods with <code>override</code><br>that don’t actually override any method in the superclass.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Square</span>: <span class="title class_">NamedShape</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> sideLength: <span class="type">Double</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">sideLength</span>: <span class="type">Double</span>, <span class="params">name</span>: <span class="type">String</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.sideLength <span class="operator">=</span> sideLength</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(name: name)</span><br><span class="line">        numberOfSides <span class="operator">=</span> <span class="number">4</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">area</span>() -&gt; <span class="type">Double</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> sideLength <span class="operator">*</span> sideLength</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">simpleDescription</span>() -&gt; <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;A square with sides of length <span class="subst">\(sideLength)</span>.&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> test <span class="operator">=</span> <span class="type">Square</span>(sideLength: <span class="number">5.2</span>, name: <span class="string">&quot;my test square&quot;</span>)</span><br><span class="line">test.area()</span><br><span class="line">test.simpleDescription()</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class Square: NamedShape &#123;</span><br><span class="line">       var sideLength: Double</span><br><span class="line">---</span><br><span class="line">       init(sideLength: Double, name: String) &#123;</span><br><span class="line">           self.sideLength = sideLength</span><br><span class="line">           super.init(name: name)</span><br><span class="line">           numberOfSides = 4</span><br><span class="line">       &#125;</span><br><span class="line">---</span><br><span class="line">       func area() -&gt; Double &#123;</span><br><span class="line">           return sideLength * sideLength</span><br><span class="line">       &#125;</span><br><span class="line">---</span><br><span class="line">       override func simpleDescription() -&gt; String &#123;</span><br><span class="line">           return &quot;A square with sides of length \(sideLength).&quot;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let test = Square(sideLength: 5.2, name: &quot;my test square&quot;)</span><br><span class="line">&gt;&gt; let testArea =</span><br><span class="line">-&gt; test.area()</span><br><span class="line">&gt;&gt; print(testArea)</span><br><span class="line">&lt;&lt; 27.040000000000003</span><br><span class="line">&gt;&gt; let testDesc =</span><br><span class="line">-&gt; test.simpleDescription()</span><br><span class="line">&gt;&gt; print(testDesc)</span><br><span class="line">&lt;&lt; A square with sides of length 5.2.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment: Make another subclass of <code>NamedShape</code><br>called <code>Circle</code><br>that takes a radius and a name<br>as arguments to its initializer.<br>Implement an <code>area()</code> and a <code>simpleDescription()</code> method<br>on the <code>Circle</code> class.</p>
+</blockquote>
+<p>In addition to simple properties that are stored,<br>properties can have a getter and a setter.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">EquilateralTriangle</span>: <span class="title class_">NamedShape</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> sideLength: <span class="type">Double</span> <span class="operator">=</span> <span class="number">0.0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">sideLength</span>: <span class="type">Double</span>, <span class="params">name</span>: <span class="type">String</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.sideLength <span class="operator">=</span> sideLength</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(name: name)</span><br><span class="line">        numberOfSides <span class="operator">=</span> <span class="number">3</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> perimeter: <span class="type">Double</span> &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123;</span><br><span class="line">             <span class="keyword">return</span> <span class="number">3.0</span> <span class="operator">*</span> sideLength</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span> &#123;</span><br><span class="line">            sideLength <span class="operator">=</span> newValue <span class="operator">/</span> <span class="number">3.0</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">simpleDescription</span>() -&gt; <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;An equilateral triangle with sides of length <span class="subst">\(sideLength)</span>.&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> triangle <span class="operator">=</span> <span class="type">EquilateralTriangle</span>(sideLength: <span class="number">3.1</span>, name: <span class="string">&quot;a triangle&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(triangle.perimeter)</span><br><span class="line"><span class="comment">// Prints &quot;9.3&quot;</span></span><br><span class="line">triangle.perimeter <span class="operator">=</span> <span class="number">9.9</span></span><br><span class="line"><span class="built_in">print</span>(triangle.sideLength)</span><br><span class="line"><span class="comment">// Prints &quot;3.3000000000000003&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class EquilateralTriangle: NamedShape &#123;</span><br><span class="line">       var sideLength: Double = 0.0</span><br><span class="line">---</span><br><span class="line">       init(sideLength: Double, name: String) &#123;</span><br><span class="line">           self.sideLength = sideLength</span><br><span class="line">           super.init(name: name)</span><br><span class="line">           numberOfSides = 3</span><br><span class="line">       &#125;</span><br><span class="line">---</span><br><span class="line">       var perimeter: Double &#123;</span><br><span class="line">           get &#123;</span><br><span class="line">                return 3.0 * sideLength</span><br><span class="line">           &#125;</span><br><span class="line">           set &#123;</span><br><span class="line">               sideLength = newValue / 3.0</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">---</span><br><span class="line">       override func simpleDescription() -&gt; String &#123;</span><br><span class="line">           return &quot;An equilateral triangle with sides of length \(sideLength).&quot;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; var triangle = EquilateralTriangle(sideLength: 3.1, name: &quot;a triangle&quot;)</span><br><span class="line">-&gt; print(triangle.perimeter)</span><br><span class="line">&lt;- 9.3</span><br><span class="line">-&gt; triangle.perimeter = 9.9</span><br><span class="line">-&gt; print(triangle.sideLength)</span><br><span class="line">&lt;- 3.3000000000000003</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>In the setter for <code>perimeter</code>,<br>the new value has the implicit name <code>newValue</code>.<br>You can provide an explicit name in parentheses after <code>set</code>.</p>
+<p>Notice that the initializer for the <code>EquilateralTriangle</code> class<br>has three different steps:</p>
+<ol>
+<li>Setting the value of properties that the subclass declares.</li>
+<li>Calling the superclass’s initializer.</li>
+<li>Changing the value of properties defined by the superclass.<br>Any additional setup work that uses methods, getters, or setters<br>can also be done at this point.</li>
+</ol>
+<p>If you don’t need to compute the property<br>but still need to provide code that’s run before and after setting a new value,<br>use <code>willSet</code> and <code>didSet</code>.<br>The code you provide is run any time the value changes outside of an initializer.<br>For example, the class below ensures<br>that the side length of its triangle<br>is always the same as the side length of its square.</p>
+<!--
+  This triangle + square example could use improvement.
+  The goal is to show why you would want to use willSet,
+  but it was constrained by the fact that
+  we're working in the context of geometric shapes.
+-->
+
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TriangleAndSquare</span> {</span><br><span class="line">    <span class="keyword">var</span> triangle: <span class="type">EquilateralTriangle</span> {</span><br><span class="line">        <span class="keyword">willSet</span> {</span><br><span class="line">            square.sideLength <span class="operator">=</span> newValue.sideLength</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">var</span> square: <span class="type">Square</span> {</span><br><span class="line">        <span class="keyword">willSet</span> {</span><br><span class="line">            triangle.sideLength <span class="operator">=</span> newValue.sideLength</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">size</span>: <span class="type">Double</span>, <span class="params">name</span>: <span class="type">String</span>) {</span><br><span class="line">        square <span class="operator">=</span> <span class="type">Square</span>(sideLength: size, name: name)</span><br><span class="line">        triangle <span class="operator">=</span> <span class="type">EquilateralTriangle</span>(sideLength: size, name: name)</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="keyword">var</span> triangleAndSquare <span class="operator">=</span> <span class="type">TriangleAndSquare</span>(size: <span class="number">10</span>, name: <span class="string">"another test shape"</span>)</span><br><span class="line"><span class="built_in">print</span>(triangleAndSquare.square.sideLength)</span><br><span class="line"><span class="comment">// Prints "10.0"</span></span><br><span class="line"><span class="built_in">print</span>(triangleAndSquare.triangle.sideLength)</span><br><span class="line"><span class="comment">// Prints "10.0"</span></span><br><span class="line">triangleAndSquare.square <span class="operator">=</span> <span class="type">Square</span>(sideLength: <span class="number">50</span>, name: <span class="string">"larger square"</span>)</span><br><span class="line"><span class="built_in">print</span>(triangleAndSquare.triangle.sideLength)</span><br><span class="line"><span class="comment">// Prints "50.0"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class TriangleAndSquare &#123;</span><br><span class="line">       var triangle: EquilateralTriangle &#123;</span><br><span class="line">           willSet &#123;</span><br><span class="line">               square.sideLength = newValue.sideLength</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       var square: Square &#123;</span><br><span class="line">           willSet &#123;</span><br><span class="line">               triangle.sideLength = newValue.sideLength</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       init(size: Double, name: String) &#123;</span><br><span class="line">           square = Square(sideLength: size, name: name)</span><br><span class="line">           triangle = EquilateralTriangle(sideLength: size, name: name)</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; var triangleAndSquare = TriangleAndSquare(size: 10, name: &quot;another test shape&quot;)</span><br><span class="line">-&gt; print(triangleAndSquare.square.sideLength)</span><br><span class="line">&lt;- 10.0</span><br><span class="line">-&gt; print(triangleAndSquare.triangle.sideLength)</span><br><span class="line">&lt;- 10.0</span><br><span class="line">-&gt; triangleAndSquare.square = Square(sideLength: 50, name: &quot;larger square&quot;)</span><br><span class="line">-&gt; print(triangleAndSquare.triangle.sideLength)</span><br><span class="line">&lt;- 50.0</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  Grammatically, these clauses are general to variables.
+  Not sure what it would look like
+  (or if it's even allowed)
+  to use them outside a class or a struct.
+-->
+
+<p>When working with optional values,<br>you can write <code>?</code> before operations like methods, properties, and subscripting.<br>If the value before the <code>?</code> is <code>nil</code>,<br>everything after the <code>?</code> is ignored<br>and the value of the whole expression is <code>nil</code>.<br>Otherwise, the optional value is unwrapped,<br>and everything after the <code>?</code> acts on the unwrapped value.<br>In both cases,<br>the value of the whole expression is an optional value.</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> optionalSquare: <span class="type">Square</span>? <span class="operator">=</span> <span class="type">Square</span>(sideLength: <span class="number">2.5</span>, name: <span class="string">"optional square"</span>)</span><br><span class="line"><span class="keyword">let</span> sideLength <span class="operator">=</span> optionalSquare<span class="operator">?</span>.sideLength</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let optionalSquare: Square? = Square(sideLength: 2.5, name: &quot;optional square&quot;)</span><br><span class="line">-&gt; let sideLength = optionalSquare?.sideLength</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="Enumerations-and-Structures"><a href="#Enumerations-and-Structures" class="headerlink" title="Enumerations and Structures"></a>Enumerations and Structures</h2><p>Use <code>enum</code> to create an enumeration.<br>Like classes and all other named types,<br>enumerations can have methods associated with them.</p>
+<!--
+  REFERENCE
+  Playing cards work pretty well to demonstrate enumerations
+  because they have two aspects, suit and rank,
+  both of which come from a small finite set.
+  The deck used here is probably the most common,
+  at least through most of Europe and the Americas,
+  but there are many other regional variations.
+-->
+
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">Rank</span>: <span class="title class_">Int</span> {</span><br><span class="line">    <span class="keyword">case</span> ace <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">case</span> two, three, four, five, six, seven, eight, nine, ten</span><br><span class="line">    <span class="keyword">case</span> jack, queen, king</span><br><span class="line"></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">simpleDescription</span>() -&gt; <span class="type">String</span> {</span><br><span class="line">        <span class="keyword">switch</span> <span class="keyword">self</span> {</span><br><span class="line">        <span class="keyword">case</span> .ace:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"ace"</span></span><br><span class="line">        <span class="keyword">case</span> .jack:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"jack"</span></span><br><span class="line">        <span class="keyword">case</span> .queen:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"queen"</span></span><br><span class="line">        <span class="keyword">case</span> .king:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"king"</span></span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="type">String</span>(<span class="keyword">self</span>.rawValue)</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="keyword">let</span> ace <span class="operator">=</span> <span class="type">Rank</span>.ace</span><br><span class="line"><span class="keyword">let</span> aceRawValue <span class="operator">=</span> ace.rawValue</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">-&gt; enum Rank: Int &#123;</span><br><span class="line">       case ace = 1</span><br><span class="line">       case two, three, four, five, six, seven, eight, nine, ten</span><br><span class="line">       case jack, queen, king</span><br><span class="line">---</span><br><span class="line">       func simpleDescription() -&gt; String &#123;</span><br><span class="line">           switch self &#123;</span><br><span class="line">               case .ace:</span><br><span class="line">                   return &quot;ace&quot;</span><br><span class="line">               case .jack:</span><br><span class="line">                   return &quot;jack&quot;</span><br><span class="line">               case .queen:</span><br><span class="line">                   return &quot;queen&quot;</span><br><span class="line">               case .king:</span><br><span class="line">                   return &quot;king&quot;</span><br><span class="line">               default:</span><br><span class="line">                   return String(self.rawValue)</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let ace = Rank.ace</span><br><span class="line">-&gt; let aceRawValue = ace.rawValue</span><br><span class="line">&gt;&gt; print(aceRawValue)</span><br><span class="line">&lt;&lt; 1</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment: Write a function that compares two <code>Rank</code> values<br>by comparing their raw values.</p>
+</blockquote>
+<p>By default, Swift assigns the raw values starting at zero<br>and incrementing by one each time,<br>but you can change this behavior by explicitly specifying values.<br>In the example above, <code>Ace</code> is explicitly given a raw value of <code>1</code>,<br>and the rest of the raw values are assigned in order.<br>You can also use strings or floating-point numbers<br>as the raw type of an enumeration.<br>Use the <code>rawValue</code> property to access the raw value of an enumeration case.</p>
+<p>Use the <code>init?(rawValue:)</code> initializer<br>to make an instance of an enumeration from a raw value.<br>It returns either the enumeration case matching the raw value<br>or <code>nil</code> if there’s no matching <code>Rank</code>.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> convertedRank <span class="operator">=</span> <span class="type">Rank</span>(rawValue: <span class="number">3</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> threeDescription <span class="operator">=</span> convertedRank.simpleDescription()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; if let convertedRank = Rank(rawValue: 3) &#123;</span><br><span class="line">       let threeDescription = convertedRank.simpleDescription()</span><br><span class="line">&gt;&gt; print(threeDescription)</span><br><span class="line">&lt;&lt; 3</span><br><span class="line">-&gt; &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>The case values of an enumeration are actual values,<br>not just another way of writing their raw values.<br>In fact,<br>in cases where there isn’t a meaningful raw value,<br>you don’t have to provide one.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">Suit</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> spades, hearts, diamonds, clubs</span><br><span class="line"></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">simpleDescription</span>() -&gt; <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">switch</span> <span class="keyword">self</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> .spades:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;spades&quot;</span></span><br><span class="line">        <span class="keyword">case</span> .hearts:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;hearts&quot;</span></span><br><span class="line">        <span class="keyword">case</span> .diamonds:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;diamonds&quot;</span></span><br><span class="line">        <span class="keyword">case</span> .clubs:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;clubs&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> hearts <span class="operator">=</span> <span class="type">Suit</span>.hearts</span><br><span class="line"><span class="keyword">let</span> heartsDescription <span class="operator">=</span> hearts.simpleDescription()</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">-&gt; enum Suit &#123;</span><br><span class="line">       case spades, hearts, diamonds, clubs</span><br><span class="line">---</span><br><span class="line">       func simpleDescription() -&gt; String &#123;</span><br><span class="line">           switch self &#123;</span><br><span class="line">               case .spades:</span><br><span class="line">                   return &quot;spades&quot;</span><br><span class="line">               case .hearts:</span><br><span class="line">                   return &quot;hearts&quot;</span><br><span class="line">               case .diamonds:</span><br><span class="line">                   return &quot;diamonds&quot;</span><br><span class="line">               case .clubs:</span><br><span class="line">                   return &quot;clubs&quot;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let hearts = Suit.hearts</span><br><span class="line">-&gt; let heartsDescription = hearts.simpleDescription()</span><br><span class="line">&gt;&gt; print(heartsDescription)</span><br><span class="line">&lt;&lt; hearts</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment: Add a <code>color()</code> method to <code>Suit</code> that returns “black”<br>for spades and clubs, and returns “red” for hearts and diamonds.</p>
+</blockquote>
+<!--
+  Suits are in Bridge order, which matches Unicode order.
+  In other games, orders differ.
+  Wikipedia lists a good half dozen orders.
+-->
+
+<p>Notice the two ways that the <code>hearts</code> case of the enumeration<br>is referred to above:<br>When assigning a value to the <code>hearts</code> constant,<br>the enumeration case <code>Suit.hearts</code> is referred to by its full name<br>because the constant doesn’t have an explicit type specified.<br>Inside the switch,<br>the enumeration case is referred to by the abbreviated form <code>.hearts</code><br>because the value of <code>self</code> is already known to be a suit.<br>You can use the abbreviated form<br>anytime the value’s type is already known.</p>
+<p>If an enumeration has raw values,<br>those values are determined as part of the declaration,<br>which means every instance of a particular enumeration case<br>always has the same raw value.<br>Another choice for enumeration cases<br>is to have values associated with the case —<br>these values are determined when you make the instance,<br>and they can be different for each instance of an enumeration case.<br>You can think of the associated values<br>as behaving like stored properties of the enumeration case instance.<br>For example,<br>consider the case of requesting<br>the sunrise and sunset times from a server.<br>The server either responds with the requested information,<br>or it responds with a description of what went wrong.</p>
+<!--
+  REFERENCE
+  The server response is a simple way to essentially re-implement Optional
+  while sidestepping the fact that I'm doing so.
+
+  "Out of cheese" is a reference to a Terry Pratchet book,
+  which features a computer named Hex.
+  Hex's other error messages include:
+
+       - Out of Cheese Error. Redo From Start.
+       - Mr. Jelly! Mr. Jelly! Error at Address Number 6, Treacle Mine Road.
+       - Melon melon melon
+       - +++ Wahhhhhhh! Mine! +++
+       - +++ Divide By Cucumber Error. Please Reinstall Universe And Reboot +++
+       - +++Whoops! Here comes the cheese! +++
+
+  These messages themselves are references to BASIC interpreters
+  (REDO FROM START) and old Hayes-compatible modems (+++).
+
+  The "out of cheese error" may be a reference to a military computer
+  although I can't find the source of this story anymore.
+  As the story goes, during the course of a rather wild party,
+  one of the computer's vacuum tube cabinets
+  was opened to provide heat to a cold room in the winter.
+  Through great coincidence,
+  when a cheese tray got bashed into it during the celebration,
+  the computer kept on working even though some of the tubes were broken
+  and had cheese splattered & melted all over them.
+  Tech were dispatched to make sure the computer was ok
+  and told add more cheese if necessary --
+  the officer in charge said that he didn't want
+  an "out of cheese error" interrupting the calculation.
+-->
+
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">ServerResponse</span> {</span><br><span class="line">    <span class="keyword">case</span> result(<span class="type">String</span>, <span class="type">String</span>)</span><br><span class="line">    <span class="keyword">case</span> failure(<span class="type">String</span>)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> success <span class="operator">=</span> <span class="type">ServerResponse</span>.result(<span class="string">"6:00 am"</span>, <span class="string">"8:09 pm"</span>)</span><br><span class="line"><span class="keyword">let</span> failure <span class="operator">=</span> <span class="type">ServerResponse</span>.failure(<span class="string">"Out of cheese."</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span> success {</span><br><span class="line"><span class="keyword">case</span> <span class="keyword">let</span> .result(sunrise, sunset):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Sunrise is at <span class="subst">\(sunrise)</span> and sunset is at <span class="subst">\(sunset)</span>."</span>)</span><br><span class="line"><span class="keyword">case</span> <span class="keyword">let</span> .failure(message):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Failure...  <span class="subst">\(message)</span>"</span>)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// Prints "Sunrise is at 6:00 am and sunset is at 8:09 pm."</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-&gt; enum ServerResponse &#123;</span><br><span class="line">       case result(String, String)</span><br><span class="line">       case failure(String)</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; let success = ServerResponse.result(&quot;6:00 am&quot;, &quot;8:09 pm&quot;)</span><br><span class="line">-&gt; let failure = ServerResponse.failure(&quot;Out of cheese.&quot;)</span><br><span class="line">---</span><br><span class="line">-&gt; switch success &#123;</span><br><span class="line">       case let .result(sunrise, sunset):</span><br><span class="line">           print(&quot;Sunrise is at \(sunrise) and sunset is at \(sunset).&quot;)</span><br><span class="line">       case let .failure(message):</span><br><span class="line">           print(&quot;Failure...  \(message)&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- Sunrise is at 6:00 am and sunset is at 8:09 pm.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment: Add a third case to <code>ServerResponse</code> and to the switch.</p>
+</blockquote>
+<p>Notice how the sunrise and sunset times<br>are extracted from the <code>ServerResponse</code> value<br>as part of matching the value against the switch cases.</p>
+<p>Use <code>struct</code> to create a structure.<br>Structures support many of the same behaviors as classes,<br>including methods and initializers.<br>One of the most important differences<br>between structures and classes is that<br>structures are always copied when they’re passed around in your code,<br>but classes are passed by reference.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Card</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> rank: <span class="type">Rank</span></span><br><span class="line">    <span class="keyword">var</span> suit: <span class="type">Suit</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">simpleDescription</span>() -&gt; <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;The <span class="subst">\(rank.simpleDescription())</span> of <span class="subst">\(suit.simpleDescription())</span>&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> threeOfSpades <span class="operator">=</span> <span class="type">Card</span>(rank: .three, suit: .spades)</span><br><span class="line"><span class="keyword">let</span> threeOfSpadesDescription <span class="operator">=</span> threeOfSpades.simpleDescription()</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct Card &#123;</span><br><span class="line">       var rank: Rank</span><br><span class="line">       var suit: Suit</span><br><span class="line">       func simpleDescription() -&gt; String &#123;</span><br><span class="line">           return &quot;The \(rank.simpleDescription()) of \(suit.simpleDescription())&quot;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let threeOfSpades = Card(rank: .three, suit: .spades)</span><br><span class="line">-&gt; let threeOfSpadesDescription = threeOfSpades.simpleDescription()</span><br><span class="line">&gt;&gt; print(threeOfSpadesDescription)</span><br><span class="line">&lt;&lt; The 3 of spades</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment: Write a function that returns an array containing<br>a full deck of cards,<br>with one card of each combination of rank and suit.</p>
+</blockquote>
+<h2 id="Concurrency"><a href="#Concurrency" class="headerlink" title="Concurrency"></a>Concurrency</h2><p>Use <code>async</code> to mark a function that runs asynchronously.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">fetchUserID</span>(<span class="params">from</span> <span class="params">server</span>: <span class="type">String</span>) <span class="keyword">async</span> -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> server <span class="operator">==</span> <span class="string">&quot;primary&quot;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">97</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">501</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func fetchUserID(from server: String) async -&gt; Int &#123;</span><br><span class="line">       if server == &quot;primary&quot; &#123;</span><br><span class="line">           return 97</span><br><span class="line">       &#125;</span><br><span class="line">       return 501</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>You mark a call to an asynchronous function by writing <code>await</code> in front of it.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">fetchUsername</span>(<span class="params">from</span> <span class="params">server</span>: <span class="type">String</span>) <span class="keyword">async</span> -&gt; <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> userID <span class="operator">=</span> <span class="keyword">await</span> fetchUserID(from: server)</span><br><span class="line">    <span class="keyword">if</span> userID <span class="operator">==</span> <span class="number">501</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;John Appleseed&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Guest&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func fetchUsername(from server: String) async -&gt; String &#123;</span><br><span class="line">       let userID = await fetchUserID(from: server)</span><br><span class="line">       if userID == 501 &#123;</span><br><span class="line">           return &quot;John Appleseed&quot;</span><br><span class="line">       &#125;</span><br><span class="line">       return &quot;Guest&quot;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>Use <code>async let</code> to call an asynchronous function,<br>letting it run in parallel with other asynchronous code.<br>When you use the value it returns, write <code>await</code>.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">connectUser</span>(<span class="params">to</span> <span class="params">server</span>: <span class="type">String</span>) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">let</span> userID <span class="operator">=</span> fetchUserID(from: server)</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">let</span> username <span class="operator">=</span> fetchUsername(from: server)</span><br><span class="line">    <span class="keyword">let</span> greeting <span class="operator">=</span> <span class="keyword">await</span> <span class="string">&quot;Hello <span class="subst">\(username)</span>, user ID <span class="subst">\(userID)</span>&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(greeting)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func connectUser(to server: String) async &#123;</span><br><span class="line">       async let userID = fetchUserID(from: server)</span><br><span class="line">       async let username = fetchUsername(from: server)</span><br><span class="line">       let greeting = await &quot;Hello \(username), user ID \(userID)&quot;</span><br><span class="line">       print(greeting)</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>Use <code>Task</code> to call asynchronous functions from synchronous code,<br>without waiting for them to return.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Task</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> connectUser(to: <span class="string">&quot;primary&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Prints &quot;Hello Guest, user ID 97&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; Task &#123;</span><br><span class="line">       await connectUser(to: &quot;primary&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; import Darwin; sleep(1)  // Pause for task to run</span><br><span class="line">&lt;- Hello Guest, user ID 97</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>Use task groups to structure concurrent code.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> userIDs <span class="operator">=</span> <span class="keyword">await</span> withTaskGroup(of: <span class="type">Int</span>.<span class="keyword">self</span>) &#123; group <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">for</span> server <span class="keyword">in</span> [<span class="string">&quot;primary&quot;</span>, <span class="string">&quot;secondary&quot;</span>, <span class="string">&quot;development&quot;</span>] &#123;</span><br><span class="line">        group.addTask &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">await</span> fetchUserID(from: server)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> results: [<span class="type">Int</span>] <span class="operator">=</span> []</span><br><span class="line">    <span class="keyword">for</span> <span class="keyword">await</span> result <span class="keyword">in</span> group &#123;</span><br><span class="line">        results.append(result)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> results</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Actors are similar to classes,<br>except they ensure that different asynchronous functions<br>can safely interact with an instance of the same actor at the same time.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">actor</span> <span class="title class_">ServerConnection</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> server: <span class="type">String</span> <span class="operator">=</span> <span class="string">&quot;primary&quot;</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> activeUsers: [<span class="type">Int</span>] <span class="operator">=</span> []</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">connect</span>() <span class="keyword">async</span> -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> userID <span class="operator">=</span> <span class="keyword">await</span> fetchUserID(from: server)</span><br><span class="line">        <span class="comment">// ... communicate with server ...</span></span><br><span class="line">        activeUsers.append(userID)</span><br><span class="line">        <span class="keyword">return</span> userID</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; actor Oven &#123;</span><br><span class="line">       var contents: [String] = []</span><br><span class="line">       func bake(_ food: String) -&gt; String &#123;</span><br><span class="line">           contents.append(food)</span><br><span class="line">           // ... wait for food to bake ...</span><br><span class="line">           return contents.removeLast()</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>When you call a method on an actor or access one of its properties,<br>you mark that code with <code>await</code><br>to indicate that it might have to wait for other code<br>that’s already running on the actor to finish.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> server <span class="operator">=</span> <span class="type">ServerConnection</span>()</span><br><span class="line"><span class="keyword">let</span> userID <span class="operator">=</span> <span class="keyword">await</span> server.connect()</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let oven = Oven()</span><br><span class="line">-&gt; let biscuits = await oven.bake(&quot;biscuits&quot;)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="Protocols-and-Extensions"><a href="#Protocols-and-Extensions" class="headerlink" title="Protocols and Extensions"></a>Protocols and Extensions</h2><p>Use <code>protocol</code> to declare a protocol.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protocol</span> <span class="title class_">ExampleProtocol</span> &#123;</span><br><span class="line">     <span class="keyword">var</span> simpleDescription: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">     <span class="keyword">mutating</span> <span class="keyword">func</span> <span class="title function_">adjust</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; protocol ExampleProtocol &#123;</span><br><span class="line">        var simpleDescription: String &#123; get &#125;</span><br><span class="line">        mutating func adjust()</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>Classes, enumerations, and structures can all adopt protocols.</p>
+<!--
+  REFERENCE
+  The use of adjust() is totally a placeholder
+  for some more interesting operation.
+  Likewise for the struct and classes -- placeholders
+  for some more interesting data structure.
+-->
+
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SimpleClass</span>: <span class="title class_">ExampleProtocol</span> {</span><br><span class="line">     <span class="keyword">var</span> simpleDescription: <span class="type">String</span> <span class="operator">=</span> <span class="string">"A very simple class."</span></span><br><span class="line">     <span class="keyword">var</span> anotherProperty: <span class="type">Int</span> <span class="operator">=</span> <span class="number">69105</span></span><br><span class="line">     <span class="keyword">func</span> <span class="title function_">adjust</span>() {</span><br><span class="line">          simpleDescription <span class="operator">+=</span> <span class="string">"  Now 100% adjusted."</span></span><br><span class="line">     }</span><br><span class="line">}</span><br><span class="line"><span class="keyword">var</span> a <span class="operator">=</span> <span class="type">SimpleClass</span>()</span><br><span class="line">a.adjust()</span><br><span class="line"><span class="keyword">let</span> aDescription <span class="operator">=</span> a.simpleDescription</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">SimpleStructure</span>: <span class="title class_">ExampleProtocol</span> {</span><br><span class="line">     <span class="keyword">var</span> simpleDescription: <span class="type">String</span> <span class="operator">=</span> <span class="string">"A simple structure"</span></span><br><span class="line">     <span class="keyword">mutating</span> <span class="keyword">func</span> <span class="title function_">adjust</span>() {</span><br><span class="line">          simpleDescription <span class="operator">+=</span> <span class="string">" (adjusted)"</span></span><br><span class="line">     }</span><br><span class="line">}</span><br><span class="line"><span class="keyword">var</span> b <span class="operator">=</span> <span class="type">SimpleStructure</span>()</span><br><span class="line">b.adjust()</span><br><span class="line"><span class="keyword">let</span> bDescription <span class="operator">=</span> b.simpleDescription</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class SimpleClass: ExampleProtocol &#123;</span><br><span class="line">        var simpleDescription: String = &quot;A very simple class.&quot;</span><br><span class="line">        var anotherProperty: Int = 69105</span><br><span class="line">        func adjust() &#123;</span><br><span class="line">             simpleDescription += &quot;  Now 100% adjusted.&quot;</span><br><span class="line">        &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; var a = SimpleClass()</span><br><span class="line">-&gt; a.adjust()</span><br><span class="line">-&gt; let aDescription = a.simpleDescription</span><br><span class="line">&gt;&gt; print(aDescription)</span><br><span class="line">&lt;&lt; A very simple class.  Now 100% adjusted.</span><br><span class="line">---</span><br><span class="line">-&gt; struct SimpleStructure: ExampleProtocol &#123;</span><br><span class="line">        var simpleDescription: String = &quot;A simple structure&quot;</span><br><span class="line">        mutating func adjust() &#123;</span><br><span class="line">             simpleDescription += &quot; (adjusted)&quot;</span><br><span class="line">        &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; var b = SimpleStructure()</span><br><span class="line">-&gt; b.adjust()</span><br><span class="line">-&gt; let bDescription = b.simpleDescription</span><br><span class="line">&gt;&gt; print(bDescription)</span><br><span class="line">&lt;&lt; A simple structure (adjusted)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment: Add another requirement to <code>ExampleProtocol</code>.<br>What changes do you need to make<br>to <code>SimpleClass</code> and <code>SimpleStructure</code><br>so that they still conform to the protocol?</p>
+</blockquote>
+<p>Notice the use of the <code>mutating</code> keyword<br>in the declaration of <code>SimpleStructure</code><br>to mark a method that modifies the structure.<br>The declaration of <code>SimpleClass</code> doesn’t need<br>any of its methods marked as mutating<br>because methods on a class can always modify the class.</p>
+<p>Use <code>extension</code> to add functionality to an existing type,<br>such as new methods and computed properties.<br>You can use an extension to add protocol conformance<br>to a type that’s declared elsewhere,<br>or even to a type that you imported from a library or framework.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">Int</span>: <span class="title class_">ExampleProtocol</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> simpleDescription: <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;The number <span class="subst">\(<span class="keyword">self</span>)</span>&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">mutating</span> <span class="keyword">func</span> <span class="title function_">adjust</span>() &#123;</span><br><span class="line">        <span class="keyword">self</span> <span class="operator">+=</span> <span class="number">42</span></span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="number">7</span>.simpleDescription)</span><br><span class="line"><span class="comment">// Prints &quot;The number 7&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-&gt; extension Int: ExampleProtocol &#123;</span><br><span class="line">       var simpleDescription: String &#123;</span><br><span class="line">           return &quot;The number \(self)&quot;</span><br><span class="line">       &#125;</span><br><span class="line">       mutating func adjust() &#123;</span><br><span class="line">           self += 42</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;</span><br><span class="line">-&gt; print(7.simpleDescription)</span><br><span class="line">&lt;- The number 7</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment: Write an extension for the <code>Double</code> type<br>that adds an <code>absoluteValue</code> property.</p>
+</blockquote>
+<p>You can use a protocol name just like any other named type —<br>for example, to create a collection of objects<br>that have different types<br>but that all conform to a single protocol.<br>When you work with values whose type is a boxed protocol type,<br>methods outside the protocol definition aren’t available.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> protocolValue: <span class="keyword">any</span> <span class="type">ExampleProtocol</span> <span class="operator">=</span> a</span><br><span class="line"><span class="built_in">print</span>(protocolValue.simpleDescription)</span><br><span class="line"><span class="comment">// Prints &quot;A very simple class.  Now 100% adjusted.&quot;</span></span><br><span class="line"><span class="comment">// print(protocolValue.anotherProperty)  // Uncomment to see the error</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let protocolValue: ExampleProtocol = a</span><br><span class="line">-&gt; print(protocolValue.simpleDescription)</span><br><span class="line">&lt;- A very simple class.  Now 100% adjusted.</span><br><span class="line">// print(protocolValue.anotherProperty)  // Uncomment to see the error</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>Even though the variable <code>protocolValue</code><br>has a runtime type of <code>SimpleClass</code>,<br>the compiler treats it as the given type of <code>ExampleProtocol</code>.<br>This means that you can’t accidentally access<br>methods or properties that the class implements<br>in addition to its protocol conformance.</p>
+<h2 id="Error-Handling"><a href="#Error-Handling" class="headerlink" title="Error Handling"></a>Error Handling</h2><p>You represent errors using any type that adopts the <code>Error</code> protocol.</p>
+<!--
+  REFERENCE
+  PrinterError.OnFire is a reference to the Unix printing system's "lp0 on
+  fire" error message, used when the kernel can't identify the specific error.
+  The names of printers used in the examples in this section are names of
+  people who were important in the development of printing.
+
+  Bi Sheng is credited with inventing the first movable type out of porcelain
+  in China in the 1040s.  It was a mixed success, in large part because of the
+  vast number of characters needed to write Chinese, and failed to replace
+  wood block printing.  Johannes Gutenberg is credited as the first European
+  to use movable type in the 1440s --- his metal type enabled the printing
+  revolution.  Ottmar Mergenthaler invented the Linotype machine in the 1884,
+  which dramatically increased the speed of setting type for printing compared
+  to the previous manual typesetting.  It set an entire line of type (hence
+  the name) at a time, and was controlled by a keyboard.  The Monotype
+  machine, invented in 1885 by Tolbert Lanston, performed similar work.
+-->
+
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">PrinterError</span>: <span class="title class_">Error</span> {</span><br><span class="line">    <span class="keyword">case</span> outOfPaper</span><br><span class="line">    <span class="keyword">case</span> noToner</span><br><span class="line">    <span class="keyword">case</span> onFire</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; enum PrinterError: Error &#123;</span><br><span class="line">       case outOfPaper</span><br><span class="line">       case noToner</span><br><span class="line">       case onFire</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>Use <code>throw</code> to throw an error<br>and <code>throws</code> to mark a function that can throw an error.<br>If you throw an error in a function,<br>the function returns immediately and the code that called the function<br>handles the error.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">send</span>(<span class="params">job</span>: <span class="type">Int</span>, <span class="params">toPrinter</span> <span class="params">printerName</span>: <span class="type">String</span>) <span class="keyword">throws</span> -&gt; <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> printerName <span class="operator">==</span> <span class="string">&quot;Never Has Toner&quot;</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="type">PrinterError</span>.noToner</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Job sent&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func send(job: Int, toPrinter printerName: String) throws -&gt; String &#123;</span><br><span class="line">       if printerName == &quot;Never Has Toner&quot; &#123;</span><br><span class="line">           throw PrinterError.noToner</span><br><span class="line">       &#125;</span><br><span class="line">       return &quot;Job sent&quot;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>There are several ways to handle errors.<br>One way is to use <code>do</code>-<code>catch</code>.<br>Inside the <code>do</code> block,<br>you mark code that can throw an error by writing <code>try</code> in front of it.<br>Inside the <code>catch</code> block,<br>the error is automatically given the name <code>error</code><br>unless you give it a different name.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> printerResponse <span class="operator">=</span> <span class="keyword">try</span> send(job: <span class="number">1040</span>, toPrinter: <span class="string">&quot;Bi Sheng&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(printerResponse)</span><br><span class="line">&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(error)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Prints &quot;Job sent&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; do &#123;</span><br><span class="line">       let printerResponse = try send(job: 1040, toPrinter: &quot;Bi Sheng&quot;)</span><br><span class="line">       print(printerResponse)</span><br><span class="line">   &#125; catch &#123;</span><br><span class="line">       print(error)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- Job sent</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment: Change the printer name to <code>&quot;Never Has Toner&quot;</code>,<br>so that the <code>send(job:toPrinter:)</code> function throws an error.</p>
+</blockquote>
+<!--
+  Assertion tests the change that the Experiment box instructs you to make.
+-->
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; do &#123;</span><br><span class="line">       let printerResponse = try send(job: 500, toPrinter: &quot;Never Has Toner&quot;)</span><br><span class="line">       print(printerResponse)</span><br><span class="line">   &#125; catch &#123;</span><br><span class="line">       print(error)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- noToner</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>You can provide multiple <code>catch</code> blocks<br>that handle specific errors.<br>You write a pattern after <code>catch</code> just as you do<br>after <code>case</code> in a switch.</p>
+<!--
+  REFERENCE
+  The "rest of the fire" quote comes from The IT Crowd, season 1 episode 2.
+-->
+
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> {</span><br><span class="line">    <span class="keyword">let</span> printerResponse <span class="operator">=</span> <span class="keyword">try</span> send(job: <span class="number">1440</span>, toPrinter: <span class="string">"Gutenberg"</span>)</span><br><span class="line">    <span class="built_in">print</span>(printerResponse)</span><br><span class="line">} <span class="keyword">catch</span> <span class="type">PrinterError</span>.onFire {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"I'll just put this over here, with the rest of the fire."</span>)</span><br><span class="line">} <span class="keyword">catch</span> <span class="keyword">let</span> printerError <span class="keyword">as</span> <span class="type">PrinterError</span> {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Printer error: <span class="subst">\(printerError)</span>."</span>)</span><br><span class="line">} <span class="keyword">catch</span> {</span><br><span class="line">    <span class="built_in">print</span>(error)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// Prints "Job sent"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; do &#123;</span><br><span class="line">       let printerResponse = try send(job: 1440, toPrinter: &quot;Gutenberg&quot;)</span><br><span class="line">       print(printerResponse)</span><br><span class="line">   &#125; catch PrinterError.onFire &#123;</span><br><span class="line">       print(&quot;I&#x27;ll just put this over here, with the rest of the fire.&quot;)</span><br><span class="line">   &#125; catch let printerError as PrinterError &#123;</span><br><span class="line">       print(&quot;Printer error: \(printerError).&quot;)</span><br><span class="line">   &#125; catch &#123;</span><br><span class="line">       print(error)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- Job sent</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment: Add code to throw an error inside the <code>do</code> block.<br>What kind of error do you need to throw<br>so that the error is handled by the first <code>catch</code> block?<br>What about the second and third blocks?</p>
+</blockquote>
+<p>Another way to handle errors<br>is to use <code>try?</code> to convert the result to an optional.<br>If the function throws an error,<br>the specific error is discarded and the result is <code>nil</code>.<br>Otherwise, the result is an optional containing<br>the value that the function returned.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> printerSuccess <span class="operator">=</span> <span class="keyword">try?</span> send(job: <span class="number">1884</span>, toPrinter: <span class="string">&quot;Mergenthaler&quot;</span>)</span><br><span class="line"><span class="keyword">let</span> printerFailure <span class="operator">=</span> <span class="keyword">try?</span> send(job: <span class="number">1885</span>, toPrinter: <span class="string">&quot;Never Has Toner&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let printerSuccess = try? send(job: 1884, toPrinter: &quot;Mergenthaler&quot;)</span><br><span class="line">&gt;&gt; print(printerSuccess as Any)</span><br><span class="line">&lt;&lt; Optional(&quot;Job sent&quot;)</span><br><span class="line">-&gt; let printerFailure = try? send(job: 1885, toPrinter: &quot;Never Has Toner&quot;)</span><br><span class="line">&gt;&gt; print(printerFailure as Any)</span><br><span class="line">&lt;&lt; nil</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>Use <code>defer</code> to write a block of code<br>that’s executed after all other code in the function,<br>just before the function returns.<br>The code is executed regardless of whether the function throws an error.<br>You can use <code>defer</code> to write setup and cleanup code next to each other,<br>even though they need to be executed at different times.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fridgeIsOpen <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line"><span class="keyword">let</span> fridgeContent <span class="operator">=</span> [<span class="string">&quot;milk&quot;</span>, <span class="string">&quot;eggs&quot;</span>, <span class="string">&quot;leftovers&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">fridgeContains</span>(<span class="keyword">_</span> <span class="params">food</span>: <span class="type">String</span>) -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">    fridgeIsOpen <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line">    <span class="keyword">defer</span> &#123;</span><br><span class="line">        fridgeIsOpen <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> result <span class="operator">=</span> fridgeContent.contains(food)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> fridgeContains(<span class="string">&quot;banana&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Found a banana&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(fridgeIsOpen)</span><br><span class="line"><span class="comment">// Prints &quot;false&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var fridgeIsOpen = false</span><br><span class="line">-&gt; let fridgeContent = [&quot;milk&quot;, &quot;eggs&quot;, &quot;leftovers&quot;]</span><br><span class="line">---</span><br><span class="line">-&gt; func fridgeContains(_ food: String) -&gt; Bool &#123;</span><br><span class="line">       fridgeIsOpen = true</span><br><span class="line">       defer &#123;</span><br><span class="line">           fridgeIsOpen = false</span><br><span class="line">       &#125;</span><br><span class="line">---</span><br><span class="line">       let result = fridgeContent.contains(food)</span><br><span class="line">       return result</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; let containsBanana =</span><br><span class="line">-&gt; fridgeContains(&quot;banana&quot;)</span><br><span class="line">&gt;&gt; print(containsBanana)</span><br><span class="line">&lt;&lt; false</span><br><span class="line">-&gt; print(fridgeIsOpen)</span><br><span class="line">&lt;- false</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="Generics"><a href="#Generics" class="headerlink" title="Generics"></a>Generics</h2><p>Write a name inside angle brackets<br>to make a generic function or type.</p>
+<!--
+  REFERENCE
+  The four knocks is a reference to Dr Who series 4,
+  in which knocking four times is a running aspect
+  of the season's plot.
+-->
+
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">makeArray</span>&lt;<span class="type">Item</span>&gt;(<span class="params">repeating</span> <span class="params">item</span>: <span class="type">Item</span>, <span class="params">numberOfTimes</span>: <span class="type">Int</span>) -&gt; [<span class="type">Item</span>] {</span><br><span class="line">    <span class="keyword">var</span> result: [<span class="type">Item</span>] <span class="operator">=</span> []</span><br><span class="line">    <span class="keyword">for</span> <span class="keyword">_</span> <span class="keyword">in</span> <span class="number">0</span><span class="operator">..&lt;</span>numberOfTimes {</span><br><span class="line">         result.append(item)</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">}</span><br><span class="line">makeArray(repeating: <span class="string">"knock"</span>, numberOfTimes: <span class="number">4</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func makeArray&lt;Item&gt;(repeating item: Item, numberOfTimes: Int) -&gt; [Item] &#123;</span><br><span class="line">       var result: [Item] = []</span><br><span class="line">       for _ in 0..&lt;numberOfTimes &#123;</span><br><span class="line">            result.append(item)</span><br><span class="line">       &#125;</span><br><span class="line">       return result</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; let fourKnocks =</span><br><span class="line">-&gt; makeArray(repeating: &quot;knock&quot;, numberOfTimes: 4)</span><br><span class="line">&gt;&gt; print(fourKnocks)</span><br><span class="line">&lt;&lt; [&quot;knock&quot;, &quot;knock&quot;, &quot;knock&quot;, &quot;knock&quot;]</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>You can make generic forms of functions and methods,<br>as well as classes, enumerations, and structures.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Reimplement the Swift standard library&#x27;s optional type</span></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">OptionalValue</span>&lt;<span class="title class_">Wrapped</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">case</span> none</span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">some</span>(<span class="type">Wrapped</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> possibleInteger: <span class="type">OptionalValue</span>&lt;<span class="type">Int</span>&gt; <span class="operator">=</span> .none</span><br><span class="line">possibleInteger <span class="operator">=</span> .some(<span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// Reimplement the Swift standard library&#x27;s optional type</span><br><span class="line">-&gt; enum OptionalValue&lt;Wrapped&gt; &#123;</span><br><span class="line">       case none</span><br><span class="line">       case some(Wrapped)</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; var possibleInteger: OptionalValue&lt;Int&gt; = .none</span><br><span class="line">-&gt; possibleInteger = .some(100)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>Use <code>where</code> right before the body<br>to specify a list of requirements —<br>for example,<br>to require the type to implement a protocol,<br>to require two types to be the same,<br>or to require a class to have a particular superclass.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">anyCommonElements</span>&lt;<span class="type">T</span>: <span class="type">Sequence</span>, <span class="type">U</span>: <span class="type">Sequence</span>&gt;(<span class="keyword">_</span> <span class="params">lhs</span>: <span class="type">T</span>, <span class="keyword">_</span> <span class="params">rhs</span>: <span class="type">U</span>) -&gt; <span class="type">Bool</span></span><br><span class="line">    <span class="keyword">where</span> <span class="type">T</span>.<span class="type">Element</span>: <span class="type">Equatable</span>, <span class="type">T</span>.<span class="type">Element</span> <span class="operator">==</span> <span class="type">U</span>.<span class="type">Element</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> lhsItem <span class="keyword">in</span> lhs &#123;</span><br><span class="line">        <span class="keyword">for</span> rhsItem <span class="keyword">in</span> rhs &#123;</span><br><span class="line">            <span class="keyword">if</span> lhsItem <span class="operator">==</span> rhsItem &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">   <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line">anyCommonElements([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">3</span>])</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `guided-tour`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func anyCommonElements&lt;T: Sequence, U: Sequence&gt;(_ lhs: T, _ rhs: U) -&gt; Bool</span><br><span class="line">       where T.Element: Equatable, T.Element == U.Element</span><br><span class="line">   &#123;</span><br><span class="line">       for lhsItem in lhs &#123;</span><br><span class="line">           for rhsItem in rhs &#123;</span><br><span class="line">               if lhsItem == rhsItem &#123;</span><br><span class="line">                   return true</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">      return false</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; let hasAnyCommon =</span><br><span class="line">-&gt; anyCommonElements([1, 2, 3], [3])</span><br><span class="line">&gt;&gt; print(hasAnyCommon)</span><br><span class="line">&lt;&lt; true</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>Experiment: Modify the <code>anyCommonElements(_:_:)</code> function<br>to make a function that returns an array<br>of the elements that any two sequences have in common.</p>
+</blockquote>
+<p>Writing <code>&lt;T: Equatable&gt;</code><br>is the same as writing <code>&lt;T&gt; ... where T: Equatable</code>.</p>
+<!--
+This source file is part of the Swift.org open source project
+
+Copyright (c) 2014 - 2022 Apple Inc. and the Swift project authors
+Licensed under Apache License v2.0 with Runtime Library Exception
+
+See https://swift.org/LICENSE.txt for license information
+See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
+-->
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/GuidedTour/">GUIDEDTOUR</a></li>
+            <li>GUIDEDTOUR</li>
+          
+  </ul>
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#A-Swift-Tour"><span class="nav-number">1.</span> <span class="nav-text">A Swift Tour</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Objects-and-Classes"><span class="nav-number">1.1.</span> <span class="nav-text">Objects and Classes</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

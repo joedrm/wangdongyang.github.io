@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="错误处理响应错误并从错误中恢复。 错误处理(Error handling) 是对程序中的错误条件做出响应并从中恢复的过程。Swift 为在运行时抛出、捕获、传递和处理可恢复错误提供了一等支持。 有些操作并不能保证总是能执行完成或生成有用的结果。可选类型用于表示值缺失，但当操作失败时，了解造成失败的原因有助于你的代码作出相应的应对。 以从磁盘文件读取和处理数据为例。该任务失败的原因有很多，包括指定路">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/ErrorHandling.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="错误处理响应错误并从错误中恢复。 错误处理(Error handling) 是对程序中的错误条件做出响应并从中恢复的过程。Swift 为在运行时抛出、捕获、传递和处理可恢复错误提供了一等支持。 有些操作并不能保证总是能执行完成或生成有用的结果。可选类型用于表示值缺失，但当操作失败时，了解造成失败的原因有助于你的代码作出相应的应对。 以从磁盘文件读取和处理数据为例。该任务失败的原因有很多，包括指定路">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-08T08:32:48.697Z">
+<meta property="article:modified_time" content="2025-03-08T08:32:48.697Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/ErrorHandling">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>ERRORHANDLING</li>
+          
+  </ul>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h1 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h1><p>响应错误并从错误中恢复。</p>
+<p><strong>错误处理(Error handling)</strong> 是对程序中的错误条件做出响应并从中恢复的过程。Swift 为在运行时抛出、捕获、传递和处理可恢复错误提供了一等支持。</p>
+<p>有些操作并不能保证总是能执行完成或生成有用的结果。可选类型用于表示值缺失，但当操作失败时，了解造成失败的原因有助于你的代码作出相应的应对。</p>
+<p>以从磁盘文件读取和处理数据为例。该任务失败的原因有很多，包括指定路径下的文件不存在、文件没有读取权限或文件编码格式不兼容。通过区分这些不同的失败情况来让程序处理和解决一些错误，并将无法解决的错误告知用户。</p>
+<blockquote>
+<p>注意:<br>Swift 中的错误处理与 Cocoa 和 Objective-C 中使用 <code>NSError</code> 类的错误处理模式互操作。<br>有关该类的更多信息，请参阅 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/cocoa_design_patterns/handling_cocoa_errors_in_swift">在 Swift 中处理 Cocoa 错误</a>.</p>
+</blockquote>
+<h2 id="表示与抛出错误"><a href="#表示与抛出错误" class="headerlink" title="表示与抛出错误"></a>表示与抛出错误</h2><p>在 Swift 中，错误由遵循 Error 协议的类型值表示。这个空协议表示一种类型可用于错误处理。</p>
+<p>Swift 枚举特别适用于一组相关的错误条件，枚举的关联值还可以提供错误状态的额外信息。例如，您可以用以下方式表示在游戏中操作自动售货机的错误条件：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">VendingMachineError</span>: <span class="title class_">Error</span> {</span><br><span class="line">    <span class="keyword">case</span> invalidSelection                       <span class="comment">// 不可选择</span></span><br><span class="line">    <span class="keyword">case</span> insufficientFunds(coinsNeeded: <span class="type">Int</span>)    <span class="comment">// 金额不足</span></span><br><span class="line">    <span class="keyword">case</span> outOfStock                             <span class="comment">// 缺货</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `throw-enum-error`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; enum VendingMachineError: Error &#123;</span><br><span class="line">       case invalidSelection</span><br><span class="line">       case insufficientFunds(coinsNeeded: Int)</span><br><span class="line">       case outOfStock</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>通过抛出错误可以让你表明发生了意外情况，导致正常的流程无法继续执行。您可以使用 throw 语句来抛出错误。例如，下面的代码抛出了一个错误，表示自动售货机还需要 5 枚硬币：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">throw</span> <span class="type">VendingMachineError</span>.insufficientFunds(coinsNeeded: <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `throw-enum-error`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; throw VendingMachineError.insufficientFunds(coinsNeeded: 5)</span><br><span class="line">xx fatal error</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="处理错误"><a href="#处理错误" class="headerlink" title="处理错误"></a>处理错误</h2><p>当错误被抛出时，周围的部分代码必须负责处理该错误，例如，纠正这个问题、尝试其他方法或将错误通知用户。</p>
+<p>在 Swift 中有四种处理错误的方法。您可以把函数抛出的错误传递给调用此函数的代码、使用 do-catch 语句处理错误、将错误作为可选类型处理、或者断言此错误根本不会发生。下文将对每种方法分段说明。</p>
+<p>当函数抛出错误时，程序的流程会发生改变，因此快速识别代码中可能抛出错误的地方非常重要。要识别代码中的这些地方，请在调用可能抛出错误的函数、方法或构造器的代码之前加上 <code>try</code> 关键字或 <code>try?</code> 或 <code>try!</code> 变体。下文将对这些关键字进行说明。</p>
+<blockquote>
+<p>注意:<br>Swift 中的错误处理与其他语言中的错误处理类似，使用 <code>try</code>, <code>catch</code> and <code>throw</code> 关键字。<br>区别于其他语言（包括 Objective-C ）的是，Swift 中的错误处理并不涉及解除调用栈,而解除调用栈的过程可能会耗费大量计算资源。<br>因此，<code>throw</code> 语句的性能特征与 <code>return</code> 语句的性能特征相当。</p>
+</blockquote>
+<h3 id="用throwing函数传递错误"><a href="#用throwing函数传递错误" class="headerlink" title="用throwing函数传递错误"></a>用throwing函数传递错误</h3><p>为了表示函数、方法或构造器可以抛出错误，您可以在函数声明中的参数后写入 <code>throws</code> 关键字。标有 <code>throws</code> 的函数称为 <strong>throwing函数</strong>。如果该函数指定了返回类型，则应在返回箭头（<code>-&gt;</code>）之前写入 <code>throws</code> 关键字。</p>
+<!--
+  TODO Add discussion of throwing initializers
+-->
+
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">canThrowErrors</span>() <span class="keyword">throws</span> -&gt; <span class="type">String</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">cannotThrowErrors</span>() -&gt; <span class="type">String</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `throwingFunctionDeclaration`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func canThrowErrors() throws -&gt; String</span><br><span class="line">&gt;&gt; &#123; return &quot;foo&quot; &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; func cannotThrowErrors() -&gt; String</span><br><span class="line">&gt;&gt; &#123; return &quot;foo&quot; &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `throwing-function-cant-overload-nonthrowing`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func f() -&gt; Int &#123; return 10 &#125;</span><br><span class="line">-&gt; func f() throws -&gt; Int &#123; return 10 &#125; // Error</span><br><span class="line">!$ error: invalid redeclaration of &#x27;f()&#x27;</span><br><span class="line">!! func f() throws -&gt; Int &#123; return 10 &#125; // Error</span><br><span class="line">!! ^</span><br><span class="line">!$ note: &#x27;f()&#x27; previously declared here</span><br><span class="line">!! func f() -&gt; Int &#123; return 10 &#125;</span><br><span class="line">!! ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `throwing-parameter-can-overload-nonthrowing`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func f(callback: () -&gt; Int) &#123;&#125;</span><br><span class="line">-&gt; func f(callback: () throws -&gt; Int) &#123;&#125; // Allowed</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  TODO: Add more assertions to test these behaviors
+-->
+
+<!--
+  TODO: Write about the fact the above rules that govern overloading
+  for throwing and nonthrowing functions.
+-->
+
+<p>throwing会将内部抛出的错误传递到调用它的作用域。</p>
+<blockquote>
+<p>注意:<br>只有throwing函数可以传递错误。任何在非throwing函数中抛出的错误都必须在函数内部处理。</p>
+</blockquote>
+<p>在下面的示例中，<code>VendingMachine</code> 类有一个 <code>vend(itemNamed:)</code> 方法。该方法会在请求物品不存在、缺货或者投入金额小于物品价格时，抛出相应的 <code>VendingMachineError</code> 错误：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Item</span> {</span><br><span class="line">    <span class="keyword">var</span> price: <span class="type">Int</span></span><br><span class="line">    <span class="keyword">var</span> count: <span class="type">Int</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">VendingMachine</span> {</span><br><span class="line">    <span class="keyword">var</span> inventory <span class="operator">=</span> [</span><br><span class="line">        <span class="string">"Candy Bar"</span>: <span class="type">Item</span>(price: <span class="number">12</span>, count: <span class="number">7</span>),</span><br><span class="line">        <span class="string">"Chips"</span>: <span class="type">Item</span>(price: <span class="number">10</span>, count: <span class="number">4</span>),</span><br><span class="line">        <span class="string">"Pretzels"</span>: <span class="type">Item</span>(price: <span class="number">7</span>, count: <span class="number">11</span>)</span><br><span class="line">    ]</span><br><span class="line">    <span class="keyword">var</span> coinsDeposited <span class="operator">=</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">vend</span>(<span class="params">itemNamed</span> <span class="params">name</span>: <span class="type">String</span>) <span class="keyword">throws</span> {</span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> item <span class="operator">=</span> inventory[name] <span class="keyword">else</span> {</span><br><span class="line">            <span class="keyword">throw</span> <span class="type">VendingMachineError</span>.invalidSelection</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="keyword">guard</span> item.count <span class="operator">&gt;</span> <span class="number">0</span> <span class="keyword">else</span> {</span><br><span class="line">            <span class="keyword">throw</span> <span class="type">VendingMachineError</span>.outOfStock</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="keyword">guard</span> item.price <span class="operator">&lt;=</span> coinsDeposited <span class="keyword">else</span> {</span><br><span class="line">            <span class="keyword">throw</span> <span class="type">VendingMachineError</span>.insufficientFunds(coinsNeeded: item.price <span class="operator">-</span> coinsDeposited)</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        coinsDeposited <span class="operator">-=</span> item.price</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> newItem <span class="operator">=</span> item</span><br><span class="line">        newItem.count <span class="operator">-=</span> <span class="number">1</span></span><br><span class="line">        inventory[name] <span class="operator">=</span> newItem</span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Dispensing <span class="subst">\(name)</span>"</span>)</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `errorHandling`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; enum VendingMachineError: Error &#123;</span><br><span class="line">&gt;&gt;     case invalidSelection</span><br><span class="line">&gt;&gt;     case insufficientFunds(coinsNeeded: Int)</span><br><span class="line">&gt;&gt;     case outOfStock</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">-&gt; struct Item &#123;</span><br><span class="line">      var price: Int</span><br><span class="line">      var count: Int</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; class VendingMachine &#123;</span><br><span class="line">-&gt;     var inventory = [</span><br><span class="line">           &quot;Candy Bar&quot;: Item(price: 12, count: 7),</span><br><span class="line">           &quot;Chips&quot;: Item(price: 10, count: 4),</span><br><span class="line">           &quot;Pretzels&quot;: Item(price: 7, count: 11)</span><br><span class="line">       ]</span><br><span class="line">-&gt;     var coinsDeposited = 0</span><br><span class="line">---</span><br><span class="line">-&gt;     func vend(itemNamed name: String) throws &#123;</span><br><span class="line">           guard let item = inventory[name] else &#123;</span><br><span class="line">               throw VendingMachineError.invalidSelection</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           guard item.count &gt; 0 else &#123;</span><br><span class="line">               throw VendingMachineError.outOfStock</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           guard item.price &lt;= coinsDeposited else &#123;</span><br><span class="line">               throw VendingMachineError.insufficientFunds(coinsNeeded: item.price - coinsDeposited)</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           coinsDeposited -= item.price</span><br><span class="line"></span><br><span class="line">           var newItem = item</span><br><span class="line">           newItem.count -= 1</span><br><span class="line">           inventory[name] = newItem</span><br><span class="line"></span><br><span class="line">           print(&quot;Dispensing \(name)&quot;)</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>在 <code>vend(itemNamed:)</code> 方法的实现中使用 <code>guard</code> 语句来确保在物品成功购买所需条件中不满足任一一个条件时提前退出方法并抛出相应的错误。由于 <code>throw</code> 语句会立刻退出方法，所以物品只有在所有条件都满足时才会被售出。</p>
+<p>由于 <code>vend(itemNamed:)</code> 方法会传递出它抛出的任何错误，因此调用此方法的代码必须直接处理错误 —使用 <code>do</code>-<code>catch</code> 语句, <code>try?</code>, 或 <code>try!</code> —或者把这些错误继续传递下去。例如,下面例子中的 <code>buyFavoriteSnack(person:vendingMachine:)</code> 也是一个throwing函数，所以 <code>vend(itemNamed:)</code> 方法抛出的任何错误将传递到调用 <code>buyFavoriteSnack(person:vendingMachine:)</code> 函数的位置。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> favoriteSnacks <span class="operator">=</span> [</span><br><span class="line">    <span class="string">&quot;Alice&quot;</span>: <span class="string">&quot;Chips&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Bob&quot;</span>: <span class="string">&quot;Licorice&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Eve&quot;</span>: <span class="string">&quot;Pretzels&quot;</span>,</span><br><span class="line">]</span><br><span class="line"><span class="keyword">func</span> <span class="title function_">buyFavoriteSnack</span>(<span class="params">person</span>: <span class="type">String</span>, <span class="params">vendingMachine</span>: <span class="type">VendingMachine</span>) <span class="keyword">throws</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> snackName <span class="operator">=</span> favoriteSnacks[person] <span class="operator">??</span> <span class="string">&quot;Candy Bar&quot;</span></span><br><span class="line">    <span class="keyword">try</span> vendingMachine.vend(itemNamed: snackName)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `errorHandling`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let favoriteSnacks = [</span><br><span class="line">       &quot;Alice&quot;: &quot;Chips&quot;,</span><br><span class="line">       &quot;Bob&quot;: &quot;Licorice&quot;,</span><br><span class="line">       &quot;Eve&quot;: &quot;Pretzels&quot;,</span><br><span class="line">   ]</span><br><span class="line">-&gt; func buyFavoriteSnack(person: String, vendingMachine: VendingMachine) throws &#123;</span><br><span class="line">       let snackName = favoriteSnacks[person] ?? &quot;Candy Bar&quot;</span><br><span class="line">       try vendingMachine.vend(itemNamed: snackName)</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; var v = VendingMachine()</span><br><span class="line">&gt;&gt; v.coinsDeposited = 100</span><br><span class="line">&gt;&gt; try buyFavoriteSnack(person: &quot;Alice&quot;, vendingMachine: v)</span><br><span class="line">&lt;&lt; Dispensing Chips</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>在这个示例中， <code>buyFavoriteSnack(person: vendingMachine:)</code> 函数会查找某人最喜欢的零食并尝试通过调用 <code>vend(itemNamed:)</code> 方法为其购买。由于 <code>vend(itemNamed:)</code> 方法可能会出错，因此在调用该方法时会在前面加上 <code>try</code> 关键字。</p>
+<p>throwing 构造器能像 throwing 函数一样传递错误。例如，下表中的 <code>PurchasedSnack</code> 结构体的构造器在初始化过程中调用了一个throwing函数，并将抛出的错误传递给这个构造器的调用者来处理这些错误。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">PurchasedSnack</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> name: <span class="type">String</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">name</span>: <span class="type">String</span>, <span class="params">vendingMachine</span>: <span class="type">VendingMachine</span>) <span class="keyword">throws</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> vendingMachine.vend(itemNamed: name)</span><br><span class="line">        <span class="keyword">self</span>.name <span class="operator">=</span> name</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `errorHandling`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct PurchasedSnack &#123;</span><br><span class="line">       let name: String</span><br><span class="line">       init(name: String, vendingMachine: VendingMachine) throws &#123;</span><br><span class="line">           try vendingMachine.vend(itemNamed: name)</span><br><span class="line">           self.name = name</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; do &#123;</span><br><span class="line">&gt;&gt;     let succeeds = try PurchasedSnack(name: &quot;Candy Bar&quot;, vendingMachine: v)</span><br><span class="line">&gt;&gt;     print(succeeds)</span><br><span class="line">&gt;&gt; &#125; catch &#123;</span><br><span class="line">&gt;&gt;     print(&quot;Threw unexpected error.&quot;)</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&lt;&lt; Dispensing Candy Bar</span><br><span class="line">&lt;&lt; PurchasedSnack(name: &quot;Candy Bar&quot;)</span><br><span class="line">&gt;&gt; do &#123;</span><br><span class="line">&gt;&gt;     let throwsError = try PurchasedSnack(name: &quot;Jelly Baby&quot;, vendingMachine: v)</span><br><span class="line">&gt;&gt;     print(throwsError)</span><br><span class="line">&gt;&gt; &#125; catch &#123;</span><br><span class="line">&gt;&gt;     print(&quot;Threw EXPECTED error.&quot;)</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&lt;&lt; Threw EXPECTED error.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="使用-Do-Catch-处理错误"><a href="#使用-Do-Catch-处理错误" class="headerlink" title="使用 Do-Catch 处理错误"></a>使用 Do-Catch 处理错误</h3><p>您可以使用 <code>do</code>-<code>catch</code> 语句通过运行闭包来处理错误。如果 <code>do</code> 子句中的代码抛出错误，就会与 <code>catch</code> 子句进行匹配，以确定哪个子句可以处理该错误。</p>
+<p>下面是 <code>do</code>-<code>catch</code> 语句的一般形式：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> <span class="operator">&lt;</span>#expression#<span class="operator">&gt;</span></span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125; <span class="keyword">catch</span> <span class="operator">&lt;</span>#pattern <span class="number">1</span>#<span class="operator">&gt;</span> &#123;</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125; <span class="keyword">catch</span> <span class="operator">&lt;</span>#pattern <span class="number">2</span>#<span class="operator">&gt;</span> <span class="keyword">where</span> <span class="operator">&lt;</span>#condition#<span class="operator">&gt;</span> &#123;</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125; <span class="keyword">catch</span> <span class="operator">&lt;</span>#pattern <span class="number">3</span>#<span class="operator">&gt;</span>, <span class="operator">&lt;</span>#pattern <span class="number">4</span>#<span class="operator">&gt;</span> <span class="keyword">where</span> <span class="operator">&lt;</span>#condition#<span class="operator">&gt;</span> &#123;</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>您可以在 <code>catch</code> 后编写一个模式，以指示该子句可以处理哪些错误。如果 <code>catch</code> 子句没有模式，该子句将匹配任何错误，并将错误绑定到名为 <code>error</code> 的局部常量。有关模式匹配的更多信息，请参阅 <a href="doc:Patterns">doc:Patterns</a>。</p>
+<!--
+  TODO: Call out the reasoning why we don't let you
+  consider a catch clause exhaustive by just matching
+  the errors in an given enum without a general catch/default.
+-->
+
+<p>例如，以下代码匹配了 <code>VendingMachineError</code> 枚举的全部三种情况。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> vendingMachine <span class="operator">=</span> <span class="type">VendingMachine</span>()</span><br><span class="line">vendingMachine.coinsDeposited <span class="operator">=</span> <span class="number">8</span></span><br><span class="line"><span class="keyword">do</span> {</span><br><span class="line">    <span class="keyword">try</span> buyFavoriteSnack(person: <span class="string">"Alice"</span>, vendingMachine: vendingMachine)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Success! Yum."</span>)</span><br><span class="line">} <span class="keyword">catch</span> <span class="type">VendingMachineError</span>.invalidSelection {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Invalid Selection."</span>)</span><br><span class="line">} <span class="keyword">catch</span> <span class="type">VendingMachineError</span>.outOfStock {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Out of Stock."</span>)</span><br><span class="line">} <span class="keyword">catch</span> <span class="type">VendingMachineError</span>.insufficientFunds(<span class="keyword">let</span> coinsNeeded) {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Insufficient funds. Please insert an additional <span class="subst">\(coinsNeeded)</span> coins."</span>)</span><br><span class="line">} <span class="keyword">catch</span> {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Unexpected error: <span class="subst">\(error)</span>."</span>)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 打印 "Insufficient funds. Please insert an additional 2 coins."</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `errorHandling`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var vendingMachine = VendingMachine()</span><br><span class="line">-&gt; vendingMachine.coinsDeposited = 8</span><br><span class="line">-&gt; do &#123;</span><br><span class="line">       try buyFavoriteSnack(person: &quot;Alice&quot;, vendingMachine: vendingMachine)</span><br><span class="line">       print(&quot;Success! Yum.&quot;)</span><br><span class="line">   &#125; catch VendingMachineError.invalidSelection &#123;</span><br><span class="line">       print(&quot;Invalid Selection.&quot;)</span><br><span class="line">   &#125; catch VendingMachineError.outOfStock &#123;</span><br><span class="line">       print(&quot;Out of Stock.&quot;)</span><br><span class="line">   &#125; catch VendingMachineError.insufficientFunds(let coinsNeeded) &#123;</span><br><span class="line">       print(&quot;Insufficient funds. Please insert an additional \(coinsNeeded) coins.&quot;)</span><br><span class="line">   &#125; catch &#123;</span><br><span class="line">       print(&quot;Unexpected error: \(error).&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- Insufficient funds. Please insert an additional 2 coins.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>在上面的示例中，<code>buyFavoriteSnack(person:vendingMachine:)</code> 函数在 <code>try</code> 表达式中被调用，因为它可能会抛出错误。如果抛出错误，执行将立即转移到 <code>catch</code> 子句，由其决定是否继续传递。如果错误没有被匹配，它将被最后的 <code>catch</code> 子句捕获，并绑定到本地 <code>error</code> 常量。如果没有错误抛出，则执行 <code>do</code> 语句中的其余语句。</p>
+<p><code>catch</code> 子句不必处理 <code>do</code> 子句中的代码可能抛出的所有错误。如果没有 <code>catch</code> 子句处理错误，则错误会传播到周围的作用域。但是，传播的错误必须由 <strong>某个</strong> 周围作用域处理。在非throwing函数中， <code>do</code>-<code>catch</code> 语句必须处理错误。在throwing函数中，必须由 <code>do</code>-<code>catch</code> 语句或调用者处理错误。如果错误传递到了顶层作用域却依然没有被处理，则会出现运行时错误。</p>
+<p>例如，在编写上述示例时，只要不是 <code>VendingMachineError</code> 中声明的错误，都会被调用函数捕获：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">nourish</span>(<span class="params">with</span> <span class="params">item</span>: <span class="type">String</span>) <span class="keyword">throws</span> &#123;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> vendingMachine.vend(itemNamed: item)</span><br><span class="line">    &#125; <span class="keyword">catch</span> <span class="keyword">is</span> <span class="type">VendingMachineError</span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Couldn&#x27;t buy that from the vending machine.&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> nourish(with: <span class="string">&quot;Beet-Flavored Chips&quot;</span>)</span><br><span class="line">&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Unexpected non-vending-machine-related error: <span class="subst">\(error)</span>&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;Couldn&#x27;t buy that from the vending machine.&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `errorHandling`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func nourish(with item: String) throws &#123;</span><br><span class="line">       do &#123;</span><br><span class="line">           try vendingMachine.vend(itemNamed: item)</span><br><span class="line">       &#125; catch is VendingMachineError &#123;</span><br><span class="line">           print(&quot;Couldn&#x27;t buy that from the vending machine.&quot;)</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; do &#123;</span><br><span class="line">       try nourish(with: &quot;Beet-Flavored Chips&quot;)</span><br><span class="line">   &#125; catch &#123;</span><br><span class="line">       print(&quot;Unexpected non-vending-machine-related error: \(error)&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- Couldn&#x27;t buy that from the vending machine.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>在 <code>nourish(with:)</code> 函数中，如果 <code>vend(itemNamed:)</code> 抛出的错误属于 <code>VendingMachineError</code> 枚举的情况之一，<code>nourish(with:)</code> 会通过打印信息来处理该错误。否则，<code>nourish(with:)</code> 会将错误传递到它的调用方。然后，该错误将被通用的 <code>catch</code> 子句捕获。</p>
+<p>另一种捕获多个相关错误的方式是将它们放在 <code>catch</code> 后，并用逗号分隔。例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">eat</span>(<span class="params">item</span>: <span class="type">String</span>) <span class="keyword">throws</span> &#123;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> vendingMachine.vend(itemNamed: item)</span><br><span class="line">    &#125; <span class="keyword">catch</span> <span class="type">VendingMachineError</span>.invalidSelection, <span class="type">VendingMachineError</span>.insufficientFunds, <span class="type">VendingMachineError</span>.outOfStock &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Invalid selection, out of stock, or not enough money.&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `errorHandling`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func eat(item: String) throws &#123;</span><br><span class="line">       do &#123;</span><br><span class="line">           try vendingMachine.vend(itemNamed: item)</span><br><span class="line">       &#125; catch VendingMachineError.invalidSelection, VendingMachineError.insufficientFunds, VendingMachineError.outOfStock &#123;</span><br><span class="line">           print(&quot;Invalid selection, out of stock, or not enough money.&quot;)</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; do &#123;</span><br><span class="line">&gt;&gt;     try eat(item: &quot;Beet-Flavored Chips&quot;)</span><br><span class="line">&gt;&gt; &#125; catch &#123;</span><br><span class="line">&gt;&gt;     print(&quot;Unexpected error: \(error)&quot;)</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&lt;&lt; Invalid selection, out of stock, or not enough money.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  FIXME the catch clause is getting indented oddly in HTML output if I hard wrap it
+-->
+
+<p><code>eat(item:)</code> 函数列出了要捕获的自动售货机错误，其错误文本与它列出的相对应。如果列出来的三个错误中任意一个被抛出，该 <code>catch</code> 子句将通过打印一条消息来处理这些错误。任何其他错误都会传播到周围的作用域，包括以后可能添加的任何自动售货机错误(<code>VendingMachineError</code>)。</p>
+<h3 id="将错误转换成可选值"><a href="#将错误转换成可选值" class="headerlink" title="将错误转换成可选值"></a>将错误转换成可选值</h3><p>您可以使用 <code>try?</code> 将错误转换为可选值来处理错误。如果在计算 <code>try?</code> 表达式时抛出错误，则表达式的值为 <code>nil</code> 。例如，在以下代码中，<code>x</code> 和 <code>y</code> 有着相同的数值和等价的含义：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">someThrowingFunction</span>() <span class="keyword">throws</span> -&gt; <span class="type">Int</span> {</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> x <span class="operator">=</span> <span class="keyword">try?</span> someThrowingFunction()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> y: <span class="type">Int</span>?</span><br><span class="line"><span class="keyword">do</span> {</span><br><span class="line">    y <span class="operator">=</span> <span class="keyword">try</span> someThrowingFunction()</span><br><span class="line">} <span class="keyword">catch</span> {</span><br><span class="line">    y <span class="operator">=</span> <span class="literal">nil</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `optional-try`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func someThrowingFunction() throws -&gt; Int &#123;</span><br><span class="line">      // ...</span><br><span class="line">&gt;&gt;    return 40</span><br><span class="line">-&gt; &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; let x = try? someThrowingFunction()</span><br><span class="line">&gt;&gt; print(x as Any)</span><br><span class="line">&lt;&lt; Optional(40)</span><br><span class="line">---</span><br><span class="line">-&gt; let y: Int?</span><br><span class="line">   do &#123;</span><br><span class="line">       y = try someThrowingFunction()</span><br><span class="line">   &#125; catch &#123;</span><br><span class="line">       y = nil</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; print(y as Any)</span><br><span class="line">&lt;&lt; Optional(40)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如果 <code>someThrowingFunction()</code> 抛出一个错误，泽 <code>x</code> 和 <code>y</code> 的值是 <code>nil</code>。否则 <code>x</code> 和 <code>y</code> 的值就是该函数的返回值。注意，无论 <code>someThrowingFunction()</code> 的返回值类型是什么类型，<code>x</code> 和 <code>y</code> 都是这个类型的可选类型。例子中此函数返回一个整型，所以 <code>x</code> 和 <code>y</code> 是可选整型。</p>
+<p>使用 <code>try?</code> 可让您在希望以相同方式处理所有错误时编写简洁的错误处理代码。例如，以下代码使用多种方法获取数据，如果所有方法都失败，则返回 <code>nil</code> 。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">fetchData</span>() -&gt; <span class="type">Data</span>? &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> data <span class="operator">=</span> <span class="keyword">try?</span> fetchDataFromDisk() &#123; <span class="keyword">return</span> data &#125;</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> data <span class="operator">=</span> <span class="keyword">try?</span> fetchDataFromServer() &#123; <span class="keyword">return</span> data &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `optional-try-cached-data`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; struct Data &#123;&#125;</span><br><span class="line">&gt;&gt; func fetchDataFromDisk() throws -&gt; Data &#123; return Data() &#125;</span><br><span class="line">&gt;&gt; func fetchDataFromServer() throws -&gt; Data &#123; return Data() &#125;</span><br><span class="line">-&gt; func fetchData() -&gt; Data? &#123;</span><br><span class="line">       if let data = try? fetchDataFromDisk() &#123; return data &#125;</span><br><span class="line">       if let data = try? fetchDataFromServer() &#123; return data &#125;</span><br><span class="line">       return nil</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="禁用错误传递"><a href="#禁用错误传递" class="headerlink" title="禁用错误传递"></a>禁用错误传递</h3><p>有时，您知道一个throwing函数或方法实际上不会在运行时抛出错误。在这种情况下，您可以在表达式之前写入 <code>try!</code> 以禁用错误传递，并在运行时断言不会抛出错误的情况下封装调用。如果实际抛出了错误，将会发生运行时错误。</p>
+<p>例如，下面的代码使用了 <code>loadImage(atPath:)</code> 函数，该函数从给定的路径加载图片资源，如果无法加载图像则抛出一个错误。在这种情况下，因为图片是和应用绑定的，运行时不会有错误抛出，所以适合禁用错误传递。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> photo <span class="operator">=</span> <span class="keyword">try!</span> loadImage(atPath: <span class="string">&quot;./Resources/John Appleseed.jpg&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `forceTryStatement`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; struct Image &#123;&#125;</span><br><span class="line">&gt;&gt; func loadImage(atPath path: String) throws -&gt; Image &#123;</span><br><span class="line">&gt;&gt;     return Image()</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">-&gt; let photo = try! loadImage(atPath: &quot;./Resources/John Appleseed.jpg&quot;)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="指定错误类型"><a href="#指定错误类型" class="headerlink" title="指定错误类型"></a>指定错误类型</h2><p>上述所有示例都使用了最常见的错误处理方式，即代码抛出的错误可以是符合 <code>Error</code> 协议的任何类型的值。这种方法符合实际情况，即您不可能提前知道代码运行时可能发生的所有错误，尤其是在传递其他地方抛出的错误时。它还反映了一个事实，即错误会随着时间的推移而改变。新版本的库，包括你的依赖库使用的库，可能会产生新的错误，而现实世界中用户配置的复杂性可能会暴露出开发或测试过程中不可见的故障模式。上述示例中的错误处理代码始终包含一个默认情况，用于处理没有特定 <code>catch</code> 子句的错误。</p>
+<p>大多数 Swift 代码都不会指定所抛出错误的类型。不过，在以下特殊情况下，您可能会限制代码只抛出一种特定类型的错误：</p>
+<ul>
+<li><p>在不支持动态分配内存的嵌入式系统上运行代码时。抛出 <code>any Error</code> 或其他封装的协议类型(boxed protocol type)的实例需要在运行时分配内存来存储错误。相比之下，抛出特定类型的错误可以让 Swift 避免为错误进行堆分配。</p>
+</li>
+<li><p>当错误是代码单元（如库）的实现细节，而不是代码接口的一部分时。由于错误只来自于库，而不是来自于其他依赖库或库的客户端，因此您可以列出所有可能出现的错误的详尽列表。而且，由于这些错误是库的实现细节，因此可以全部在库内部处理。</p>
+</li>
+<li><p>在只传递由通用参数描述的错误的代码中，例如函数接收一个闭包参数并传递来自该闭包的任何错误。有关传播特定错误类型与使用 rethrows 的比较，请参阅 <a href="doc:Declarations#再抛出函数和方法">doc:Declarations#再抛出函数和方法</a>。</p>
+</li>
+</ul>
+<p>例如，思考一下如何实现汇总评分并使用以下错误类型的代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">StatisticsError</span>: <span class="title class_">Error</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> noRatings</span><br><span class="line">    <span class="keyword">case</span> invalidRating(<span class="type">Int</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>要指定函数只抛出 <code>StatisticsError</code> 值作为其错误，您可以在声明函数时写入 <code>throws(StatisticsError)</code> 而不是 <code>throws</code> 。这种语法也被称为 **指定类型抛错(typed throws)**，因为您在声明中的 <code>throws</code> 后面指定了错误类型。例如，下面的函数抛出 <code>StatisticsError</code> 值作为其错误。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">summarize</span>(<span class="keyword">_</span> <span class="params">ratings</span>: [<span class="type">Int</span>]) <span class="keyword">throws</span>(<span class="type">StatisticsError</span>) &#123;</span><br><span class="line">    <span class="keyword">guard</span> <span class="operator">!</span>ratings.isEmpty <span class="keyword">else</span> &#123; <span class="keyword">throw</span> .noRatings &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> counts <span class="operator">=</span> [<span class="number">1</span>: <span class="number">0</span>, <span class="number">2</span>: <span class="number">0</span>, <span class="number">3</span>: <span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> rating <span class="keyword">in</span> ratings &#123;</span><br><span class="line">        <span class="keyword">guard</span> rating <span class="operator">&gt;</span> <span class="number">0</span> <span class="operator">&amp;&amp;</span> rating <span class="operator">&lt;=</span> <span class="number">3</span> <span class="keyword">else</span> &#123; <span class="keyword">throw</span> .invalidRating(rating) &#125;</span><br><span class="line">        counts[rating]<span class="operator">!</span> <span class="operator">+=</span> <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;*&quot;</span>, counts[<span class="number">1</span>]<span class="operator">!</span>, <span class="string">&quot;-- **&quot;</span>, counts[<span class="number">2</span>]<span class="operator">!</span>, <span class="string">&quot;-- ***&quot;</span>, counts[<span class="number">3</span>]<span class="operator">!</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码中，<code>summarize(_:)</code> 函数汇总了评分从 1 到 3 数量的列表。如果输入无效，该函数将抛出 <code>StatisticsError</code> 实例。上面代码中抛出错误的两个地方都省略了错误类型，因为函数已经指定了错误类型。在这样的函数中抛出错误时，您可以使用省略形式 <code>throw .noRatings</code> 代替 <code>throw StatisticsError.noRatings</code> 。</p>
+<p>当您在函数开头指定错误类型时，Swift 会检查您是否抛出了其他错误。例如，如果您尝试在 <code>VendingMachineError</code> 函数中使用本章前面示例中的 <code>summarize(_:)</code> 函数，该代码将在编译时产生错误。</p>
+<p>您可以在普通的throwing函数中调用使用指定类型抛错的函数：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">someThrowingFunction</span>() -&gt; <span class="keyword">throws</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> ratings <span class="operator">=</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br><span class="line">    <span class="keyword">try</span> summarize(ratings)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码没有为 <code>someThrowingFunction()</code> 指定错误类型，因此它抛出了 <code>any Error</code>。您也可以将错误类型写为 <code>throws(any Error)</code>; 下面的代码等同于上面的代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">someThrowingFunction</span>() -&gt; <span class="keyword">throws</span>(<span class="keyword">any</span> <span class="type">Error</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> ratings <span class="operator">=</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br><span class="line">    <span class="keyword">try</span> summarize(ratings)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在此代码中，<code>someThrowingFunction()</code> 会传递 <code>summarize(_:)</code> 抛出的任何错误。<code>summarize(_：)</code> 抛出的错误总是 <code>StatisticsError</code> 值，这也是 <code>someThrowingFunction()</code> 可抛出的有效错误。</p>
+<p>就像您可以使用 <code>Never</code> 的返回类型编写一个永不返回的函数一样，您也可以使用 <code>throws(Never)</code> 编写一个永不抛出错误的函数：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">nonThrowingFunction</span>() <span class="keyword">throws</span>(<span class="type">Never</span>) &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数不能抛出错误，因为不可能创建一个 <code>Never</code> 类型的值来抛出。</p>
+<p>除了指定函数的错误类型外，您还可以为 <code>do</code>-<code>catch</code> 语句编写特定的错误类型子句。例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> ratings <span class="operator">=</span> []</span><br><span class="line"><span class="keyword">do</span> <span class="keyword">throws</span>(<span class="type">StatisticsError</span>) &#123;</span><br><span class="line">    <span class="keyword">try</span> summarize(ratings)</span><br><span class="line">&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="keyword">switch</span> error &#123;</span><br><span class="line">    <span class="keyword">case</span> .noRatings:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;No ratings available&quot;</span>)</span><br><span class="line">    <span class="keyword">case</span> .invalidRating(<span class="keyword">let</span> rating):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Invalid rating: <span class="subst">\(rating)</span>&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;No ratings available&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>在此代码中，写入 <code>do throws(StatisticsError)</code> 表明 <code>do</code>-<code>catch</code> 语句抛出 <code>StatisticsError</code> 值作为其错误。与其他 <code>do</code>-<code>catch</code> 语句一样，<code>catch</code> 子句可以处理所有可能的错误，也可以传递未处理的错误让周围的作用域处理。此代码使用 <code>switch</code> 语句处理所有错误，每个枚举值有一个分支(case)。与其他没有模式的 <code>catch</code> 子句一样，该子句匹配任何错误并将错误绑定到名为 <code>error</code> 的局部常量。<code>do</code>-<code>catch</code> 语句会抛出 <code>StatisticsError</code> 值，所以 <code>error</code> 是 <code>StatisticsError</code> 类型的值。</p>
+<p>上述 <code>catch</code> 子句使用 <code>switch</code> 语句来匹配和处理每个可能的错误。如果您尝试在不更新错误处理代码的情况下为 <code>StatisticsError</code> 添加新的分支(case)，Swift 将提示您错误，因为 <code>switch</code> 语句不再穷尽所有分支。对于捕获自身所有错误的库，您可以使用这种方法来确保任何新错误都有相应的新代码来处理。</p>
+<p>如果函数或 <code>do</code> 闭包只抛出单一类型的错误，Swift 会推断该代码使用了指定类型抛错。使用这种更短的语法，您可以将上述 <code>do</code>-<code>catch</code> 示例编写如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> ratings <span class="operator">=</span> []</span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> summarize(ratings)</span><br><span class="line">&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="keyword">switch</span> error &#123;</span><br><span class="line">    <span class="keyword">case</span> .noRatings:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;No ratings available&quot;</span>)</span><br><span class="line">    <span class="keyword">case</span> .invalidRating(<span class="keyword">let</span> rating):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Invalid rating: <span class="subst">\(rating)</span>&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;No ratings available&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>尽管上面的 <code>do</code>-<code>catch</code> 块没有指定它抛出的错误类型，Swift 仍会推断它抛出 <code>StatisticsError</code> 。您可以显式地编写 <code>throws(any Error)</code> 以避免让 Swift 推断出指定类型抛错。</p>
+<h2 id="指定清理操作"><a href="#指定清理操作" class="headerlink" title="指定清理操作"></a>指定清理操作</h2><p>您可以使用 <code>defer</code> 语句在代码执行离开当前代码块之前执行一组语句。无论是以何种方式离开当前代码块–是由于抛出错误，还是由于 return 或 break 等语句，该语句都可让您执行任何必要的清理。例如，您可以使用 <code>defer</code> 语句来确保关闭文件描述符，以及释放手动分配的内存。</p>
+<p><code>defer</code> 语句将代码的执行延迟到当前的作用域退出之前。该语句由 <code>defer</code> 关键字和要被延迟执行的语句组成。延迟执行的语句不能包含任何控制转移语句，例如 <code>break</code>、<code>return</code> 语句，或是抛出一个错误。延迟执行的操作会按照它们声明的顺序从后往前执行——也就是说，第一条 <code>defer</code> 语句中的代码最后才执行，第二条 <code>defer</code> 语句中的代码倒数第二个执行，以此类推。最后一条语句会第一个执行。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">processFile</span>(<span class="params">filename</span>: <span class="type">String</span>) <span class="keyword">throws</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> exists(filename) &#123;</span><br><span class="line">        <span class="keyword">let</span> file <span class="operator">=</span> <span class="keyword">open</span>(filename)</span><br><span class="line">        <span class="keyword">defer</span> &#123;</span><br><span class="line">            close(file)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">let</span> line <span class="operator">=</span> <span class="keyword">try</span> file.readline() &#123;</span><br><span class="line">            <span class="comment">// 处理文件。</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// close(file) 会在这里被调用，即作用域的最后。</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `defer`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; func exists(_ file: String) -&gt; Bool &#123; return true &#125;</span><br><span class="line">&gt;&gt; struct File &#123;</span><br><span class="line">&gt;&gt;    func readline() throws -&gt; String? &#123; return nil &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&gt;&gt; func open(_ file: String) -&gt; File &#123; return File() &#125;</span><br><span class="line">&gt;&gt; func close(_ fileHandle: File) &#123;&#125;</span><br><span class="line">-&gt; func processFile(filename: String) throws &#123;</span><br><span class="line">      if exists(filename) &#123;</span><br><span class="line">         let file = open(filename)</span><br><span class="line">         defer &#123;</span><br><span class="line">            close(file)</span><br><span class="line">         &#125;</span><br><span class="line">         while let line = try file.readline() &#123;</span><br><span class="line">            // Work with the file.</span><br><span class="line">&gt;&gt;          print(line)</span><br><span class="line">         &#125;</span><br><span class="line">         // close(file) is called here, at the end of the scope.</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>上面的示例使用 <code>defer</code> 语句确保 <code>open(_:)</code> 函数有相应的 <code>close(_:)</code> 调用。</p>
+<p>即使不涉及错误处理代码，您也可以使用 <code>defer</code> 语句。有关详细信息，请参阅 <a href="doc:ControlFlow#延迟执行的操作Deferred-Actions">doc:ControlFlow#延迟执行的操作Deferred-Actions</a>。</p>
+<!--
+This source file is part of the Swift.org open source project
+
+Copyright (c) 2014 - 2022 Apple Inc. and the Swift project authors
+Licensed under Apache License v2.0 with Runtime Library Exception
+
+See https://swift.org/LICENSE.txt for license information
+See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
+-->
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>ERRORHANDLING</li>
+          
+  </ul>
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">错误处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E7%A4%BA%E4%B8%8E%E6%8A%9B%E5%87%BA%E9%94%99%E8%AF%AF"><span class="nav-number">1.1.</span> <span class="nav-text">表示与抛出错误</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%86%E9%94%99%E8%AF%AF%E8%BD%AC%E6%8D%A2%E6%88%90%E5%8F%AF%E9%80%89%E5%80%BC"><span class="nav-number">1.1.1.</span> <span class="nav-text">将错误转换成可选值</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="类型转换确定一个值的运行时类型，并为其提供更具体的类型信息。 类型转换是一种检查实例类型，或将该实例视为其类层次结构中不同父类或子类的方法。 Swift 中的类型转换是通过 is 和 as 操作符实现的。这两个操作符为值的类型检查或类型转换提供了一种简单而富有表现力的方法。 你还可以使用类型转换来检查类型是否遵循协议，如 doc:Protocols#检查是否遵循协议 中所述。 为类型转换定义类层次">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/TypeCasting.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="类型转换确定一个值的运行时类型，并为其提供更具体的类型信息。 类型转换是一种检查实例类型，或将该实例视为其类层次结构中不同父类或子类的方法。 Swift 中的类型转换是通过 is 和 as 操作符实现的。这两个操作符为值的类型检查或类型转换提供了一种简单而富有表现力的方法。 你还可以使用类型转换来检查类型是否遵循协议，如 doc:Protocols#检查是否遵循协议 中所述。 为类型转换定义类层次">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-08T08:32:48.707Z">
+<meta property="article:modified_time" content="2025-03-08T08:32:48.707Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/TypeCasting">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>TYPECASTING</li>
+          
+  </ul>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h1 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h1><p>确定一个值的运行时类型，并为其提供更具体的类型信息。</p>
+<p><em>类型转换</em>是一种检查实例类型，或将该实例视为其类层次结构中不同父类或子类的方法。</p>
+<p>Swift 中的类型转换是通过 <code>is</code> 和 <code>as</code> 操作符实现的。这两个操作符为值的类型检查或类型转换提供了一种简单而富有表现力的方法。</p>
+<p>你还可以使用类型转换来检查类型是否遵循协议，<br>如 <a href="doc:Protocols#检查是否遵循协议">doc:Protocols#检查是否遵循协议</a> 中所述。</p>
+<h2 id="为类型转换定义类层次结构"><a href="#为类型转换定义类层次结构" class="headerlink" title="为类型转换定义类层次结构"></a>为类型转换定义类层次结构</h2><p>你可以使用类型转换在类和子类的层次结构中检查某个类实例的类型，并将该实例转换为同一层次结构中的另一个类。下面的三个代码片段定义了一个类层次结构和一个包含这些类的实例的数组，作为类型转换示例。</p>
+<p>第一个代码片段定义了一个新的名为 <code>MediaItem</code> 的基类。该类为数字媒体库中出现的任何类型项目提供基本功能。具体来说，它声明了一个 <code>String</code> 类型的 <code>name</code> 属性和一个 <code>init(name:)</code> 初始化器。（假设所有媒体项目，包括所有电影和歌曲，都有一个名称。）</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MediaItem</span> {</span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">name</span>: <span class="type">String</span>) {</span><br><span class="line">        <span class="keyword">self</span>.name <span class="operator">=</span> name</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `typeCasting, typeCasting-err`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class MediaItem &#123;</span><br><span class="line">      var name: String</span><br><span class="line">      init(name: String) &#123;</span><br><span class="line">         self.name = name</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>下一个代码段定义了 <code>MediaItem</code> 的两个子类。第一个子类 <code>Movie</code> 封装了电影的附加信息。它在基础 <code>MediaItem</code> 类的基础上添加了一个 <code>director</code> 属性和一个相应的初始化器。第二个子类 <code>Song</code> 在基类的基础上添加了 <code>artist</code> 属性和初始化器：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Movie</span>: <span class="title class_">MediaItem</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> director: <span class="type">String</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">name</span>: <span class="type">String</span>, <span class="params">director</span>: <span class="type">String</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.director <span class="operator">=</span> director</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(name: name)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Song</span>: <span class="title class_">MediaItem</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> artist: <span class="type">String</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">name</span>: <span class="type">String</span>, <span class="params">artist</span>: <span class="type">String</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.artist <span class="operator">=</span> artist</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(name: name)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `typeCasting, typeCasting-err`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class Movie: MediaItem &#123;</span><br><span class="line">      var director: String</span><br><span class="line">      init(name: String, director: String) &#123;</span><br><span class="line">         self.director = director</span><br><span class="line">         super.init(name: name)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; class Song: MediaItem &#123;</span><br><span class="line">      var artist: String</span><br><span class="line">      init(name: String, artist: String) &#123;</span><br><span class="line">         self.artist = artist</span><br><span class="line">         super.init(name: name)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>最后一个代码段创建了一个名为 <code>library</code> 的常量数组，其中包含两个 <code>Movie</code> 实例和三个 <code>Song</code> 实例。<code>library</code> 数组的类型是通过使用数组字面值初始化来推断的。Swift 的类型检查程序能够推断出 <code>Movie</code> 和 <code>Song</code> 有一个共同的父类 <code>MediaItem</code>，从而推断出 library 数组的类型为 <code>[MediaItem]</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> library <span class="operator">=</span> [</span><br><span class="line">    <span class="type">Movie</span>(name: <span class="string">&quot;Casablanca&quot;</span>, director: <span class="string">&quot;Michael Curtiz&quot;</span>),</span><br><span class="line">    <span class="type">Song</span>(name: <span class="string">&quot;Blue Suede Shoes&quot;</span>, artist: <span class="string">&quot;Elvis Presley&quot;</span>),</span><br><span class="line">    <span class="type">Movie</span>(name: <span class="string">&quot;Citizen Kane&quot;</span>, director: <span class="string">&quot;Orson Welles&quot;</span>),</span><br><span class="line">    <span class="type">Song</span>(name: <span class="string">&quot;The One And Only&quot;</span>, artist: <span class="string">&quot;Chesney Hawkes&quot;</span>),</span><br><span class="line">    <span class="type">Song</span>(name: <span class="string">&quot;Never Gonna Give You Up&quot;</span>, artist: <span class="string">&quot;Rick Astley&quot;</span>)</span><br><span class="line">]</span><br><span class="line"><span class="comment">// &quot;library&quot; 的类型被推断为 [MediaItem]</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `typeCasting`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let library = [</span><br><span class="line">      Movie(name: &quot;Casablanca&quot;, director: &quot;Michael Curtiz&quot;),</span><br><span class="line">      Song(name: &quot;Blue Suede Shoes&quot;, artist: &quot;Elvis Presley&quot;),</span><br><span class="line">      Movie(name: &quot;Citizen Kane&quot;, director: &quot;Orson Welles&quot;),</span><br><span class="line">      Song(name: &quot;The One And Only&quot;, artist: &quot;Chesney Hawkes&quot;),</span><br><span class="line">      Song(name: &quot;Never Gonna Give You Up&quot;, artist: &quot;Rick Astley&quot;)</span><br><span class="line">   ]</span><br><span class="line">&gt;&gt; print(type(of: library))</span><br><span class="line">&lt;&lt; Array&lt;MediaItem&gt;</span><br><span class="line">// the type of &quot;library&quot; is inferred to be [MediaItem]</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>library</code> 中存储的项目实际上仍然是 <code>Movie</code> 和 <code>Song</code> 实例。但是，如果遍历该数组的内容，返回的项目类型是 <code>MediaItem</code>，而不是 <code>Movie</code> 或 <code>Song</code>。为了以原始类型处理它们，你需要<em>检查</em>它们的类型，或将它们<em>向下转型</em>为不同的类型，如下文所述。</p>
+<h2 id="检查类型"><a href="#检查类型" class="headerlink" title="检查类型"></a>检查类型</h2><p>使用<em>类型检查操作符</em> (<code>is</code>) 来检查实例是否属于某个子类类型。如果实例属于该子类类型，则类型检查操作符返回 <code>true</code>；反之则返回 <code>false</code>。</p>
+<p>下面的示例定义了两个变量：<code>movieCount</code> 和 <code>songCount</code>，用于计算 <code>library</code> 数组中 <code>Movie</code> 和 <code>Song</code> 实例的数量：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> movieCount <span class="operator">=</span> <span class="number">0</span></span><br><span class="line"><span class="keyword">var</span> songCount <span class="operator">=</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> library &#123;</span><br><span class="line">    <span class="keyword">if</span> item <span class="keyword">is</span> <span class="type">Movie</span> &#123;</span><br><span class="line">        movieCount <span class="operator">+=</span> <span class="number">1</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> item <span class="keyword">is</span> <span class="type">Song</span> &#123;</span><br><span class="line">        songCount <span class="operator">+=</span> <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Media library contains <span class="subst">\(movieCount)</span> movies and <span class="subst">\(songCount)</span> songs&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;Media library contains 2 movies and 3 songs&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `typeCasting`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var movieCount = 0</span><br><span class="line">-&gt; var songCount = 0</span><br><span class="line">---</span><br><span class="line">-&gt; for item in library &#123;</span><br><span class="line">      if item is Movie &#123;</span><br><span class="line">         movieCount += 1</span><br><span class="line">      &#125; else if item is Song &#123;</span><br><span class="line">         songCount += 1</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; print(&quot;Media library contains \(movieCount) movies and \(songCount) songs&quot;)</span><br><span class="line">&lt;- Media library contains 2 movies and 3 songs</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>此示例遍历 <code>library</code> 数组中的所有项目。每次遍历时，<code>for</code>-<code>in</code> 循环都会将 <code>item</code> 常量设置为数组中的下一个 <code>MediaItem</code>。</p>
+<p>如果当前的 <code>MediaItem</code> 是 <code>Movie</code> 实例，<code>item is Movie</code> 返回 <code>true</code>；反之则返回 <code>false</code>。同理，<code>item is Song</code> 会检查项目是否为 <code>Song</code> 实例。当 <code>for</code>-<code>in</code> 循环结束时，<code>movieCount</code> 和 <code>songCount</code> 的值包含了找到的每种类型的 <code>MediaItem</code> 实例的数量。</p>
+<h2 id="向下转型"><a href="#向下转型" class="headerlink" title="向下转型"></a>向下转型</h2><p>某个类常量或变量可能实际上指向子类的实例。如果你认为情况确实如此，可以尝试使用<em>类型转换操作符</em>（<code>as?</code> 或 <code>as!</code>）来<em>向下转型</em>为子类类型。</p>
+<p>由于向下转型可能失败，类型转换操作符有两种不同的形式。条件形式，即 <code>as?</code>，会返回一个与你尝试向下转型的类型相同的可选值。强制形式，即 <code>as!</code>，会执行尝试向下转型并将结果强制解包的复合操作。</p>
+<p>如果不确定向下转型能否成功，请使用类型转换操作符的条件形式（<code>as?</code>）。这种形式的操作符将始终返回一个可选值，如果向下转型不成功，该值将为 <code>nil</code>。这样，你就可以检查是否成功进行了向下转型。</p>
+<p>只有在确定向下转型一定会成功时，才使用类型转换操作符的强制形式（<code>as!</code>）。如果尝试向下转型到一个不正确的类类型，这种形式的操作符会触发运行时错误。</p>
+<p>下面的示例遍历 <code>library</code> 中的每个 <code>MediaItem</code>，并为每个项目打印适当的描述。为此，它需要将每个项目作为真正的 <code>Movie</code> 或 <code>Song</code>来访问，而不仅仅是作为一个 <code>MediaItem</code>。因为只有这样才能访问 <code>Movie</code> 的 <code>director</code> 或 <code>Song</code> 的 <code>artist</code> 属性，并在描述中使用。</p>
+<p>在本例中，数组中的每个项目可能是一部 <code>Movie</code>，也可能是一首 <code>Song</code>。我们事先并不知道哪个项目是什么类型，因此这里较为恰当的做法，是使用类型转换操作符的条件形式（<code>as?</code>）在循环中进行向下转型。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> library &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> movie <span class="operator">=</span> item <span class="keyword">as?</span> <span class="type">Movie</span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Movie: <span class="subst">\(movie.name)</span>, dir. <span class="subst">\(movie.director)</span>&quot;</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> <span class="keyword">let</span> song <span class="operator">=</span> item <span class="keyword">as?</span> <span class="type">Song</span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Song: <span class="subst">\(song.name)</span>, by <span class="subst">\(song.artist)</span>&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Movie: Casablanca, dir. Michael Curtiz</span></span><br><span class="line"><span class="comment">// Song: Blue Suede Shoes, by Elvis Presley</span></span><br><span class="line"><span class="comment">// Movie: Citizen Kane, dir. Orson Welles</span></span><br><span class="line"><span class="comment">// Song: The One And Only, by Chesney Hawkes</span></span><br><span class="line"><span class="comment">// Song: Never Gonna Give You Up, by Rick Astley</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `typeCasting`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-&gt; for item in library &#123;</span><br><span class="line">      if let movie = item as? Movie &#123;</span><br><span class="line">         print(&quot;Movie: \(movie.name), dir. \(movie.director)&quot;)</span><br><span class="line">      &#125; else if let song = item as? Song &#123;</span><br><span class="line">         print(&quot;Song: \(song.name), by \(song.artist)&quot;)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">&lt;/ Movie: Casablanca, dir. Michael Curtiz</span><br><span class="line">&lt;/ Song: Blue Suede Shoes, by Elvis Presley</span><br><span class="line">&lt;/ Movie: Citizen Kane, dir. Orson Welles</span><br><span class="line">&lt;/ Song: The One And Only, by Chesney Hawkes</span><br><span class="line">&lt;/ Song: Never Gonna Give You Up, by Rick Astley</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>该示例首先尝试将当前 <code>item</code> 向下转型为 <code>Movie</code>。由于 <code>item</code> 是一个 <code>MediaItem</code> 实例，它有<em>可能</em>是一部 <code>Movie</code>；同样，它也有可能是一首 <code>Song</code>，或者只是一个基本的 <code>MediaItem</code>。由于这种不确定性，当尝试向下转型到子类类型时，类型转换运算符的 <code>as?</code> 形式会返回一个<em>可选</em>值。<code>item as? Movie</code> 的结果是 <code>Movie?</code>（“可选 <code>Movie</code>”）类型。</p>
+<p>当应用到库数组中的 <code>Song</code> 实例时，向下转型为 <code>Movie</code> 会失败。为了解决这个问题，上面的示例使用了可选绑定来检查可选 <code>Movie</code> 是否实际包含一个值（即，检查向下转型是否成功。）这里的可选绑定写作“<code>if let movie = item as? Movie</code>”，可以理解为：</p>
+<p>“尝试将 <code>item</code> 作为 <code>Movie</code> 访问。如果成功，则将名为 <code>movie</code> 的新临时常量设置为存储在返回的可选 <code>Movie</code> 中的值。”</p>
+<p>如果向下转型成功，<code>movie</code> 的属性将用于打印该 <code>Movie</code> 实例的说明，包括其导演的姓名。类似的原理也用于检查 <code>Song</code> 实例，并在从资源库中找到歌曲时打印适当的描述（包括艺术家姓名）。</p>
+<blockquote>
+<p>注意: 类型转换并不修改实例或更改其值。底层的实例保持不变，它们只是被当作转换后的类型实例来处理和访问。</p>
+</blockquote>
+<!--
+  TODO: This example should be followed by the same example written with switch,
+  to introduce type casting in a pattern matching context
+  and to set up the crazy Any example at the end of the chapter.
+-->
+
+<!--
+  TODO: No section on upcasting because nobody can come up with
+  an example that isn't excessively contrived.
+  The reference shows the behavior in a contrived example.
+-->
+
+<h2 id="Any-和-AnyObject-的类型转换"><a href="#Any-和-AnyObject-的类型转换" class="headerlink" title="Any 和 AnyObject 的类型转换"></a>Any 和 AnyObject 的类型转换</h2><p>Swift 为处理非特定类型提供了两种通用类型：</p>
+<ul>
+<li><code>Any</code> 可以表示任何类型的实例，包括函数类型。</li>
+<li><code>AnyObject</code> 可以表示任何类类型的实例。</li>
+</ul>
+<p>只有在明确需要它们提供的行为和功能时，才使用 <code>Any</code> 和 <code>AnyObject</code>。在代码中最好明确指定你希望使用的类型。</p>
+<p>下面是一个使用 <code>Any</code> 处理不同类型（包括函数类型和非类类型）的示例。该示例创建了一个名为 <code>things</code> 的数组，可以存储 <code>Any</code> 类型的值：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> things: [<span class="keyword">Any</span>] <span class="operator">=</span> []</span><br><span class="line"></span><br><span class="line">things.append(<span class="number">0</span>)</span><br><span class="line">things.append(<span class="number">0.0</span>)</span><br><span class="line">things.append(<span class="number">42</span>)</span><br><span class="line">things.append(<span class="number">3.14159</span>)</span><br><span class="line">things.append(<span class="string">"hello"</span>)</span><br><span class="line">things.append((<span class="number">3.0</span>, <span class="number">5.0</span>))</span><br><span class="line">things.append(<span class="type">Movie</span>(name: <span class="string">"Ghostbusters"</span>, director: <span class="string">"Ivan Reitman"</span>))</span><br><span class="line">things.append({ (name: <span class="type">String</span>) -&gt; <span class="type">String</span> <span class="keyword">in</span> <span class="string">"Hello, <span class="subst">\(name)</span>"</span> })</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `typeCasting, typeCasting-err`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var things: [Any] = []</span><br><span class="line">---</span><br><span class="line">-&gt; things.append(0)</span><br><span class="line">-&gt; things.append(0.0)</span><br><span class="line">-&gt; things.append(42)</span><br><span class="line">-&gt; things.append(3.14159)</span><br><span class="line">-&gt; things.append(&quot;hello&quot;)</span><br><span class="line">-&gt; things.append((3.0, 5.0))</span><br><span class="line">-&gt; things.append(Movie(name: &quot;Ghostbusters&quot;, director: &quot;Ivan Reitman&quot;))</span><br><span class="line">-&gt; things.append(&#123; (name: String) -&gt; String in &quot;Hello, \(name)&quot; &#125;)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>things</code> 数组包含两个 <code>Int</code> 值、两个 <code>Double</code> 值、一个 <code>String</code> 值、一个类型为 <code>(Double, Double)</code> 的元组、电影 “捉鬼敢死队”，以及一个接收 <code>String</code> 值并返回另一个 <code>String</code> 值的闭包表达式。</p>
+<p>如果常量或变量的已知类型是 <code>Any</code> 或 <code>AnyObject</code>，要确定其具体类型，可以在 <code>switch</code> 语句的 case 下使用 <code>is</code> 或 <code>as</code> 模式。下面的示例遍历了 <code>things</code> 数组中的项目，并使用 <code>switch</code> 语句查询了每个项目的类型。该 <code>switch</code> 语句的一些 case 将其匹配值与指定类型的常量绑定，以便打印其值：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> thing <span class="keyword">in</span> things &#123;</span><br><span class="line">    <span class="keyword">switch</span> thing &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">0</span> <span class="keyword">as</span> <span class="type">Int</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;zero as an Int&quot;</span>)</span><br><span class="line">    <span class="keyword">case</span> <span class="number">0</span> <span class="keyword">as</span> <span class="type">Double</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;zero as a Double&quot;</span>)</span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">let</span> someInt <span class="keyword">as</span> <span class="type">Int</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;an integer value of <span class="subst">\(someInt)</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">let</span> someDouble <span class="keyword">as</span> <span class="type">Double</span> <span class="keyword">where</span> someDouble <span class="operator">&gt;</span> <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;a positive double value of <span class="subst">\(someDouble)</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">is</span> <span class="type">Double</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;some other double value that I don&#x27;t want to print&quot;</span>)</span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">let</span> someString <span class="keyword">as</span> <span class="type">String</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;a string value of <span class="subst">\&quot;</span><span class="subst">\(someString)</span><span class="subst">\&quot;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">let</span> (x, y) <span class="keyword">as</span> (<span class="type">Double</span>, <span class="type">Double</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;an (x, y) point at <span class="subst">\(x)</span>, <span class="subst">\(y)</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">let</span> movie <span class="keyword">as</span> <span class="type">Movie</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;a movie called <span class="subst">\(movie.name)</span>, dir. <span class="subst">\(movie.director)</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">let</span> stringConverter <span class="keyword">as</span> (<span class="type">String</span>) -&gt; <span class="type">String</span>:</span><br><span class="line">        <span class="built_in">print</span>(stringConverter(<span class="string">&quot;Michael&quot;</span>))</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;something else&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// zero as an Int</span></span><br><span class="line"><span class="comment">// zero as a Double</span></span><br><span class="line"><span class="comment">// an integer value of 42</span></span><br><span class="line"><span class="comment">// a positive double value of 3.14159</span></span><br><span class="line"><span class="comment">// a string value of &quot;hello&quot;</span></span><br><span class="line"><span class="comment">// an (x, y) point at 3.0, 5.0</span></span><br><span class="line"><span class="comment">// a movie called Ghostbusters, dir. Ivan Reitman</span></span><br><span class="line"><span class="comment">// Hello, Michael</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `typeCasting`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">-&gt; for thing in things &#123;</span><br><span class="line">      switch thing &#123;</span><br><span class="line">         case 0 as Int:</span><br><span class="line">            print(&quot;zero as an Int&quot;)</span><br><span class="line">         case 0 as Double:</span><br><span class="line">            print(&quot;zero as a Double&quot;)</span><br><span class="line">         case let someInt as Int:</span><br><span class="line">            print(&quot;an integer value of \(someInt)&quot;)</span><br><span class="line">         case let someDouble as Double where someDouble &gt; 0:</span><br><span class="line">            print(&quot;a positive double value of \(someDouble)&quot;)</span><br><span class="line">         case is Double:</span><br><span class="line">            print(&quot;some other double value that I don&#x27;t want to print&quot;)</span><br><span class="line">         case let someString as String:</span><br><span class="line">            print(&quot;a string value of \&quot;\(someString)\&quot;&quot;)</span><br><span class="line">         case let (x, y) as (Double, Double):</span><br><span class="line">            print(&quot;an (x, y) point at \(x), \(y)&quot;)</span><br><span class="line">         case let movie as Movie:</span><br><span class="line">            print(&quot;a movie called \(movie.name), dir. \(movie.director)&quot;)</span><br><span class="line">         case let stringConverter as (String) -&gt; String:</span><br><span class="line">            print(stringConverter(&quot;Michael&quot;))</span><br><span class="line">         default:</span><br><span class="line">            print(&quot;something else&quot;)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">&lt;/ zero as an Int</span><br><span class="line">&lt;/ zero as a Double</span><br><span class="line">&lt;/ an integer value of 42</span><br><span class="line">&lt;/ a positive double value of 3.14159</span><br><span class="line">&lt;/ a string value of &quot;hello&quot;</span><br><span class="line">&lt;/ an (x, y) point at 3.0, 5.0</span><br><span class="line">&lt;/ a movie called Ghostbusters, dir. Ivan Reitman</span><br><span class="line">&lt;/ Hello, Michael</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>注意: <code>Any</code> 类型代表任何类型的值，包括可选类型。如果你使用的是可选值，而预期值是 <code>Any</code> 类型，Swift 会发出警告。如果你您确实需要将可选值用作 <code>Any</code> 值，可以使用 <code>as</code> 操作符显式地将可选值转换为 <code>Any</code> 值，如下所示。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> optionalNumber: <span class="type">Int</span>? <span class="operator">=</span> <span class="number">3</span></span><br><span class="line">things.append(optionalNumber)        <span class="comment">// 会警告</span></span><br><span class="line">things.append(optionalNumber <span class="keyword">as</span> <span class="keyword">Any</span>) <span class="comment">// 不会警告</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<!--
+  - test: `typeCasting-err`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let optionalNumber: Int? = 3</span><br><span class="line">-&gt; things.append(optionalNumber)        // Warning</span><br><span class="line">!$ warning: expression implicitly coerced from &#x27;Int?&#x27; to &#x27;Any&#x27;</span><br><span class="line">!! things.append(optionalNumber)        // Warning</span><br><span class="line">!!               ^~~~~~~~~~~~~~</span><br><span class="line">!$ note: provide a default value to avoid this warning</span><br><span class="line">!! things.append(optionalNumber)        // Warning</span><br><span class="line">!!               ^~~~~~~~~~~~~~</span><br><span class="line">!!                              ?? &lt;#default value#&gt;</span><br><span class="line">!$ note: force-unwrap the value to avoid this warning</span><br><span class="line">!! things.append(optionalNumber)        // Warning</span><br><span class="line">!!               ^~~~~~~~~~~~~~</span><br><span class="line">!!                              !</span><br><span class="line">!$ note: explicitly cast to &#x27;Any&#x27; with &#x27;as Any&#x27; to silence this warning</span><br><span class="line">!! things.append(optionalNumber)        // Warning</span><br><span class="line">!!               ^~~~~~~~~~~~~~</span><br><span class="line">!!                              as Any</span><br><span class="line">-&gt; things.append(optionalNumber as Any) // No warning</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  Rejected examples to illustrate AnyObject:
+
+  Array of delegates which may conform to one or more of the class's delegate protocols.
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">protocol MovieDelegate &#123;</span><br><span class="line">    func willPlay(movie: Movie)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Library &#123;</span><br><span class="line">    var delegates = [AnyObject]</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">for delegate in delegates &#123;</span><br><span class="line">    guard let delegate = delegate as MovieDelegate else &#123; continue &#125;</span><br><span class="line">    delegate.willPlay(movie: m)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  A userData object for associating some opaque piece of data or state with an API call.</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class C &#123;</span><br><span class="line">    // Not userInfo -- that&#x27;s usually a Dictionary</span><br><span class="line">    let userData: AnyObject?  // In Cocoa APIs, userData is a void*</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+This source file is part of the Swift.org open source project
+
+Copyright (c) 2014 - 2022 Apple Inc. and the Swift project authors
+Licensed under Apache License v2.0 with Runtime Library Exception
+
+See https://swift.org/LICENSE.txt for license information
+See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
+-->
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>TYPECASTING</li>
+          
+  </ul>
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.</span> <span class="nav-text">类型转换</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">为类型转换定义类层次结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Any-%E5%92%8C-AnyObject-%E7%9A%84%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.2.</span> <span class="nav-text">Any 和 AnyObject 的类型转换</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

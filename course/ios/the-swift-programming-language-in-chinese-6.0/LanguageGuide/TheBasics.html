@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="基础知识处理常见数据类型并编写基本语法。 Swift 提供了许多基本数据类型，包括表示整数的 Int、表示浮点数的 Double、表示布尔值的 Bool 和表示文本的 String。Swift 还提供了三种主要集合类型（Array（数组），Set（集合），和 Dictionary（字典））的强大版本，详见 doc:CollectionTypes。 Swift 使用变量来存储值，并通过标识名称来引用">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/TheBasics.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="基础知识处理常见数据类型并编写基本语法。 Swift 提供了许多基本数据类型，包括表示整数的 Int、表示浮点数的 Double、表示布尔值的 Bool 和表示文本的 String。Swift 还提供了三种主要集合类型（Array（数组），Set（集合），和 Dictionary（字典））的强大版本，详见 doc:CollectionTypes。 Swift 使用变量来存储值，并通过标识名称来引用">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-08T08:32:48.707Z">
+<meta property="article:modified_time" content="2025-03-08T08:32:48.707Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/TheBasics">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>THEBASICS</li>
+          
+  </ul>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><p>处理常见数据类型并编写基本语法。</p>
+<p>Swift 提供了许多基本数据类型，包括表示整数的 <code>Int</code>、表示浮点数的 <code>Double</code>、表示布尔值的 <code>Bool</code> 和表示文本的 <code>String</code>。Swift 还提供了三种主要集合类型（<code>Array</code>（数组），<code>Set</code>（集合），和 <code>Dictionary</code>（字典））的强大版本，详见 <a href="doc:CollectionTypes">doc:CollectionTypes</a>。</p>
+<p>Swift 使用变量来存储值，并通过标识名称来引用值。Swift 还广泛使用不可更改其值的变量。这些变量被称为常量，在整个 Swift 中都有使用，以便在处理无需更改的值时使代码更安全、更清晰。</p>
+<p>除了熟悉的类型外，Swift 还引入了元组等高级类型。通过元组，你可以创建并传递一组值。你可以使用元组从函数返回一个包含了多个值的复合值。</p>
+<p>Swift 还引入了可选类型，用于处理值缺失的情况。可选类型要么表示“变量<em>有</em>值，且等于 <em>x</em>”，要么表示“压根就<em>没有</em>值”。</p>
+<p>Swift 是一种<em>类型安全</em>的语言，这意味着该语言可以帮助你明确代码可以处理的值的类型。如果你的部分代码需要字符串，类型安全可以防止你错误地将整数传递给它。同样，类型安全也能防止你不小心将可选字符串传递给需要非可选字符串的代码。类型安全可帮助你在开发过程中尽早发现并修复错误。</p>
+<h2 id="常量和变量"><a href="#常量和变量" class="headerlink" title="常量和变量"></a>常量和变量</h2><p>常量和变量将名称（如 <code>maximumNumberOfLoginAttempts</code> 或 <code>welcomeMessage</code>）与特定类型的值（如数字 <code>10</code> 或字符串 <code>"Hello"</code>）相关联。<em>常量</em>的值一旦设置就不能更改，而<em>变量</em>则可以在将来设置不同的值。</p>
+<h3 id="声明常量和变量"><a href="#声明常量和变量" class="headerlink" title="声明常量和变量"></a>声明常量和变量</h3><p>常量和变量在使用前必须先声明。使用 <code>let</code> 关键字声明常量，使用 <code>var</code> 关键字声明变量。下面举例说明如何使用常量和变量来追踪用户尝试登录的次数：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> maximumNumberOfLoginAttempts <span class="operator">=</span> <span class="number">10</span></span><br><span class="line"><span class="keyword">var</span> currentLoginAttempt <span class="operator">=</span> <span class="number">0</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `constantsAndVariables`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let maximumNumberOfLoginAttempts = 10</span><br><span class="line">-&gt; var currentLoginAttempt = 0</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>该代码可理解为：</p>
+<p>“声明一个名为 <code>maximumNumberOfLoginAttempts</code> 的新常量，并赋予其 <code>10</code> 的值。然后，声明一个名为 <code>currentLoginAttempt</code> 的新变量，并赋予其 <code>0</code> 的初始值。”</p>
+<p>在这个示例中，允许的最大登录尝试次数被声明为一个常量，因为最大值永远不会改变。当前登录尝试计数器被声明为变量，因为每次登录尝试失败后，该值都必须递增。</p>
+<p>如果代码中的某个存储值不会改变，请使用 <code>let</code> 关键字将其声明为常量。变量只用于存储会发生变化的值。</p>
+<p>在声明常量或变量时，可以像上面的示例一样，在声明中为其赋值。或者你也可以稍后在程序中为变量分配初始值，只要能保证在第一次读取前它有值即可。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> environment <span class="operator">=</span> <span class="string">&quot;development&quot;</span></span><br><span class="line"><span class="keyword">let</span> maximumNumberOfLoginAttempts: <span class="type">Int</span></span><br><span class="line"><span class="comment">// maximumNumberOfLoginAttempts 尚无值。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> environment <span class="operator">==</span> <span class="string">&quot;development&quot;</span> &#123;</span><br><span class="line">    maximumNumberOfLoginAttempts <span class="operator">=</span> <span class="number">100</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    maximumNumberOfLoginAttempts <span class="operator">=</span> <span class="number">10</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 现在 maximumNumberOfLoginAttempts 有了值，可以读取了。</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `constantsWithDeferredInitialization`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var environment = &quot;development&quot;</span><br><span class="line">-&gt; let maximumNumberOfLoginAttempts: Int</span><br><span class="line">-&gt; if environment == &quot;development&quot; &#123;</span><br><span class="line">       maximumNumberOfLoginAttempts = 100</span><br><span class="line">   &#125; else &#123;</span><br><span class="line">       maximumNumberOfLoginAttempts = 10</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; print(maxNumberOfLoginAttempts)</span><br><span class="line">&lt;&lt; 100</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>在本例中，登录尝试的最大次数是常数，其值取决于环境。在开发环境中，其值为 100；在其他环境中，其值为 10。<code>if</code> 语句的两个分支都将 <code>maximumNumberOfLoginAttempts</code> 初始化为某个值，从而保证该常量一定有一个值。有关 Swift 如何在以这种方式设置初始值时检查代码的详情，请参阅 <a href="doc:Declarations#常量声明">doc:Declarations#常量声明</a>。</p>
+<p>你可以在一行中声明多个常量或多个变量，中间用逗号隔开：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x <span class="operator">=</span> <span class="number">0.0</span>, y <span class="operator">=</span> <span class="number">0.0</span>, z <span class="operator">=</span> <span class="number">0.0</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `multipleDeclarations`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var x = 0.0, y = 0.0, z = 0.0</span><br><span class="line">&gt;&gt; print(x, y, z)</span><br><span class="line">&lt;&lt; 0.0 0.0 0.0</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="类型注解"><a href="#类型注解" class="headerlink" title="类型注解"></a>类型注解</h3><p>在声明常量或变量时，可以提供<em>类型注解</em>，以明确常量或变量可以存储的值的类型。编写类型注解时，在常量或变量名后加上冒号，后跟一个空格，然后是要使用的类型名称。</p>
+<p>本例为名为 <code>welcomeMessage</code> 的变量提供了一个类型注解，以指示该变量可以存储字符串值：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> welcomeMessage: <span class="type">String</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `typeAnnotations`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var welcomeMessage: String</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>声明中的冒号表示“…类型的…”，因此上面的代码可以理解为：</p>
+<p>“声明一个名为 <code>welcomeMessage</code> 的字符串类型的变量。”</p>
+<p>短语“字符串类型”意味着“可以存储任何字符串值“。请将其理解为变量可以存储的“值的类型”。</p>
+<p>现在，你可以将 <code>welcomeMessage</code> 变量设置为任何字符串值且不会出错：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">welcomeMessage <span class="operator">=</span> <span class="string">&quot;Hello&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `typeAnnotations`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; welcomeMessage = &quot;Hello&quot;</span><br><span class="line">&gt;&gt; print(welcomeMessage)</span><br><span class="line">&lt;&lt; Hello</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>你可以在一行中定义多个相同类型的相关变量，中间用逗号隔开，并在最后一个变量名后加一个类型注解：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> red, green, blue: <span class="type">Double</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `typeAnnotations`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var red, green, blue: Double</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>备注: 在实践中很少需要编写类型注解。如果你在定义常量或变量时为其提供了初始值，Swift 几乎总是可以推断出该常量或变量的类型，如 <a href="doc:TheBasics#类型安全和类型推断">doc:TheBasics#类型安全和类型推断</a> 中所述。上面的 <code>welcomeMessage</code> 示例中，没有提供初始值，因此 <code>welcomeMessage</code> 变量的类型是通过类型注解指定的，而不是从初始值推断出来的。</p>
+</blockquote>
+<h3 id="命名常量和变量"><a href="#命名常量和变量" class="headerlink" title="命名常量和变量"></a>命名常量和变量</h3><p>常量和变量名几乎可以包含任何字符，包括 Unicode 字符：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> π <span class="operator">=</span> <span class="number">3.14159</span></span><br><span class="line"><span class="keyword">let</span> 你好 <span class="operator">=</span> <span class="string">&quot;你好世界&quot;</span></span><br><span class="line"><span class="keyword">let</span> 🐶🐮 <span class="operator">=</span> <span class="string">&quot;dogcow&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `constantsAndVariables`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let π = 3.14159</span><br><span class="line">-&gt; let 你好 = &quot;你好世界&quot;</span><br><span class="line">-&gt; let 🐶🐮 = &quot;dogcow&quot;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>常量和变量名不能包含空格字符、数学符号、箭头、专用的 Unicode 标量值，或画线和画框字符。常量和变量名也不能以数字开头，但数字可以包含在名称的其他部分。</p>
+<p>一旦声明了某个类型的常量或变量，就不能再用相同的名称声明，也不能更改它以存储不同类型的值。同时也不能将常量改为变量，或将变量改为常量。</p>
+<blockquote>
+<p>备注: 如果要使用与 Swift 保留关键字相同的名称命名常量或变量，在使用关键字时，请用反引号 (<code>`</code>) 包裹。不过，除非别无他选，请尽量避免使用关键字作为变量名称。</p>
+</blockquote>
+<p>你可以将现有变量的值更改为另一个兼容类型的值。在本例中，<code>friendlyWelcome</code> 的值从 <code>&quot;Hello!&quot;</code> 改为了 <code>&quot;Bonjour!&quot;</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> friendlyWelcome <span class="operator">=</span> <span class="string">&quot;Hello!&quot;</span></span><br><span class="line">friendlyWelcome <span class="operator">=</span> <span class="string">&quot;Bonjour!&quot;</span></span><br><span class="line"><span class="comment">// friendlyWelcome 的当前值是 &quot;Bonjour!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `constantsAndVariables`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var friendlyWelcome = &quot;Hello!&quot;</span><br><span class="line">-&gt; friendlyWelcome = &quot;Bonjour!&quot;</span><br><span class="line">/&gt; friendlyWelcome is now \&quot;\(friendlyWelcome)\&quot;</span><br><span class="line">&lt;/ friendlyWelcome is now &quot;Bonjour!&quot;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>与变量不同，常量的值在设置后不能更改。在编译代码时，如果试图更改常量的值，就会报错：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> languageName <span class="operator">=</span> <span class="string">&quot;Swift&quot;</span></span><br><span class="line">languageName <span class="operator">=</span> <span class="string">&quot;Swift++&quot;</span></span><br><span class="line"><span class="comment">// 这是一个编译时错误：languageName 不能更改。</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `constantsAndVariables_err`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let languageName = &quot;Swift&quot;</span><br><span class="line">-&gt; languageName = &quot;Swift++&quot;</span><br><span class="line">// This is a compile-time error: languageName cannot be changed.</span><br><span class="line">!$ error: cannot assign to value: &#x27;languageName&#x27; is a &#x27;let&#x27; constant</span><br><span class="line">!! languageName = &quot;Swift++&quot;</span><br><span class="line">!! ^~~~~~~~~~~~</span><br><span class="line">!! /tmp/swifttest.swift:1:1: note: change &#x27;let&#x27; to &#x27;var&#x27; to make it mutable</span><br><span class="line">!! let languageName = &quot;Swift&quot;</span><br><span class="line">!! ^~~</span><br><span class="line">!! var</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="打印常量和变量"><a href="#打印常量和变量" class="headerlink" title="打印常量和变量"></a>打印常量和变量</h3><p>使用 <code>print(_:separator:terminator:)</code> 函数可以打印常量或变量的当前值：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(friendlyWelcome)</span><br><span class="line"><span class="comment">// 打印 &quot;Bonjour!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `constantsAndVariables`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; print(friendlyWelcome)</span><br><span class="line">&lt;- Bonjour!</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>print(_:separator:terminator:)</code> 函数是一个全局函数，用于将一个或多个值打印到适当的输出端。例如，在 Xcode 中，<code>print(_:separator:termininator:)</code> 函数将在 Xcode 的 “控制台” 窗格中打印输出。参数 <code>separator</code>（分隔符） 和 <code>terminator</code>（结束符） 有默认值，因此在调用此函数时可以省略。默认情况下，该函数通过添加换行符来结束打印行。如果要打印一个值且不换行，可以传递一个空字符串作为结束符，例如 <code>print(someValue,termininator:&quot;&quot;)</code>。有关带默认值参数的信息，请参阅 <a href="doc:Functions#默认参数值">doc:Functions#默认参数值</a>。</p>
+<!--
+  - test: `printingWithoutNewline`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; let someValue = 10</span><br><span class="line">-&gt; print(someValue, terminator: &quot;&quot;)</span><br><span class="line">-&gt; print(someValue)</span><br><span class="line">&lt;&lt; 1010</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  QUESTION: have I referred to Xcode's console correctly here?
+  Should I mention other output streams, such as the REPL / playgrounds?
+-->
+
+<!--
+  NOTE: this is a deliberately simplistic description of what you can do with print().
+  It will be expanded later on.
+-->
+
+<p>Swift 使用<em>字符串插值</em>将常量或变量的名称作为占位符包含在较长的字符串中，并提示 Swift 将其替换为该常量或变量的当前值。将名称包在括号中，并在左括号前用反斜杠进行转义：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">"The current value of friendlyWelcome is <span class="subst">\(friendlyWelcome)</span>"</span>)</span><br><span class="line"><span class="comment">// 打印 "The current value of friendlyWelcome is Bonjour！"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `constantsAndVariables`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; print(&quot;The current value of friendlyWelcome is \(friendlyWelcome)&quot;)</span><br><span class="line">&lt;- The current value of friendlyWelcome is Bonjour!</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>备注: 在 <a href="doc:StringsAndCharacters#字符串插值">doc:StringsAndCharacters#字符串插值</a> 中描述了所有字符串插值选项。</p>
+</blockquote>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>使用注释在代码中包含不可执行的文本，作为给自己的注释或提醒。在编译代码时，Swift 编译器会忽略注释。</p>
+<p>Swift 中的注释与 C 语言中的注释非常相似。单行注释以两个正斜杠 (<code>//</code>) 开头：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这是一个注释。</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `comments`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; // This is a comment.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>多行注释以正斜杠 + 星号 (<code>/*</code>) 开始，并以星号 + 正斜杠 (<code>*/</code>) 结束：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 这也是一个注释</span></span><br><span class="line"><span class="comment">但写了多行。*/</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `comments`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; /* This is also a comment</span><br><span class="line">   but is written over multiple lines. */</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>与 C 语言中的多行注释不同，Swift 中的多行注释可以嵌套在其他多行注释中。在编写嵌套注释时，你可以先编写一个多行注释块，然后在第一个注释块中编写第二个多行注释块。然后关闭第二个注释块，接着关闭第一个注释块：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 这是第一个多行注释的开始。</span></span><br><span class="line"><span class="comment">    <span class="comment">/* 这是第二个嵌套的多行注释。*/</span></span></span><br><span class="line"><span class="comment">这是第一个多行注释的结束。*/</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `comments`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; /* This is the start of the first multiline comment.</span><br><span class="line">      /* This is the second, nested multiline comment. */</span><br><span class="line">   This is the end of the first multiline comment. */</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>通过嵌套多行注释，即使代码中已包含多行注释，你也能快速、轻松地注释大块代码。</p>
+<h2 id="分号"><a href="#分号" class="headerlink" title="分号"></a>分号</h2><p>与许多其他语言不同，Swift 并不要求你在代码中的每条语句后都写上分号（<code>;</code>），不过如果你愿意，也可以这样做。不过，如果你想在一行中编写多个独立语句，则<em>必须</em>使用分号：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> cat <span class="operator">=</span> <span class="string">&quot;🐱&quot;</span>; <span class="built_in">print</span>(cat)</span><br><span class="line"><span class="comment">// 打印 &quot;🐱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `semiColons`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let cat = &quot;🐱&quot;; print(cat)</span><br><span class="line">&lt;- 🐱</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="整数"><a href="#整数" class="headerlink" title="整数"></a>整数</h2><p><em>整数</em>是没有小数成分的数字，如 <code>42</code> 和 <code>-23</code>。 整数可以是<em>有符号的</em>（正数、零或负数），也可以是<em>无符号的</em>（正数或零）。</p>
+<p>Swift 提供 8、16、32 和 64 位有符号和无符号整数。这些整数遵循与 C 类似的命名规则，即 8 位无符号整数的类型是 <code>UInt8</code>，32 位有符号整数的类型是 <code>Int32</code>。与 Swift 中的所有类型一样，这些整数类型的名称也是大写的。</p>
+<h3 id="整数边界"><a href="#整数边界" class="headerlink" title="整数边界"></a>整数边界</h3><p>你可以使用 <code>min</code> 和 <code>max</code> 属性访问每个整数类型的最小值和最大值：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> minValue <span class="operator">=</span> <span class="type">UInt8</span>.min  <span class="comment">// minValue 等于 0，类型为 UInt8</span></span><br><span class="line"><span class="keyword">let</span> maxValue <span class="operator">=</span> <span class="type">UInt8</span>.max  <span class="comment">// maxValue 等于 255，类型为 UInt8</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `integerBounds`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let minValue = UInt8.min  // minValue is equal to 0, and is of type UInt8</span><br><span class="line">-&gt; let maxValue = UInt8.max  // maxValue is equal to 255, and is of type UInt8</span><br><span class="line">&gt;&gt; print(minValue, maxValue)</span><br><span class="line">&lt;&lt; 0 255</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>这些属性的值属于适当大小的数字类型（如上例中的 <code>UInt8</code>），因此可以在表达式中与同类型的其他值一起使用。</p>
+<h3 id="Int（整数）"><a href="#Int（整数）" class="headerlink" title="Int（整数）"></a>Int（整数）</h3><p>在大多数情况下，你不需要在代码中使用特定大小的整数。Swift 提供了一种额外的整数类型 <code>Int</code>，其大小与当前平台的原生字长大小相同：</p>
+<ul>
+<li>在 32 位平台上，<code>Int</code> 的大小与 <code>Int32</code> 相同。</li>
+<li>在 64 位平台上，<code>Int</code> 的大小与 <code>Int64</code> 相同。</li>
+</ul>
+<p>除非你需要使用特定大小的整数，否则在代码中始终使用 <code>Int</code> 表示整数值。这有助于代码的一致性和互操作性。即使在 32 位平台上，<code>Int</code> 也可以存储介于 <code>-2,147,483,648</code> 和 <code>2,147,483,647</code> 之间的任何值，其大小足以容纳许多整数范围。</p>
+<h3 id="UInt（无符号整数）"><a href="#UInt（无符号整数）" class="headerlink" title="UInt（无符号整数）"></a>UInt（无符号整数）</h3><p>Swift 还提供了无符号整数类型 <code>UInt</code>，其大小与当前平台的原生字长大小相同：</p>
+<ul>
+<li>在 32 位平台上，<code>UInt</code> 的大小与 <code>UInt32</code> 相同。</li>
+<li>在 64 位平台上，<code>UInt</code> 的大小与 <code>UInt64</code> 相同。</li>
+</ul>
+<blockquote>
+<p>备注: 只有在特别需要无符号整数类型且其大小与平台的原生字长大小相同时，才使用 <code>UInt</code>。如果不是这种情况，最好使用 <code>Int</code>，即使要存储的值是非负值。对整数值一致使用 <code>Int</code> 可以提高代码的互操作性，避免在不同数字类型之间进行转换，并符合 <a href="doc:TheBasics#类型安全和类型推断">doc:TheBasics#类型安全和类型推断</a> 中所述的整数类型推断。</p>
+</blockquote>
+<h2 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h2><p><em>浮点数</em>是带有小数成分的数字，如 <code>3.14159</code>、<code>0.1</code> 和 <code>-273.15</code>。</p>
+<p>与整数类型相比，浮点类型可以表示的数值范围更广，而且可以存储比 <code>Int</code> 类型大得多或小得多的数字。Swift 提供了两种带符号浮点数类型：</p>
+<ul>
+<li><code>Double</code> 表示 64 位浮点数。</li>
+<li><code>Float</code> 表示 32 位浮点数。</li>
+</ul>
+<blockquote>
+<p>备注: <code>Double</code> 的精度至少为小数点后 15 位，而 <code>Float</code> 的精度可以少至小数点后 6 位。使用哪种浮点类型更合适，取决于代码中需要处理数值的性质和范围。在两种类型都适用的情况下，<code>Double</code> 是首选。</p>
+</blockquote>
+<!--
+  TODO: Explicitly mention situations where Float is appropriate,
+  such as when optimizing for storage size of collections?
+-->
+
+<!--
+  TODO: mention infinity, -infinity etc.
+-->
+
+<h2 id="类型安全和类型推断"><a href="#类型安全和类型推断" class="headerlink" title="类型安全和类型推断"></a>类型安全和类型推断</h2><p>Swift 是一种<em>类型安全</em>的语言。类型安全语言鼓励你显式指示代码可处理的值的类型。如果代码的一部分需要 <code>String</code>，你就不能错误地将 <code>Int</code> 传递给它。</p>
+<p>由于 Swift 是类型安全的语言，因此它在编译代码时会执行<em>类型检查</em>，并将任何不匹配的类型标记为错误。这样，你就能在开发过程中尽早发现并修复错误。</p>
+<p>类型检查可帮助你在处理不同类型的值时避免错误。但是，这并不意味着你必须指定你声明的每个常量和变量的类型。如果你没有指定所需值的类型，Swift 会使用<em>类型推断</em>来确定适当的类型。类型推断使编译器在编译代码时，仅通过检查你提供的值，就能自动推断出特定表达式的类型。</p>
+<p>由于有了类型推断，Swift 所需的类型声明比 C 或 Objective-C 等语言要少得多。常量和变量仍然是显式类型的，但为其指定类型的大部分工作都是自动完成的。</p>
+<p>当你声明一个带有初始值的常量或变量时，类型推断尤其有用。通常的做法是在声明常量或变量时为其赋<em>字面量</em>。（字面量指的是直接出现在源代码中的值，如下面示例中的 <code>42</code> 和 <code>3.14159</code>）。</p>
+<p>例如，如果你将字面量 <code>42</code> 赋给一个新常量，但没有说明它是什么类型，Swift 就会推断你希望该常量是一个 <code>Int</code> 常量，因为你刚使用了一个看起来像整数的数字对它进行了初始化：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> meaningOfLife <span class="operator">=</span> <span class="number">42</span></span><br><span class="line"><span class="comment">// meaningOfLife 被推断为 Int 类型</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `typeInference`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let meaningOfLife = 42</span><br><span class="line">// meaningOfLife is inferred to be of type Int</span><br><span class="line">&gt;&gt; print(type(of: meaningOfLife))</span><br><span class="line">&lt;&lt; Int</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>同样，如果你没有为浮点数字面量指定类型，Swift 会认为你想创建一个 <code>Double</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> pi <span class="operator">=</span> <span class="number">3.14159</span></span><br><span class="line"><span class="comment">// pi 推断为 Double 类型</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `typeInference`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let pi = 3.14159</span><br><span class="line">// pi is inferred to be of type Double</span><br><span class="line">&gt;&gt; print(type(of: pi))</span><br><span class="line">&lt;&lt; Double</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>在推断浮点数类型时，Swift 总是选择 <code>Double</code>（而非 <code>Float</code>）。</p>
+<p>如果在表达式中结合使用整数和浮点数字面量，则会根据上下文推断出 <code>Double</code> 类型：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> anotherPi <span class="operator">=</span> <span class="number">3</span> <span class="operator">+</span> <span class="number">0.14159</span></span><br><span class="line"><span class="comment">// anotherPi 也被推断为 Double 类型</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `typeInference`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let anotherPi = 3 + 0.14159</span><br><span class="line">// anotherPi is also inferred to be of type Double</span><br><span class="line">&gt;&gt; print(type(of: anotherPi))</span><br><span class="line">&lt;&lt; Double</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>3</code> 的字面量本身并没有显式类型，因此可以根据加法中的浮点数字面量推断出合适的输出类型 <code>Double</code>。</p>
+<h2 id="数值字面量"><a href="#数值字面量" class="headerlink" title="数值字面量"></a>数值字面量</h2><p>整数字面量可以写成：</p>
+<ul>
+<li>不带前缀的<em>十进制</em>数</li>
+<li>带 <code>0b</code> 前缀的<em>二进制</em>数</li>
+<li>带前缀 <code>0o</code> 的<em>八进制</em>数</li>
+<li>带前缀 <code>0x</code> 的<em>十六进制</em>数</li>
+</ul>
+<p>以下所有整数字面量的十进制值都是 <code>17</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> decimalInteger <span class="operator">=</span> <span class="number">17</span></span><br><span class="line"><span class="keyword">let</span> binaryInteger <span class="operator">=</span> <span class="number">0b10001</span>       <span class="comment">// 以二进制表示的 17</span></span><br><span class="line"><span class="keyword">let</span> octalInteger <span class="operator">=</span> <span class="number">0o21</span>           <span class="comment">// 以八进制表示的 17</span></span><br><span class="line"><span class="keyword">let</span> hexadecimalInteger <span class="operator">=</span> <span class="number">0x11</span>     <span class="comment">// 以十六进制表示的 17</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `numberLiterals`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let decimalInteger = 17</span><br><span class="line">-&gt; let binaryInteger = 0b10001       // 17 in binary notation</span><br><span class="line">-&gt; let octalInteger = 0o21           // 17 in octal notation</span><br><span class="line">-&gt; let hexadecimalInteger = 0x11     // 17 in hexadecimal notation</span><br><span class="line">&gt;&gt; print(binaryInteger, octalInteger, hexadecimalInteger)</span><br><span class="line">&lt;&lt; 17 17 17</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>浮点字面量可以是十进制（不带前缀），也可以是十六进制（带 <code>0x</code> 前缀）。浮点数的小数点两边必须始终有一个数字（或十六进制数）。十进制浮点数还可以有一个可选的<em>指数</em>，用大写或小写 <code>e</code> 表示；十六进制浮点数必须有一个指数，用大写或小写 <code>p</code> 表示。</p>
+<!--
+  - test: `float-required-vs-optional-exponent-err`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let hexWithout = 0x1.5</span><br><span class="line">!$ error: hexadecimal floating point literal must end with an exponent</span><br><span class="line">!! let hexWithout = 0x1.5</span><br><span class="line">!!                       ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `float-required-vs-optional-exponent`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let hexWith = 0x1.5p7</span><br><span class="line">-&gt; let decimalWithout = 0.5</span><br><span class="line">-&gt; let decimalWith = 0.5e7</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>对于指数为 <code>x</code> 的十进制数，字面量是基数乘以 10ˣ：</p>
+<ul>
+<li><code>1.25e2</code> 表示 1.25 x 10² 或 <code>125.0</code>。</li>
+<li><code>1.25e-2</code> 表示 1.25 x 10⁻² 或 <code>0.0125</code>。</li>
+</ul>
+<p>对于指数为 <code>x</code> 的十六进制数，字面量是基数乘以 2ˣ：</p>
+<ul>
+<li><code>0xFp2</code> 表示 15 x 2² 或 <code>60.0</code>。</li>
+<li><code>0xFp-2</code> 表示 15 x 2⁻²，或 <code>3.75</code>。</li>
+</ul>
+<p>以下所有浮点字面量的十进制值都是 <code>12.1875</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> decimalDouble <span class="operator">=</span> <span class="number">12.1875</span></span><br><span class="line"><span class="keyword">let</span> exponentDouble <span class="operator">=</span> <span class="number">1.21875e1</span></span><br><span class="line"><span class="keyword">let</span> hexadecimalDouble <span class="operator">=</span> <span class="number">0xC.3p0</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `numberLiterals`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let decimalDouble = 12.1875</span><br><span class="line">-&gt; let exponentDouble = 1.21875e1</span><br><span class="line">-&gt; let hexadecimalDouble = 0xC.3p0</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>数值字面量可以包含额外的格式，以便于阅读。整数和浮点数都可以填充额外的零，也可以包含下划线，以提高可读性。这两种格式都不会影响字面量的实际值：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> paddedDouble <span class="operator">=</span> <span class="number">000123.456</span></span><br><span class="line"><span class="keyword">let</span> oneMillion <span class="operator">=</span> <span class="number">1_000_000</span></span><br><span class="line"><span class="keyword">let</span> justOverOneMillion <span class="operator">=</span> <span class="number">1_000_000.000_000_1</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `numberLiterals`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let paddedDouble = 000123.456</span><br><span class="line">-&gt; let oneMillion = 1_000_000</span><br><span class="line">-&gt; let justOverOneMillion = 1_000_000.000_000_1</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="数字类型转换"><a href="#数字类型转换" class="headerlink" title="数字类型转换"></a>数字类型转换</h2><p>对代码中的所有通用整数常量和变量使用 <code>Int</code> 类型，即使它们已知是非负值。在通常情况下使用默认整数类型意味着整数常量和变量可以立即在代码中互操作，并且与整数字面量的推断类型相匹配。</p>
+<p>只有当手头的任务特别需要其他整数类型时，或者因为外部数据源提供了显式大小的数据，或者为了性能、内存使用或其他必要的优化，再考虑使用其他整数类型。在这些情况下使用显式大小的类型有助于捕捉任何意外的数值溢出，并隐式地记录所使用数据的性质。</p>
+<h3 id="整数转换"><a href="#整数转换" class="headerlink" title="整数转换"></a>整数转换</h3><p>每种数字类型的整数常量或变量可存储的数字范围都不同。<code>Int8</code> 常量或变量可以存储 <code>-128</code> 到 <code>127</code> 之间的数字，而 <code>UInt8</code> 常量或变量可以存储 <code>0</code> 到 <code>255</code> 之间的数字。编译代码时，如果一个数字无法放入一个规定大小的整数类型常量或变量中，就会报错：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> cannotBeNegative: <span class="type">UInt8</span> <span class="operator">=</span> <span class="operator">-</span><span class="number">1</span></span><br><span class="line"><span class="comment">// UInt8 不能存储负数，因此会报错</span></span><br><span class="line"><span class="keyword">let</span> tooBig: <span class="type">Int8</span> <span class="operator">=</span> <span class="type">Int8</span>.max <span class="operator">+</span> <span class="number">1</span></span><br><span class="line"><span class="comment">// Int8 不能存储大于其最大值的数字，</span></span><br><span class="line"><span class="comment">// 因此也会报错</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `constantsAndVariablesOverflowError`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let cannotBeNegative: UInt8 = -1</span><br><span class="line">// UInt8 can&#x27;t store negative numbers, and so this will report an error</span><br><span class="line">-&gt; let tooBig: Int8 = Int8.max + 1</span><br><span class="line">// Int8 can&#x27;t store a number larger than its maximum value,</span><br><span class="line">// and so this will also report an error</span><br><span class="line">!! /tmp/swifttest.swift:2:29: error: arithmetic operation &#x27;127 + 1&#x27; (on type &#x27;Int8&#x27;) results in an overflow</span><br><span class="line">!! let tooBig: Int8 = Int8.max + 1</span><br><span class="line">!!                    ~~~~~~~~ ^ ~</span><br><span class="line">!! /tmp/swifttest.swift:1:31: error: negative integer &#x27;-1&#x27; overflows when stored into unsigned type &#x27;UInt8&#x27;</span><br><span class="line">!! let cannotBeNegative: UInt8 = -1</span><br><span class="line">!!                                ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>由于每种数值类型可以存储不同范围的值，因此必须根据具体情况选择是否进行数值类型转换。这种选择加入的方法可以防止隐藏的转换错误，并有助于在代码中明确类型转换的意图。</p>
+<p>要将一种特定的数字类型转换为另一种，需要用现有值初始化一个所需类型的新数字。在下面的示例中，常量 <code>twoThousand</code> 的类型是 <code>UInt16</code>，而常量 <code>one</code> 的类型是 <code>UInt8</code>。由于它们的类型不同，因此不能直接相加。所以，本例调用 <code>UInt16(one)</code> 创建了一个初始值为 <code>one</code> 的新 <code>UInt16</code>，并用这个值代替原来的值进行计算：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> twoThousand: <span class="type">UInt16</span> <span class="operator">=</span> <span class="number">2_000</span></span><br><span class="line"><span class="keyword">let</span> one: <span class="type">UInt8</span> <span class="operator">=</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">let</span> twoThousandAndOne <span class="operator">=</span> twoThousand <span class="operator">+</span> <span class="type">UInt16</span>(one)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `typeConversion`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let twoThousand: UInt16 = 2_000</span><br><span class="line">-&gt; let one: UInt8 = 1</span><br><span class="line">-&gt; let twoThousandAndOne = twoThousand + UInt16(one)</span><br><span class="line">&gt;&gt; print(twoThousandAndOne)</span><br><span class="line">&lt;&lt; 2001</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>因为加法的两边现在都是 UInt16 类型，所以加法是允许的。输出常量 (<code>twoThousandAndOne</code>) 被推断为 <code>UInt16</code> 类型，因为它是两个 <code>UInt16</code> 值的和。</p>
+<p><code>SomeType(ofInitialValue)</code> 是调用 Swift 类型初始化器并赋予初始值的默认方式。在后台，<code>UInt16</code> 有一个接受 <code>UInt8</code> 值的初始化器，因此该初始化器用于从现有的 <code>UInt8</code> 生成一个新的 <code>UInt16</code>。但在这里不能使用<em>任意</em>类型，而必须是 <code>UInt16</code> 提供了初始化器的类型。扩展现有类型以提供接受新类型（包括你自己的类型定义）的初始化器，将在 <a href="doc:Extensions">doc:Extensions</a> 中介绍。</p>
+<h3 id="整数和浮点数转换"><a href="#整数和浮点数转换" class="headerlink" title="整数和浮点数转换"></a>整数和浮点数转换</h3><p>整数和浮点数值类型之间必须进行显式转换：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> three <span class="operator">=</span> <span class="number">3</span></span><br><span class="line"><span class="keyword">let</span> pointOneFourOneFiveNine <span class="operator">=</span> <span class="number">0.14159</span></span><br><span class="line"><span class="keyword">let</span> pi <span class="operator">=</span> <span class="type">Double</span>(three) <span class="operator">+</span> pointOneFourOneFiveNine</span><br><span class="line"><span class="comment">// pi 等于 3.14159，并被推断为 Double 类型</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `typeConversion`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let three = 3</span><br><span class="line">-&gt; let pointOneFourOneFiveNine = 0.14159</span><br><span class="line">-&gt; let pi = Double(three) + pointOneFourOneFiveNine</span><br><span class="line">/&gt; pi equals \(pi), and is inferred to be of type Double</span><br><span class="line">&lt;/ pi equals 3.14159, and is inferred to be of type Double</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>在这里，常量 <code>three</code> 的值被用来创建一个 <code>Double</code> 类型的新值，这样加法的两边都是相同的类型。如果没有这种转换，加法运算将无法进行。</p>
+<p>浮点数到整数也必须进行显式转换。整数类型可以用 <code>Double</code> 或 <code>Float</code> 值进行初始化：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> integerPi <span class="operator">=</span> <span class="type">Int</span>(pi)</span><br><span class="line"><span class="comment">// integerPi 等于 3，并被推断为 Int 类型</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `typeConversion`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let integerPi = Int(pi)</span><br><span class="line">/&gt; integerPi equals \(integerPi), and is inferred to be of type Int</span><br><span class="line">&lt;/ integerPi equals 3, and is inferred to be of type Int</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>用这种方法初始化一个新的整数值时，浮点数总是被截断的。这意味着 <code>4.75</code> 变为 <code>4</code>，<code>-3.9</code> 变为 <code>-3</code>。</p>
+<blockquote>
+<p>备注: 组合数值常量和变量的规则与组合数值字面量的规则不同。字面量 <code>3</code> 可以与字面量 <code>0.14159</code> 相加，因为数值字面量本身并没有显式类型。只有在编译器对其进行评估时才会推断出其类型。</p>
+</blockquote>
+<!--
+  NOTE: this section on explicit conversions could be included in the Operators section.
+  I think it's more appropriate here, however,
+  and helps to reinforce the “just use Int” message.
+-->
+
+<h2 id="类型别名"><a href="#类型别名" class="headerlink" title="类型别名"></a>类型别名</h2><p><em>类型别名</em>用于定义现有类型的替代名称。你可以使用 <code>typealias</code> 关键字定义类型别名。</p>
+<p>当你想用一个更适合上下文的名称来代指现有类型时，比如在处理源自外部的特定大小的数据时，类型别名就非常有用：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typealias</span> <span class="type">AudioSample</span> <span class="operator">=</span> <span class="type">UInt16</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `typeAliases`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; typealias AudioSample = UInt16</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>一旦定义了类型别名，就可以在任何可以使用原名的地方使用此别名：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> maxAmplitudeFound <span class="operator">=</span> <span class="type">AudioSample</span>.min</span><br><span class="line"><span class="comment">// maxAmplitudeFound 现在为 0</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `typeAliases`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var maxAmplitudeFound = AudioSample.min</span><br><span class="line">/&gt; maxAmplitudeFound is now \(maxAmplitudeFound)</span><br><span class="line">&lt;/ maxAmplitudeFound is now 0</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>在这里，<code>AudioSample</code> 被定义为 <code>UInt16</code> 的别名。因为是别名，所以调用 <code>AudioSample.min</code> 实际上是调用 <code>UInt16.min</code>，为 <code>maxAmplitudeFound</code> 变量提供一个初始值 <code>0</code>。</p>
+<h2 id="布尔类型"><a href="#布尔类型" class="headerlink" title="布尔类型"></a>布尔类型</h2><p>Swift 有一种基本的<em>布尔</em>类型，称为 <code>Bool</code>。布尔值又被称为<em>逻辑值</em>，因为它们只能为真或假。Swift 提供了两个布尔常量值：<code>true</code> 和 <code>false</code>。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> orangesAreOrange <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line"><span class="keyword">let</span> turnipsAreDelicious <span class="operator">=</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `booleans`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let orangesAreOrange = true</span><br><span class="line">-&gt; let turnipsAreDelicious = false</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>orangesAreOrange</code> 和 <code>turnipsAreDelicious</code> 的类型已被推断为 <code>Bool</code>，因为它们使用了布尔字面量初始化。与上述的 <code>Int</code> 和 <code>Double</code> 一样，如果你在创建常量或变量时将其设置为 <code>true</code> 或 <code>false</code>，则无需将其声明为 Bool。类型推断有助于让 Swift 代码在使用类型已知的值初始化常量或变量时更简洁易读。</p>
+<p>布尔值在使用条件语句（如 <code>if</code> 语句）时尤其有用：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> turnipsAreDelicious &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Mmm, tasty turnips!&quot;</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Eww, turnips are horrible.&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;Eww, turnips are horrible.&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `booleans`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; if turnipsAreDelicious &#123;</span><br><span class="line">      print(&quot;Mmm, tasty turnips!&quot;)</span><br><span class="line">   &#125; else &#123;</span><br><span class="line">      print(&quot;Eww, turnips are horrible.&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- Eww, turnips are horrible.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><a href="doc:ControlFlow">doc:ControlFlow</a> 将详细介绍 <code>if</code> 语句等条件语句。</p>
+<p>Swift 的类型安全防止非布尔值被替换为布尔值。下面的示例代码会报告编译时错误：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> i <span class="operator">=</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> i &#123;</span><br><span class="line">    <span class="comment">// 该示例将无法编译，并报错</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `booleansNotBoolean`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let i = 1</span><br><span class="line">-&gt; if i &#123;</span><br><span class="line">      // this example will not compile, and will report an error</span><br><span class="line">   &#125;</span><br><span class="line">!$ error: type &#x27;Int&#x27; cannot be used as a boolean; test for &#x27;!= 0&#x27; instead</span><br><span class="line">!! if i &#123;</span><br><span class="line">!!   ^</span><br><span class="line">!! ( != 0)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>不过，下面的替代示例是合法的：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> i <span class="operator">=</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> i <span class="operator">==</span> <span class="number">1</span> &#123;</span><br><span class="line">    <span class="comment">// 此示例将成功编译</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `booleansIsBoolean`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let i = 1</span><br><span class="line">-&gt; if i == 1 &#123;</span><br><span class="line">      // this example will compile successfully</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>i == 1</code> 的比较结果是 <code>Bool</code> 类型，因此第二个示例通过了类型检查。类似 <code>i == 1</code> 的比较结果将在 <a href="doc:BasicOperators">doc:BasicOperators</a> 中讨论。</p>
+<p>与 Swift 中其他类型安全示例一样，这种方法可以避免意外错误，并确保特定代码部分的意图始终清晰明了。</p>
+<h2 id="元组"><a href="#元组" class="headerlink" title="元组"></a>元组</h2><p><em>元组</em>将多个值组合成一个复合值。元组内的值可以是任何类型，且不必彼此属于同一类型。</p>
+<p>在下例中，<code>(404, &quot;Not Found&quot;)</code> 是一个描述 <em>HTTP 状态代码</em>的元组。HTTP 状态代码是网络服务器在你请求网页时返回的一个特殊值。如果你请求一个不存在的网页，返回的状态代码就是 <code>404 Not Found</code>。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> http404Error <span class="operator">=</span> (<span class="number">404</span>, <span class="string">&quot;Not Found&quot;</span>)</span><br><span class="line"><span class="comment">// http404Error 的类型为（Int，String），且等于（404，&quot;Not Found&quot;）</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `tuples`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let http404Error = (404, &quot;Not Found&quot;)</span><br><span class="line">/&gt; http404Error is of type (Int, String), and equals (\(http404Error.0), \&quot;\(http404Error.1)\&quot;)</span><br><span class="line">&lt;/ http404Error is of type (Int, String), and equals (404, &quot;Not Found&quot;)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>(404，&quot;Not Found&quot;)</code> 元组将一个 <code>Int</code> 和一个 <code>String</code> 组合在一起，赋予 HTTP 状态代码两个独立的值：一个数字和一个人类可读的描述。它可以描述为 “一个 <code>(Int, String)</code> 类型的元组”。</p>
+<p>你可以从任何的类型排列中创建元组，而且元组中可以包含任意多的不同类型。没有什么能阻止你创建一个 <code>(Int, Int, Int)</code> 或 <code>(String, Bool)</code> 类型的元组，或者其他任何你需要的排列。</p>
+<p>你可以将元组的内容<em>分解</em>成单独的常量或变量，然后像往常一样访问它们：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> (statusCode, statusMessage) <span class="operator">=</span> http404Error</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;The status code is <span class="subst">\(statusCode)</span>&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;The status code is 404&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;The status message is <span class="subst">\(statusMessage)</span>&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;The status message is Not Found&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `tuples`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let (statusCode, statusMessage) = http404Error</span><br><span class="line">-&gt; print(&quot;The status code is \(statusCode)&quot;)</span><br><span class="line">&lt;- The status code is 404</span><br><span class="line">-&gt; print(&quot;The status message is \(statusMessage)&quot;)</span><br><span class="line">&lt;- The status message is Not Found</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如果只需要元组的部分值，则在分解元组时使用下划线 (<code>_</code>) 忽略不需要的部分：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> (justTheStatusCode, <span class="keyword">_</span>) <span class="operator">=</span> http404Error</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;The status code is <span class="subst">\(justTheStatusCode)</span>&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;The status code is 404&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `tuples`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let (justTheStatusCode, _) = http404Error</span><br><span class="line">-&gt; print(&quot;The status code is \(justTheStatusCode)&quot;)</span><br><span class="line">&lt;- The status code is 404</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>或者，使用从零开始的索引号访问元组中的单个元素值：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;The status code is <span class="subst">\(http404Error.<span class="number">0</span>)</span>&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;The status code is 404&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;The status message is <span class="subst">\(http404Error.<span class="number">1</span>)</span>&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;The status message is Not Found&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `tuples`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; print(&quot;The status code is \(http404Error.0)&quot;)</span><br><span class="line">&lt;- The status code is 404</span><br><span class="line">-&gt; print(&quot;The status message is \(http404Error.1)&quot;)</span><br><span class="line">&lt;- The status message is Not Found</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>你可以在定义元组时为元组中的各个元素命名：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> http200Status <span class="operator">=</span> (statusCode: <span class="number">200</span>, description: <span class="string">&quot;OK&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `tuples`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let http200Status = (statusCode: 200, description: &quot;OK&quot;)</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如果为元组中的元素命名了，就可以使用元素名访问这些元素的值：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;The status code is <span class="subst">\(http200Status.statusCode)</span>&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;The status code is 200&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;The status message is <span class="subst">\(http200Status.description)</span>&quot;</span>)</span><br><span class="line"><span class="comment">// 打印 &quot;The status message is OK&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `tuples`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; print(&quot;The status code is \(http200Status.statusCode)&quot;)</span><br><span class="line">&lt;- The status code is 200</span><br><span class="line">-&gt; print(&quot;The status message is \(http200Status.description)&quot;)</span><br><span class="line">&lt;- The status message is OK</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>元组作为函数的返回值特别有用。一个试图检索网页的函数可能会返回 <code>(Int, String)</code> 元组类型来描述网页检索的成功或失败。在函数中返回包含两个不同值（每个值的类型都不同）的元组，比只能返回单一类型的单个值提供了更多关于其结果的有用信息。更多信息，请参阅 <a href="doc:Functions#多重返回值函数">doc:Functions#多重返回值函数</a>。</p>
+<blockquote>
+<p>备注: 元组适用于简单的相关值组。它们不适合创建复杂的数据结构。如果你的数据结构可能会变得复杂，请将其创建为类或结构体，而不是元组。更多信息，请参阅 <a href="doc:ClassesAndStructures">doc:ClassesAndStructures</a>。</p>
+</blockquote>
+<h2 id="可选"><a href="#可选" class="headerlink" title="可选"></a>可选</h2><p>在可能缺失值的情况下，请使用<em>可选</em>。可选代表两种可能性：要么<em>存在</em>一个指定类型的值，并可以解包可选以访问该值；要么<em>根本就没有</em>值。</p>
+<p>举一个可能缺失值的例子，Swift 的 <code>Int</code> 类型有一个初始化器，它会尝试将 <code>String</code> 值转换为 <code>Int</code> 值。但是，只有某些字符串可以转换成整数。字符串 <code>&quot;123&quot;</code> 可以转换成数值 <code>123</code>，但字符串 <code>&quot;hello, world&quot;</code> 却没有对应的数值。下面的示例使用初始化器尝试将 <code>String</code> 转换为 <code>Int</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> possibleNumber <span class="operator">=</span> <span class="string">&quot;123&quot;</span></span><br><span class="line"><span class="keyword">let</span> convertedNumber <span class="operator">=</span> <span class="type">Int</span>(possibleNumber)</span><br><span class="line"><span class="comment">// convertedNumber 的类型是 &quot;可选 Int&quot;。</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `optionals`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let possibleNumber = &quot;123&quot;</span><br><span class="line">-&gt; let convertedNumber = Int(possibleNumber)</span><br><span class="line">// convertedNumber is inferred to be of type &quot;Int?&quot;, or &quot;optional Int&quot;</span><br><span class="line">&gt;&gt; print(type(of: convertedNumber))</span><br><span class="line">&lt;&lt; Optional&lt;Int&gt;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>因为上面代码中的初始化器可能会失败，所以它返回的是<em>可选</em> <code>Int</code>，而不是 <code>Int</code>。</p>
+<p>要编写可选类型，需要在可选包含的类型名称后面加一个问号（<code>?</code>）。例如，可选 <code>Int</code> 的类型是 <code>Int?</code>。可选 <code>Int</code> 只能储存某个 <code>Int</code> 值或不储存任何值。它不能储存任何其他值，如 <code>Bool</code> 或 <code>String</code> 值。</p>
+<h3 id="nil"><a href="#nil" class="headerlink" title="nil"></a>nil</h3><p>通过给可选变量赋特殊值 <code>nil</code>，可以将其设置为无值状态：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> serverResponseCode: <span class="type">Int</span>? <span class="operator">=</span> <span class="number">404</span></span><br><span class="line"><span class="comment">// serverResponseCode 包含一个实际 Int 值 404</span></span><br><span class="line">serverResponseCode <span class="operator">=</span> <span class="literal">nil</span></span><br><span class="line"><span class="comment">// serverResponseCode 现在不包含任何值</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `optionals`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var serverResponseCode: Int? = 404</span><br><span class="line">/&gt; serverResponseCode contains an actual Int value of \(serverResponseCode!)</span><br><span class="line">&lt;/ serverResponseCode contains an actual Int value of 404</span><br><span class="line">-&gt; serverResponseCode = nil</span><br><span class="line">// serverResponseCode now contains no value</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如果你定义了一个可选变量，但没有提供默认值，那么该变量将自动设置为 <code>nil</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> surveyAnswer: <span class="type">String</span>?</span><br><span class="line"><span class="comment">// surveyAnswer 自动设置为 nil</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `optionals`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var surveyAnswer: String?</span><br><span class="line">// surveyAnswer is automatically set to nil</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>你可以使用 <code>if</code> 语句，通过比较可选和 nil 来确定可选是否包含一个值。你可以使用“等于”操作符（<code>==</code>）或“不等于”操作符（<code>!=</code>）进行比较。</p>
+<p>如果可选有一个值，它就被视为“不等于” <code>nil</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> possibleNumber <span class="operator">=</span> <span class="string">&quot;123&quot;</span></span><br><span class="line"><span class="keyword">let</span> convertedNumber <span class="operator">=</span> <span class="type">Int</span>(possibleNumber)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> convertedNumber <span class="operator">!=</span> <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;convertedNumber contains some integer value.&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;convertedNumber contains some integer value.&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `optionals`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; if convertedNumber != nil &#123;</span><br><span class="line">      print(&quot;convertedNumber contains some integer value.&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- convertedNumber contains some integer value.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>不能在非可选常量或变量中使用 <code>nil</code>。如果代码中的常量或变量在某些条件下需要在没有值的情况下工作，请将其声明为适当类型的可选值。声明为非可选值的常量或变量保证永远不会包含 <code>nil</code> 值。如果尝试将 <code>nil</code> 赋值给一个非可选值，就会出现编译时错误。</p>
+<p>通过将可选值和非可选值分开，可以显式标记哪些信息可能缺失，从而更方便编写处理缺失值的代码。你不能意外地将可选值当作非可选值来处理，因为这种错误会在编译时产生错误。在对值进行解包后，使用该值的其他代码都不需要检查 <code>nil</code>，因此不需要在代码的不同部分重复检查同一个值。</p>
+<p>在访问可选值时，代码总是同时处理 <code>nil</code> 和非 <code>nil</code> 两种情况。当值缺失时，可以执行如以下各节所述的几项操作：</p>
+<ul>
+<li><p>当值为 <code>nil</code> 时，跳过对其进行操作的代码。</p>
+</li>
+<li><p>通过返回 <code>nil</code> 或使用 <a href="doc:OptionalChaining">doc:OptionalChaining</a> 中记述的 <code>?.</code> 运算符传播 <code>nil</code> 值。</p>
+</li>
+<li><p>使用 <code>??</code> 运算符提供一个后备值。</p>
+</li>
+<li><p>使用 <code>!</code> 运算符停止程序执行。</p>
+</li>
+</ul>
+<blockquote>
+<p>备注: 在 Objective-C 中，<code>nil</code> 是指向不存在对象的指针。在 Swift 中，<code>nil</code> 并非指针，而是特定类型值的缺失。<em>任何</em>类型的可选都可以被设置为 <code>nil</code>，而不仅仅是对象类型。</p>
+</blockquote>
+<h3 id="可选绑定"><a href="#可选绑定" class="headerlink" title="可选绑定"></a>可选绑定</h3><p>你可以使用可选绑定来确定可选是否包含值，如果包含，则将该值作为临时常量或变量使用。可选绑定可与 <code>if</code>、<code>guard</code> 和 <code>while</code> 语句一起使用，以检查可选中的值，并将该值提取到常量或变量中，作为单个操作的一部分。有关 <code>if</code>、<code>guard</code> 和 <code>while</code> 语句的更多信息，请参阅 <a href="doc:ControlFlow">doc:ControlFlow</a>。</p>
+<p>使用 <code>if</code> 语句编写的可选绑定如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> <span class="operator">&lt;</span>#constantName#<span class="operator">&gt;</span> <span class="operator">=</span> <span class="operator">&lt;</span>#someOptional#<span class="operator">&gt;</span> &#123;</span><br><span class="line">   <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你可以重写 <a href="doc:TheBasics#可选">doc:TheBasics#可选</a> 部分中的 <code>possibleNumber</code> 示例，使用可选绑定而不是强制解包：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> actualNumber <span class="operator">=</span> <span class="type">Int</span>(possibleNumber) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;The string <span class="subst">\&quot;</span><span class="subst">\(possibleNumber)</span><span class="subst">\&quot;</span> has an integer value of <span class="subst">\(actualNumber)</span>&quot;</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;The string <span class="subst">\&quot;</span><span class="subst">\(possibleNumber)</span><span class="subst">\&quot;</span> couldn&#x27;t be converted to an integer&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;The string &quot;123&quot; has an integer value of 123&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `optionals`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; if let actualNumber = Int(possibleNumber) &#123;</span><br><span class="line">      print(&quot;The string \&quot;\(possibleNumber)\&quot; has an integer value of \(actualNumber)&quot;)</span><br><span class="line">   &#125; else &#123;</span><br><span class="line">      print(&quot;The string \&quot;\(possibleNumber)\&quot; couldn&#x27;t be converted to an integer&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- The string &quot;123&quot; has an integer value of 123</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>该代码可理解为：</p>
+<p>“如果 <code>Int(possibleNumber)</code> 返回的可选 <code>Int</code> 中包含一个值，则将它赋值给名为 <code>actualNumber</code> 的新常量。”</p>
+<p>如果转换成功，<code>actualNumber</code> 常量就可以在 <code>if</code> 语句的第一个分支中使用。这个常量已经用可选中的值进行了初始化，并具有相应的非可选类型。在本例中，<code>possibleNumber</code> 的类型是 <code>Int?</code>，因此 <code>actualNumber</code> 的类型是 <code>Int</code>。</p>
+<p>如果在访问原可选常量或变量的值后不需要再引用它，则可以考虑使用相同的名称来命名新常量或变量：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> myNumber <span class="operator">=</span> <span class="type">Int</span>(possibleNumber)</span><br><span class="line"><span class="comment">// 这里，myNumber 是一个可选整数</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> myNumber <span class="operator">=</span> myNumber &#123;</span><br><span class="line">    <span class="comment">// 这里，myNumber 是一个非可选整数</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;My number is <span class="subst">\(myNumber)</span>&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;My number is 123&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `optionals`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let myNumber = Int(possibleNumber)</span><br><span class="line">// Here, myNumber is an optional integer</span><br><span class="line">-&gt; if let myNumber = myNumber &#123;</span><br><span class="line">       // Here, myNumber is a non-optional integer</span><br><span class="line">       print(&quot;My number is \(myNumber)&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- My number is 123</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>这段代码首先检查 <code>myNumber</code> 是否包含一个值，就像上一个示例中的代码一样。如果 <code>myNumber</code> 有一个值，名为 <code>myNumber</code> 的新常量的值就会被设置为该值。在 <code>if</code> 语句的正文中，<code>myNumber</code> 指的就是这个新的非可选常量。在 <code>if</code> 语句之前或之后写 <code>myNumber</code>，指的是原来的可选整数常量。</p>
+<p>由于这种代码非常常见，因此可以使用更简短的语法来解包可选值：只写常量或变量的名称即可。解包后的新常量或变量隐式地使用与可选值相同的名称。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> myNumber &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;My number is <span class="subst">\(myNumber)</span>&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;My number is 123&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `optionals`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; if let myNumber &#123;</span><br><span class="line">       print(&quot;My number is \(myNumber)&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- My number is 123</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>你可以在可选绑定时使用常量或变量。如果你想在 <code>if</code> 语句的第一个分支中修改 <code>myNumber</code> 的值，你可以改写为 <code>if var myNumber</code>，这样，包含在可选中的值就可以作为变量而不是常量使用了。在 <code>if</code> 语句正文中对 <code>myNumber</code> 所做的修改仅适用于该局部变量，而<em>不适用于</em>原来的可选常量或变量。</p>
+<p>你可以在一个 <code>if</code> 语句中包含任意数量的可选绑定和布尔条件，并用逗号分隔。如果可选绑定中的任何值为 <code>nil</code>，或任何布尔条件的值为 <code>false</code>，则整个 <code>if</code> 语句的条件被视为 <code>false</code>。以下 <code>if</code> 语句是等价的：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> firstNumber <span class="operator">=</span> <span class="type">Int</span>(<span class="string">&quot;4&quot;</span>), <span class="keyword">let</span> secondNumber <span class="operator">=</span> <span class="type">Int</span>(<span class="string">&quot;42&quot;</span>), firstNumber <span class="operator">&lt;</span> secondNumber <span class="operator">&amp;&amp;</span> secondNumber <span class="operator">&lt;</span> <span class="number">100</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;<span class="subst">\(firstNumber)</span> &lt; <span class="subst">\(secondNumber)</span> &lt; 100&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;4 &lt; 42 &lt; 100&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> firstNumber <span class="operator">=</span> <span class="type">Int</span>(<span class="string">&quot;4&quot;</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> secondNumber <span class="operator">=</span> <span class="type">Int</span>(<span class="string">&quot;42&quot;</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> firstNumber <span class="operator">&lt;</span> secondNumber <span class="operator">&amp;&amp;</span> secondNumber <span class="operator">&lt;</span> <span class="number">100</span> &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;<span class="subst">\(firstNumber)</span> &lt; <span class="subst">\(secondNumber)</span> &lt; 100&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;4 &lt; 42 &lt; 100&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `multipleOptionalBindings`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-&gt; if let firstNumber = Int(&quot;4&quot;), let secondNumber = Int(&quot;42&quot;), firstNumber &lt; secondNumber &amp;&amp; secondNumber &lt; 100 &#123;</span><br><span class="line">      print(&quot;\(firstNumber) &lt; \(secondNumber) &lt; 100&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- 4 &lt; 42 &lt; 100</span><br><span class="line">---</span><br><span class="line">-&gt; if let firstNumber = Int(&quot;4&quot;) &#123;</span><br><span class="line">       if let secondNumber = Int(&quot;42&quot;) &#123;</span><br><span class="line">           if firstNumber &lt; secondNumber &amp;&amp; secondNumber &lt; 100 &#123;</span><br><span class="line">               print(&quot;\(firstNumber) &lt; \(secondNumber) &lt; 100&quot;)</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- 4 &lt; 42 &lt; 100</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  The example above uses multiple optional bindings
+  to show that you can have more than one
+  and to show the short-circuiting behavior.
+  It has multiple Boolean conditions
+  to show that you should join logically related conditions
+  using the && operator instead of a comma.
+-->
+
+<p>在 <code>if</code> 语句中使用可选绑定创建的常量和变量只能在 <code>if</code> 语句的正文中使用。与此相反，用 <code>guard</code> 语句创建的常量和变量仅在 <code>guard</code> 语句后的代码行中可用，如 <a href="doc:ControlFlow#提前退出">doc:ControlFlow#提前退出</a> 中所述。</p>
+<h3 id="提供后备值"><a href="#提供后备值" class="headerlink" title="提供后备值"></a>提供后备值</h3><p>处理缺失值的另一种方法是使用 nil-coalescing 操作符（<code>??</code>）提供一个缺省值。如果 <code>??</code> 左边的可选值不是 <code>nil</code>，那么该值将被解包并使用。否则，将使用 <code>??</code> 右侧的值。例如，如果指定了姓名，下面的代码会用姓名问候某人，如果姓名为 <code>nil</code>，则使用通用问候语。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> name: <span class="type">String</span>? <span class="operator">=</span> <span class="literal">nil</span></span><br><span class="line"><span class="keyword">let</span> greeting <span class="operator">=</span> <span class="string">"Hello, "</span> <span class="operator">+</span> (name <span class="operator">??</span> <span class="string">"friend"</span>) <span class="operator">+</span> <span class="string">"!"</span></span><br><span class="line"><span class="built_in">print</span>(greeting)</span><br><span class="line"><span class="comment">// 打印 "Hello, friend!"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+.. testcode:: optionalFallback
+
+   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let name: String? = nil</span><br><span class="line">-&gt; let greeting = &quot;Hello, &quot; + (name ?? &quot;friend&quot;) + &quot;!&quot;</span><br><span class="line">-&gt; print(greeting)</span><br><span class="line">&lt;- Hello, friend!</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>关于使用 <code>??</code> 提供后备值的更多信息，请参阅 <a href="doc:BasicOperators#空合并运算符">doc:BasicOperators#空合并运算符</a>。</p>
+<h3 id="强制解包"><a href="#强制解包" class="headerlink" title="强制解包"></a>强制解包</h3><p>当 <code>nil</code> 表示不可恢复的故障时（如程序员错误或状态损坏），你可以通过在可选名称的末尾添加感叹号 (<code>!</code>) 来访问底层值。这被称为<em>强制解包</em>可选的值。强制解包一个非 <code>nil</code> 值时，结果是其解包值。强制解包一个 <code>nil</code> 值则会引发运行时错误。</p>
+<p>实际上，<code>!</code> 是 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/fatalerror(_:file:line:)"><code>fatalError(_:file:line:)</code></a> 的简写。例如，下面的代码显示了两种等效的方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> possibleNumber <span class="operator">=</span> <span class="string">&quot;123&quot;</span></span><br><span class="line"><span class="keyword">let</span> convertedNumber <span class="operator">=</span> <span class="type">Int</span>(possibleNumber)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> number <span class="operator">=</span> convertedNumber<span class="operator">!</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> number <span class="operator">=</span> convertedNumber <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">fatalError</span>(<span class="string">&quot;The number was invalid&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述两个版本的代码都要求于 <code>convertedNumber</code> 始终包含一个值。使用上述任一方法将该要求写入代码，可让代码在运行时检查该要求是否为真。</p>
+<p>有关在运行时执行数据要求和检查假设的更多信息，请参阅 <a href="doc:TheBasics#断言和先决条件">doc:TheBasics#断言和先决条件</a>。</p>
+<h3 id="隐式解包可选"><a href="#隐式解包可选" class="headerlink" title="隐式解包可选"></a>隐式解包可选</h3><p>如上所述，可选表示允许常量或变量“无值”。可以用 <code>if</code> 语句检查可选值是否存在，如果可选值确实存在，则可以通过可选绑定有条件地解除对可选值的包裹。</p>
+<p>有时，从程序结构中可以清楚地看出，在首次设置可选值后，该可选将<em>始终</em>有一个值。在这种情况下，无需在每次访问可选时都对其值进行检查和解包，因为你可以安全地假定它一直都有值。</p>
+<p>这类可选被定义为<em>隐式解包可选</em>。在编写隐式解包可选时，需要在可选类型后面加上感叹号（<code>String!</code>）而不是问号（<code>String?</code>）。要注意不是在使用可选时在其名称后加上感叹号，而是在声明可选时在其类型后加上感叹号。</p>
+<p>当首次定义可选后，可选的值立即被确认存在，并且可以确保在此后的每一个时间点都存在值时，隐式解包可选就非常有用了。在 Swift 中，隐式解包可选的主要用途是在类初始化过程中，如 <a href="doc:AutomaticReferenceCounting#无主引用和隐式解包可选属性">doc:AutomaticReferenceCounting#无主引用和隐式解包可选属性</a> 中所述。</p>
+<p>当变量有可能在稍后阶段变为 <code>nil</code> 时，不要使用隐式解包可选。如果需要在变量的生命周期内检查变量是否为 <code>nil</code>，请务必使用普通的可选类型。</p>
+<p>隐式解包的可选在幕后是一个普通的可选值，但也可以像非可选值一样使用，而无需在每次访问时都进行解包。下面的示例显示了可选字符串和隐式解包的可选字符串在作为显式字符串访问其被包装值时的行为差异：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> possibleString: <span class="type">String</span>? <span class="operator">=</span> <span class="string">&quot;An optional string.&quot;</span></span><br><span class="line"><span class="keyword">let</span> forcedString: <span class="type">String</span> <span class="operator">=</span> possibleString<span class="operator">!</span> <span class="comment">// 需要显式解包</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> assumedString: <span class="type">String</span>! <span class="operator">=</span> <span class="string">&quot;An implicitly unwrapped optional string.&quot;</span></span><br><span class="line"><span class="keyword">let</span> implicitString: <span class="type">String</span> <span class="operator">=</span> assumedString <span class="comment">// 隐式解包</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `implicitlyUnwrappedOptionals`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let possibleString: String? = &quot;An optional string.&quot;</span><br><span class="line">-&gt; let forcedString: String = possibleString! // requires an exclamation point</span><br><span class="line">---</span><br><span class="line">-&gt; let assumedString: String! = &quot;An implicitly unwrapped optional string.&quot;</span><br><span class="line">-&gt; let implicitString: String = assumedString // no need for an exclamation point</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>你可以将隐式解包可选视为允许可选值在需要时被强制解包。在使用隐式解包的可选值时，Swift 会首先尝试将其作为普通可选值使用；如果不能将其作为可选值使用，Swift 就会强制解包该值。在上面的代码中，可选值 <code>assumedString</code> 在赋值给 <code>implicitString</code> 之前被强制解包，因为 <code>implicitString</code> 的类型是显式定义的非可选字符串。在下面的代码中，<code>optionalString</code> 没有显式类型，所以它是一个普通的可选值。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> optionalString <span class="operator">=</span> assumedString</span><br><span class="line"><span class="comment">// optionalString 的类型是 &quot;String?&quot;，而 assumedString 没有强制解包。</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `implicitlyUnwrappedOptionals`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let optionalString = assumedString</span><br><span class="line">// The type of optionalString is &quot;String?&quot; and assumedString isn&#x27;t force-unwrapped.</span><br><span class="line">&gt;&gt; print(type(of: optionalString))</span><br><span class="line">&lt;&lt; Optional&lt;String&gt;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如果一个隐式解包的可选值为 <code>nil</code>，而你试图访问它的被包装值，就会触发运行时错误。其结果与用感叹号来强制解包一个不包含值的普通可选完全相同。</p>
+<p>你可以像检查普通可选一样，检查隐式解包的可选是否为 <code>nil</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> assumedString <span class="operator">!=</span> <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(assumedString<span class="operator">!</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;An implicitly unwrapped optional string.&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `implicitlyUnwrappedOptionals`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; if assumedString != nil &#123;</span><br><span class="line">      print(assumedString!)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- An implicitly unwrapped optional string.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>你也可以对隐式解包的可选使用可选绑定，在单个语句中检查并解包其值：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> definiteString <span class="operator">=</span> assumedString &#123;</span><br><span class="line">    <span class="built_in">print</span>(definiteString)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;An implicitly unwrapped optional string.&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `implicitlyUnwrappedOptionals`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; if let definiteString = assumedString &#123;</span><br><span class="line">      print(definiteString)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- An implicitly unwrapped optional string.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><p>你可以使用<em>错误处理</em>来应对程序在执行过程中可能遇到的错误情况。</p>
+<p>与可以使用值的存在与否来传达函数的成功或失败的可选不同，错误处理允许你确定失败的根本原因，并在必要时将错误传播到程序的另一部分。</p>
+<p>当函数遇到错误条件时，它会<em>抛出</em>一个错误。该函数的调用者可以<em>捕获</em>错误并做出适当的响应。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">canThrowAnError</span>() <span class="keyword">throws</span> &#123;</span><br><span class="line">    <span class="comment">// 此函数可能抛出错误，也可能不抛错</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `errorHandling`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; enum SimpleError: Error &#123;</span><br><span class="line">&gt;&gt;    case someError</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&gt;&gt; let condition = true</span><br><span class="line">-&gt; func canThrowAnError() throws &#123;</span><br><span class="line">      // this function may or may not throw an error</span><br><span class="line">&gt;&gt;    if condition &#123;</span><br><span class="line">&gt;&gt;       throw SimpleError.someError</span><br><span class="line">&gt;&gt;    &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>函数在声明中包含 <code>throws</code> 关键字，表示它可以抛出错误。调用可以抛出错误的函数时，要在表达式前加上 <code>try</code> 关键字。</p>
+<p>Swift 会自动将错误传播到当前作用域之外，直到它们被 <code>catch</code> 子句处理为止。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> canThrowAnError()</span><br><span class="line">    <span class="comment">// 无错误的情况</span></span><br><span class="line">&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="comment">// 抛出错误的情况</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `errorHandling`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; do &#123;</span><br><span class="line">-&gt;    try canThrowAnError()</span><br><span class="line">&gt;&gt;    print(&quot;No Error&quot;)</span><br><span class="line">-&gt;    // no error was thrown</span><br><span class="line">-&gt; &#125; catch &#123;</span><br><span class="line">&gt;&gt;    print(&quot;Error&quot;)</span><br><span class="line">-&gt;    // an error was thrown</span><br><span class="line">-&gt; &#125;</span><br><span class="line">&lt;&lt; Error</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>do</code> 语句会创建一个新的包含作用域，允许错误传播到一个或多个 <code>catch</code> 子句。</p>
+<p>下面的示例说明了如何使用错误处理来应对不同的错误条件：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">makeASandwich</span>() <span class="keyword">throws</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> makeASandwich()</span><br><span class="line">    eatASandwich()</span><br><span class="line">&#125; <span class="keyword">catch</span> <span class="type">SandwichError</span>.outOfCleanDishes &#123;</span><br><span class="line">    washDishes()</span><br><span class="line">&#125; <span class="keyword">catch</span> <span class="type">SandwichError</span>.missingIngredients(<span class="keyword">let</span> ingredients) &#123;</span><br><span class="line">    buyGroceries(ingredients)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `errorHandlingTwo`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; enum SandwichError: Error &#123;</span><br><span class="line">&gt;&gt;     case outOfCleanDishes</span><br><span class="line">&gt;&gt;     case missingIngredients([String])</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&gt;&gt; func washDishes() &#123; print(&quot;Wash dishes&quot;) &#125;</span><br><span class="line">&gt;&gt; func buyGroceries(_ shoppingList: [String]) &#123; print(&quot;Buy \(shoppingList)&quot;) &#125;</span><br><span class="line">-&gt; func makeASandwich() throws &#123;</span><br><span class="line">       // ...</span><br><span class="line">   &#125;</span><br><span class="line">&gt;&gt; func eatASandwich() &#123;&#125;</span><br><span class="line">---</span><br><span class="line">-&gt; do &#123;</span><br><span class="line">       try makeASandwich()</span><br><span class="line">       eatASandwich()</span><br><span class="line">   &#125; catch SandwichError.outOfCleanDishes &#123;</span><br><span class="line">       washDishes()</span><br><span class="line">   &#125; catch SandwichError.missingIngredients(let ingredients) &#123;</span><br><span class="line">       buyGroceries(ingredients)</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>在本例中，如果没有干净的餐具或缺少任何配料，<code>makeASandwich()</code> 函数就会出错。由于 <code>makeASandwich()</code> 可能会出错，因此函数调用被封装在 <code>try</code> 表达式中。通过将函数调用封装在 <code>do</code> 语句中，任何抛出的错误都会传播到所提供的 <code>catch</code> 子句中。</p>
+<p>如果函数没有出错，就会继续调用 <code>eatASandwich()</code> 函数。如果函数抛错且错误符合 <code>SandwichError.outOfCleanDishes</code> 的情况，则会调用 <code>washDishes()</code> 函数。如果出现与 <code>SandwichError.missingIngredients</code> 情况匹配的错误，则会调用 <code>buyGroceries(_:)</code> 函数，并使用 <code>catch</code> 模式捕获相关的 <code>[String]</code> 值。</p>
+<p>在 <a href="doc:ErrorHandling">doc:ErrorHandling</a> 中有对于抛出、捕获和传播错误更详细的介绍。</p>
+<h2 id="断言和先决条件"><a href="#断言和先决条件" class="headerlink" title="断言和先决条件"></a>断言和先决条件</h2><p><em>断言</em>和<em>先决条件</em>是在运行时进行的检查。使用它们可以确保在执行任何进一步代码之前满足一个基本条件。如果断言或前提条件中的布尔条件为 <code>true</code>，代码将照常执行。如果条件的计算结果为 <code>false</code>，则程序的当前状态无效;代码执行结束，应用会被终止。</p>
+<p>你可以使用断言和前提条件来表达你在编码时的假设和期望，因此你可以将它们作为代码的一部分。断言可以帮助你在开发过程中发现错误和不正确的假设，而前提条件可以帮助你在生产过程中发现问题。</p>
+<p>除了在运行时验证你的预期，断言和前提条件也是代码中一种有用的文档形式。与上文 <a href="doc:TheBasics#错误处理">doc:TheBasics#错误处理</a> 中讨论的错误条件不同，断言和前提条件不用于可恢复或预期的错误。因为一个失败的断言或前提条件表示程序状态无效，所以没有办法捕获一个失败的断言。从无效状态恢复是不可能的。当断言失败时，程序中至少有一个数据是无效的，但你不知道它为什么无效，也不知道是否还有其他状态也无效。</p>
+<p>使用断言和先决条件并不能代替代码设计，减少无效条件出现的可能。但是，使用断言和前提条件来强制确保有效的数据和状态，会使应用在出现无效状态时以更可预测的方式终止，并使问题更容易调试。如果不对假设进行检查，可能要到很久以后，当其他地方的代码开始明显失效，以及用户数据被悄无声息地破坏后，你才会注意到这类问题。一旦检测到无效状态，立即停止执行也有助于限制无效状态造成的损害。</p>
+<p>断言和前提条件的区别在于何时检查：断言只在调试构建中进行检查，而前提条件则在调试构建和生产构建中都进行检查。在生产版本中，断言中的条件不会被评估。这意味着你可以在开发过程中随意使用断言，而不会影响生产过程中的性能。</p>
+<h3 id="使用断言进行调试"><a href="#使用断言进行调试" class="headerlink" title="使用断言进行调试"></a>使用断言进行调试</h3><!--
+  If your code triggers an assertion while running in a debug environment,
+  such as when you build and run an app in Xcode,
+  you can see exactly where the invalid state occurred
+  and query the state of your app at the time that the assertion was triggered.
+  An assertion also lets you provide a suitable debug message as to the nature of the assert.
+-->
+
+<p>你可以调用 Swift 标准库中的 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/1541112-assert"><code>assert(_:_:file:line:)</code></a> 函数来编写断言。你可以向该函数传递一个计算结果为 <code>true</code> 或 <code>false</code> 的表达式，以及一条在条件结果为 <code>false</code> 时显示的信息。例如：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> age <span class="operator">=</span> <span class="operator">-</span><span class="number">3</span></span><br><span class="line"><span class="built_in">assert</span>(age <span class="operator">&gt;=</span> <span class="number">0</span>, <span class="string">"A person's age can't be less than zero."</span>)</span><br><span class="line"><span class="comment">// 该断言失败的原因是 -3 并不 &gt;= 0。</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `assertions-1`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let age = -3</span><br><span class="line">-&gt; assert(age &gt;= 0, &quot;A person&#x27;s age can&#x27;t be less than zero.&quot;)</span><br><span class="line">xx assert</span><br><span class="line">// This assertion fails because -3 isn&#x27;t &gt;= 0.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>在本例中，如果 <code>age &gt;= 0</code> 的值为 <code>true</code>，即 <code>age</code> 的值为非负值，代码将继续执行。如果 <code>age</code> 的值为负数（如上面的代码），则 <code>age &gt;= 0 </code>的值为 <code>false</code>，断言失败，应用终止。</p>
+<p>你可以省略断言信息，例如，当信息只是重复解释断言条件时。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">assert</span>(age <span class="operator">&gt;=</span> <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `assertions-2`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; let age = -3</span><br><span class="line">-&gt; assert(age &gt;= 0)</span><br><span class="line">xx assert</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `assertionsCanUseStringInterpolation`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let age = -3</span><br><span class="line">-&gt; assert(age &gt;= 0, &quot;A person&#x27;s age can&#x27;t be less than zero, but value is \(age).&quot;)</span><br><span class="line">xx assert</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如果代码已经检查了条件，则使用 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/1539616-assertionfailure"><code>assertionFailure(_:file:line:)</code></a> 函数来表示断言失败。例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> age <span class="operator">&gt;</span> <span class="number">10</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;You can ride the roller-coaster or the ferris wheel.&quot;</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> age <span class="operator">&gt;=</span> <span class="number">0</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;You can ride the ferris wheel.&quot;</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">assertionFailure</span>(<span class="string">&quot;A person&#x27;s age can&#x27;t be less than zero.&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `assertions-3`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; let age = -3</span><br><span class="line">-&gt; if age &gt; 10 &#123;</span><br><span class="line">       print(&quot;You can ride the roller-coaster or the ferris wheel.&quot;)</span><br><span class="line">   &#125; else if age &gt;= 0 &#123;</span><br><span class="line">       print(&quot;You can ride the ferris wheel.&quot;)</span><br><span class="line">   &#125; else &#123;</span><br><span class="line">       assertionFailure(&quot;A person&#x27;s age can&#x27;t be less than zero.&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">xx assert</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h3 id="强制执行先决条件"><a href="#强制执行先决条件" class="headerlink" title="强制执行先决条件"></a>强制执行先决条件</h3><p>当条件有可能为假，但<em>必须</em>为真才能继续执行代码时，请使用先决条件。例如，使用先决条件检查下标是否越界，或检查函数是否传递了有效值。</p>
+<p>你可以通过调用 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/1540960-precondition"><code>precondition(_:_:file:line:)</code></a> 函数来编写先决条件。你可以向该函数传递一个计算结果为 <code>true</code> 或 <code>false</code> 的表达式，以及一条在条件结果为 <code>false</code> 时显示的信息。例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在下标的实现中...</span></span><br><span class="line"><span class="built_in">precondition</span>(index <span class="operator">&gt;</span> <span class="number">0</span>, <span class="string">&quot;Index must be greater than zero.&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `preconditions`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; let index = -1</span><br><span class="line">// In the implementation of a subscript...</span><br><span class="line">-&gt; precondition(index &gt; 0, &quot;Index must be greater than zero.&quot;)</span><br><span class="line">xx assert</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>你还可以调用 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/1539374-preconditionfailure"><code>preconditionFailure(_:file:line:)</code></a> 函数来表示发生了故障，例如，如果执行了 switch 的默认情况，但所有有效输入数据本应由其他情况来处理。</p>
+<blockquote>
+<p>备注: 如果以非检查模式（<code>-Ounchecked</code>）编译，则不会检查前置条件。编译器会假定前提条件总是为真，并据此优化代码。不过，无论优化设置如何，<code>fatalError(_:file:line:)</code> 函数始终会停止执行。</p>
+<p>在原型开发和早期开发过程中，你可以使用 <code>fatalError(_:file:line:)</code> 函数为尚未实现的功能创建存根，方法是将 <code>fatalError(&quot;Unimplemented&quot;)</code> 写成存根实现。与断言或先决条件不同，致命错误永远不会被优化掉，因此可以确保在遇到存根实现时始终停止执行。</p>
+</blockquote>
+<!--
+  "\ " in the first cell below lets it be empty.
+  Otherwise RST treats the row as a continuation.
+
+  ============ =====  ==========  ===============================
+  \            Debug  Production  Production with ``-Ounchecked``
+  ============ =====  ==========  ===============================
+  Assertion    Yes    No          No
+  ------------ -----  ----------  -------------------------------
+  Precondition Yes    Yes         No
+  ------------ -----  ----------  -------------------------------
+  Fatal Error  Yes    Yes         Yes
+  ============ =====  ==========  ===============================
+-->
+
+<!--
+  TODO: In Xcode, can you set a breakpoint on assertion/precondition failure?
+  If so, mention that fact and give a link to a guide that shows you how.
+  In LLDB, 'breakpoint set -E swift' catches when errors are thrown,
+  but doesn't stop at assertions.
+-->
+
+<!--
+This source file is part of the Swift.org open source project
+
+Copyright (c) 2014 - 2022 Apple Inc. and the Swift project authors
+Licensed under Apache License v2.0 with Runtime Library Exception
+
+See https://swift.org/LICENSE.txt for license information
+See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
+-->
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/">LANGUAGEGUIDE</a></li>
+            <li>THEBASICS</li>
+          
+  </ul>
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E5%92%8C%E5%8F%98%E9%87%8F"><span class="nav-number">1.1.</span> <span class="nav-text">常量和变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%E5%B8%B8%E9%87%8F%E5%92%8C%E5%8F%98%E9%87%8F"><span class="nav-number">1.1.1.</span> <span class="nav-text">声明常量和变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E5%AE%89%E5%85%A8%E5%92%8C%E7%B1%BB%E5%9E%8B%E6%8E%A8%E6%96%AD"><span class="nav-number">1.2.</span> <span class="nav-text">类型安全和类型推断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D"><span class="nav-number">1.3.</span> <span class="nav-text">类型别名</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E4%BE%9B%E5%90%8E%E5%A4%87%E5%80%BC"><span class="nav-number">1.3.1.</span> <span class="nav-text">提供后备值</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

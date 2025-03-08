@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="语句对表达式进行分组，并控制执行流程。 在 Swift 中，有三种类型的语句：简单语句、编译器控制语句和控制流语句。简单语句是最常见的，用于构造表达式或者声明。编译器控制语句允许程序改变编译器的行为，包含编译配置语句和行控制语句。 控制流语句则用于控制程序执行的流程，Swift 中有多种类型的控制流语句：循环语句、分支语句和控制转移语句。循环语句用于重复执行代码块；分支语句用于执行满足特定条件的代">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/Statements.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="语句对表达式进行分组，并控制执行流程。 在 Swift 中，有三种类型的语句：简单语句、编译器控制语句和控制流语句。简单语句是最常见的，用于构造表达式或者声明。编译器控制语句允许程序改变编译器的行为，包含编译配置语句和行控制语句。 控制流语句则用于控制程序执行的流程，Swift 中有多种类型的控制流语句：循环语句、分支语句和控制转移语句。循环语句用于重复执行代码块；分支语句用于执行满足特定条件的代">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-08T08:32:48.735Z">
+<meta property="article:modified_time" content="2025-03-08T08:32:48.735Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/Statements">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/">REFERENCEMANUAL</a></li>
+            <li>STATEMENTS</li>
+          
+  </ul>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h1 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h1><p>对表达式进行分组，并控制执行流程。</p>
+<p>在 Swift 中，有三种类型的语句：简单语句、编译器控制语句和控制流语句。简单语句是最常见的，用于构造表达式或者声明。编译器控制语句允许程序改变编译器的行为，包含编译配置语句和行控制语句。</p>
+<p>控制流语句则用于控制程序执行的流程，Swift 中有多种类型的控制流语句：循环语句、分支语句和控制转移语句。循环语句用于重复执行代码块；分支语句用于执行满足特定条件的代码块；控制转移语句则用于改变代码的执行顺序。另外，Swift 提供了 <code>do</code> 语句，用于构建局部作用域，还用于错误的捕获和处理；还提供了 <code>defer</code> 语句，用于退出当前作用域之前执行清理操作。</p>
+<p>是否将分号（<code>;</code>）添加到语句的末尾是可选的。但若要在同一行内写多条独立语句，则必须使用分号。</p>
+<blockquote>
+<p>语句语法：</p>
+<p><em>statement</em> → <em>expression</em> <strong><code>;</code></strong><em>?</em> <br><em>statement</em> → <em>declaration</em> <strong><code>;</code></strong><em>?</em> <br><em>statement</em> → <em>loop-statement</em> <strong><code>;</code></strong><em>?</em> <br><em>statement</em> → <em>branch-statement</em> <strong><code>;</code></strong><em>?</em> <br><em>statement</em> → <em>labeled-statement</em> <strong><code>;</code></strong><em>?</em> <br><em>statement</em> → <em>control-transfer-statement</em> <strong><code>;</code></strong><em>?</em> <br><em>statement</em> → <em>defer-statement</em> <strong><code>;</code></strong><em>?</em> <br><em>statement</em> → <em>do-statement</em> <strong><code>;</code></strong><em>?</em> <br><em>statement</em> → <em>compiler-control-statement</em> <br><em>statements</em> → <em>statement</em> <em>statements</em><em>?</em></p>
+</blockquote>
+<!--
+  NOTE: Removed semicolon-statement as syntactic category,
+  because, according to Doug, they're not really statements.
+  For example, you can't have
+      if foo { ; }
+  but you should be able to if it's truly considered a statement.
+  The semicolon isn't even required for the compiler; we just added
+  rules that require them in some places to enforce a certain amount
+  of readability.
+-->
+
+<h2 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h2><p>循环语句会根据特定的循环条件来重复执行代码块。Swift 提供三种类型的循环语句：<code>for-in</code> 语句、<code>while</code> 语句和 <code>repeat-while</code> 语句。</p>
+<p>通过 break 语句和 continue 语句可以改变循环语句的控制流。有关这两条语句，可参阅 <a href="doc:Statements#Break-语句">doc:Statements#Break-语句</a> 和<br><a href="doc:Statements#Continue-语句">doc:Statements#Continue-语句</a> 。</p>
+<blockquote>
+<p>循环语句的语法：</p>
+<p><em>loop-statement</em> → <em>for-in-statement</em> <br><em>loop-statement</em> → <em>while-statement</em> <br><em>loop-statement</em> → <em>repeat-while-statement</em></p>
+</blockquote>
+<h3 id="For-In-语句"><a href="#For-In-语句" class="headerlink" title="For-In 语句"></a>For-In 语句</h3><p><code>for-in</code> 语句会为集合（或遵循<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/sequence"><code>Sequence</code></a>协议的任意类型）中的每一项执行一次代码块。</p>
+<p><code>for-in</code> 语句的形式如下：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> <span class="operator">&lt;</span>#item#<span class="operator">&gt;</span> <span class="keyword">in</span> <span class="operator">&lt;</span>#collection#<span class="operator">&gt;</span> {</span><br><span class="line">   <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>for-in</code> 语句在循环开始前会调用集合表达式（<code>collection expression</code>）的 <code>makeIterator()</code> 方法来获取一个遵循了 <code>IteratorProtocol</code> 协议的迭代器类型。接下来循环开始，反复调用该迭代器的 <code>next()</code> 方法。如果其返回值不是 <code>nil</code>，它将会被赋给 <code>item</code>，然后执行循环体语句，执行完毕后回到循环开始处，继续重复这一过程；否则，既不会赋值也不会执行循环体语句，<code>for-in</code> 语句至此执行完毕。</p>
+<blockquote>
+<p>for-in 语句的语法：</p>
+<p><em>for-in-statement</em> → <strong><code>for</code></strong> <strong><code>case</code></strong><em>?</em> <em>pattern</em> <strong><code>in</code></strong> <em>expression</em> <em>where-clause</em><em>?</em> <em>code-block</em></p>
+</blockquote>
+<h3 id="While-语句"><a href="#While-语句" class="headerlink" title="While 语句"></a>While 语句</h3><p>只要循环条件为真，<code>while</code> 语句就会重复执行代码块。</p>
+<p><code>while</code> 语句的形式如下：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="operator">&lt;</span>#condition#<span class="operator">&gt;</span> {</span><br><span class="line">   <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p> <code>while</code> 语句的执行流程如下：</p>
+<ol>
+<li><p><em>条件</em> 判断</p>
+<p>如果为 <code>true</code>， 程序执行到第 2 步；<br>如果为 <code>false</code>， 程序将结束执行 <code>while</code> 语句。</p>
+</li>
+<li><p>执行循环体中的语句，然后回到第 1 步</p>
+</li>
+</ol>
+<p>由于会在执行循环体中的语句前判断条件的值，因此循环体中的语句可能会被执行若干次，也可能一次也不会被执行。</p>
+<p>条件的结果必须是 Bool 类型或者 Bool 的桥接类型。另外，条件语句也可以使用可选绑定，请参阅 <a href="doc:TheBasics#可选绑定">doc:TheBasics#可选绑定</a>。</p>
+<blockquote>
+<p>while 语句的语法：</p>
+<p><em>while-statement</em> → <strong><code>while</code></strong> <em>condition-list</em> <em>code-block</em></p>
+<p><em>condition-list</em> → <em>condition</em> | <em>condition</em> <strong><code>,</code></strong> <em>condition-list</em> <br><em>condition</em> → <em>expression</em> | <em>availability-condition</em> | <em>case-condition</em> | <em>optional-binding-condition</em></p>
+<p><em>case-condition</em> → <strong><code>case</code></strong> <em>pattern</em> <em>initializer</em> <br><em>optional-binding-condition</em> → <strong><code>let</code></strong> <em>pattern</em> <em>initializer</em><em>?</em> | <strong><code>var</code></strong> <em>pattern</em> <em>initializer</em><em>?</em></p>
+</blockquote>
+<h3 id="Repeat-While-语句"><a href="#Repeat-While-语句" class="headerlink" title="Repeat-While 语句"></a>Repeat-While 语句</h3><p><code>repeat-while</code> 语句至少执行一次代码块，之后只要循环条件为真，就会重复执行代码块。</p>
+<p><code>repeat</code>-<code>while</code> 语句的形式如下：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">repeat</span> {</span><br><span class="line">   <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">} <span class="keyword">while</span> <span class="operator">&lt;</span>#condition#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>repeat</code>-<code>while</code>语句的执行流程如下：</p>
+<ol>
+<li><p>执行循环体中的语句，然后转到第 2 步。</p>
+</li>
+<li><p>判断 <em>条件</em> 的值：</p>
+<p>如果为 <code>true</code>，重复第 1 步；<br>如果为 <code>false</code>，程序会结束执行 <code>repeat</code>-<code>while</code> 语句。</p>
+</li>
+</ol>
+<p>由于条件的值是在循环体中的语句执行后才进行判断，因此循环体中的语句至少会被执行一次。</p>
+<p>条件的结果必须是 Bool 类型或者 Bool 的桥接类型。另外，条件语句也可以使用可选绑定，请参阅</p>
+<blockquote>
+<p>repeat-while 语句的语法：</p>
+<p><em>repeat-while-statement</em> → <strong><code>repeat</code></strong> <em>code-block</em> <strong><code>while</code></strong> <em>expression</em></p>
+</blockquote>
+<h2 id="分支语句"><a href="#分支语句" class="headerlink" title="分支语句"></a>分支语句</h2><p>分支语句会根据一个或者多个条件来执行指定部分的代码。分支语句中的条件将会决定程序如何分支以及执行哪部分代码。Swift 提供三种类型的分支语句：<code>if</code> 语句、 <code>guard</code> 语句和 <code>switch</code> 语句。</p>
+<p><code>if</code> 语句和 <code>switch</code> 语句中的控制流可以用 <code>break</code> 语句改变，关于<code>break</code>的用法，请参阅 <a href="doc:Statements#Break-语句">doc:Statements#Break-语句</a> 。</p>
+<blockquote>
+<p>分支语句的语法：</p>
+<p><em>branch-statement</em> → <em>if-statement</em> <br><em>branch-statement</em> → <em>guard-statement</em> <br><em>branch-statement</em> → <em>switch-statement</em></p>
+</blockquote>
+<h3 id="If-语句"><a href="#If-语句" class="headerlink" title="If 语句"></a>If 语句</h3><p><code>if</code> 语句会根据一个或多个条件来决定执行哪一块代码。</p>
+<p><code>if</code> 语句有两种基本形式，无论哪种形式，都必须有花括号。</p>
+<p>第一种形式是当且仅当条件为真时执行代码，形式如下：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="operator">&lt;</span>#condition#<span class="operator">&gt;</span> {</span><br><span class="line">   <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>第二种形式是在第一种形式的基础上添加 <code>else</code> 语句（通过引入 <code>else</code> 关键字），并且用于：当条件为真时执行一部分代码，当这同一个条件为假的时候执行另一部分代码。当只有一个 <code>else</code> 语句时，<code>if</code> 语句具有以下的形式：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="operator">&lt;</span>#condition#<span class="operator">&gt;</span> {</span><br><span class="line">   <span class="operator">&lt;</span>#statements to execute <span class="keyword">if</span> condition <span class="keyword">is</span> <span class="literal">true</span>#<span class="operator">&gt;</span></span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">   <span class="operator">&lt;</span>#statements to execute <span class="keyword">if</span> condition <span class="keyword">is</span> <span class="literal">false</span>#<span class="operator">&gt;</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>if</code> 语句的 <code>else</code> 语句也可包含另一个 <code>if</code> 语句，从而形成一条链来测试更多的条件，像下面这样：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="operator">&lt;</span>#condition <span class="number">1</span>#<span class="operator">&gt;</span> {</span><br><span class="line">   <span class="operator">&lt;</span>#statements to execute <span class="keyword">if</span> condition <span class="number">1</span> <span class="keyword">is</span> <span class="literal">true</span>#<span class="operator">&gt;</span></span><br><span class="line">} <span class="keyword">else</span> <span class="keyword">if</span> <span class="operator">&lt;</span>#condition <span class="number">2</span>#<span class="operator">&gt;</span> {</span><br><span class="line">   <span class="operator">&lt;</span>#statements to execute <span class="keyword">if</span> condition <span class="number">2</span> <span class="keyword">is</span> <span class="literal">true</span>#<span class="operator">&gt;</span></span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">   <span class="operator">&lt;</span>#statements to execute <span class="keyword">if</span> both conditions are <span class="literal">false</span>#<span class="operator">&gt;</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>if 语句中条件的结果必须是 Bool 类型或者 Bool 的桥接类型。另外，条件语句也可以使用可选绑定，请参阅 <a href="doc:TheBasics#可选绑定">doc:TheBasics#可选绑定</a>.</p>
+<blockquote>
+<p>if 语句的语法:</p>
+<p><em>if-statement</em> → <strong><code>if</code></strong> <em>condition-list</em> <em>code-block</em> <em>else-clause</em><em>?</em> <br><em>else-clause</em> → <strong><code>else</code></strong> <em>code-block</em> | <strong><code>else</code></strong> <em>if-statement</em></p>
+</blockquote>
+<h3 id="Guard-语句"><a href="#Guard-语句" class="headerlink" title="Guard 语句"></a>Guard 语句</h3><p>如果一个或者多个条件不成立，可用 <code>guard</code> 语句来退出当前作用域。</p>
+<p><code>guard</code> 语句的格式如下：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">guard</span> <span class="operator">&lt;</span>#condition#<span class="operator">&gt;</span> <span class="keyword">else</span> {</span><br><span class="line">   <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>语句中条件的结果必须是 Bool 类型或者 Bool 的桥接类型。另外，条件也可以是一条可选绑定，请参阅 <a href="doc:TheBasics#可选绑定">doc:TheBasics#可选绑定</a>。</p>
+<p>在 <code>guard</code> 语句中进行可选绑定的任何常量或者变量，其可用范围从声明开始直到作用域结束。</p>
+<p><code>guard</code> 语句必须有 <code>else</code> 子句，而且必须在该子句中调用返回类型是 <code>Never</code> 的函数，或者使用下面的语句退出当前作用域：</p>
+<ul>
+<li><code>return</code></li>
+<li><code>break</code></li>
+<li><code>continue</code></li>
+<li><code>throw</code></li>
+</ul>
+<p>关于控制转移语句，请参阅 <a href="doc:Statements#控制转移语句">doc:Statements#控制转移语句</a> 。关于返回类型是 <code>Never</code> 的函数，请参阅<a href="doc:Declarations#永远不返回的函数">doc:Declarations#永远不返回的函数</a>。</p>
+<blockquote>
+<p>guard 语句的语法：</p>
+<p><em>guard-statement</em> → <strong><code>guard</code></strong> <em>condition-list</em> <strong><code>else</code></strong> <em>code-block</em></p>
+</blockquote>
+<h3 id="Switch-语句"><a href="#Switch-语句" class="headerlink" title="Switch 语句"></a>Switch 语句</h3><p><code>switch</code> 语句会根据控制表达式的值来决定执行哪部分代码。</p>
+<p><code>switch</code> 语句的形式如下：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> <span class="operator">&lt;</span>#control expression#<span class="operator">&gt;</span> {</span><br><span class="line"><span class="keyword">case</span> <span class="operator">&lt;</span>#pattern <span class="number">1</span>#<span class="operator">&gt;</span>:</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">case</span> <span class="operator">&lt;</span>#pattern <span class="number">2</span>#<span class="operator">&gt;</span> <span class="keyword">where</span> <span class="operator">&lt;</span>#condition#<span class="operator">&gt;</span>:</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">case</span> <span class="operator">&lt;</span>#pattern <span class="number">3</span>#<span class="operator">&gt;</span> <span class="keyword">where</span> <span class="operator">&lt;</span>#condition#<span class="operator">&gt;</span>,</span><br><span class="line">    <span class="operator">&lt;</span>#pattern <span class="number">4</span>#<span class="operator">&gt;</span> <span class="keyword">where</span> <span class="operator">&lt;</span>#condition#<span class="operator">&gt;</span>:</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>switch</code> 语句会先计算 <em>控制表达式</em> 的值，然后与每一个 <code>case</code> 的模式进行匹配。如果匹配成功，程序将会执行对应的 <code>case</code> 中的语句。另外，每一个 <code>case</code> 的作用域都不能为空，也就是说在每一个 <code>case</code> 的冒号（<code>:</code>）后面必须至少有一条语句。如果你不想在匹配到的 <code>case</code> 中执行代码，只需在该 <code>case</code> 中写一条 <code>break</code> 语句即可。</p>
+<p>可以用作控制表达式的值是十分灵活的。除了标量类型外，如 <code>Int</code>、<code>Character</code>，你可以使用任何类型的值，包括浮点数、字符串、元组、自定义类型的实例和可选类型。控制表达式的值还可以用来匹配枚举类型中的成员值或是检查该值是否包含在指定的 <code>Range</code> 中。关于如何在 <code>switch</code> 语句中使用这些类型，请参阅 <a href="doc:ControlFlow#Switch语句">doc:ControlFlow#Switch语句</a> 中的 <a href="doc:ControlFlow">doc:ControlFlow</a>。</p>
+<p>每个 case 的模式后面可以有一个 <code>where</code> 子句。<code>where</code> 子句由 <code>where</code> 关键字紧跟一个提供额外条件的表达式组成。因此，当且仅当控制表达式匹配一个 <code>case</code> 的模式且 <code>where</code> 子句的表达式为真时，<code>case</code> 中的语句才会被执行。在下面的例子中，控制表达式只会匹配包含两个相等元素的元组，例如 <code>(1, 1)</code>：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> <span class="keyword">let</span> (x, y) <span class="keyword">where</span> x <span class="operator">==</span> y:</span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  - test: `switch-case-statement`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; switch (1, 1) &#123;</span><br><span class="line">-&gt; case let (x, y) where x == y:</span><br><span class="line">&gt;&gt; break</span><br><span class="line">&gt;&gt; default: break</span><br><span class="line">&gt;&gt; &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>如上例所示， <code>case</code> 中的模式也可以使用 <code>let</code> 关键字绑定常量（也可以使用 <code>var</code> 关键字绑定变量）。这些常量（或变量）随后可以在相应的 <code>where</code> 子句中引用，并在 <code>case</code> 范围内的代码中使用。如果 <code>case</code> 包含多个匹配控制表达式的模式，则所有模式必须包含相同的常量或变量绑定，并且每个绑定的变量或常量在该 <code>case</code> 的所有模式中必须具有相同的类型。</p>
+<!--
+  The discussion above about multi-pattern cases
+  matches discussion of multi-pattern catch under Do Statement.
+-->
+
+<p><code>switch</code> 语句也可以包含默认分支，使用 <code>default</code> 关键字表示。只有所有 <code>case</code> 都无法匹配控制表达式时，默认分支中的代码才会被执行。一个 <code>switch</code> 语句只能有一个默认分支，而且必须在 <code>switch</code> 语句的最后面。</p>
+<p>尽管模式匹配操作的实际执行顺序，特别是 <code>case</code> 中模式的求值顺序是未指定的，但在 switch 语句中，模式匹配的行为大概是按照源码中的顺序进行求值的——即它们在源代码中出现的顺序。因此，如果多个 <code>case</code> 包含求值为相同值的模式，从而可以匹配控制表达式的值，程序只会执行源代码中第一个匹配的 <code>case</code> 中的代码。</p>
+<!--
+  - test: `switch-case-with-multiple-patterns`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; let tuple = (1, 1)</span><br><span class="line">&gt;&gt; switch tuple &#123;</span><br><span class="line">&gt;&gt;     case (let x, 5), (let x, 1): print(x)</span><br><span class="line">&gt;&gt;     default: print(2)</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&lt;&lt; 1</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `switch-case-with-multiple-patterns-err`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; let tuple = (1, 1)</span><br><span class="line">&gt;&gt; switch tuple &#123;</span><br><span class="line">&gt;&gt;     case (let x, 5), (let x as Any, 1): print(1)</span><br><span class="line">&gt;&gt;     default: print(2)</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">!$ error: pattern variable bound to type &#x27;Any&#x27;, expected type &#x27;Int&#x27;</span><br><span class="line">!! case (let x, 5), (let x as Any, 1): print(1)</span><br><span class="line">!!                       ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h4 id="Switch-语句必须是详尽的"><a href="#Switch-语句必须是详尽的" class="headerlink" title="Switch 语句必须是详尽的"></a>Switch 语句必须是详尽的</h4><p>在 Swift 中，<code>switch</code> 语句中控制表达式的每一个可能的值都必须至少有一个 <code>case</code> 与之对应。在某些无法面面俱到的情况下（例如，表达式的类型是 <code>Int</code>），你可以使用 <code>default</code> 分支满足该要求。</p>
+<h4 id="对未来枚举的case进行switch"><a href="#对未来枚举的case进行switch" class="headerlink" title="对未来枚举的case进行switch"></a>对未来枚举的<code>case</code>进行<code>switch</code></h4><p><em>非冻结枚举(<code>nonfrozen enumeration</code>)</em> 是一种特殊的枚举类型，它可能在未来会增加新的枚举 case，即使这时候你已经编译并且发布了你的应用，所以在 switch 非冻结枚举前需要深思熟虑。当一个库的作者们把一个枚举标记为非冻结的，这意味着他们保留了增加新的枚举 case 的权利，并且任何和这个枚举交互的代码都必须在无需重新编译的条件下能够处理那些未来可能新加入的 case 。只有演进模式的库代码、标准库代码、用 Swift 实现的 Apple 框架、C 以及 Objective-C 代码才能够声明非冻结枚举。更多关于冻结和非冻结枚举的内容，请参阅 <a href="doc:Attributes#frozen">doc:Attributes#frozen</a>.</p>
+<p>当你对非冻结枚举进行 switch 时，你总是需要有一个<code>default case</code>，即使每种枚举类型都已经有对应的 <code>case</code> 了。你可以在 <code>default</code> 前标注 <code>@unknown</code>，意思是这个 <code>case</code> 应该只匹配未来加入的枚举 <code>case</code>。如果你的 <code>default case</code> 中匹配了任何在编译时就能确定的枚举 <code>case</code>，Swift 会抛出一个警告。这可以很好地提醒你库的作者已经新增了一种 <code>case</code>，并且你还没有去处理。</p>
+<p>以下就是一个例子，我们对标准库的 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/mirror/ancestorrepresentation"><code>Mirror.AncestorRepresentation</code></a> 进行 switch 操作，每当有新的 case 加入，我们会得到一个警告，提示我们要去处理它。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> representation: <span class="type">Mirror</span>.<span class="type">AncestorRepresentation</span> <span class="operator">=</span> .generated</span><br><span class="line"><span class="keyword">switch</span> representation &#123;</span><br><span class="line"><span class="keyword">case</span> .customized:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Use the nearest ancestor&#x27;s implementation.&quot;</span>)</span><br><span class="line"><span class="keyword">case</span> .generated:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Generate a default mirror for all ancestor classes.&quot;</span>)</span><br><span class="line"><span class="keyword">case</span> .suppressed:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Suppress the representation of all ancestor classes.&quot;</span>)</span><br><span class="line"><span class="keyword">@unknown</span> <span class="keyword">default</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Use a representation that was unknown when this code was compiled.&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Prints &quot;Generate a default mirror for all ancestor classes.&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  - test: `unknown-case`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let representation: Mirror.AncestorRepresentation = .generated</span><br><span class="line">-&gt; switch representation &#123;</span><br><span class="line">   case .customized:</span><br><span class="line">       print(&quot;Use the nearest ancestor&#x27;s implementation.&quot;)</span><br><span class="line">   case .generated:</span><br><span class="line">       print(&quot;Generate a default mirror for all ancestor classes.&quot;)</span><br><span class="line">   case .suppressed:</span><br><span class="line">       print(&quot;Suppress the representation of all ancestor classes.&quot;)</span><br><span class="line">-&gt; @unknown default:</span><br><span class="line">       print(&quot;Use a representation that was unknown when this code was compiled.&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- Generate a default mirror for all ancestor classes.</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<h4 id="不存在隐式落入"><a href="#不存在隐式落入" class="headerlink" title="不存在隐式落入"></a>不存在隐式落入</h4><p>当匹配到的 case 中的代码执行完毕后，switch 语句会直接退出，而不会继续执行下一个 case 。这就意味着，如果你想执行下一个 case，需要显式地在当前 case 中使用 fallthrough 语句。关于 fallthrough 语句的更多信息，请参阅<a href="doc:Statements#Fallthrough-语句">doc:Statements#Fallthrough-语句</a> 。</p>
+<blockquote>
+<p>switch 语句的语法：</p>
+<p><em>switch-statement</em> → <strong><code>switch</code></strong> <em>expression</em> <strong><code>&#123;</code></strong> <em>switch-cases</em><em>?</em> <strong><code>&#125;</code></strong> <br><em>switch-cases</em> → <em>switch-case</em> <em>switch-cases</em><em>?</em> <br><em>switch-case</em> → <em>case-label</em> <em>statements</em> <br><em>switch-case</em> → <em>default-label</em> <em>statements</em> <br><em>switch-case</em> → <em>conditional-switch-case</em></p>
+<p><em>case-label</em> → <em>attributes</em><em>?</em> <strong><code>case</code></strong> <em>case-item-list</em> <strong><code>:</code></strong> <br><em>case-item-list</em> → <em>pattern</em> <em>where-clause</em><em>?</em> | <em>pattern</em> <em>where-clause</em><em>?</em> <strong><code>,</code></strong> <em>case-item-list</em> <br><em>default-label</em> → <em>attributes</em><em>?</em> <strong><code>default</code></strong> <strong><code>:</code></strong></p>
+<p><em>where-clause</em> → <strong><code>where</code></strong> <em>where-expression</em> <br><em>where-expression</em> → <em>expression</em></p>
+<p><em>conditional-switch-case</em> → <em>switch-if-directive-clause</em> <em>switch-elseif-directive-clauses</em><em>?</em> <em>switch-else-directive-clause</em><em>?</em> <em>endif-directive</em> <br><em>switch-if-directive-clause</em> → <em>if-directive</em> <em>compilation-condition</em> <em>switch-cases</em><em>?</em> <br><em>switch-elseif-directive-clauses</em> → <em>elseif-directive-clause</em> <em>switch-elseif-directive-clauses</em><em>?</em> <br><em>switch-elseif-directive-clause</em> → <em>elseif-directive</em> <em>compilation-condition</em> <em>switch-cases</em><em>?</em> <br><em>switch-else-directive-clause</em> → <em>else-directive</em> <em>switch-cases</em><em>?</em></p>
+</blockquote>
+<!--
+  The grammar above uses attributes-OPT to match what's used
+  in all other places where attributes are allowed,
+  although as of Swift 4.2 only a single attribute (@unknown) is allowed.
+-->
+
+<h2 id="带标签的语句"><a href="#带标签的语句" class="headerlink" title="带标签的语句"></a>带标签的语句</h2><p>你可以在循环语句、if 语句、switch 语句或 do 语句前加上<em>语句标签</em>，它由标签名称跟一个冒号(<code>:</code>)组成。使用语句标签配合 <code>break</code> 和 <code>continue</code> 语句，以明确你希望如何在循环语句或 switch 语句中改变控制流程，关于<code>break</code> 和 <code>continue</code> 语句，请参阅<a href="doc:Statements#Break-语句">doc:Statements#Break-语句</a> 和<a href="doc:Statements#Continue-语句">doc:Statements#Continue-语句</a> 。</p>
+<p>标签的作用域在该标签所标记的语句内。可以嵌套使用带标签的语句，但标签名称必须是唯一的。</p>
+<p>关于使用带标签的语句的例子，请参阅 <a href="doc:ControlFlow">doc:ControlFlow</a> 中的 <a href="doc:ControlFlow#带标签的语句">doc:ControlFlow#带标签的语句</a> 。</p>
+<!--
+  - test: `backtick-identifier-is-legal-label`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var i = 0</span><br><span class="line">-&gt; `return`: while i &lt; 100 &#123;</span><br><span class="line">       i += 1</span><br><span class="line">       if i == 10 &#123;</span><br><span class="line">           break `return`</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; print(i)</span><br><span class="line">&lt;&lt; 10</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<blockquote>
+<p>带标签语句的语法：</p>
+<p><em>labeled-statement</em> → <em>statement-label</em> <em>loop-statement</em> <br><em>labeled-statement</em> → <em>statement-label</em> <em>if-statement</em> <br><em>labeled-statement</em> → <em>statement-label</em> <em>switch-statement</em> <br><em>labeled-statement</em> → <em>statement-label</em> <em>do-statement</em></p>
+<p><em>statement-label</em> → <em>label-name</em> <strong><code>:</code></strong> <br><em>label-name</em> → <em>identifier</em></p>
+</blockquote>
+<h2 id="控制转移语句"><a href="#控制转移语句" class="headerlink" title="控制转移语句"></a>控制转移语句</h2><p>控制转移语句能够无条件地把控制权从一片代码转移到另一片代码，从而改变代码执行的顺序。Swift 提供五种类型的控制转移语句：<code>break</code>语句、<code>continue</code> 语句、<code>fallthrough</code> 语句、<code>return</code> 语句和 <code>throw</code> 语句。</p>
+<blockquote>
+<p>控制转移语句的语法：</p>
+<p><em>control-transfer-statement</em> → <em>break-statement</em> <br><em>control-transfer-statement</em> → <em>continue-statement</em> <br><em>control-transfer-statement</em> → <em>fallthrough-statement</em> <br><em>control-transfer-statement</em> → <em>return-statement</em> <br><em>control-transfer-statement</em> → <em>throw-statement</em></p>
+</blockquote>
+<h3 id="Break-语句"><a href="#Break-语句" class="headerlink" title="Break 语句"></a>Break 语句</h3><p><code>break</code> 语句用于终止<code>循环</code>语句、<code>if</code> 语句或 <code>switch</code> 语句的执行。使用 <code>break</code> 语句时，可以只写 <code>break</code> 这个关键词，也可以在 <code>break</code> 后面跟上标签名，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">break</span></span><br><span class="line"><span class="keyword">break</span> <span class="operator">&lt;</span>#label name#<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>当 <code>break</code> 语句后面带标签名时，可用于终止由这个标签标记的<code>循环</code>语句、<code>if</code> 语句或 <code>switch</code> 语句的执行。</p>
+<p>而只写 <code>break</code> 时，则会终止 <code>switch</code> 语句或 <code>break</code> 语句所属的最内层循环语句的执行。不能使用 <code>break</code> 语句来终止未使用标签的 <code>if</code> 语句。</p>
+<p>在这两种情况下，程序控制会被转移到包围的循环或 switch 语句后面的第一行代码（如果有的话）。</p>
+<p>关于使用 break 语句的例子，请参阅<a href="doc:ControlFlow">doc:ControlFlow</a>中的 <a href="doc:ControlFlow#Break语句">doc:ControlFlow#Break语句</a> 和 <a href="doc:ControlFlow#带标签的语句">doc:ControlFlow#带标签的语句</a>。</p>
+<blockquote>
+<p>break 语句的语法：</p>
+<p><em>break-statement</em> → <strong><code>break</code></strong> <em>label-name</em><em>?</em></p>
+</blockquote>
+<h3 id="Continue-语句"><a href="#Continue-语句" class="headerlink" title="Continue 语句"></a>Continue 语句</h3><p><code>continue</code> 语句用于终止循环中当前迭代的执行，但不会终止该循环的执行。使用 <code>continue</code> 语句时，可以只写 <code>continue</code> 这个关键词，也可以在 <code>continue</code> 后面跟上标签名，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">continue</span></span><br><span class="line"><span class="keyword">continue</span> <span class="operator">&lt;</span>#label name#<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>当 <code>continue</code> 语句后面带标签名时，可用于终止由这个标签标记的循环中当前迭代的执行。</p>
+<p>而当只写 <code>continue</code> 时，可用于终止 <code>continue</code> 语句所属的最内层循环中当前迭代的执行。</p>
+<p>在这两种情况下，控制权都会被转移给循环语句的条件语句。</p>
+<p>在 <code>for</code> 语句中，<code>continue</code> 语句执行后，增量表达式还是会被计算，这是因为每次循环体执行完毕后，增量表达式都会被计算。</p>
+<p>关于使用 <code>continue</code> 语句的例子，请参阅<a href="doc:ControlFlow">doc:ControlFlow</a>中的<a href="doc:ControlFlow#Continue语句">doc:ControlFlow#Continue语句</a> 和 <a href="doc:ControlFlow#带标签的语句">doc:ControlFlow#带标签的语句</a></p>
+<blockquote>
+<p>continue 语句的语法：</p>
+<p><em>continue-statement</em> → <strong><code>continue</code></strong> <em>label-name</em><em>?</em></p>
+</blockquote>
+<h3 id="Fallthrough-语句"><a href="#Fallthrough-语句" class="headerlink" title="Fallthrough 语句"></a>Fallthrough 语句</h3><p><code>fallthrough</code> 语句由 <code>fallthrough</code> 关键字组成，只能出现在 <code>switch</code> 语句的某个 <code>case</code> 块中。<code>fallthrough</code> 语句会导致程序执行从当前 <code>switch</code> 语句的一个 <code>case</code> 继续到下一个 <code>case</code>。即使下一个 <code>case</code> 标签的模式与 <code>switch</code> 语句的控制表达式的值不匹配，程序仍会继续执行该 <code>case</code>。</p>
+<p><code>fallthrough</code> 语句可出现在 <code>switch</code> 语句中的任意 <code>case</code> 中，但不能出现在最后一个 <code>case</code> 中。同时，<code>fallthrough</code> 语句也不能把控制权转移到使用了值绑定的 <code>case</code>。</p>
+<p>关于在 <code>switch</code> 语句中使用 <code>fallthrough</code> 语句的例子，请参阅<a href="doc:ControlFlow">doc:ControlFlow</a>中的<a href="doc:ControlFlow#控制转移语句">doc:ControlFlow#控制转移语句</a>。</p>
+<blockquote>
+<p>fallthrough 语句的语法：</p>
+<p><em>fallthrough-statement</em> → <strong><code>fallthrough</code></strong></p>
+</blockquote>
+<h3 id="Return-语句"><a href="#Return-语句" class="headerlink" title="Return 语句"></a>Return 语句</h3><p><code>return</code> 语句用于在函数或方法的实现中将控制权转移到调用函数或方法，接着程序将会从调用位置继续向下执行。</p>
+<p>使用 <code>return</code> 语句时，可以只写 <code>return</code> 这个关键词，也可以在 <code>return</code> 后面跟上表达式，像下面这样：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span></span><br><span class="line"><span class="keyword">return</span> <span class="operator">&lt;</span>#expression#<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>当 <code>return</code> 语句后面带表达式时，表达式的值将会返回给调用函数或方法。如果表达式的值的类型与函数或者方法声明的返回类型不匹配，Swift 则会在返回表达式的值之前将表达式的值的类型转换为返回类型。</p>
+<blockquote>
+<p>注意：<br>正如 <a href="doc:Declarations#可失败构造器">doc:Declarations#可失败构造器</a>中所描述的， return 语句的一种特殊形式<code>return nil</code>可以在可失败的构造器中使用，以表示构造失败。</p>
+</blockquote>
+<!--
+  TODO: Discuss how the conversion takes place and what is allowed to be converted
+  in the (yet to be written) chapter on subtyping and type conversions.
+-->
+
+<p>当只写 <code>return</code> 时，仅仅是从该函数或方法中返回，而不返回任何值（也就是说，函数或方法的返回类型为 <code>Void</code> 或者说 <code>()</code>）。</p>
+<blockquote>
+<p>return 语句的语法：</p>
+<p><em>return-statement</em> → <strong><code>return</code></strong> <em>expression</em><em>?</em></p>
+</blockquote>
+<h3 id="Throw-语句："><a href="#Throw-语句：" class="headerlink" title="Throw 语句："></a>Throw 语句：</h3><p><code>throw</code> 语句出现在抛出函数或者抛出方法体内，或者类型被 <code>throws</code> 关键字标记的闭包表达式体内。</p>
+<p><code>throw</code> 语句使程序在当前作用域结束执行，并向外围作用域传播错误。抛出的错误会一直传递，直到被 do 语句的 catch 子句处理掉。</p>
+<p><code>throw</code> 语句由 <code>throw</code> 关键字紧跟一个表达式组成，如下所示：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">throw</span> <span class="operator">&lt;</span>#expression#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p> <em>表达式</em> 的值必须具有符合<code>Error</code>协议的类型。如果包含 <code>throw</code> 语句的 <code>do</code> 语句或函数声明了它抛出的错误类型，则该表达式的值必须是该类型的实例。</p>
+<p>关于如何使用 <code>throw</code> 语句的例子，请参阅<a href="doc:ErrorHandling">doc:ErrorHandling</a>中的 <a href="doc:ErrorHandling#使用-Throwing-函数传递错误">doc:ErrorHandling#使用-Throwing-函数传递错误</a></p>
+<blockquote>
+<p>throw 语句的语法：</p>
+<p><em>throw-statement</em> → <strong><code>throw</code></strong> <em>expression</em></p>
+</blockquote>
+<h2 id="Defer-语句"><a href="#Defer-语句" class="headerlink" title="Defer 语句"></a>Defer 语句</h2><p><code>defer</code> 语句用于在将程序控制转移到 <code>defer</code> 语句所在作用域之外之前执行代码。</p>
+<p><code>defer</code> 语句的形式如下：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">defer</span> {</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>在 <code>defer</code> 语句中的语句无论程序控制如何转移都会被执行。在某些情况下，例如，手动管理资源时，比如关闭文件描述符，或者即使抛出了错误也需要执行一些操作时，就可以使用 <code>defer</code> 语句。</p>
+<p><code>defer</code> 语句中的语句在包含 <code>defer</code> 语句的作用域结束时执行。</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">f</span>(<span class="params">x</span>: <span class="type">Int</span>) {</span><br><span class="line">  <span class="keyword">defer</span> { <span class="built_in">print</span>(<span class="string">"First defer"</span>) }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> x <span class="operator">&lt;</span> <span class="number">10</span> {</span><br><span class="line">    <span class="keyword">defer</span> { <span class="built_in">print</span>(<span class="string">"Second defer"</span>) }</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"End of if"</span>)</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"End of function"</span>)</span><br><span class="line">}</span><br><span class="line">f(x: <span class="number">5</span>)</span><br><span class="line"><span class="comment">// Prints "End of if"</span></span><br><span class="line"><span class="comment">// Prints "Second defer"</span></span><br><span class="line"><span class="comment">// Prints "End of function"</span></span><br><span class="line"><span class="comment">// Prints "First defer"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func f(x: Int) &#123;</span><br><span class="line">  defer &#123; print(&quot;First defer&quot;) &#125;</span><br><span class="line"></span><br><span class="line">  if x &lt; 10 &#123;</span><br><span class="line">    defer &#123; print(&quot;Second defer&quot;) &#125;</span><br><span class="line">    print(&quot;End of if&quot;)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  print(&quot;End of function&quot;)</span><br><span class="line">&#125;</span><br><span class="line">f(x: 5)</span><br><span class="line">&lt;- End of if</span><br><span class="line">&lt;- Second defer</span><br><span class="line">&lt;- End of function</span><br><span class="line">&lt;- First defer</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>在上面的代码中，<code>if</code> 语句中的 <code>defer</code> 会在函数 f 中声明的 <code>defer</code> 之前执行，因为 <code>if</code> 语句的作用域在函数的作用域之前结束。</p>
+<p>如果多个 <code>defer</code> 语句出现在同一作用域中，它们的出现顺序与执行顺序相反。在给定作用域内，首先执行最后一个 <code>defer</code> 语句，这意味着该最后一个 <code>defer</code> 语句内部的语句可以引用将由其他 <code>defer</code> 语句清理的资源。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">f</span>() &#123;</span><br><span class="line">    <span class="keyword">defer</span> &#123; <span class="built_in">print</span>(<span class="string">&quot;First defer&quot;</span>) &#125;</span><br><span class="line">    <span class="keyword">defer</span> &#123; <span class="built_in">print</span>(<span class="string">&quot;Second defer&quot;</span>) &#125;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;End of function&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line">f()</span><br><span class="line"><span class="comment">// Prints &quot;End of function&quot;</span></span><br><span class="line"><span class="comment">// Prints &quot;Second defer&quot;</span></span><br><span class="line"><span class="comment">// Prints &quot;First defer&quot;</span></span><br></pre></td></tr></table></figure>
+
+<!--
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func f() &#123;</span><br><span class="line">       defer &#123; print(&quot;First defer&quot;) &#125;</span><br><span class="line">       defer &#123; print(&quot;Second defer&quot;) &#125;</span><br><span class="line">       print(&quot;End of function&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">   f()</span><br><span class="line">&lt;- End of function</span><br><span class="line">&lt;- Second defer</span><br><span class="line">&lt;- First defer</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>defer</code> 语句中的语句无法将控制权转移到 <code>defer</code> 语句外部。</p>
+<blockquote>
+<p>defer 语句的语法：</p>
+<p><em>defer-statement</em> → <strong><code>defer</code></strong> <em>code-block</em></p>
+</blockquote>
+<h2 id="Do-语句"><a href="#Do-语句" class="headerlink" title="Do 语句"></a>Do 语句</h2><p><code>do</code> 语句用于引入一个新的作用域，该作用域中可以含有一个或多个 <code>catch</code> 子句，<code>catch</code> 子句中定义了一些匹配错误条件的模式。<code>do</code> 语句作用域内定义的常量和变量只能在 <code>do</code> 语句作用域内使用。</p>
+<p>Swift 中的 <code>do</code> 语句与 C 中限定代码块界限的大括号（<code>&#123;&#125;</code>）很相似，也并不会降低程序运行时的性能。</p>
+<p><code>do</code> 语句的形式如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> <span class="operator">&lt;</span>#expression#<span class="operator">&gt;</span></span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125; <span class="keyword">catch</span> <span class="operator">&lt;</span>#pattern <span class="number">1</span>#<span class="operator">&gt;</span> &#123;</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125; <span class="keyword">catch</span> <span class="operator">&lt;</span>#pattern <span class="number">2</span>#<span class="operator">&gt;</span> <span class="keyword">where</span> <span class="operator">&lt;</span>#condition#<span class="operator">&gt;</span> &#123;</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125; <span class="keyword">catch</span> <span class="operator">&lt;</span>#pattern <span class="number">3</span>#<span class="operator">&gt;</span>, <span class="operator">&lt;</span>#pattern <span class="number">4</span>#<span class="operator">&gt;</span> <span class="keyword">where</span> <span class="operator">&lt;</span>#condition#<span class="operator">&gt;</span> &#123;</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>do</code> 语句可以选择性地指定它抛出的错误类型，形式如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> <span class="keyword">throws</span>(<span class="operator">&lt;</span>#type#<span class="operator">&gt;</span>) &#123;</span><br><span class="line">    <span class="keyword">try</span> <span class="operator">&lt;</span>#expression#<span class="operator">&gt;</span></span><br><span class="line">&#125; <span class="keyword">catch</span> <span class="operator">&lt;</span>#pattern<span class="operator">&gt;</span> &#123;</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果 <code>do</code> 语句包含 <code>throws</code> 子句，则 <code>do</code> 块只能抛出指定类型的错误。类型必须是符合 <code>Error</code> 协议的具体类型、符合 <code>Error</code> 协议的不透明类型，或者是被封装的协议类型 <code>any Error</code>。如果 <code>do</code> 语句没有指定它抛出的错误类型，Swift 将按照以下方式推断错误类型：</p>
+<ul>
+<li><p>如果 <code>do</code> 代码块中的每个 <code>throws</code> 语句和 <code>try</code> 表达式都嵌套在一个全面的错误处理机制中，则 Swift 推断该 <code>do</code> 语句是非抛出的。</p>
+</li>
+<li><p>如果 <code>do</code> 代码块包含的代码抛出只有单一类型的错误，并且没有全面的错误处理（除了抛出 <code>Never</code>），则 Swift 推断该 <code>do</code> 语句抛出该具体错误类型。</p>
+</li>
+<li><p>如果 <code>do</code> 代码块包含的代码抛出超过一种类型的错误，并且没有全面的错误处理，则 Swift 推断该 <code>do</code> 语句抛出 <code>any Error</code>。</p>
+</li>
+</ul>
+<p>有关处理具有显式类型的错误的更多信息，可参阅 <a href="doc:ErrorHandling#指定错误类型">doc:ErrorHandling#指定错误类型</a>.</p>
+<p>如果 <code>do</code> 代码块中的任何语句抛出了错误，程序会跳转到第一个能模式匹配该错误的 <code>catch</code> 子句。如果没有任何子句匹配，错误会传递到外层作作用域。如果错误在最顶层依旧没有被处理，程序执行会因为运行时错误而停止。</p>
+<p>如同 <code>switch</code> 语句，编译器会判断 <code>catch</code> 子句是否有遗漏。如果 <code>catch</code> 子句没有遗漏，则认为错误已被处理。否则，错误会自动传递到外层作用域，被某个 <code>catch</code> 子句处理掉或者被用 <code>throws</code> 关键字声明的抛出函数继续向外抛出。</p>
+<p>拥有多个模式匹配的 <code>catch</code> 子句只需其中一个匹配到错误即可。如果 <code>catch</code> 子句拥有多个模式匹配，所有的模式必须包含相同的绑定常量或变量，并且每个 <code>catch</code> 子句里所有绑定的变量或常量的类型必须相同。</p>
+<!--
+  The discussion above of multi-pattern catch
+  matches the discussion of multi-pattern case under Switch Statement.
+-->
+
+<p>为了确保错误已经被处理，可以让 <code>catch</code> 子句使用匹配所有错误的模式，如通配符模式（<code>_</code>）。如果一个 <code>catch</code> 子句不指定一种具体模式，<code>catch</code> 子句会匹配任何错误，并绑定到名为 <code>error</code> 的局部常量。有关在 <code>catch</code> 子句中使用模式的更多信息，<br>可参阅 <a href="doc:Patterns">doc:Patterns</a>.</p>
+<p>关于如何在 <code>do</code> 语句中使用一系列 <code>catch</code> 子句的例子，请参阅<a href="doc:ErrorHandling#处理错误">doc:ErrorHandling#处理错误</a>.</p>
+<blockquote>
+<p>do 语句的语法：</p>
+<p><em>do-statement</em> → <strong><code>do</code></strong> <em>throws-clause</em><em>?</em> <em>code-block</em> <em>catch-clauses</em><em>?</em> <br><em>catch-clauses</em> → <em>catch-clause</em> <em>catch-clauses</em><em>?</em> <br><em>catch-clause</em> → <strong><code>catch</code></strong> <em>catch-pattern-list</em><em>?</em> <em>code-block</em> <br><em>catch-pattern-list</em> → <em>catch-pattern</em> | <em>catch-pattern</em> <strong><code>,</code></strong> <em>catch-pattern-list</em> <br><em>catch-pattern</em> → <em>pattern</em> <em>where-clause</em><em>?</em></p>
+</blockquote>
+<h2 id="编译器控制语句"><a href="#编译器控制语句" class="headerlink" title="编译器控制语句"></a>编译器控制语句</h2><p>编译器控制语句允许程序改变编译器的行为。Swift 有三种编译器控制语句：条件编译语句、线路控制语句和编译时诊断语句。</p>
+<blockquote>
+<p>编译器控制语句的语法：</p>
+<p><em>compiler-control-statement</em> → <em>conditional-compilation-block</em> <br><em>compiler-control-statement</em> → <em>line-control-statement</em> <br><em>compiler-control-statement</em> → <em>diagnostic-statement</em></p>
+</blockquote>
+<h3 id="条件编译代码块："><a href="#条件编译代码块：" class="headerlink" title="条件编译代码块："></a>条件编译代码块：</h3><p>条件编译代码块可以根据一个或多个配置来有条件地编译代码。</p>
+<p>每一个条件编译代码块都以 <code>#if</code> 开始，<code>#endif</code> 结束。如下：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">#if</span> <span class="operator">&lt;</span>#compilation condition#<span class="operator">&gt;</span></span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">#endif</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>和<code>if</code>语句的条件不同， <em>编译条件</em> 是在编译时进行判断的。因此，只有当编译条件在编译时评估为 <code>true</code> 时，语句才会被编译和执。</p>
+<p>编译条件可以包括 <code>true</code> 和 <code>false</code> 布尔字面量、与 <code>-D</code> 命令行标志一起使用的标识符，或者下表中列出的任何平台条件。</p>
+<table>
+<thead>
+<tr>
+<th>Platform condition</th>
+<th>Valid arguments</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>os()</code></td>
+<td><code>macOS</code>, <code>iOS</code>, <code>watchOS</code>, <code>tvOS</code>, <code>visionOS</code>, <code>Linux</code>, <code>Windows</code></td>
+</tr>
+<tr>
+<td><code>arch()</code></td>
+<td><code>i386</code>, <code>x86_64</code>, <code>arm</code>, <code>arm64</code></td>
+</tr>
+<tr>
+<td><code>swift()</code></td>
+<td><code>&gt;=</code> or <code>&lt;</code> followed by a version number</td>
+</tr>
+<tr>
+<td><code>compiler()</code></td>
+<td><code>&gt;=</code> or <code>&lt;</code> followed by a version number</td>
+</tr>
+<tr>
+<td><code>canImport()</code></td>
+<td>A module name</td>
+</tr>
+<tr>
+<td><code>targetEnvironment()</code></td>
+<td><code>simulator</code>, <code>macCatalyst</code></td>
+</tr>
+</tbody></table>
+<!--
+  For the full list in the compiler, see the values of
+  SupportedConditionalCompilationOSs and SupportedConditionalCompilationArches
+  in the file lib/Basic/LangOptions.cpp.
+  Some of the OSes and architectures are listed there
+  because there's experimental work to port Swift to them.
+  We won't list them here until they're officially supported.
+  The compiler also accepts pretty much any string --
+  for example "#if os(toaster)" compiles just fine,
+  but Swift doesn't actually support running on a toaster oven --
+  so don't rely on that when checking possible os/arch values.
+-->
+
+<!--
+  The target environment "UIKitForMac"
+  is understood by the compiler as a synonym for "macCatalyst",
+  but that spelling is marked "Must be removed" outside of a few places,
+  so it's omitted from the table above.
+-->
+
+<p>在 <code>swift()</code> 和 <code>compiler()</code> 之后的版本号包含有主版本号，可选副版本号，可选补丁版本号类似，并且用（<code>.</code>）来分隔。在比较符和版本号之间不能有空格，版本号与前面的函数相对应，比如 <code>compiler()</code> 对应的就是这个编译器的版本号，<code>swift()</code> 对应的就是你要编译的 Swift 语言的版本号。举个简单的例子，如果你在使用 <code>Swift 5</code> 的编译器，想编译 <code>Swift 4.2</code> ，可以看下面的例子：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">#if</span> compiler(<span class="operator">&gt;=</span><span class="number">5</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Compiled with the Swift 5 compiler or later"</span>)</span><br><span class="line"><span class="keyword">#endif</span></span><br><span class="line"><span class="keyword">#if</span> swift(<span class="operator">&gt;=</span><span class="number">4.2</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Compiled in Swift 4.2 mode or later"</span>)</span><br><span class="line"><span class="keyword">#endif</span></span><br><span class="line"><span class="keyword">#if</span> compiler(<span class="operator">&gt;=</span><span class="number">5</span>) <span class="operator">&amp;&amp;</span> swift(<span class="operator">&lt;</span><span class="number">5</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Compiled with the Swift 5 compiler or later in a Swift mode earlier than 5"</span>)</span><br><span class="line"><span class="keyword">#endif</span></span><br><span class="line"><span class="comment">// Prints "Compiled with the Swift 5 compiler or later"</span></span><br><span class="line"><span class="comment">// Prints "Compiled in Swift 4.2 mode or later"</span></span><br><span class="line"><span class="comment">// Prints "Compiled with the Swift 5 compiler or later in a Swift mode earlier than 5"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<!--
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-&gt; #if compiler(&gt;=5)</span><br><span class="line">   print(&quot;Compiled with the Swift 5 compiler or later&quot;)</span><br><span class="line">   #endif</span><br><span class="line">   #if swift(&gt;=4.2)</span><br><span class="line">   print(&quot;Compiled in Swift 4.2 mode or later&quot;)</span><br><span class="line">   #endif</span><br><span class="line">   #if compiler(&gt;=5) &amp;&amp; swift(&lt;5)</span><br><span class="line">   print(&quot;Compiled with the Swift 5 compiler or later in a Swift mode earlier than 5&quot;)</span><br><span class="line">   #endif</span><br><span class="line">&lt;- Compiled with the Swift 5 compiler or later</span><br><span class="line">&lt;- Compiled in Swift 4.2 mode or later</span><br><span class="line">// Prints &quot;Compiled with the Swift 5 compiler or later in a Swift mode earlier than 5&quot;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  That testcode is cheating by explicitly printing the third line of output,
+  since it's not actually running in Swift 4.2 mode.
+-->
+
+<p><code>canImport()</code> 条件传入的实参是模块的名字，这个模块可能并不是每个平台上都存在的。该模块的命名可以包含 . 符号。使用它可以检测是否可以导入这个模块，但实际上并没有导入。如果模块存在就返回 <code>true</code>，否则返回 <code>false</code> 。</p>
+<!--
+  - test: `canImport_A, canImport`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; public struct SomeStruct &#123;</span><br><span class="line">&gt;&gt;     public init() &#123; &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `canImport_A.B, canImport`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; public struct AnotherStruct &#123;</span><br><span class="line">&gt;&gt;     public init() &#123; &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `canImport`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; import canImport_A</span><br><span class="line">&gt;&gt; let s = SomeStruct()</span><br><span class="line">&gt;&gt; #if canImport(canImport_A)</span><br><span class="line">&gt;&gt; #else</span><br><span class="line">&gt;&gt; #error(&quot;Can&#x27;t import A&quot;)</span><br><span class="line">&gt;&gt; #endif</span><br><span class="line">---</span><br><span class="line">&gt;&gt; #if canImport(canImport_A.B)</span><br><span class="line">&gt;&gt; #else</span><br><span class="line">&gt;&gt; #error(&quot;Can&#x27;t import A.B&quot;)</span><br><span class="line">&gt;&gt; #endif</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p><code>targetEnvironment()</code> 条件在特殊环境编译时返回 <code>true</code>；否则返回 <code>false</code>。</p>
+<blockquote>
+<p>注意： <code>arch(arm)</code> 平台检测函数在 ARM 64 位设备上不会返回 <code>true</code> 。如果代码在 32 位的 iOS 模拟器上编译，<code>arch(i386)</code> 平台检测函数会返回 <code>true</code>。</p>
+</blockquote>
+<!--
+  - test: `pound-if-swift-version`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-&gt; #if swift(&gt;=2.1)</span><br><span class="line">       print(1)</span><br><span class="line">   #endif</span><br><span class="line">&lt;&lt; 1</span><br><span class="line">-&gt; #if swift(&gt;=2.1) &amp;&amp; true</span><br><span class="line">       print(2)</span><br><span class="line">   #endif</span><br><span class="line">&lt;&lt; 2</span><br><span class="line">-&gt; #if swift(&gt;=2.1) &amp;&amp; false</span><br><span class="line">       print(3)</span><br><span class="line">   #endif</span><br><span class="line">-&gt; #if swift(&gt;=2.1.9.9.9.9.9.9.9.9.9)</span><br><span class="line">       print(5)</span><br><span class="line">   #endif</span><br><span class="line">&lt;&lt; 5</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `pound-if-swift-version-err`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; #if swift(&gt;= 2.1)</span><br><span class="line">       print(4)</span><br><span class="line">   #endif</span><br><span class="line">!$ error: unary operator cannot be separated from its operand</span><br><span class="line">!! #if swift(&gt;= 2.1)</span><br><span class="line">!!           ^ ~</span><br><span class="line">!!-</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `pound-if-compiler-version`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; #if compiler(&gt;=4.2)</span><br><span class="line">       print(1)</span><br><span class="line">   #endif</span><br><span class="line">&lt;&lt; 1</span><br><span class="line">-&gt; #if compiler(&gt;=4.2) &amp;&amp; true</span><br><span class="line">       print(2)</span><br><span class="line">   #endif</span><br><span class="line">&lt;&lt; 2</span><br><span class="line">-&gt; #if compiler(&gt;=4.2) &amp;&amp; false</span><br><span class="line">       print(3)</span><br><span class="line">   #endif</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<p>你可以使用逻辑操作符 <code>&amp;&amp;</code>、<code>||</code> 和 <code>!</code> 来组合多个编译配置，还可以使用圆括号来进行分组。这些运算符与用于组合普通布尔表达式的逻辑运算符具有相同的结合性和优先级。</p>
+<p>类似于 <code>if</code> 语句，你可以添加多个条件分支来测试不同的编译条件。你可以使用 <code>#elseif</code> 子句添加任意数量的附加分支。你还可以使用 <code>#else</code> 子句添加一个最终的附加分支。包含多个分支的条件编译块具有以下形式：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">#if</span> <span class="operator">&lt;</span>#compilation condition <span class="number">1</span>#<span class="operator">&gt;</span></span><br><span class="line">    <span class="operator">&lt;</span>#statements to compile <span class="keyword">if</span> compilation condition <span class="number">1</span> <span class="keyword">is</span> <span class="literal">true</span>#<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">#elseif</span> <span class="operator">&lt;</span>#compilation condition <span class="number">2</span>#<span class="operator">&gt;</span></span><br><span class="line">    <span class="operator">&lt;</span>#statements to compile <span class="keyword">if</span> compilation condition <span class="number">2</span> <span class="keyword">is</span> <span class="literal">true</span>#<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">#else</span></span><br><span class="line">    <span class="operator">&lt;</span>#statements to compile <span class="keyword">if</span> both compilation conditions are <span class="literal">false</span>#<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">#endif</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意： 即使没有被编译，上面编译配置中的每个语句仍然会被解析。然而，唯一的例外是编译配置语句中包含 <code>swift()</code> 或 <code>compiler()</code> 条件：这时仅当编译器版本和语言版本匹配时，语句才会被解析。这种设定能确保旧的编译器不会尝试去解析新 Swift 版本的语法。</p>
+</blockquote>
+<p>关于在条件编译块中如何包装显式成员表达式，请参见<a href="doc:Expressions#显式成员表达式">doc:Expressions#显式成员表达式</a>。</p>
+<blockquote>
+<p>条件编译代码块的语法：</p>
+<p><em>conditional-compilation-block</em> → <em>if-directive-clause</em> <em>elseif-directive-clauses</em><em>?</em> <em>else-directive-clause</em><em>?</em> <em>endif-directive</em></p>
+<p><em>if-directive-clause</em> → <em>if-directive</em> <em>compilation-condition</em> <em>statements</em><em>?</em> <br><em>elseif-directive-clauses</em> → <em>elseif-directive-clause</em> <em>elseif-directive-clauses</em><em>?</em> <br><em>elseif-directive-clause</em> → <em>elseif-directive</em> <em>compilation-condition</em> <em>statements</em><em>?</em> <br><em>else-directive-clause</em> → <em>else-directive</em> <em>statements</em><em>?</em> <br><em>if-directive</em> → <strong><code>#if</code></strong> <br><em>elseif-directive</em> → <strong><code>#elseif</code></strong> <br><em>else-directive</em> → <strong><code>#else</code></strong> <br><em>endif-directive</em> → <strong><code>#endif</code></strong></p>
+<p><em>compilation-condition</em> → <em>platform-condition</em> <br><em>compilation-condition</em> → <em>identifier</em> <br><em>compilation-condition</em> → <em>boolean-literal</em> <br><em>compilation-condition</em> → <strong><code>(</code></strong> <em>compilation-condition</em> <strong><code>)</code></strong> <br><em>compilation-condition</em> → <strong><code>!</code></strong> <em>compilation-condition</em> <br><em>compilation-condition</em> → <em>compilation-condition</em> <strong><code>&amp;&amp;</code></strong> <em>compilation-condition</em> <br><em>compilation-condition</em> → <em>compilation-condition</em> <strong><code>||</code></strong> <em>compilation-condition</em></p>
+<p><em>platform-condition</em> → <strong><code>os</code></strong> <strong><code>(</code></strong> <em>operating-system</em> <strong><code>)</code></strong> <br><em>platform-condition</em> → <strong><code>arch</code></strong> <strong><code>(</code></strong> <em>architecture</em> <strong><code>)</code></strong> <br><em>platform-condition</em> → <strong><code>swift</code></strong> <strong><code>(</code></strong> <strong><code>&gt;=</code></strong> <em>swift-version</em> <strong><code>)</code></strong> | <strong><code>swift</code></strong> <strong><code>(</code></strong> <strong><code>&lt;</code></strong> <em>swift-version</em> <strong><code>)</code></strong> <br><em>platform-condition</em> → <strong><code>compiler</code></strong> <strong><code>(</code></strong> <strong><code>&gt;=</code></strong> <em>swift-version</em> <strong><code>)</code></strong> | <strong><code>compiler</code></strong> <strong><code>(</code></strong> <strong><code>&lt;</code></strong> <em>swift-version</em> <strong><code>)</code></strong> <br><em>platform-condition</em> → <strong><code>canImport</code></strong> <strong><code>(</code></strong> <em>import-path</em> <strong><code>)</code></strong> <br><em>platform-condition</em> → <strong><code>targetEnvironment</code></strong> <strong><code>(</code></strong> <em>environment</em> <strong><code>)</code></strong></p>
+<p><em>operating-system</em> → <strong><code>macOS</code></strong> | <strong><code>iOS</code></strong> | <strong><code>watchOS</code></strong> | <strong><code>tvOS</code></strong> | <strong><code>visionOS</code></strong> | <strong><code>Linux</code></strong> | <strong><code>Windows</code></strong> <br><em>architecture</em> → <strong><code>i386</code></strong> | <strong><code>x86_64</code></strong> | <strong><code>arm</code></strong> | <strong><code>arm64</code></strong> <br><em>swift-version</em> → <em>decimal-digits</em> <em>swift-version-continuation</em><em>?</em> <br><em>swift-version-continuation</em> → <strong><code>.</code></strong> <em>decimal-digits</em> <em>swift-version-continuation</em><em>?</em> <br><em>environment</em> → <strong><code>simulator</code></strong> | <strong><code>macCatalyst</code></strong></p>
+</blockquote>
+<!--
+  Testing notes:
+
+  !!true doesn't work but !(!true) does -- this matches normal expressions
+  #if can be nested, as expected
+
+  Also, the body of a conditional compilation block contains *zero* or more statements.
+  Thus, this is allowed:
+      #if
+      #elseif
+      #else
+      #endif
+-->
+
+<h3 id="行控制语句"><a href="#行控制语句" class="headerlink" title="行控制语句"></a>行控制语句</h3><p>行控制语句用于指定一个行号和文件名，这些行号和文件名可以与正在编译的源代码的行号和文件名不同。使用行控制语句可以更改 Swift 用于诊断和调试目的的源代码位置。</p>
+<p>行控制语句形式如下：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">#sourceLocation</span>(file: <span class="operator">&lt;</span><span class="keyword">#file</span> path#<span class="operator">&gt;</span>, line: <span class="operator">&lt;</span><span class="keyword">#line</span> number#<span class="operator">&gt;</span>)</span><br><span class="line"><span class="keyword">#sourceLocation</span>()</span><br></pre></td></tr></tbody></table></figure>
+
+<p>第一种的行控制语句会改变该语句之后的代码中的字面量表达式 <code>#line</code>、 <code>#file</code>、<code>#fileID</code> 和 <code>#filePath</code> 所表示的值，从行控制语句里行号的代码开始。<em>行号</em>是一个大于 0 的整形字面量，会改变 <code>#line</code> 表达式的值。<em>file path</em>会更改 <code>#file</code>、<code>#fileID</code> 和 <code>#filePath</code> 的值，并且是一个字符串字面量。指定的字符串成为 <code>#filePath</code> 的值，字符串的最后一个路径组件用于 <code>#fileID</code> 的值。关于 <code>#file</code>、 <code>#fileID</code> 和 <code>#filePath</code>，可参阅<a href="doc:Expressions#字面量表达式">doc:Expressions#字面量表达式</a>。</p>
+<p>行控制语句的第二种形式是 <code>#sourceLocation()</code>，会将源代码的定位信息重置回默认的行号和文件名。</p>
+<blockquote>
+<p>行控制语句的语法:</p>
+<p><em>line-control-statement</em> → <strong><code>#sourceLocation</code></strong> <strong><code>(</code></strong> <strong><code>file:</code></strong> <em>file-path</em> <strong><code>,</code></strong> <strong><code>line:</code></strong> <em>line-number</em> <strong><code>)</code></strong> <br><em>line-control-statement</em> → <strong><code>#sourceLocation</code></strong> <strong><code>(</code></strong> <strong><code>)</code></strong> <br><em>line-number</em> → A decimal integer greater than zero <br><em>file-path</em> → <em>static-string-literal</em></p>
+</blockquote>
+<h3 id="编译时诊断语句"><a href="#编译时诊断语句" class="headerlink" title="编译时诊断语句"></a>编译时诊断语句</h3><p>在 <code>Swift 5.9</code> 之前，<code>#warning</code>和<code>#error</code>语句在编译期间会发出诊断。。现在，这一行为由 Swift 标准库中的 [warning(<em>:)][] 和 [error(</em>:)][] 宏提供。</p>
+<h2 id="可用性条件"><a href="#可用性条件" class="headerlink" title="可用性条件"></a>可用性条件</h2><p>可用性条件可作为 <code>if</code>，<code>while</code>，<code>guard</code> 语句的条件，可以在运行时基于特定的平台参数来查询 API 的可用性。</p>
+<p>可用性条件的形式如下：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">#available</span>(<span class="operator">&lt;</span>#platform name#<span class="operator">&gt;</span> <span class="operator">&lt;</span>#version#<span class="operator">&gt;</span>, <span class="operator">&lt;</span>#<span class="operator">...</span>#<span class="operator">&gt;</span>, <span class="operator">*</span>) {</span><br><span class="line">    <span class="operator">&lt;</span>#statements to execute <span class="keyword">if</span> the <span class="type">APIs</span> are available#<span class="operator">&gt;</span></span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">    <span class="operator">&lt;</span>#fallback statements to execute <span class="keyword">if</span> the <span class="type">APIs</span> are unavailable#<span class="operator">&gt;</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>使用可用性条件来执行一个代码块时，取决于使用的 API 在运行时是否可用，编译器会根据可用性条件提供的信息来决定是否执行相应的代码块。</p>
+<p>可用性条件使用一系列逗号分隔的平台名称和版本。使用 <code>iOS</code>，<code>macOS</code>，<code>watchOS</code>，<code>tvOS</code>，<code>visionOS</code> 作为平台名称，并写上相应的版本号。<code>*</code> 参数是必须写的，用于处理未来的潜在平台。可用性条件确保了运行时的平台不低于条件中指定的平台版本时才执行代码块。</p>
+<p>与布尔类型的条件不同，不能用逻辑运算符 <code>&amp;&amp;</code> 和 <code>||</code> 组合可用性条件。不要使用 <code>!</code> 来表示平台不可以用，可以使用”不可用性条件”，其形式如下：</p>
+<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">#unavailable</span>(<span class="operator">&lt;</span>#platform name#<span class="operator">&gt;</span> <span class="operator">&lt;</span>#version#<span class="operator">&gt;</span>, <span class="operator">&lt;</span>#<span class="operator">...</span>#<span class="operator">&gt;</span>) {</span><br><span class="line">    <span class="operator">&lt;</span>#fallback statements to execute <span class="keyword">if</span> the <span class="type">APIs</span> are unavailable#<span class="operator">&gt;</span></span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">    <span class="operator">&lt;</span>#statements to execute <span class="keyword">if</span> the <span class="type">APIs</span> are available#<span class="operator">&gt;</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>#unavailable</code> 形式是语法糖，用于取反条件。在不可用性条件中，<code>*</code> 参数是隐式的，不能包含。它与可用性条件中的 <code>*</code> 参数具有相同的含义。</p>
+<blockquote>
+<p>可用性条件的语法：</p>
+<p><em>availability-condition</em> → <strong><code>#available</code></strong> <strong><code>(</code></strong> <em>availability-arguments</em> <strong><code>)</code></strong> <br><em>availability-condition</em> → <strong><code>#unavailable</code></strong> <strong><code>(</code></strong> <em>availability-arguments</em> <strong><code>)</code></strong> <br><em>availability-arguments</em> → <em>availability-argument</em> | <em>availability-argument</em> <strong><code>,</code></strong> <em>availability-arguments</em> <br><em>availability-argument</em> → <em>platform-name</em> <em>platform-version</em> <br><em>availability-argument</em> → <strong><code>*</code></strong></p>
+<p><em>platform-name</em> → <strong><code>iOS</code></strong> | <strong><code>iOSApplicationExtension</code></strong> <br><em>platform-name</em> → <strong><code>macOS</code></strong> | <strong><code>macOSApplicationExtension</code></strong> <br><em>platform-name</em> → <strong><code>macCatalyst</code></strong> | <strong><code>macCatalystApplicationExtension</code></strong> <br><em>platform-name</em> → <strong><code>watchOS</code></strong> | <strong><code>watchOSApplicationExtension</code></strong> <br><em>platform-name</em> → <strong><code>tvOS</code></strong> | <strong><code>tvOSApplicationExtension</code></strong> <br><em>platform-name</em> → <strong><code>visionOS</code></strong> | <strong><code>visionOSApplicationExtension</code></strong> <br><em>platform-version</em> → <em>decimal-digits</em> <br><em>platform-version</em> → <em>decimal-digits</em> <strong><code>.</code></strong> <em>decimal-digits</em> <br><em>platform-version</em> → <em>decimal-digits</em> <strong><code>.</code></strong> <em>decimal-digits</em> <strong><code>.</code></strong> <em>decimal-digits</em></p>
+</blockquote>
+<!--
+  If you need to add a new platform to this list,
+  you probably need to update the list under @available too.
+-->
+
+<!--
+  - test: `pound-available-platform-names`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; if #available(iOS 1, iOSApplicationExtension 1,</span><br><span class="line">&gt;&gt;               macOS 1, macOSApplicationExtension 1,</span><br><span class="line">&gt;&gt;               macCatalyst 1, macCatalystApplicationExtension 1,</span><br><span class="line">&gt;&gt;               watchOS 1, watchOSApplicationExtension 1,</span><br><span class="line">&gt;&gt;               tvOS 1, tvOSApplicationExtension 1,</span><br><span class="line">&gt;&gt;               visionOS 1, visionOSApplicationExtension 1, *) &#123;</span><br><span class="line">&gt;&gt;     print(&quot;a&quot;)</span><br><span class="line">&gt;&gt; &#125; else &#123;</span><br><span class="line">&gt;&gt;     print(&quot;b&quot;)</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&gt;&gt; if #available(madeUpPlatform 1, *) &#123;</span><br><span class="line">&gt;&gt;     print(&quot;c&quot;)</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&gt;&gt; if #unavailable(fakePlatform 1) &#123;</span><br><span class="line">&gt;&gt;     print(&quot;d&quot;)</span><br><span class="line">&gt;&gt; &#125; else &#123;</span><br><span class="line">&gt;&gt;     print(&quot;dd&quot;)</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">!$ warning: unrecognized platform name &#x27;madeUpPlatform&#x27;</span><br><span class="line">!$ if #available(madeUpPlatform 1, *) &#123;</span><br><span class="line">!$               ^</span><br><span class="line">!$ warning: unrecognized platform name &#x27;fakePlatform&#x27;</span><br><span class="line">!$ if #unavailable(fakePlatform 1) &#123;</span><br><span class="line">!$                 ^</span><br><span class="line">&lt;&lt; a</span><br><span class="line">&lt;&lt; c</span><br><span class="line">&lt;&lt; dd</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `empty-availability-condition`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; if #available(*) &#123; print(&quot;1&quot;) &#125;</span><br><span class="line">&lt;&lt; 1</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+  - test: `empty-unavailability-condition`
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; if #unavailable() &#123; print(&quot;2&quot;) &#125;</span><br><span class="line">!$ error: expected platform name</span><br><span class="line">!$ if #unavailable() &#123; print(&quot;2&quot;) &#125;</span><br><span class="line">!$                ^</span><br></pre></td></tr></table></figure>
+<p>–&gt;</p>
+<!--
+This source file is part of the Swift.org open source project
+
+Copyright (c) 2014 - 2022 Apple Inc. and the Swift project authors
+Licensed under Apache License v2.0 with Runtime Library Exception
+
+See https://swift.org/LICENSE.txt for license information
+See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
+-->
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+  <ul class="breadcrumb">
+          
+            <li><a href="/course/">COURSE</a></li>
+            <li><a href="/course/ios/">IOS</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/">THE-SWIFT-PROGRAMMING-LANGUAGE-IN-CHINESE-6.0</a></li>
+            <li><a href="/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/">REFERENCEMANUAL</a></li>
+            <li>STATEMENTS</li>
+          
+  </ul>
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.</span> <span class="nav-text">语句</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.1.</span> <span class="nav-text">循环语句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#For-In-%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.1.1.</span> <span class="nav-text">For-In 语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#While-%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.1.2.</span> <span class="nav-text">While 语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Repeat-While-%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.1.3.</span> <span class="nav-text">Repeat-While 语句</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.2.</span> <span class="nav-text">分支语句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#If-%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.2.1.</span> <span class="nav-text">If 语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Guard-%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.2.2.</span> <span class="nav-text">Guard 语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Switch-%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.2.3.</span> <span class="nav-text">Switch 语句</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%A6%E6%A0%87%E7%AD%BE%E7%9A%84%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.3.</span> <span class="nav-text">带标签的语句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Throw-%E8%AF%AD%E5%8F%A5%EF%BC%9A"><span class="nav-number">1.3.1.</span> <span class="nav-text">Throw 语句：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Defer-%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.4.</span> <span class="nav-text">Defer 语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.5.</span> <span class="nav-text">编译器控制语句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91%E4%BB%A3%E7%A0%81%E5%9D%97%EF%BC%9A"><span class="nav-number">1.5.1.</span> <span class="nav-text">条件编译代码块：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%8C%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.5.2.</span> <span class="nav-text">行控制语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E6%97%B6%E8%AF%8A%E6%96%AD%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.5.3.</span> <span class="nav-text">编译时诊断语句</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E7%94%A8%E6%80%A7%E6%9D%A1%E4%BB%B6"><span class="nav-number">1.6.</span> <span class="nav-text">可用性条件</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>
