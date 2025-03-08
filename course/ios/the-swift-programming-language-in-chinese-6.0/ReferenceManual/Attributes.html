@@ -58,8 +58,8 @@
 <meta property="og:site_name" content="那年星空">
 <meta property="og:description" content="特性为声明和类型添加信息。 在 Swift 中有两种特性——适用于声明的特性和适用于类型的特性。特性提供有关声明或类型的附加信息。例如，函数声明上的 discardableResult 特性表示，尽管函数返回一个值，但如果返回值未被使用，编译器不应生成警告。 你可以通过编写 @ 符号，并在其后加上特性的名称以及特性接受的任何参数，来指定一个特性。 12@&lt;#attribute name#&amp;g">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-03-08T08:32:48.727Z">
-<meta property="article:modified_time" content="2025-03-08T08:32:48.727Z">
+<meta property="article:published_time" content="2025-03-08T08:41:45.579Z">
+<meta property="article:modified_time" content="2025-03-08T08:41:45.579Z">
 <meta property="article:author" content="joe">
 <meta name="twitter:card" content="summary">
 
@@ -229,7 +229,7 @@
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@<span class="operator">&lt;</span>#attribute name#<span class="operator">&gt;</span></span><br><span class="line">@<span class="operator">&lt;</span>#attribute name#<span class="operator">&gt;</span>(<span class="operator">&lt;</span>#attribute arguments#<span class="operator">&gt;</span>)</span><br></pre></td></tr></tbody></table></figure>
 
 <p>有些声明特性接受参数，这些参数指定有关特性的更多信息以及它如何适用于特定声明。这些<em>特性参数</em>被括号括起来，其格式由它们所属的特性定义。</p>
-<p>附加宏和属性包装器也使用特性语法。有关宏如何展开的信息，参见 <a href="doc:Expressions#宏展开表达式">doc:Expressions#宏展开表达式</a>。有关属性包装器的信息，参见 <a href="doc:Attributes#属性包装器">doc:Attributes#属性包装器</a>。</p>
+<p>附加宏和属性包装器也使用特性语法。有关宏如何展开的信息，参见 Expressions#宏展开表达式&gt;。有关属性包装器的信息，参见 Attributes#属性包装器&gt;。</p>
 <h2 id="声明特性"><a href="#声明特性" class="headerlink" title="声明特性"></a>声明特性</h2><p>你只能将声明特性应用于声明。</p>
 <h3 id="attached"><a href="#attached" class="headerlink" title="attached"></a>attached</h3><p>将 <code>attached</code> 特性应用于宏声明。该特性的参数指示宏的角色。对于具有多个角色的宏，针对每个角色多次应用 <code>attached</code> 宏，每个角色应用一次。</p>
 <!-- TODO:
@@ -384,7 +384,7 @@ so we don't guarantee in docs that it always happens.
 <ul>
 <li>声明是 <code>public</code> 或 <code>@usableFromInline</code>。</li>
 <li>对于实例方法和类方法，该方法被标记为 <code>final</code>，并且没有标记 <code>@objc</code>。</li>
-<li>该实现满足 <a href="doc:Attributes#inlinable">doc:Attributes#inlinable</a> 中描述的对内联函数的要求。</li>
+<li>该实现满足 Attributes#inlinable&gt; 中描述的对内联函数的要求。</li>
 </ul>
 <h3 id="discardableResult"><a href="#discardableResult" class="headerlink" title="discardableResult"></a>discardableResult</h3><p>将此特性应用于函数或方法声明，以在调用返回值的函数或方法而不使用其结果时抑制编译器警告。</p>
 <h3 id="dynamicCallable"><a href="#dynamicCallable" class="headerlink" title="dynamicCallable"></a>dynamicCallable</h3><p>将此特性应用于类、结构体、枚举或协议，以将该类型的实例视为可调用函数。该类型必须实现 <code>dynamicallyCall(withArguments:)</code> 方法和 <code>dynamicallyCall(withKeywordArguments:)</code> 方法中的至少一个或都实现。</p>
@@ -473,7 +473,7 @@ https://github.com/apple/swift/blob/main/stdlib/public/core/Macros.swift#L102
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; @frozen public enum E &#123; case x, y &#125;</span><br><span class="line">&gt;&gt; @frozen public struct S &#123; var a: Int = 10 &#125;</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
 <p>在库演进模式下，与非冻结结构体和枚举成员交互的代码会以一种特殊的方式编译，即使库的未来版本添加、移除或重新排序了该类型的一些成员，该代码也可以继续工作，而无需重新编译。编译器通过在运行时查找信息和添加间接层等技术实现了这一点。将结构体或枚举标记为冻结（frozen）会放弃这种灵活性以获得性能提升：库的未来版本只能对该类型进行有限的更改，但编译器可以在与该类型成员交互的代码中进行额外的优化。</p>
-<p>冻结类型、冻结结构体的存储属性类型以及冻结枚举成员的关联值类型必须是 public，或标记为 <code>usableFromInline</code> 特性。冻结结构体的属性不能有属性观察者，并且为存储实例属性提供初始值的表达式必须遵循与可内联函数相同的限制，详见 <a href="doc:Attributes#inlinable">doc:Attributes#inlinable</a>。</p>
+<p>冻结类型、冻结结构体的存储属性类型以及冻结枚举成员的关联值类型必须是 public，或标记为 <code>usableFromInline</code> 特性。冻结结构体的属性不能有属性观察者，并且为存储实例属性提供初始值的表达式必须遵循与可内联函数相同的限制，详见 Attributes#inlinable&gt;。</p>
 <!--
   - test: `frozen-struct-prop-init-cant-refer-to-private-type`
 
@@ -488,7 +488,7 @@ https://github.com/apple/swift/blob/main/stdlib/public/core/Macros.swift#L102
   See <rdar://problem/51929017> TSPL: Give guidance to library authors about @available @frozen and friends
 -->
 
-<p>对一个冻结的枚举进行 switch 语句时，不需要包含 <code>default</code> 分支，如 <a href="doc:Statements#Switching-Over-Future-Enumeration-Cases">doc:Statements#Switching-Over-Future-Enumeration-Cases</a> 中所述。在对冻结枚举进行 switch 时，如果包含 <code>default</code> 或 <code>@unknown default</code> 分支，会产生一个警告，因为这些代码永远不会被执行。</p>
+<p>对一个冻结的枚举进行 switch 语句时，不需要包含 <code>default</code> 分支，如 Statements#Switching-Over-Future-Enumeration-Cases&gt; 中所述。在对冻结枚举进行 switch 时，如果包含 <code>default</code> 或 <code>@unknown default</code> 分支，会产生一个警告，因为这些代码永远不会被执行。</p>
 <!--
   - test: `NoUnknownDefaultOverFrozenEnum`
 
@@ -559,7 +559,7 @@ https://github.com/apple/swift/blob/main/stdlib/public/core/Macros.swift#L102
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; protocol ProvidesMain &#123;</span><br><span class="line">       static func main() throws</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<p>编译为可执行文件的 Swift 代码最多只能包含一个顶级入口点，详见 <a href="doc:Declarations#顶级代码">doc:Declarations#顶级代码</a>。</p>
+<p>编译为可执行文件的 Swift 代码最多只能包含一个顶级入口点，详见 Declarations#顶级代码&gt;。</p>
 <!--
   - test: `no-at-main-in-top-level-code`
 
@@ -580,7 +580,7 @@ https://github.com/apple/swift/blob/main/stdlib/public/core/Macros.swift#L102
 <p>你可以使用 <code>nonobjc</code> 特性来解决标记为 <code>objc</code> 的类中桥接方法的循环引用问题，并且将允许重载标记为 <code>objc</code> 的类中的方法和构造器。</p>
 <p>标记为 <code>nonobjc</code> 特性的方法不能被标记为 <code>objc</code> 特性的方法重写。然而，标记为 <code>objc</code> 特性的方法可以被标记为 <code>nonobjc</code> 特性的方法重写。同样，标记为 <code>nonobjc</code> 特性的方法不能满足标记为 <code>objc</code> 特性的方法的协议要求。</p>
 <h3 id="NSApplicationMain"><a href="#NSApplicationMain" class="headerlink" title="NSApplicationMain"></a>NSApplicationMain</h3><blockquote>
-<p>已弃用:<br>此特性已弃用；请改用 <a href="doc:Attributes#main">doc:Attributes#main</a> 特性。在 Swift 6 中，使用此特性将会导致错误。</p>
+<p>已弃用:<br>此特性已弃用；请改用 Attributes#main&gt; 特性。在 Swift 6 中，使用此特性将会导致错误。</p>
 </blockquote>
 <p>将此特性应用于一个类，以指示它是应用程序委托。使用此特性等同于调用 <code>NSApplicationMain</code> 函数。</p>
 <p>如果你不使用此特性，请提供一个在顶层调用 <code>NSApplicationMain(_:_:)</code> 函数的 <code>main.swift</code> 文件，如下所示：</p>
@@ -591,7 +591,7 @@ https://github.com/apple/swift/blob/main/stdlib/public/core/Macros.swift#L102
   which is correct behavior if you call a non-returning function like this.
 -->
 
-<p>你编译为可执行文件的 Swift 代码最多只能包含一个顶级入口点，见 <a href="doc:Declarations#顶级代码">doc:Declarations#顶级代码</a> 中的讨论。</p>
+<p>你编译为可执行文件的 Swift 代码最多只能包含一个顶级入口点，见 Declarations#顶级代码&gt; 中的讨论。</p>
 <h3 id="NSCopying"><a href="#NSCopying" class="headerlink" title="NSCopying"></a>NSCopying</h3><p>将此特性应用于类的存储变量属性。此特性会导致属性的 setter 被合成为使用 <code>copyWithZone(_:)</code> 方法返回的属性值<em>副本</em>，而不是属性值本身。属性的类型必须遵循 <code>NSCopying</code> 协议。</p>
 <p><code>NSCopying</code> 特性的行为类似于 Objective-C 的 <code>copy</code> 属性特性。</p>
 <!--
@@ -704,7 +704,7 @@ https://github.com/apple/swift/blob/main/stdlib/public/core/Macros.swift#L102
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">-&gt; @propertyWrapper</span><br><span class="line">-&gt; struct WrapperWithProjection &#123;</span><br><span class="line">       var wrappedValue: Int</span><br><span class="line">       var projectedValue: SomeProjection &#123;</span><br><span class="line">           return SomeProjection(wrapper: self)</span><br><span class="line">       &#125;</span><br><span class="line">&#125;</span><br><span class="line">-&gt; struct SomeProjection &#123;</span><br><span class="line">       var wrapper: WrapperWithProjection</span><br><span class="line">&#125;</span><br><span class="line">---</span><br><span class="line">-&gt; struct SomeStruct &#123;</span><br><span class="line">-&gt;     @WrapperWithProjection var x = 123</span><br><span class="line">-&gt; &#125;</span><br><span class="line">-&gt; let s = SomeStruct()</span><br><span class="line">&gt;&gt; _ =</span><br><span class="line">-&gt; s.x           // Int value</span><br><span class="line">&gt;&gt; _ =</span><br><span class="line">-&gt; s.$x          // SomeProjection value</span><br><span class="line">&gt;&gt; _ =</span><br><span class="line">-&gt; s.$x.wrapper  // WrapperWithProjection value</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<h3 id="resultBuilder"><a href="#resultBuilder" class="headerlink" title="resultBuilder"></a>resultBuilder</h3><p>将此特性应用于类、结构体或枚举，以将该类型用作结果构造器。<em>结果构造器</em>是一种逐步构建嵌套数据结构的类型。你可以使用结果构造器来实现一种用于以自然、声明式方式创建嵌套数据结构的领域特定语言（DSL）。有关如何使用 <code>resultBuilder</code> 特性的示例，见 <a href="doc:AdvancedOperators#结果构建器">doc:AdvancedOperators#结果构建器</a>。</p>
+<h3 id="resultBuilder"><a href="#resultBuilder" class="headerlink" title="resultBuilder"></a>resultBuilder</h3><p>将此特性应用于类、结构体或枚举，以将该类型用作结果构造器。<em>结果构造器</em>是一种逐步构建嵌套数据结构的类型。你可以使用结果构造器来实现一种用于以自然、声明式方式创建嵌套数据结构的领域特定语言（DSL）。有关如何使用 <code>resultBuilder</code> 特性的示例，见 AdvancedOperators#结果构建器&gt;。</p>
 <h4 id="结果构造方法"><a href="#结果构造方法" class="headerlink" title="结果构造方法"></a>结果构造方法</h4><p>结果构造器实现了以下描述的静态方法。由于结果构造器的所有功能都是通过静态方法暴露的，因此你永远不需要初始化该类型的实例。结果构造器必须实现 <code>buildBlock(_:)</code> 方法，或者同时实现 <code>buildPartialBlock(first:)</code> 和 <code>buildPartialBlock(accumulated:next:)</code> 方法。其他方法（这些方法在 DSL 中启用额外功能）是可选的。结果构造器类型的声明实际上不必包含对任何协议的遵循。</p>
 <p>静态方法的描述中使用了三种类型作为占位符。<code>Expression</code> 是构造器输入类型的占位符，<code>Component</code> 是部分结果类型的占位符，而 <code>FinalResult</code> 是构造器生成的结果类型的占位符。你需要用结果构造器实际使用的类型替换这些占位符。如果你的结果构建方法没有为 <code>Expression</code> 或 <code>FinalResult</code> 指定类型，那么它们默认与 <code>Component</code> 类型相同。</p>
 <p>块的构造的方法如下：</p>
@@ -868,11 +868,11 @@ https://github.com/apple/swift/blob/main/stdlib/public/core/Macros.swift#L102
 <p>–&gt;</p>
 <h3 id="testable"><a href="#testable" class="headerlink" title="testable"></a>testable</h3><p>将此特性应用于 <code>import</code> 声明时，可以通过修改访问控制来简化对模块代码的测试。导入的模块中标记为 <code>internal</code> 访问级别的实体将被导入并视为 <code>public</code> 访问级别声明的实体。标记为 <code>internal</code> 或 <code>public</code> 访问级别的类和类成员将被导入并视为 <code>open</code> 访问级别声明的实体。导入的模块必须在启用了测试的情况下编译。</p>
 <h3 id="UIApplicationMain"><a href="#UIApplicationMain" class="headerlink" title="UIApplicationMain"></a>UIApplicationMain</h3><blockquote>
-<p>已弃用:<br>此特性已弃用；请改用 <a href="doc:Attributes#main">doc:Attributes#main</a> 特性。在 Swift 6 中，使用此特性将会导致错误。</p>
+<p>已弃用:<br>此特性已弃用；请改用 Attributes#main&gt; 特性。在 Swift 6 中，使用此特性将会导致错误。</p>
 </blockquote>
 <p>将此特性应用于一个类，以指示它是应用程序委托。使用此特性相当于调用 <code>UIApplicationMain</code> 函数，并将此类的名称作为委托类的名称传递。</p>
 <p>如果你不使用此特性，请提供一个包含顶层代码的 <code>main.swift</code> 文件，该代码调用 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/uikit/1622933-uiapplicationmain"><code>UIApplicationMain(_:_:_:_:)</code></a> 函数。例如，如果你的应用使用自定义的 <code>UIApplication</code> 子类作为其主类，请调用 <code>UIApplicationMain(_:_:_:_:)</code> 函数，而不是使用此特性。</p>
-<p>编译为可执行文件的 Swift 代码最多只能包含一个顶级入口点，详见 <a href="doc:Declarations#顶级代码">doc:Declarations#顶级代码</a>。</p>
+<p>编译为可执行文件的 Swift 代码最多只能包含一个顶级入口点，详见 Declarations#顶级代码&gt;。</p>
 <h3 id="unchecked"><a href="#unchecked" class="headerlink" title="unchecked"></a>unchecked</h3><p>将此特性应用于协议类型，作为类型声明中采用的协议列表的一部分，以关闭对该协议要求的强制执行。</p>
 <p>唯一支持的协议是 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/sendable"><code>Sendable</code></a>。</p>
 <h3 id="usableFromInline"><a href="#usableFromInline" class="headerlink" title="usableFromInline"></a>usableFromInline</h3><p>将此特性应用于函数、方法、计算属性、下标操作、构造器或析构器声明，以允许该符号在与声明位于同一模块中定义的内联代码中使用。声明必须具有 <code>internal</code> 访问级别修饰符。标记为 <code>usableFromInline</code> 的结构体或类只能对其属性使用公共类型或 <code>usableFromInline</code> 类型。标记为 <code>usableFromInline</code> 的枚举只能对其枚举成员的原始值和关联值使用公共类型或 <code>usableFromInline</code> 类型。</p>
@@ -893,7 +893,7 @@ https://github.com/apple/swift/blob/main/stdlib/public/core/Macros.swift#L102
 <p>你将 <code>IBOutlet</code> 和 <code>IBInspectable</code> 特性应用于类的属性声明。<br>你将 <code>IBAction</code> 和 <code>IBSegueAction</code> 特性应用于类的方法声明，<br>并将 <code>IBDesignable</code> 特性应用于类声明。</p>
 <p>应用 <code>IBAction</code>, <code>IBSegueAction</code>, <code>IBOutlet</code>,<br><code>IBDesignable</code> 或 <code>IBInspectable</code> 特性也隐含 <code>objc</code> 特性。</p>
 <h2 id="类型特性"><a href="#类型特性" class="headerlink" title="类型特性"></a>类型特性</h2><p>你只能将类型特性应用于类型。</p>
-<h3 id="autoclosure"><a href="#autoclosure" class="headerlink" title="autoclosure"></a>autoclosure</h3><p>使用此特性可以通过将表达式自动包装在一个无参数的闭包中来延迟对表达式的求值。你可以在函数或方法声明中将其应用于参数的类型，该参数的类型为不接受参数且返回与表达式类型相同的值的函数类型。关于如何使用 <code>autoclosure</code> 特性的示例，请参见 <a href="doc:Closures#自动闭包">doc:Closures#自动闭包</a> 和 <a href="doc:Types#函数类型">doc:Types#函数类型</a>。</p>
+<h3 id="autoclosure"><a href="#autoclosure" class="headerlink" title="autoclosure"></a>autoclosure</h3><p>使用此特性可以通过将表达式自动包装在一个无参数的闭包中来延迟对表达式的求值。你可以在函数或方法声明中将其应用于参数的类型，该参数的类型为不接受参数且返回与表达式类型相同的值的函数类型。关于如何使用 <code>autoclosure</code> 特性的示例，请参见 Closures#自动闭包&gt; 和 Types#函数类型&gt;。</p>
 <h3 id="convention"><a href="#convention" class="headerlink" title="convention"></a>convention</h3><p>将此特性应用于函数的类型，以指示其调用约定。</p>
 <p><code>convention</code> 特性总是与以下参数之一一起出现：</p>
 <ul>
@@ -907,13 +907,13 @@ https://github.com/apple/swift/blob/main/stdlib/public/core/Macros.swift#L102
 -->
 
 <p>除了少数例外，任何调用约定的函数都可以在需要其他调用约定的函数时使用。一个非泛型的全局函数、一个不捕获任何局部变量的局部函数，或者一个不捕获任何局部变量的闭包可以转换为 C 调用约定。其他 Swift 函数无法转换为 C 调用约定。具有 Objective-C 块调用约定的函数无法转换为 C 调用约定。</p>
-<h3 id="escaping"><a href="#escaping" class="headerlink" title="escaping"></a>escaping</h3><p>将此特性应用于函数或方法声明中的参数类型，以指示参数的值可以存储以供后续执行。这隐含着该值可以超出这次调用的生命周期。具有 <code>escaping</code> 类型特性的函数类型参数需要对属性或方法显式使用 <code>self.</code>。有关如何使用 <code>escaping</code> 特性的示例，见 <a href="doc:Closures#逃逸闭包">doc:Closures#逃逸闭包</a>。</p>
+<h3 id="escaping"><a href="#escaping" class="headerlink" title="escaping"></a>escaping</h3><p>将此特性应用于函数或方法声明中的参数类型，以指示参数的值可以存储以供后续执行。这隐含着该值可以超出这次调用的生命周期。具有 <code>escaping</code> 类型特性的函数类型参数需要对属性或方法显式使用 <code>self.</code>。有关如何使用 <code>escaping</code> 特性的示例，见 Closures#逃逸闭包&gt;。</p>
 <h3 id="Sendable"><a href="#Sendable" class="headerlink" title="Sendable"></a>Sendable</h3><p>将此特性应用于函数的类型，以指示该函数或闭包是可发送的。</p>
 <p>将此特性应用于函数类型与使非函数类型遵循 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/sendable"><code>Sendable</code></a> 协议具有相同的含义。</p>
 <p>如果函数或闭包在需要可发送值的上下文中使用，并且函数或闭包满足可发送的要求，则会在函数和闭包上推断有此特性。</p>
 <p>可发送函数类型是相应的不可发送函数类型的子类型。</p>
 <h2 id="Switch-Case-特性"><a href="#Switch-Case-特性" class="headerlink" title="Switch Case 特性"></a>Switch Case 特性</h2><p>你只能将 switch case 特性应用于 switch case。</p>
-<h3 id="unknown"><a href="#unknown" class="headerlink" title="unknown"></a>unknown</h3><p>将此特性应用于 switch case，以指示在代码编译时不期望与任何已知的枚举 case 匹配。有关如何使用 <code>unknown</code> 特性的示例，见 <a href="doc:Statements#切换未来的枚举情况">doc:Statements#切换未来的枚举情况</a>。</p>
+<h3 id="unknown"><a href="#unknown" class="headerlink" title="unknown"></a>unknown</h3><p>将此特性应用于 switch case，以指示在代码编译时不期望与任何已知的枚举 case 匹配。有关如何使用 <code>unknown</code> 特性的示例，见 Statements#切换未来的枚举情况&gt;。</p>
 <blockquote>
 <p>特性的语法:</p>
 <p><em>attribute</em> → <strong><code>@</code></strong> <em>attribute-name</em> <em>attribute-argument-clause</em><em>?</em> <br><em>attribute-name</em> → <em>identifier</em> <br><em>attribute-argument-clause</em> → <strong><code>(</code></strong> <em>balanced-tokens</em><em>?</em> <strong><code>)</code></strong> <br><em>attributes</em> → <em>attribute</em> <em>attributes</em><em>?</em></p>

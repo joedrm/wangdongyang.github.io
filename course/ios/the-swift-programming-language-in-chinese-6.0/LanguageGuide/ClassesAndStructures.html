@@ -60,8 +60,8 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://wanflutter.netlify.app/sharedStateStruct">
 <meta property="og:image" content="https://wanflutter.netlify.app/sharedStateClass">
-<meta property="article:published_time" content="2025-03-08T08:32:48.694Z">
-<meta property="article:modified_time" content="2025-03-08T08:32:48.693Z">
+<meta property="article:published_time" content="2025-03-08T08:41:45.504Z">
+<meta property="article:modified_time" content="2025-03-08T08:41:45.504Z">
 <meta property="article:author" content="joe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://wanflutter.netlify.app/sharedStateStruct">
@@ -241,7 +241,7 @@
 <li>被扩展以增加默认实现之外的功能</li>
 <li>遵循协议以提供某种标准功能</li>
 </ul>
-<p>更多信息，请参阅 <a href="doc:Properties">doc:Properties</a>、<a href="doc:Methods">doc:Methods</a>、<a href="doc:Subscripts">doc:Subscripts</a>、<a href="doc:Initialization">doc:Initialization</a>、<a href="doc:Extensions">doc:Extensions</a> 和 <a href="doc:Protocols">doc:Protocols</a>。</p>
+<p>更多信息，请参阅 Properties&gt;、Methods&gt;、Subscripts&gt;、Initialization&gt;、Extensions&gt; 和 Protocols&gt;。</p>
 <p>相比结构体,类有一些额外的功能:</p>
 <ul>
 <li>一个类可以继承另一个类的特征。</li>
@@ -249,10 +249,10 @@
 <li>析构器允许一个类的实例释放其分配的任何资源。</li>
 <li>引用计数允许对类实例有多个引用。</li>
 </ul>
-<p>更多信息，请参阅 <a href="doc:Inheritance">doc:Inheritance</a>、<a href="doc:TypeCasting">doc:TypeCasting</a>、<a href="doc:Deinitialization">doc:Deinitialization</a> 和 <a href="doc:AutomaticReferenceCounting">doc:AutomaticReferenceCounting</a>。</p>
+<p>更多信息，请参阅 Inheritance&gt;、TypeCasting&gt;、Deinitialization&gt; 和 AutomaticReferenceCounting&gt;。</p>
 <p>类支持的额外功能以增加其复杂性为代价。<br>作为一般准则，我们会优先使用结构体，<br>因为它们更易于理解，并在适当或必要时使用类。<br>在实践中，这意味着你定义的大多数自定义类型将是结构体和枚举。<br>有关更详细的比较，请参阅 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/choosing_between_structures_and_classes">选择结构体和类</a>。</p>
 <blockquote>
-<p>注意: 类和 actor 共享许多相同的特征和行为。<br>有关 actor 的信息，请参阅 <a href="doc:Concurrency">doc:Concurrency</a>。</p>
+<p>注意: 类和 actor 共享许多相同的特征和行为。<br>有关 actor 的信息，请参阅 Concurrency&gt;。</p>
 </blockquote>
 <h3 id="定义语法"><a href="#定义语法" class="headerlink" title="定义语法"></a>定义语法</h3><p>结构体和类有类似的定义语法。<br>你使用 <code>struct</code> 关键字引入结构体，<br>使用 <code>class</code> 关键字引入类。<br>两者都将整个定义放在一对大括号中：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">SomeStructure</span> {</span><br><span class="line">    <span class="comment">// 结构体定义在这里</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SomeClass</span> {</span><br><span class="line">    <span class="comment">// 类定义在这里</span></span><br><span class="line">} </span><br></pre></td></tr></tbody></table></figure>
@@ -284,7 +284,7 @@
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let someResolution = Resolution()</span><br><span class="line">-&gt; let someVideoMode = VideoMode()</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<p>结构体和类都使用构造器语法来创建新实例。<br>最简单的初始化语法形式是使用结构体的类型名后跟空括号，<br>例如 <code>Resolution()</code> 或 <code>VideoMode()</code>。<br>这将创建类或结构体的新实例，并将任何属性初始化为其默认值。<br>类和结构体的初始化在 <a href="doc:Initialization">doc:Initialization</a> 中有更详细的描述。</p>
+<p>结构体和类都使用构造器语法来创建新实例。<br>最简单的初始化语法形式是使用结构体的类型名后跟空括号，<br>例如 <code>Resolution()</code> 或 <code>VideoMode()</code>。<br>这将创建类或结构体的新实例，并将任何属性初始化为其默认值。<br>类和结构体的初始化在 Initialization&gt; 中有更详细的描述。</p>
 <!--
   TODO: 需要注意的是，
   只有为结构体或类的所有属性提供默认值时，才能使用默认构造函数。
@@ -323,7 +323,7 @@
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let vga = Resolution(width: 640, height: 480)</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<p>与结构体不同，类实例没有默认的逐一成员构造器。<br>构造器在 <a href="doc:Initialization">doc:Initialization</a> 中有更详细的描述。</p>
+<p>与结构体不同，类实例没有默认的逐一成员构造器。<br>构造器在 Initialization&gt; 中有更详细的描述。</p>
 <!--
   - test: `classesDontHaveADefaultMemberwiseInitializer`
 
@@ -458,7 +458,7 @@
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; if tenEighty === alsoTenEighty &#123;</span><br><span class="line">      print(&quot;tenEighty and alsoTenEighty refer to the same VideoMode instance.&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- tenEighty and alsoTenEighty refer to the same VideoMode instance.</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
 <p>注意<em>恒等</em>（用三个等号 <code>===</code> 表示）与<em>相等</em>（用两个等号<code>==</code>表示）意义不同。<br><em>恒等</em>意味着两个类型的常量或变量引用了完全相同的类实例。<br><em>相等</em>意味着两个实例在值上被认为是相等或等价的，<br>具体的<em>相等</em>定义由类型的设计者决定。</p>
-<p>当你定义自己的自定义结构体和类时，<br>你有责任决定什么才算作两个实例相等。<br>定义自己的 <code>==</code> 和 <code>!=</code> 运算符实现的过程在 <a href="doc:AdvancedOperators#等价运算符">doc:AdvancedOperators#等价运算符</a> 中有描述。</p>
+<p>当你定义自己的自定义结构体和类时，<br>你有责任决定什么才算作两个实例相等。<br>定义自己的 <code>==</code> 和 <code>!=</code> 运算符实现的过程在 AdvancedOperators#等价运算符&gt; 中有描述。</p>
 <!--
   - test: `classesDontGetEqualityByDefault`
 

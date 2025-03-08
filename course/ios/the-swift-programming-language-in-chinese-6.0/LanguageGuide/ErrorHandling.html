@@ -58,8 +58,8 @@
 <meta property="og:site_name" content="那年星空">
 <meta property="og:description" content="错误处理响应错误并从错误中恢复。 错误处理(Error handling) 是对程序中的错误条件做出响应并从中恢复的过程。Swift 为在运行时抛出、捕获、传递和处理可恢复错误提供了一等支持。 有些操作并不能保证总是能执行完成或生成有用的结果。可选类型用于表示值缺失，但当操作失败时，了解造成失败的原因有助于你的代码作出相应的应对。 以从磁盘文件读取和处理数据为例。该任务失败的原因有很多，包括指定路">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-03-08T08:32:48.697Z">
-<meta property="article:modified_time" content="2025-03-08T08:32:48.697Z">
+<meta property="article:published_time" content="2025-03-08T08:41:45.578Z">
+<meta property="article:modified_time" content="2025-03-08T08:41:45.578Z">
 <meta property="article:author" content="joe">
 <meta name="twitter:card" content="summary">
 
@@ -318,7 +318,7 @@
 <p>下面是 <code>do</code>-<code>catch</code> 语句的一般形式：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> <span class="operator">&lt;</span>#expression#<span class="operator">&gt;</span></span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125; <span class="keyword">catch</span> <span class="operator">&lt;</span>#pattern <span class="number">1</span>#<span class="operator">&gt;</span> &#123;</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125; <span class="keyword">catch</span> <span class="operator">&lt;</span>#pattern <span class="number">2</span>#<span class="operator">&gt;</span> <span class="keyword">where</span> <span class="operator">&lt;</span>#condition#<span class="operator">&gt;</span> &#123;</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125; <span class="keyword">catch</span> <span class="operator">&lt;</span>#pattern <span class="number">3</span>#<span class="operator">&gt;</span>, <span class="operator">&lt;</span>#pattern <span class="number">4</span>#<span class="operator">&gt;</span> <span class="keyword">where</span> <span class="operator">&lt;</span>#condition#<span class="operator">&gt;</span> &#123;</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>您可以在 <code>catch</code> 后编写一个模式，以指示该子句可以处理哪些错误。如果 <code>catch</code> 子句没有模式，该子句将匹配任何错误，并将错误绑定到名为 <code>error</code> 的局部常量。有关模式匹配的更多信息，请参阅 <a href="doc:Patterns">doc:Patterns</a>。</p>
+<p>您可以在 <code>catch</code> 后编写一个模式，以指示该子句可以处理哪些错误。如果 <code>catch</code> 子句没有模式，该子句将匹配任何错误，并将错误绑定到名为 <code>error</code> 的局部常量。有关模式匹配的更多信息，请参阅 Patterns&gt;。</p>
 <!--
   TODO: Call out the reasoning why we don't let you
   consider a catch clause exhaustive by just matching
@@ -390,7 +390,7 @@
 </li>
 <li><p>当错误是代码单元（如库）的实现细节，而不是代码接口的一部分时。由于错误只来自于库，而不是来自于其他依赖库或库的客户端，因此您可以列出所有可能出现的错误的详尽列表。而且，由于这些错误是库的实现细节，因此可以全部在库内部处理。</p>
 </li>
-<li><p>在只传递由通用参数描述的错误的代码中，例如函数接收一个闭包参数并传递来自该闭包的任何错误。有关传播特定错误类型与使用 rethrows 的比较，请参阅 <a href="doc:Declarations#再抛出函数和方法">doc:Declarations#再抛出函数和方法</a>。</p>
+<li><p>在只传递由通用参数描述的错误的代码中，例如函数接收一个闭包参数并传递来自该闭包的任何错误。有关传播特定错误类型与使用 rethrows 的比较，请参阅 Declarations#再抛出函数和方法&gt;。</p>
 </li>
 </ul>
 <p>例如，思考一下如何实现汇总评分并使用以下错误类型的代码：</p>
@@ -430,7 +430,7 @@
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; func exists(_ file: String) -&gt; Bool &#123; return true &#125;</span><br><span class="line">&gt;&gt; struct File &#123;</span><br><span class="line">&gt;&gt;    func readline() throws -&gt; String? &#123; return nil &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&gt;&gt; func open(_ file: String) -&gt; File &#123; return File() &#125;</span><br><span class="line">&gt;&gt; func close(_ fileHandle: File) &#123;&#125;</span><br><span class="line">-&gt; func processFile(filename: String) throws &#123;</span><br><span class="line">      if exists(filename) &#123;</span><br><span class="line">         let file = open(filename)</span><br><span class="line">         defer &#123;</span><br><span class="line">            close(file)</span><br><span class="line">         &#125;</span><br><span class="line">         while let line = try file.readline() &#123;</span><br><span class="line">            // Work with the file.</span><br><span class="line">&gt;&gt;          print(line)</span><br><span class="line">         &#125;</span><br><span class="line">         // close(file) is called here, at the end of the scope.</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
 <p>上面的示例使用 <code>defer</code> 语句确保 <code>open(_:)</code> 函数有相应的 <code>close(_:)</code> 调用。</p>
-<p>即使不涉及错误处理代码，您也可以使用 <code>defer</code> 语句。有关详细信息，请参阅 <a href="doc:ControlFlow#延迟执行的操作Deferred-Actions">doc:ControlFlow#延迟执行的操作Deferred-Actions</a>。</p>
+<p>即使不涉及错误处理代码，您也可以使用 <code>defer</code> 语句。有关详细信息，请参阅 ControlFlow#延迟执行的操作Deferred-Actions&gt;。</p>
 <!--
 This source file is part of the Swift.org open source project
 

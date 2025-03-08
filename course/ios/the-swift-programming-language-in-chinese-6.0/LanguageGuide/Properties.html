@@ -60,8 +60,8 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/Properties/computedProperties">
 <meta property="og:image" content="https://wanflutter.netlify.app/staticPropertiesVUMeter">
-<meta property="article:published_time" content="2025-03-08T08:32:48.704Z">
-<meta property="article:modified_time" content="2025-03-08T08:32:48.704Z">
+<meta property="article:published_time" content="2025-03-08T08:41:45.579Z">
+<meta property="article:modified_time" content="2025-03-08T08:41:45.579Z">
 <meta property="article:author" content="joe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/Properties/computedProperties">
@@ -242,7 +242,7 @@
 <p>–&gt;</p>
 <p>你也可以利用属性包装器在多个属性的 getter 和 setter 中复用代码。</p>
 <h2 id="存储属性"><a href="#存储属性" class="headerlink" title="存储属性"></a>存储属性</h2><p>简单来说，存储属性是作为特定类或结构实例的一部分所存储的常量或变量。存储属性可以是<em>变量存储属性</em>（用关键字 <code>var</code> 定义）<br>也可以是<em>常量存储属性</em>（用关键字 <code>let</code> 定义）。</p>
-<p>可以在定义存储属性的时候指定默认值，请参考 <a href="doc:Initialization#默认属性值">doc:Initialization#默认属性值</a> 一节。还可以在构造过程中设置和修改存储属性的初始值，甚至修改常量存储属性的值，请参考 <a href="doc:Initialization#构造过程中常量属性的赋值">doc:Initialization#构造过程中常量属性的赋值</a> 一节。</p>
+<p>可以在定义存储属性的时候指定默认值，请参考 Initialization#默认属性值&gt; 一节。还可以在构造过程中设置和修改存储属性的初始值，甚至修改常量存储属性的值，请参考 Initialization#构造过程中常量属性的赋值&gt; 一节。</p>
 <p>下面的例子定义了一个名为 <code>FixedLengthRange</code>的结构体，该结构体用于描述整数的区间，且这个区间值在被创建后不能被修改。</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">FixedLengthRange</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> firstValue: <span class="type">Int</span></span><br><span class="line">    <span class="keyword">let</span> length: <span class="type">Int</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> rangeOfThreeItems <span class="operator">=</span> <span class="type">FixedLengthRange</span>(firstValue: <span class="number">0</span>, length: <span class="number">3</span>)</span><br><span class="line"><span class="comment">// 该区间表示整数 0，1，2</span></span><br><span class="line">rangeOfThreeItems.firstValue <span class="operator">=</span> <span class="number">6</span></span><br><span class="line"><span class="comment">// 该区间现在表示整数 6，7，8</span></span><br></pre></td></tr></table></figure>
 
@@ -358,7 +358,7 @@
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-&gt; struct CompactRect &#123;</span><br><span class="line">      var origin = Point()</span><br><span class="line">      var size = Size()</span><br><span class="line">      var center: Point &#123;</span><br><span class="line">         get &#123;</span><br><span class="line">            Point(x: origin.x + (size.width / 2),</span><br><span class="line">                  y: origin.y + (size.height / 2))</span><br><span class="line">         &#125;</span><br><span class="line">         set &#123;</span><br><span class="line">            origin.x = newValue.x - (size.width / 2)</span><br><span class="line">            origin.y = newValue.y - (size.height / 2)</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<p>省略 getter 中的 <code>return</code> 遵循与函数省略 <code>return</code> 相同的规则，详见 <a href="doc:Functions#隐式返回的函数">doc:Functions#隐式返回的函数</a>。</p>
+<p>省略 getter 中的 <code>return</code> 遵循与函数省略 <code>return</code> 相同的规则，详见 Functions#隐式返回的函数&gt;。</p>
 <h3 id="只读计算属性"><a href="#只读计算属性" class="headerlink" title="只读计算属性"></a>只读计算属性</h3><p>只有 getter 而没有 setter 的计算属性被称为<em>只读计算属性</em>。只读计算属性总是返回一个值，可以通过点运算符访问，但不能设置为其他值。</p>
 <blockquote>
 <p>注意:<br>你必须将计算属性——包括只读计算属性——声明为使用 <code>var</code> 关键字的变量属性，因为它们的值并非固定的。<code>let</code> 关键字只用于常量属性，表示它们的值在实例初始化时设置后就无法更改。</p>
@@ -404,7 +404,7 @@
 <li>继承的存储属性</li>
 <li>继承的计算属性</li>
 </ul>
-<p>对于继承的属性，可以通过在子类中重写该属性来添加属性观察器。对于自定义的计算属性，应使用属性的 setter 来观察和响应值的变化，而不是试图创建一个观察器。重写属性的相关内容详见 <a href="doc:Inheritance#重写">doc:Inheritance#重写</a>。</p>
+<p>对于继承的属性，可以通过在子类中重写该属性来添加属性观察器。对于自定义的计算属性，应使用属性的 setter 来观察和响应值的变化，而不是试图创建一个观察器。重写属性的相关内容详见 Inheritance#重写&gt;。</p>
 <!--
   - test: `lazyPropertiesCanHaveObservers`
 
@@ -429,7 +429,7 @@
 <p>–&gt;</p>
 <blockquote>
 <p>注意:<br>父类属性的 <code>willSet</code> 和 <code>didSet</code> 观察器会在子类初始化器中设置属性时调用，此时父类的初始化器已经被调用。而在父类初始化器被调用之前，给子类的属性赋值时不会调用子类属性的观察器。</p>
-<p>有关初始化器代理的更多信息，请参见 <a href="doc:Initialization#值类型的构造器代理">doc:Initialization#值类型的构造器代理</a> 和 <a href="doc:Initialization#类类型的构造器代理">doc:Initialization#类类型的构造器代理</a>。</p>
+<p>有关初始化器代理的更多信息，请参见 Initialization#值类型的构造器代理&gt; 和 Initialization#类类型的构造器代理&gt;。</p>
 </blockquote>
 <!--
   - test: `observersDuringInitialization`
@@ -449,7 +449,7 @@
 <p>这个例子中的 <code>willSet</code> 观察器为即将设置的新值使用了自定义参数名称 <code>newTotalSteps</code>，在这里，它简单地打印出即将被设置的值。</p>
 <p><code>didSet</code> 观察器在 <code>totalSteps</code> 的值更新后被调用。它将 <code>totalSteps</code> 的新值与旧值进行比较。如果步数总数增加了，则会打印一条消息，指示增加了多少步数。<code>didSet</code> 观察器没有为旧值提供自定义参数名称，使用的是默认名称 <code>oldValue</code>。</p>
 <blockquote>
-<p>注意:<br>如果将一个具有观察器的属性作为 in-out 参数传递给函数，那么 <code>willSet</code> 和 <code>didSet</code> 观察器总是会被调用。这是因为 in-out 参数的复制-写回内存模型：在函数结束时，值总是会被写回属性。关于 in-out 参数行为的详细讨论，请参见 <a href="doc:Declarations#In-Out-参数">doc:Declarations#In-Out-参数</a>。</p>
+<p>注意:<br>如果将一个具有观察器的属性作为 in-out 参数传递给函数，那么 <code>willSet</code> 和 <code>didSet</code> 观察器总是会被调用。这是因为 in-out 参数的复制-写回内存模型：在函数结束时，值总是会被写回属性。关于 in-out 参数行为的详细讨论，请参见 Declarations#In-Out-参数&gt;。</p>
 </blockquote>
 <!--
   - test: `observersCalledAfterInout`
@@ -479,7 +479,7 @@
 
 <p>setter 确保新值不大于 12，而 getter 返回存储的值。</p>
 <blockquote>
-<p>注意:<br>上例中 <code>number</code> 的声明被标记为 <code>private</code>，这确保了 <code>number</code> 只能在 <code>TwelveOrLess</code> 的实现中使用。其他地方的代码只能通过 <code>wrappedValue</code> 的 getter 和 setter 来访问这个值，而不能直接使用 <code>number</code>。关于 <code>private</code> 的更多信息，请参见 <a href="doc:AccessControl">doc:AccessControl</a>。</p>
+<p>注意:<br>上例中 <code>number</code> 的声明被标记为 <code>private</code>，这确保了 <code>number</code> 只能在 <code>TwelveOrLess</code> 的实现中使用。其他地方的代码只能通过 <code>wrappedValue</code> 的 getter 和 setter 来访问这个值，而不能直接使用 <code>number</code>。关于 <code>private</code> 的更多信息，请参见 AccessControl&gt;。</p>
 </blockquote>
 <!--
   In this example,
@@ -537,7 +537,7 @@
   so it's clearer to make each init stand on its own.
 -->
 
-<p><code>SmallNumber</code> 的定义包括三个构造器——<code>init()</code>、<code>init(wrappedValue:)</code> 和 <code>init(wrappedValue:maximum:)</code>——下面的示例使用这些构造器来设置被包装值和最大值。关于初始化和构造器语法的更多信息，请参见 <a href="doc:Initialization">doc:Initialization</a>。</p>
+<p><code>SmallNumber</code> 的定义包括三个构造器——<code>init()</code>、<code>init(wrappedValue:)</code> 和 <code>init(wrappedValue:maximum:)</code>——下面的示例使用这些构造器来设置被包装值和最大值。关于初始化和构造器语法的更多信息，请参见 Initialization&gt;。</p>
 <p>当为属性应用包装器且未指定初始值时，Swift 使用 <code>init()</code> 构造器来设置包装器。例如：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">ZeroRectangle</span> {</span><br><span class="line">    <span class="meta">@SmallNumber</span> <span class="keyword">var</span> height: <span class="type">Int</span></span><br><span class="line">    <span class="meta">@SmallNumber</span> <span class="keyword">var</span> width: <span class="type">Int</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> zeroRectangle <span class="operator">=</span> <span class="type">ZeroRectangle</span>()</span><br><span class="line"><span class="built_in">print</span>(zeroRectangle.height, zeroRectangle.width)</span><br><span class="line"><span class="comment">// 打印 "0 0"</span></span><br></pre></td></tr></tbody></table></figure>
 
@@ -624,7 +624,7 @@
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var a: Int = 0 &#123; willSet &#123; print(&quot;willSet&quot;) &#125; didSet &#123; print(&quot;didSet&quot;) &#125; &#125;</span><br><span class="line">-&gt; a = 42</span><br><span class="line">&lt;- willSet</span><br><span class="line">&lt;- didSet</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
 <blockquote>
-<p>注意:<br>全局常量和变量总是以类似于 <a href="doc:Properties#延时加载存储属性">doc:Properties#延时加载存储属性</a> 的方式被延迟计算。与延迟存储属性不同，全局常量和变量不需要用 <code>lazy</code> 修饰符标记。</p>
+<p>注意:<br>全局常量和变量总是以类似于 Properties#延时加载存储属性&gt; 的方式被延迟计算。与延迟存储属性不同，全局常量和变量不需要用 <code>lazy</code> 修饰符标记。</p>
 <p>局部常量和变量从不延迟计算。</p>
 </blockquote>
 <p>可以将属性包装器应用于局部存储变量，但不能应用于全局变量或计算变量。例如，下面的代码中，<code>myNumber</code> 使用 <code>SmallNumber</code> 作为属性包装器。</p>

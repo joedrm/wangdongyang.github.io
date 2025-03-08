@@ -51,12 +51,12 @@
   };
 </script>
 
-  <meta name="description" content="高级运算符定义自定义运算符、执行位运算和使用构建器语法。 除了doc:BasicOperators中描述的运算符外,Swift 还提供了几种执行更复杂值操作的高级运算符。这些包括您在 C 和 Objective-C 中熟悉的所有位运算符和移位运算符。 与 C 中的算术运算符不同,Swift 中的算术运算符默认不会溢出。溢出行为会被捕获并报告为错误。要选择溢出行为，请使用 Swift 的第二组默认溢">
+  <meta name="description" content="高级运算符定义自定义运算符、执行位运算和使用构建器语法。 除了BasicOperators&gt;中描述的运算符外,Swift 还提供了几种执行更复杂值操作的高级运算符。这些包括您在 C 和 Objective-C 中熟悉的所有位运算符和移位运算符。 与 C 中的算术运算符不同,Swift 中的算术运算符默认不会溢出。溢出行为会被捕获并报告为错误。要选择溢出行为，请使用 Swift 的第二组默认溢">
 <meta property="og:type" content="website">
 <meta property="og:title" content="那年星空">
 <meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/AdvancedOperators.html">
 <meta property="og:site_name" content="那年星空">
-<meta property="og:description" content="高级运算符定义自定义运算符、执行位运算和使用构建器语法。 除了doc:BasicOperators中描述的运算符外,Swift 还提供了几种执行更复杂值操作的高级运算符。这些包括您在 C 和 Objective-C 中熟悉的所有位运算符和移位运算符。 与 C 中的算术运算符不同,Swift 中的算术运算符默认不会溢出。溢出行为会被捕获并报告为错误。要选择溢出行为，请使用 Swift 的第二组默认溢">
+<meta property="og:description" content="高级运算符定义自定义运算符、执行位运算和使用构建器语法。 除了BasicOperators&gt;中描述的运算符外,Swift 还提供了几种执行更复杂值操作的高级运算符。这些包括您在 C 和 Objective-C 中熟悉的所有位运算符和移位运算符。 与 C 中的算术运算符不同,Swift 中的算术运算符默认不会溢出。溢出行为会被捕获并报告为错误。要选择溢出行为，请使用 Swift 的第二组默认溢">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/AdvancedOperators/bitwiseNOT">
 <meta property="og:image" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/AdvancedOperators/bitwiseAND">
@@ -72,8 +72,8 @@
 <meta property="og:image" content="https://wanflutter.netlify.app/overflowUnsignedSubtraction">
 <meta property="og:image" content="https://wanflutter.netlify.app/overflowSignedSubtraction">
 <meta property="og:image" content="https://wanflutter.netlify.app/vectorAddition">
-<meta property="article:published_time" content="2025-03-08T08:32:48.692Z">
-<meta property="article:modified_time" content="2025-03-08T08:32:48.692Z">
+<meta property="article:published_time" content="2025-03-08T08:41:45.578Z">
+<meta property="article:modified_time" content="2025-03-08T08:41:45.578Z">
 <meta property="article:author" content="joe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/AdvancedOperators/bitwiseNOT">
@@ -239,7 +239,7 @@
       
       <div class="post-body">
           <html><head></head><body></body></html><html><head></head><body><h1 id="高级运算符"><a href="#高级运算符" class="headerlink" title="高级运算符"></a>高级运算符</h1><p>定义自定义运算符、执行位运算和使用构建器语法。</p>
-<p>除了<a href="doc:BasicOperators">doc:BasicOperators</a>中描述的运算符外,Swift 还提供了几种执行更复杂值操作的高级运算符。这些包括您在 C 和 Objective-C 中熟悉的所有位运算符和移位运算符。</p>
+<p>除了BasicOperators&gt;中描述的运算符外,Swift 还提供了几种执行更复杂值操作的高级运算符。这些包括您在 C 和 Objective-C 中熟悉的所有位运算符和移位运算符。</p>
 <p>与 C 中的算术运算符不同,Swift 中的算术运算符默认不会溢出。溢出行为会被捕获并报告为错误。要选择溢出行为，请使用 Swift 的第二组默认溢出的算术运算符，例如溢出加法运算符（ <code>&amp;+</code> ）。所有这些溢出运算符都以 <code>&amp;</code> 符号开头。</p>
 <p>当您定义自己的结构体、类和枚举时，为这些自定义类型提供 Swift 标准运算符的自己实现可能会很有用。Swift 使为这些运算符提供量身定制的实现变得容易，并可以精确地确定它们对您创建的每种类型的行为应该是什么。</p>
 <p>您并不局限于预定义的运算符。Swift 给予您自由定义自己的自定义中缀、前缀、后缀和赋值运算符的能力，并带有自定义优先级和结合性值。这些运算符可以像任何预定义运算符一样在您的代码中使用和采用，您甚至可以扩展现有类型以支持您定义的自定义运算符。</p>
@@ -386,7 +386,7 @@
 <p>–&gt;</p>
 <p><code>UInt8</code> 可以容纳的最小值是零，或二进制的 <code>00000000</code> 。如果你使用溢出减法运算符（ <code>&amp;-</code> ）从 <code>00000000</code> 中减去 1,这个数字将会溢出并绕回到 <code>11111111</code> ，或十进制的 <code>255</code> 。</p>
 <p><img src="/overflowUnsignedSubtraction"></p>
-<p>有符号整数也会发生溢出。所有有符号整数的加法和减法都以按位方式执行，符号位作为被加或被减数字的一部分包含在内，如 <a href="doc:AdvancedOperators#按位左移和右移运算符">doc:AdvancedOperators#按位左移和右移运算符</a> 中所述。</p>
+<p>有符号整数也会发生溢出。所有有符号整数的加法和减法都以按位方式执行，符号位作为被加或被减数字的一部分包含在内，如 AdvancedOperators#按位左移和右移运算符&gt; 中所述。</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> signedOverflow <span class="operator">=</span> <span class="type">Int8</span>.min</span><br><span class="line"><span class="comment">// signedOverflow 等于 -128,这是 Int8 可以容纳的最小值</span></span><br><span class="line">signedOverflow <span class="operator">=</span> signedOverflow <span class="operator">&amp;-</span> <span class="number">1</span></span><br><span class="line"><span class="comment">// signedOverflow 现在等于 127</span></span><br></pre></td></tr></table></figure>
 
 <!--
@@ -546,8 +546,8 @@
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let twoThree = Vector2D(x: 2.0, y: 3.0)</span><br><span class="line">-&gt; let anotherTwoThree = Vector2D(x: 2.0, y: 3.0)</span><br><span class="line">-&gt; if twoThree == anotherTwoThree &#123;</span><br><span class="line">      print(&quot;These two vectors are equivalent.&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- These two vectors are equivalent.</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<p>在许多简单的情况下，你可以要求 Swift 为你提供等价运算符的合成实现，如 <a href="doc:Protocols#使用合成实现来遵循协议">doc:Protocols#使用合成实现来遵循协议</a> 中所述。</p>
-<h2 id="自定义运算符"><a href="#自定义运算符" class="headerlink" title="自定义运算符"></a>自定义运算符</h2><p>除了 Swift 提供的标准运算符外，你还可以声明和实现自己的 <strong>自定义运算符</strong>。有关可用于定义自定义运算符的字符列表，请参见 <a href="doc:LexicalStructure#运算符">doc:LexicalStructure#运算符</a>。</p>
+<p>在许多简单的情况下，你可以要求 Swift 为你提供等价运算符的合成实现，如 Protocols#使用合成实现来遵循协议&gt; 中所述。</p>
+<h2 id="自定义运算符"><a href="#自定义运算符" class="headerlink" title="自定义运算符"></a>自定义运算符</h2><p>除了 Swift 提供的标准运算符外，你还可以声明和实现自己的 <strong>自定义运算符</strong>。有关可用于定义自定义运算符的字符列表，请参见 LexicalStructure#运算符&gt;。</p>
 <p>新运算符使用 <code>operator</code> 关键字在全局级别声明，并用 <code>prefix</code>、<code>infix</code> 或 <code>postfix</code> 修饰符标记：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">prefix</span> <span class="keyword">operator</span> <span class="title">+++</span></span><br></pre></td></tr></table></figure>
 
@@ -564,7 +564,7 @@
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-&gt; extension Vector2D &#123;</span><br><span class="line">      static prefix func +++ (vector: inout Vector2D) -&gt; Vector2D &#123;</span><br><span class="line">         vector += vector</span><br><span class="line">         return vector</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; var toBeDoubled = Vector2D(x: 1.0, y: 4.0)</span><br><span class="line">-&gt; let afterDoubling = +++toBeDoubled</span><br><span class="line">/&gt; toBeDoubled now has values of (\(toBeDoubled.x), \(toBeDoubled.y))</span><br><span class="line">&lt;/ toBeDoubled now has values of (2.0, 8.0)</span><br><span class="line">/&gt; afterDoubling also has values of (\(afterDoubling.x), \(afterDoubling.y))</span><br><span class="line">&lt;/ afterDoubling also has values of (2.0, 8.0)</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<h3 id="自定义中缀运算符的优先级"><a href="#自定义中缀运算符的优先级" class="headerlink" title="自定义中缀运算符的优先级"></a>自定义中缀运算符的优先级</h3><p>每个自定义中缀运算符都属于一个优先级组。优先级组指定了一个运算符相对于其他中缀运算符的优先级，以及运算符的结合性。有关这些特性如何影响中缀运算符与其他中缀运算符交互的解释，请参见 <a href="doc:AdvancedOperators#优先级和结合性">doc:AdvancedOperators#优先级和结合性</a>。</p>
+<h3 id="自定义中缀运算符的优先级"><a href="#自定义中缀运算符的优先级" class="headerlink" title="自定义中缀运算符的优先级"></a>自定义中缀运算符的优先级</h3><p>每个自定义中缀运算符都属于一个优先级组。优先级组指定了一个运算符相对于其他中缀运算符的优先级，以及运算符的结合性。有关这些特性如何影响中缀运算符与其他中缀运算符交互的解释，请参见 AdvancedOperators#优先级和结合性&gt;。</p>
 <p>没有被明确放入优先级组的自定义中缀运算符会被赋予一个默认优先级组，其优先级紧高于三元条件运算符的优先级。</p>
 <p>下面的例子定义了一个名为 <code>+-</code> 的新自定义中缀运算符，它属于 <code>AdditionPrecedence</code> 优先级组：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">infix</span> <span class="keyword">operator</span> <span class="title">+-</span>: <span class="type">AdditionPrecedence</span></span><br><span class="line"><span class="keyword">extension</span> <span class="title class_">Vector2D</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">+-</span> (<span class="params">left</span>: <span class="type">Vector2D</span>, <span class="params">right</span>: <span class="type">Vector2D</span>) -&gt; <span class="type">Vector2D</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">Vector2D</span>(x: left.x <span class="operator">+</span> right.x, y: left.y <span class="operator">-</span> right.y)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> firstVector <span class="operator">=</span> <span class="type">Vector2D</span>(x: <span class="number">1.0</span>, y: <span class="number">2.0</span>)</span><br><span class="line"><span class="keyword">let</span> secondVector <span class="operator">=</span> <span class="type">Vector2D</span>(x: <span class="number">3.0</span>, y: <span class="number">4.0</span>)</span><br><span class="line"><span class="keyword">let</span> plusMinusVector <span class="operator">=</span> firstVector <span class="operator">+-</span> secondVector</span><br><span class="line"><span class="comment">// plusMinusVector 是一个 Vector2D 实例，其值为 (4.0, -2.0)</span></span><br></pre></td></tr></table></figure>
@@ -574,7 +574,7 @@
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; infix operator +-: AdditionPrecedence</span><br><span class="line">-&gt; extension Vector2D &#123;</span><br><span class="line">      static func +- (left: Vector2D, right: Vector2D) -&gt; Vector2D &#123;</span><br><span class="line">         return Vector2D(x: left.x + right.x, y: left.y - right.y)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let firstVector = Vector2D(x: 1.0, y: 2.0)</span><br><span class="line">-&gt; let secondVector = Vector2D(x: 3.0, y: 4.0)</span><br><span class="line">-&gt; let plusMinusVector = firstVector +- secondVector</span><br><span class="line">/&gt; plusMinusVector is a Vector2D instance with values of (\(plusMinusVector.x), \(plusMinusVector.y))</span><br><span class="line">&lt;/ plusMinusVector is a Vector2D instance with values of (4.0, -2.0)</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<p>这个运算符将两个向量的 <code>x</code> 值相加，并从第一个向量的 <code>y</code> 值中减去第二个向量的 <code>y</code> 值。由于它本质上是一个”加法”运算符，因此它被赋予了与加法中缀运算符（如 <code>+</code> 和 <code>-</code>)相同的优先级组。有关 Swift 标准库提供的运算符的信息，包括运算符优先级组和结合性设置的完整列表，请参见 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/operator_declarations">Operator Declarations</a>。有关优先级组的更多信息以及定义自己的运算符和优先级组的语法，请参见 <a href="doc:Declarations#操作符声明">doc:Declarations#操作符声明</a>。</p>
+<p>这个运算符将两个向量的 <code>x</code> 值相加，并从第一个向量的 <code>y</code> 值中减去第二个向量的 <code>y</code> 值。由于它本质上是一个”加法”运算符，因此它被赋予了与加法中缀运算符（如 <code>+</code> 和 <code>-</code>)相同的优先级组。有关 Swift 标准库提供的运算符的信息，包括运算符优先级组和结合性设置的完整列表，请参见 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/operator_declarations">Operator Declarations</a>。有关优先级组的更多信息以及定义自己的运算符和优先级组的语法，请参见 Declarations#操作符声明&gt;。</p>
 <blockquote>
 <p>注意： 在定义前缀或后缀运算符时，你不需要指定优先级。但是，如果你对同一个操作数同时应用前缀和后缀运算符，后缀运算符会先被应用。</p>
 </blockquote>
@@ -637,7 +637,7 @@
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-&gt; extension DrawingBuilder &#123;</span><br><span class="line">       static func buildArray(_ components: [Drawable]) -&gt; Drawable &#123;</span><br><span class="line">           return Line(elements: components)</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; let manyStars = draw &#123;</span><br><span class="line">       Text(&quot;Stars:&quot;)</span><br><span class="line">       for length in 1...3 &#123;</span><br><span class="line">           Space()</span><br><span class="line">           Stars(length: length)</span><br><span class="line">       &#125;</span><br><span class="line">-&gt; &#125;</span><br><span class="line">&gt;&gt; print(manyStars.draw())</span><br><span class="line">&lt;&lt; Stars: * ** ***</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
 <p>在上面的代码中，<code>for</code> 循环创建了一个绘图数组，<code>buildArray(_:)</code> 方法将该数组转换为一个 <code>Line</code> 。</p>
-<p>有关 Swift 如何将构建器语法转换为对构建器类型方法的调用的完整列表，请参阅 <a href="doc:Attributes#resultBuilder">doc:Attributes#resultBuilder</a>。</p>
+<p>有关 Swift 如何将构建器语法转换为对构建器类型方法的调用的完整列表，请参阅 Attributes#resultBuilder&gt;。</p>
 <!--
   The following needs more work...
 

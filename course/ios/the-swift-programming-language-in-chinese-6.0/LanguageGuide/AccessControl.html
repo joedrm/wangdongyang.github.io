@@ -58,8 +58,8 @@
 <meta property="og:site_name" content="那年星空">
 <meta property="og:description" content="访问控制通过声明、文件和模块来管理代码的可见性 访问控制可以限制其它源文件或模块对你的代码的访问。这个特性让你能够隐藏代码的实现细节，并指定一个接口来让别人访问和使用你的代码。 你可以给单个类型（类、结构体和枚举）设置特定的访问级别，也可以给这些类型的属性、方法、构造器、下标等设置访问级别。协议可以被限制在特定的上下文中，全局常量、变量和函数也可以如此。 Swift 不仅提供了多种访问级别，还为典">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-03-08T08:32:48.691Z">
-<meta property="article:modified_time" content="2025-03-08T08:32:48.691Z">
+<meta property="article:published_time" content="2025-03-08T08:41:45.504Z">
+<meta property="article:modified_time" content="2025-03-08T08:41:45.504Z">
 <meta property="article:author" content="joe">
 <meta name="twitter:card" content="summary">
 
@@ -244,7 +244,7 @@
 <li><em>private</em> 将对实体的使用限制在其声明的作用域内，以及同一文件中该声明的扩展（extension）内。当某个功能的实现细节只在单个声明内部使用时，可以使用 private 来隐藏这些实现细节。</li>
 </ul>
 <p>open 是最高（限制最少）的访问级别，而 private 是最低（限制最多）的访问级别。</p>
-<p>open 仅适用于类及类的成员，它与 public 的不同之处在于 open 允许模块外的代码进行继承和重写，如下文 <a href="doc:AccessControl#子类">doc:AccessControl#子类</a> 中所述。将类显式指定为 open 表明你已考虑到其他模块的代码将该类用作父类的影响，并为此相应地设计了类的代码。</p>
+<p>open 仅适用于类及类的成员，它与 public 的不同之处在于 open 允许模块外的代码进行继承和重写，如下文 AccessControl#子类&gt; 中所述。将类显式指定为 open 表明你已考虑到其他模块的代码将该类用作父类的影响，并为此相应地设计了类的代码。</p>
 <h3 id="访问级别的指导原则"><a href="#访问级别的指导原则" class="headerlink" title="访问级别的指导原则"></a>访问级别的指导原则</h3><p>Swift 的访问级别遵循一个指导原则：<strong>实体的定义都不能依赖于访问级别更低（更严格）的其他实体</strong>。</p>
 <p>例如:</p>
 <ul>
@@ -267,7 +267,7 @@
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; open class SomeOpenClass &#123;&#125;</span><br><span class="line">-&gt; public class SomePublicClass &#123;&#125;</span><br><span class="line">-&gt; internal class SomeInternalClass &#123;&#125;</span><br><span class="line">-&gt; fileprivate class SomeFilePrivateClass &#123;&#125;</span><br><span class="line">-&gt; private class SomePrivateClass &#123;&#125;</span><br><span class="line">---</span><br><span class="line">-&gt; open var someOpenVariable = 0</span><br><span class="line">-&gt; public var somePublicVariable = 0</span><br><span class="line">-&gt; internal let someInternalConstant = 0</span><br><span class="line">-&gt; fileprivate func someFilePrivateFunction() &#123;&#125;</span><br><span class="line">-&gt; private func somePrivateFunction() &#123;&#125;</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<p>除非专门指定，否则默认的访问级别是 <code>internal</code>，如在 <a href="doc:AccessControl#默认访问级别">doc:AccessControl#默认访问级别</a> 中所述。这意味着在不使用修饰符显式指定访问级别的情况下，<code>SomeInternalClass</code> 和 <code>someInternalConstant</code> 的访问级别仍然是 <code>internal</code>：</p>
+<p>除非专门指定，否则默认的访问级别是 <code>internal</code>，如在 AccessControl#默认访问级别&gt; 中所述。这意味着在不使用修饰符显式指定访问级别的情况下，<code>SomeInternalClass</code> 和 <code>someInternalConstant</code> 的访问级别仍然是 <code>internal</code>：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SomeInternalClass</span> &#123;&#125;              <span class="comment">// 隐式指定为 internal</span></span><br><span class="line"><span class="keyword">let</span> someInternalConstant <span class="operator">=</span> <span class="number">0</span>            <span class="comment">// 隐式指定为 internal</span></span><br></pre></td></tr></table></figure>
 
 <!--
@@ -325,7 +325,7 @@
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func someFunction() -&gt; (SomeInternalClass, SomePrivateClass) &#123;</span><br><span class="line">      // function implementation goes here</span><br><span class="line">&gt;&gt;    return (SomeInternalClass(), SomePrivateClass())</span><br><span class="line">   &#125;</span><br><span class="line">!! /tmp/swifttest.swift:19:6: error: function must be declared private or fileprivate because its result uses a private type</span><br><span class="line">!! func someFunction() -&gt; (SomeInternalClass, SomePrivateClass) &#123;</span><br><span class="line">!! ^</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<p>该函数的返回类型是一个元组类型，由上面 <a href="doc:AccessControl#自定义类型">doc:AccessControl#自定义类型</a> 中定义的两个自定义类组成。其中一个类被定义为 <code>internal</code>，另一个类被定义为 <code>private</code>。因此，这个元组类型的访问级别是 <code>private</code>（组成元组的类型中最严格的访问级别）。</p>
+<p>该函数的返回类型是一个元组类型，由上面 AccessControl#自定义类型&gt; 中定义的两个自定义类组成。其中一个类被定义为 <code>internal</code>，另一个类被定义为 <code>private</code>。因此，这个元组类型的访问级别是 <code>private</code>（组成元组的类型中最严格的访问级别）。</p>
 <p>因为函数的返回类型是 <code>private</code>，所以你必须在函数声明中使用 <code>private</code> 修饰符指定函数的访问级别，这样才能使函数声明有效：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">func</span> <span class="title function_">someFunction</span>() -&gt; (<span class="type">SomeInternalClass</span>, <span class="type">SomePrivateClass</span>) &#123;</span><br><span class="line">    <span class="comment">// 此处是函数实现部分</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -476,9 +476,9 @@
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// check that we can retrieve its value with the public getter from a different module</span><br><span class="line">-&gt; import reducedSetterScopePublic_Module1_Allowed</span><br><span class="line">-&gt; var stringToEdit_Module2 = TrackedString()</span><br><span class="line">-&gt; let result2Read = stringToEdit_Module2.numberOfEdits</span><br><span class="line">// check that we can&#x27;t change its value from another module</span><br><span class="line">-&gt; let result2Write: Void = &#123; stringToEdit_Module2.numberOfEdits += 1 &#125;()</span><br><span class="line">!$ error: left side of mutating operator isn&#x27;t mutable: &#x27;numberOfEdits&#x27; setter is inaccessible</span><br><span class="line">!! let result2Write: Void = &#123; stringToEdit_Module2.numberOfEdits += 1 &#125;()</span><br><span class="line">!!                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ^</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<h2 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h2><p>自定义构造器的访问级别可以低于或等于它所初始化的类型。唯一的例外是必要构造器（如 <a href="doc:Initialization#必要构造器">doc:Initialization#必要构造器</a> 中定义的）。必要构造器必须具有与其所属类相同的访问级别。</p>
+<h2 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h2><p>自定义构造器的访问级别可以低于或等于它所初始化的类型。唯一的例外是必要构造器（如 Initialization#必要构造器&gt; 中定义的）。必要构造器必须具有与其所属类相同的访问级别。</p>
 <p>与函数和方法的参数一样，构造器的参数类型的访问级别不能比构造器自身的访问级别更严格。</p>
-<h3 id="默认构造器"><a href="#默认构造器" class="headerlink" title="默认构造器"></a>默认构造器</h3><p>如 <a href="doc:Initialization#默认构造器">doc:Initialization#默认构造器</a> 中所述，Swift 会为结构体和类自动生成一个不带参数的<strong>默认构造器</strong>，只要它们为所有存储型属性设置了默认初始值，并且未提供自定义的构造器。</p>
+<h3 id="默认构造器"><a href="#默认构造器" class="headerlink" title="默认构造器"></a>默认构造器</h3><p>如 Initialization#默认构造器&gt; 中所述，Swift 会为结构体和类自动生成一个不带参数的<strong>默认构造器</strong>，只要它们为所有存储型属性设置了默认初始值，并且未提供自定义的构造器。</p>
 <p>默认构造器的访问级别与它所初始化的类型相同，除非该类型被定义为 <code>public</code>。对于 <code>public</code> 类型，默认构造器的访问级别将为 <code>internal</code>。如果你想让 <code>public</code> 类型在另一个模块中可以通过无参数构造器进行初始化，则必须在类型定义中显式提供一个 <code>public</code> 访问级别的无参数构造器。</p>
 <h3 id="结构体默认的成员逐一构造器"><a href="#结构体默认的成员逐一构造器" class="headerlink" title="结构体默认的成员逐一构造器"></a>结构体默认的成员逐一构造器</h3><p>对于结构体类型，如果结构体中的任何一个存储属性是 <code>private</code>，则默认的成员逐一构造器的为 <code>private</code>。同样，如果任何存储属性是 <code>fileprivate</code>，则默认的成员逐一构造器为 <code>fileprivate</code>。否则，默认的成员逐一构造器为 <code>internal</code>。</p>
 <p>与前面提到的默认构造器一样，如果你想让 <code>public</code> 结构体类型在其他模块中可以通过成员逐一构造器进行初始化，则必须在类型定义中显式提供一个 <code>public</code> 的成员逐一构造器。</p>

@@ -60,8 +60,8 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://wanflutter.netlify.app/barcode_UPC">
 <meta property="og:image" content="https://wanflutter.netlify.app/barcode_QR">
-<meta property="article:published_time" content="2025-03-08T08:32:48.697Z">
-<meta property="article:modified_time" content="2025-03-08T08:32:48.697Z">
+<meta property="article:published_time" content="2025-03-08T08:41:45.504Z">
+<meta property="article:modified_time" content="2025-03-08T08:41:45.504Z">
 <meta property="article:author" content="joe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://wanflutter.netlify.app/barcode_UPC">
@@ -231,7 +231,7 @@
 <p>如果你对 C 语言很熟悉，你会知道 C 的枚举将相关的名称分配给一组整数值。Swift 中的枚举更加灵活，不必为每一个枚举成员提供一个值。如果给枚举成员提供一个值（称为<em>原始</em>值），则该值的类型可以是字符串、字符，或是一个整数或浮点数。</p>
 <p>此外，枚举成员可以指定<em>任意</em>类型的关联值存储到枚举成员中，就像其他语言中的联合体（unions）或变体（variants）。每一个枚举成员都可以有适当类型的关联值。</p>
 <p>在 Swift 中，枚举类型是一等（first-class）类型。它们采用了很多在传统上只被类所支持的特性，例如计算属性（computed properties），用于提供枚举值的附加信息，实例方法（instance methods），用于提供和枚举值相关联的功能。枚举也可以定义构造函数（initializers）来提供一个初始值；可以在原始实现的基础上扩展它们的功能；还可以遵循协议（protocols）来提供标准的功能。</p>
-<p>想了解更多相关信息，请参阅<a href="doc:Properties">doc:Properties</a>，<a href="doc:Methods">doc:Methods</a>，<a href="doc:Initialization">doc:Initialization</a>，<a href="doc:Extensions">doc:Extensions</a>，和<a href="doc:Protocols">doc:Protocols</a>。</p>
+<p>想了解更多相关信息，请参阅Properties&gt;，Methods&gt;，Initialization&gt;，Extensions&gt;，和Protocols&gt;。</p>
 <!--
   TODO: this chapter should probably mention that enums without associated values
   are hashable and equatable by default (and what that means in practice)
@@ -293,7 +293,7 @@
 <p>你可以这样理解这段代码：</p>
 <p>“判断 <code>directionToHead</code> 的值。当它等于 <code>.north</code>时，打印 <code>“Lots of planets have a north”</code>。当它等于 <code>.south</code>时，打印 <code>&quot;Watch out for penguins&quot;</code>。”</p>
 <p>……以此类推。</p>
-<p>正如在<a href="doc:ControlFlow">doc:ControlFlow</a>中介绍的那样，在判断一个枚举类型的值时，<code>switch</code> 语句必须穷举所有情况。如果遗漏了 <code>.west</code> 这种情况，上面那段代码将无法通过编译，因为它没有考虑到 <code>CompassPoint</code> 的全部成员。强制穷举确保了枚举成员不会被意外遗漏。</p>
+<p>正如在ControlFlow&gt;中介绍的那样，在判断一个枚举类型的值时，<code>switch</code> 语句必须穷举所有情况。如果遗漏了 <code>.west</code> 这种情况，上面那段代码将无法通过编译，因为它没有考虑到 <code>CompassPoint</code> 的全部成员。强制穷举确保了枚举成员不会被意外遗漏。</p>
 <p>当不需要匹配每个枚举成员的时候，你可以提供一个 <code>default</code> 分支来涵盖所有未明确列出的枚举成员：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> somePlanet <span class="operator">=</span> <span class="type">Planet</span>.earth</span><br><span class="line"><span class="keyword">switch</span> somePlanet &#123;</span><br><span class="line"><span class="keyword">case</span> .earth:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Mostly harmless&quot;</span>)</span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Not a safe place for humans&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;Mostly harmless&quot;</span></span><br></pre></td></tr></table></figure>
 
@@ -318,7 +318,7 @@
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; for beverage in Beverage.allCases &#123;</span><br><span class="line">       print(beverage)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;&lt; coffee</span><br><span class="line">&lt;&lt; tea</span><br><span class="line">&lt;&lt; juice</span><br><span class="line">// coffee</span><br><span class="line">// tea</span><br><span class="line">// juice</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<p>在前面的例子中，使用的语法表明这个枚举遵循 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/caseiterable"><code>CaseIterable</code></a> 协议。想了解协议的相关信息，请参阅<a href="doc:Protocols">doc:Protocols</a>。</p>
+<p>在前面的例子中，使用的语法表明这个枚举遵循 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/caseiterable"><code>CaseIterable</code></a> 协议。想了解协议的相关信息，请参阅Protocols&gt;。</p>
 <h2 id="关联值"><a href="#关联值" class="headerlink" title="关联值"></a>关联值</h2><p>在枚举语法那一小节的例子中演示了如何为枚举的成员定义值和类型，你可以将常量或变量设置为 <code>Planet.earth</code>，并在赋值之后检查这个值。然而，有时候把其他类型的值与枚举的成员值一起存储起来会很有用。这额外的信息称为<em>关联值</em>，并且你每次在代码中使用该枚举成员时，还可以修改这个关联值。</p>
 <p>你可以定义 Swift 枚举来存储任意类型的关联值，如果需要的话，每个枚举成员的关联值类型可以各不相同。枚举的这种特性跟其他语言中的<em>可识别联合</em>（discriminated unions），<em>标签联合</em>（tagged unions），或者<em>变体</em>（variants）相似。</p>
 <p>例如，假设一个库存跟踪系统需要利用两种不同类型的条形码来跟踪商品。有些商品上标有使用 <code>0</code> 到 <code>9</code> 数字的 UPC 格式的一维条形码。每一个条形码都有一个代表数字系统的数字，该数字后接五位代表厂商代码的数字，接下来是五位代表产品代码的数字。最后一个数字是检查位，用来验证代码是否被正确扫描：</p>
@@ -355,7 +355,7 @@
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; productBarcode = .qrCode(&quot;ABCDEFGHIJKLMNOP&quot;)</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
 <p>这时，原始的 <code>Barcode.upc</code> 和其整数关联值被新的 <code>Barcode.qrCode</code> 和其字符串关联值所替代。<code>Barcode</code> 类型的常量和变量可以存储一个 <code>.upc</code> 或者一个 <code>.qrCode</code>（连同它们的关联值），但是在同一时间只能存储这两个值中的一个。</p>
-<p>你可以使用一个 switch 语句来检查不同的条形码类型，和<a href="doc:Enumerations#使用-Switch-语句匹配枚举值">doc:Enumerations#使用-Switch-语句匹配枚举值</a>中的例子一样。然而，这一次，关联值可以被提取出来作为 switch 语句的一部分。你可以在 <code>switch</code> 的 <code>case</code> 分支代码中提取每个关联值作为一个常量（用 <code>let</code> 前缀）或者作为一个变量（用 <code>var</code> 前缀）来使用：</p>
+<p>你可以使用一个 switch 语句来检查不同的条形码类型，和Enumerations#使用-Switch-语句匹配枚举值&gt;中的例子一样。然而，这一次，关联值可以被提取出来作为 switch 语句的一部分。你可以在 <code>switch</code> 的 <code>case</code> 分支代码中提取每个关联值作为一个常量（用 <code>let</code> 前缀）或者作为一个变量（用 <code>var</code> 前缀）来使用：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> productBarcode &#123;</span><br><span class="line"><span class="keyword">case</span> .upc(<span class="keyword">let</span> numberSystem, <span class="keyword">let</span> manufacturer, <span class="keyword">let</span> product, <span class="keyword">let</span> check):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;UPC: <span class="subst">\(numberSystem)</span>, <span class="subst">\(manufacturer)</span>, <span class="subst">\(product)</span>, <span class="subst">\(check)</span>.&quot;</span>)</span><br><span class="line"><span class="keyword">case</span> .qrCode(<span class="keyword">let</span> productCode):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;QR code: <span class="subst">\(productCode)</span>.&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;QR code: ABCDEFGHIJKLMNOP.&quot;</span></span><br></pre></td></tr></table></figure>
 
 <!--
@@ -371,7 +371,7 @@
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; switch productBarcode &#123;</span><br><span class="line">      case let .upc(numberSystem, manufacturer, product, check):</span><br><span class="line">         print(&quot;UPC : \(numberSystem), \(manufacturer), \(product), \(check).&quot;)</span><br><span class="line">      case let .qrCode(productCode):</span><br><span class="line">         print(&quot;QR code: \(productCode).&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- QR code: ABCDEFGHIJKLMNOP.</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<h2 id="原始值"><a href="#原始值" class="headerlink" title="原始值"></a>原始值</h2><p>在<a href="doc:Enumerations#关联值">doc:Enumerations#关联值</a>小节的条形码例子中，演示了如何声明存储不同类型关联值的枚举成员。作为关联值的替代选择，枚举成员可以被默认值（称为<em>原始值</em>）预填充，这些原始值的类型必须相同。</p>
+<h2 id="原始值"><a href="#原始值" class="headerlink" title="原始值"></a>原始值</h2><p>在Enumerations#关联值&gt;小节的条形码例子中，演示了如何声明存储不同类型关联值的枚举成员。作为关联值的替代选择，枚举成员可以被默认值（称为<em>原始值</em>）预填充，这些原始值的类型必须相同。</p>
 <p>这是一个使用 ASCII 码作为原始值的枚举：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">ASCIIControlCharacter</span>: <span class="title class_">Character</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> tab <span class="operator">=</span> <span class="string">&quot;<span class="subst">\t</span>&quot;</span></span><br><span class="line">    <span class="keyword">case</span> lineFeed <span class="operator">=</span> <span class="string">&quot;<span class="subst">\n</span>&quot;</span></span><br><span class="line">    <span class="keyword">case</span> carriageReturn <span class="operator">=</span> <span class="string">&quot;<span class="subst">\r</span>&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -380,7 +380,7 @@
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; enum ASCIIControlCharacter: Character &#123;</span><br><span class="line">      case tab = &quot;\t&quot;</span><br><span class="line">      case lineFeed = &quot;\n&quot;</span><br><span class="line">      case carriageReturn = &quot;\r&quot;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<p>上面的例子中，枚举类型 <code>ASCIIControlCharacter</code> 的原始值类型被定义为 <code>Character</code>，并设置了一些比较常见的 ASCII 控制字符。<code>Character</code> 的描述详见<a href="doc:StringsAndCharacters">doc:StringsAndCharacters</a>部分。</p>
+<p>上面的例子中，枚举类型 <code>ASCIIControlCharacter</code> 的原始值类型被定义为 <code>Character</code>，并设置了一些比较常见的 ASCII 控制字符。<code>Character</code> 的描述详见StringsAndCharacters&gt;部分。</p>
 <p>原始值可以是字符串、字符，或者任意整型值或浮点型值。每个原始值在枚举声明中必须是唯一的。</p>
 <blockquote>
 <p>注意:<br>原始值和关联值是<em>不同</em>的。原始值是在定义枚举时被预先填充的值，像上述三个 ASCII 码。对于一个特定的枚举成员，它的原始值始终不变。关联值是创建一个基于枚举成员的常量或变量时才设置的值，枚举成员的关联值可以变化。</p>
@@ -425,7 +425,7 @@
 <p>–&gt;</p>
 <p>然而，并非所有 <code>Int</code> 值都可以找到一个匹配的行星。因此，原始值构造器总是返回一个<em>可选的</em>枚举成员。在上面的例子中，<code>possiblePlanet</code> 是 <code>Planet?</code> 类型，或者说“可选的 <code>Planet</code>”。</p>
 <blockquote>
-<p>注意:<br>原始值构造器是一个可失败构造器，因为并不是每一个原始值都有与之对应的枚举成员。更多信息请参阅<a href="doc:Declarations#可失败的构造器">doc:Declarations#可失败的构造器</a>。</p>
+<p>注意:<br>原始值构造器是一个可失败构造器，因为并不是每一个原始值都有与之对应的枚举成员。更多信息请参阅Declarations#可失败的构造器&gt;。</p>
 </blockquote>
 <p>如果你试图寻找一个位置为 <code>11</code> 的行星，通过原始值构造器返回的可选 <code>Planet</code> 值将是 <code>nil</code>：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> positionToFind <span class="operator">=</span> <span class="number">11</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> somePlanet <span class="operator">=</span> <span class="type">Planet</span>(rawValue: positionToFind) &#123;</span><br><span class="line">    <span class="keyword">switch</span> somePlanet &#123;</span><br><span class="line">    <span class="keyword">case</span> .earth:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Mostly harmless&quot;</span>)</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Not a safe place for humans&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;There isn&#x27;t a planet at position <span class="subst">\(positionToFind)</span>&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印 &quot;There isn&#x27;t a planet at position 11&quot;</span></span><br></pre></td></tr></table></figure>

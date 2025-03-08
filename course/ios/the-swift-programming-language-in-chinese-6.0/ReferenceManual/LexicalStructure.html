@@ -58,8 +58,8 @@
 <meta property="og:site_name" content="那年星空">
 <meta property="og:description" content="词法结构使用语法的最低层级组件。 Swift 的 词法结构 描述了哪些字符序列构成了语言中的合法标记（tokens）。这些合法标记构成了语言的最低层级构建块，并在后续章节中用于描述语言的其他部分。一个标记可以由标识符、关键字、标点符号、字面量或运算符组成。 在大多数情况下，这些标记是从 Swift 源文件的字符中生成的，生成过程考虑了输入文本中最长的可能子字符串，并受以下语法规则的约束。这种行为策">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-03-08T08:32:48.733Z">
-<meta property="article:modified_time" content="2025-03-08T08:32:48.733Z">
+<meta property="article:published_time" content="2025-03-08T08:41:45.579Z">
+<meta property="article:modified_time" content="2025-03-08T08:41:45.579Z">
 <meta property="article:author" content="joe">
 <meta name="twitter:card" content="summary">
 
@@ -226,7 +226,7 @@
           <html><head></head><body></body></html><html><head></head><body><h1 id="词法结构"><a href="#词法结构" class="headerlink" title="词法结构"></a>词法结构</h1><p>使用语法的最低层级组件。</p>
 <p>Swift 的 <em>词法结构</em> 描述了哪些字符序列构成了语言中的合法标记（tokens）。这些合法标记构成了语言的最低层级构建块，并在后续章节中用于描述语言的其他部分。一个标记可以由标识符、关键字、标点符号、字面量或运算符组成。</p>
 <p>在大多数情况下，这些标记是从 Swift 源文件的字符中生成的，生成过程考虑了输入文本中最长的可能子字符串，并受以下语法规则的约束。这种行为策略被称为 <em>最长匹配策略（longest match）</em> 或 <em>最大吞噬策略（maximal munch）</em>。</p>
-<h2 id="空白和注释"><a href="#空白和注释" class="headerlink" title="空白和注释"></a>空白和注释</h2><p>空白字符有两个用途：在源文件中分隔标记，并区分前缀、后缀和中缀运算符（参见 <a href="doc:LexicalStructure#运算符">doc:LexicalStructure#运算符</a>），除此之外，空白字符会被忽略。以下字符被视为空白字符：空格 (U+0020)、换行符 (U+000A)、回车符 (U+000D)、水平制表符 (U+0009)、垂直制表符 (U+000B)、换页符 (U+000C) 和空字符 (U+0000)。</p>
+<h2 id="空白和注释"><a href="#空白和注释" class="headerlink" title="空白和注释"></a>空白和注释</h2><p>空白字符有两个用途：在源文件中分隔标记，并区分前缀、后缀和中缀运算符（参见 LexicalStructure#运算符&gt;），除此之外，空白字符会被忽略。以下字符被视为空白字符：空格 (U+0020)、换行符 (U+000A)、回车符 (U+000D)、水平制表符 (U+0009)、垂直制表符 (U+000B)、换页符 (U+000C) 和空字符 (U+0000)。</p>
 <!--
   Whitespace characters are listed roughly from
   most salient/common to least,
@@ -256,7 +256,7 @@ https://github.com/apple/swift-markdown/issues/93
 -->
 
 <p>在没有显式参数名称的闭包中，参数会被隐式命名为 <code>$0</code>、<code>$1</code>、<code>$2</code> 等。这些名称在闭包的范围内是合法的标识符。</p>
-<p>编译器会为具有属性包装器投射（Property Wrapper Projection）的属性合成以美元符号 (<code>$</code>) 开头的标识符。你的代码可以与这些标识符交互，但你不能声明带有该前缀的标识符。有关更多信息，请参阅 <a href="doc:Attributes">doc:Attributes</a> 章节的 <a href="doc:Attributes#propertyWrapper">doc:Attributes#propertyWrapper</a> 部分。</p>
+<p>编译器会为具有属性包装器投射（Property Wrapper Projection）的属性合成以美元符号 (<code>$</code>) 开头的标识符。你的代码可以与这些标识符交互，但你不能声明带有该前缀的标识符。有关更多信息，请参阅 Attributes&gt; 章节的 Attributes#propertyWrapper&gt; 部分。</p>
 <!--
   The cross reference above includes both the section and chapter because,
   even though "propertyWrapper" is the title of the section,
@@ -279,7 +279,7 @@ https://github.com/apple/swift-markdown/issues/93
 <p><em>identifier-character</em> → 数字 0 到 9 <br><em>identifier-character</em> → U+0300–U+036F、U+1DC0–U+1DFF、U+20D0–U+20FF 或 U+FE20–U+FE2F <br><em>identifier-character</em> → <em>identifier-head</em> <br><em>identifier-characters</em> → <em>identifier-character</em> <em>identifier-characters</em><em>?</em></p>
 <p><em>implicit-parameter-name</em> → <strong><code>$</code></strong> <em>decimal-digits</em> <br><em>property-wrapper-projection</em> → <strong><code>$</code></strong> <em>identifier-characters</em></p>
 </blockquote>
-<h2 id="关键字和标点符号"><a href="#关键字和标点符号" class="headerlink" title="关键字和标点符号"></a>关键字和标点符号</h2><p>以下关键字是保留字，不能用作标识符，除非用反引号将它们转义，如上文 <a href="doc:LexicalStructure#标识符">doc:LexicalStructure#标识符</a> 中所述。除了 <code>inout</code>、<code>var</code> 和 <code>let</code> 之外，其他关键字可以作为函数声明或函数调用中的参数名称，而无需使用反引号进行转义。当成员名称与关键字相同时，引用该成员时不需要使用反引号进行转义，除非在引用成员与使用关键字之间存在歧义——例如，<code>self</code>、<code>Type</code> 和 <code>Protocol</code> 在显式成员表达式中具有特殊含义，因此在这种情况下必须用反引号将它们转义。</p>
+<h2 id="关键字和标点符号"><a href="#关键字和标点符号" class="headerlink" title="关键字和标点符号"></a>关键字和标点符号</h2><p>以下关键字是保留字，不能用作标识符，除非用反引号将它们转义，如上文 LexicalStructure#标识符&gt; 中所述。除了 <code>inout</code>、<code>var</code> 和 <code>let</code> 之外，其他关键字可以作为函数声明或函数调用中的参数名称，而无需使用反引号进行转义。当成员名称与关键字相同时，引用该成员时不需要使用反引号进行转义，除非在引用成员与使用关键字之间存在歧义——例如，<code>self</code>、<code>Type</code> 和 <code>Protocol</code> 在显式成员表达式中具有特殊含义，因此在这种情况下必须用反引号将它们转义。</p>
 <!--
   - test: `keywords-without-backticks`
 
@@ -419,7 +419,7 @@ https://github.com/apple/swift-markdown/issues/93
 <p>十进制字面量包含数字 <code>0</code> 到 <code>9</code>。二进制字面量包含 <code>0</code> 和 <code>1</code>，八进制字面量包含 <code>0</code> 到 <code>7</code>，而十六进制字面量则包含 <code>0</code> 到 <code>9</code> 以及大写或小写的 <code>A</code> 到 <code>F</code>。</p>
 <p>负整数字面量通过在整数字面量前加上负号 (<code>-</code>) 来表示，如 <code>-42</code>。</p>
 <p>为了提高可读性，数字之间允许使用下划线 (<code>_</code>)，但它们会被忽略，因此不会影响字面量的值。整数字面量可以以前导零 (<code>0</code>) 开头，但这些零同样会被忽略，不会影响字面量的进制或值。</p>
-<p>除非另有说明，否则整数字面量的默认推断类型是 Swift 标准库类型 <code>Int</code>。Swift 标准库还定义了用于表示各种大小的有符号和无符号整数的类型，详细内容请参阅 <a href="doc:TheBasics#整数">doc:TheBasics#整数</a>。</p>
+<p>除非另有说明，否则整数字面量的默认推断类型是 Swift 标准库类型 <code>Int</code>。Swift 标准库还定义了用于表示各种大小的有符号和无符号整数的类型，详细内容请参阅 TheBasics#整数&gt;。</p>
 <!--
   TR: The prose assumes underscores only belong between digits.
   Is there a reason to allow them at the end of a literal?
@@ -531,7 +531,7 @@ https://github.com/apple/swift-markdown/issues/93
 <p>–&gt;</p>
 <p>使用扩展定界符创建的多行字符串字面量具有与常规多行字符串字面量相同的缩进要求。</p>
 <p>默认情况下，字符串字面量的推断类型为 <code>String</code>。</p>
-<p>有关 <code>String</code> 类型的更多信息，请参见 <a href="doc:StringsAndCharacters">doc:StringsAndCharacters</a> 和 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/string"><code>String</code></a>。</p>
+<p>有关 <code>String</code> 类型的更多信息，请参见 StringsAndCharacters&gt; 和 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/string"><code>String</code></a>。</p>
 <p>字符串字面量通过 <code>+</code> 运算符连接时，连接操作在编译时完成。<br>例如，以下示例中 <code>textA</code> 和 <code>textB</code> 的值是相同的——没有发生运行时的连接操作。</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> textA <span class="operator">=</span> <span class="string">&quot;Hello &quot;</span> <span class="operator">+</span> <span class="string">&quot;world&quot;</span></span><br><span class="line"><span class="keyword">let</span> textB <span class="operator">=</span> <span class="string">&quot;Hello world&quot;</span></span><br></pre></td></tr></table></figure>
 
@@ -625,7 +625,7 @@ https://github.com/apple/swift-markdown/issues/93
 <p><em>regular-expression-literal-opening-delimiter</em> → <em>extended-regular-expression-literal-delimiter</em><em>?</em> <strong><code>/</code></strong> <br><em>regular-expression-literal-closing-delimiter</em> → <strong><code>/</code></strong> <em>extended-regular-expression-literal-delimiter</em><em>?</em></p>
 <p><em>extended-regular-expression-literal-delimiter</em> → <strong><code>#</code></strong> <em>extended-regular-expression-literal-delimiter</em><em>?</em></p>
 </blockquote>
-<h2 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h2><p>Swift 标准库定义了许多运算符供你使用，其中许多运算符在 <a href="doc:BasicOperators">doc:BasicOperators</a> 和 <a href="doc:AdvancedOperators">doc:AdvancedOperators</a> 中进行了讨论。本节描述了哪些字符可以用于定义自定义运算符。</p>
+<h2 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h2><p>Swift 标准库定义了许多运算符供你使用，其中许多运算符在 BasicOperators&gt; 和 AdvancedOperators&gt; 中进行了讨论。本节描述了哪些字符可以用于定义自定义运算符。</p>
 <p>自定义运算符可以用这些 ASCII 字符之一开头：<code>/</code>、<code>=</code>、<code>-</code>、<code>+</code>、<code>!</code>、<code>*</code>、<code>%</code>、<code>&lt;</code>、<code>&gt;</code>、<code>&amp;</code>、<code>|</code>、<code>^</code>、<code>?</code> 或 <code>~</code>，或者是定义在下面语法中的 Unicode 字符（其中包括来自 <em>数学运算符（Mathematical Operators）</em>、<em>杂项符号（Miscellaneous Symbols）</em> 和 <em>装饰符号（Dingbats）</em> Unicode 块的字符等）之一。在第一个字符之后，还允许使用组合 Unicode 字符（Combining Unicode Character）。</p>
 <p>你还可以定义以点（<code>.</code>）开头的自定义运算符。这些运算符可以包含额外的点。例如，<code>.+.</code> 被视为一个单一的运算符。如果一个运算符不是以点开头的，则它不能在其他地方包含点。例如，<code>+.+</code> 被视为 <code>+</code> 运算符后跟 <code>.+</code> 运算符。</p>
 <!--
@@ -671,7 +671,7 @@ https://github.com/apple/swift-markdown/issues/93
   C++ typically needs whitespace to resolve the ambiguity.
 -->
 
-<p>要了解如何定义新的自定义操作符，请参阅 <a href="doc:AdvancedOperators#自定义运算符">doc:AdvancedOperators#自定义运算符</a> 和 <a href="doc:Declarations#操作符声明">doc:Declarations#操作符声明</a>。要了解如何重载现有的操作符，请参阅 <a href="doc:AdvancedOperators#Operator-Methods">doc:AdvancedOperators#Operator-Methods</a>。</p>
+<p>要了解如何定义新的自定义操作符，请参阅 AdvancedOperators#自定义运算符&gt; 和 Declarations#操作符声明&gt;。要了解如何重载现有的操作符，请参阅 AdvancedOperators#Operator-Methods&gt;。</p>
 <!--
   NOTE: The ? is a reserved punctuation.  Optional-chaining (foo?.bar) is actually a
   monad -- the ? is actually a monadic bind operator.  It is like a burrito.

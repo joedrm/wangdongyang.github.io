@@ -58,8 +58,8 @@
 <meta property="og:site_name" content="那年星空">
 <meta property="og:description" content="表达式访问、修改和分配值。 Swift 中存在四种表达式：前缀表达式，中缀表达式，基本表达式和后缀表达式。表达式在返回一个值的同时还可以引发副作用。 通过前缀表达式和中缀表达式可以对简单表达式使用各种运算符。基本表达式从概念上讲是最简单的一种表达式，它是一种访问值的方式。后缀表达式则允许你建立复杂的表达式，例如函数调用和成员访问。每种表达式都在下面有详细论述。  表达式语法： expression">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-03-08T08:32:48.731Z">
-<meta property="article:modified_time" content="2025-03-08T08:32:48.731Z">
+<meta property="article:published_time" content="2025-03-08T08:41:45.579Z">
+<meta property="article:modified_time" content="2025-03-08T08:41:45.579Z">
 <meta property="article:author" content="joe">
 <meta name="twitter:card" content="summary">
 
@@ -231,7 +231,7 @@
 <p><em>expression</em> → <em>try-operator</em><em>?</em> <em>await-operator</em><em>?</em> <em>prefix-expression</em> <em>infix-expressions</em><em>?</em> \</p>
 </blockquote>
 <h2 id="前缀表达式"><a href="#前缀表达式" class="headerlink" title="前缀表达式"></a>前缀表达式</h2><p>前缀表达式由可选的前缀运算符和表达式组成。前缀运算符只接收一个参数，表达式则紧随其后。</p>
-<p>关于这些运算符的更多信息，请参阅 <a href="doc:BasicOperators">doc:BasicOperators</a> 和 <a href="doc:AdvancedOperators">doc:AdvancedOperators</a>.</p>
+<p>关于这些运算符的更多信息，请参阅 BasicOperators&gt; 和 AdvancedOperators&gt;.</p>
 <p>关于 Swift 标准库提供的运算符的更多信息，请参阅  <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/operator_declarations">Operator Declarations</a>.</p>
 <blockquote>
 <p>前缀表达式语法</p>
@@ -240,8 +240,8 @@
 <h3 id="In-Out-表达式"><a href="#In-Out-表达式" class="headerlink" title="In-Out 表达式"></a>In-Out 表达式</h3><p> <em>in-out表达式</em>将函数调用表达式传入的变量标记为输入输出实参。</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&amp;&lt;</span>#表达式#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
 
-<p>输入输出表达式也可以用于将非指针实参传入到需要指针的上下文中，如 <a href="doc:Functions#输入输出参数">doc:Functions#输入输出参数</a>.</p>
-<p>In-out 表达式也可以用于将非指针实参传入到需要指针的上下文中，如 <a href="doc:Expressions#隐式转换为指针类型">doc:Expressions#隐式转换为指针类型</a>.</p>
+<p>输入输出表达式也可以用于将非指针实参传入到需要指针的上下文中，如 Functions#输入输出参数&gt;.</p>
+<p>In-out 表达式也可以用于将非指针实参传入到需要指针的上下文中，如 Expressions#隐式转换为指针类型&gt;.</p>
 <blockquote>
 <p>Grammar of an in-out expression:</p>
 <p><em>in-out-expression</em> → <strong><code>&amp;</code></strong> <em>标识符</em></p>
@@ -263,7 +263,7 @@
 
 <p><code>try</code> 表达式不能出现在中缀运算符的的右侧，除非中缀运算符是赋值运算符或者 <code>try</code> 表达式是被圆括号括起来的。</p>
 <p>如果表达式中同时包含 <code>try</code> 和 <code>await</code> 运算符，<code>try</code> 运算符必须在前面。</p>
-<p>更多关于 <code>try</code>、<code>try?</code> 和 <code>try!</code> 的信息，以及该如何使用的例子，请参阅 <a href="doc:ErrorHandling">doc:ErrorHandling</a>.</p>
+<p>更多关于 <code>try</code>、<code>try?</code> 和 <code>try!</code> 的信息，以及该如何使用的例子，请参阅 ErrorHandling&gt;.</p>
 <blockquote>
 <p>Try 表达式语法</p>
 <p><em>try运算符</em> → <strong><code>try</code></strong> | <strong><code>try</code></strong> <strong><code>?</code></strong> | <strong><code>try</code></strong> <strong><code>!</code></strong></p>
@@ -287,7 +287,7 @@
 <h2 id="中缀表达式"><a href="#中缀表达式" class="headerlink" title="中缀表达式"></a>中缀表达式</h2><p><em>中缀表达式</em>由中缀运算符和左右参数表达式组成。形式如下：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&lt;</span>#left<span class="operator">-</span>左侧参数#<span class="operator">&gt;</span> <span class="operator">&lt;</span>#中缀运算符#<span class="operator">&gt;</span> <span class="operator">&lt;</span>#右侧参数t#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
 
-<p>关于这些运算符的更多信息，请参阅<a href="doc:BasicOperators">doc:BasicOperators</a> 和 <a href="doc:AdvancedOperators">doc:AdvancedOperators</a>.</p>
+<p>关于这些运算符的更多信息，请参阅BasicOperators&gt; 和 AdvancedOperators&gt;.</p>
 <p>关于 Swift 标准库提供的运算符的更多信息，请参阅<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/operator_declarations">Operator Declarations</a>.</p>
 <blockquote>
 <p>注意<br>在解析时，一个中缀表达式将作为一个扁平列表表示，然后根据运算符的优先级，再进一步进行组合。例如，&gt; <code>2 + 3 * 5</code> 首先被看作具有五个元素的列表，即 <code>2</code>、<code>+</code>、<code>3</code>、<code>*</code>、<code>5</code>，随后根据运算符优先级组合为 <code>(2 + &gt; (3 * 5))</code>。</p>
@@ -311,7 +311,7 @@
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&lt;</span>#条件#<span class="operator">&gt;</span> <span class="operator">?</span> <span class="operator">&lt;</span>#表达式 (条件为真则使用)#<span class="operator">&gt;</span> : <span class="operator">&lt;</span>#表达式（条件为假则使用）#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>如果条件为真，那么对第一个表达式进行求值并返回结果。否则，对第二个表达式进行求值并返回结果。未使用的表达式不会进行求值。</p>
-<p>关于使用三元条件运算符的例子，请参阅 <a href="doc:BasicOperators#三元运算符">doc:BasicOperators#三元运算符</a>.</p>
+<p>关于使用三元条件运算符的例子，请参阅 BasicOperators#三元运算符&gt;.</p>
 <blockquote>
 <p>Grammar of a conditional operator:</p>
 <p><em>conditional-operator</em> → <strong><code>?</code></strong> <em>expression</em> <strong><code>:</code></strong></p>
@@ -326,7 +326,7 @@
 <p>桥接可将 Swift 标准库中的类型（例如 <code>String</code>）作为一个与之相关的 Foundation 类型（例如 <code>NSString</code>）来使用，而不需要新建一个实例。关于桥接的更多信息，请参阅<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/imported_c_and_objective_c_apis/working_with_foundation_types">Working with Foundation Types</a>.</p>
 <p><code>as?</code> 运算符有条件地执行类型转换，返回目标类型的可选值。在运行时，如果转换成功，返回的可选值将包含转换后的值，否则返回 <code>nil</code>。如果在编译时就能确定转换一定会成功或是失败，则会导致编译报错。</p>
 <p><code>as!</code> 运算符执行强制类型转换，返回目标类型的非可选值。如果转换失败，则会导致运行时错误。表达式 <code>x as! T</code> 效果等同于 <code>(x as? T)!</code>。</p>
-<p>关于类型转换的更多内容和例子，请参阅 <a href="doc:TypeCasting">doc:TypeCasting</a>.<br>要查看使用类型转换运算符的示例，请参阅 <a href="doc:TypeCasting#类型转换运算符">doc:TypeCasting#类型转换运算符</a>.</p>
+<p>关于类型转换的更多内容和例子，请参阅 TypeCasting&gt;.<br>要查看使用类型转换运算符的示例，请参阅 TypeCasting#类型转换运算符&gt;.</p>
 <blockquote>
 <p>Grammar of a type-casting operator:</p>
 <p><em>type-casting-operator</em> → <strong><code>is</code></strong> <em>type</em> <br><em>type-casting-operator</em> → <strong><code>as</code></strong> <em>type</em> <br><em>type-casting-operator</em> → <strong><code>as</code></strong> <strong><code>?</code></strong> <em>type</em> <br><em>type-casting-operator</em> → <strong><code>as</code></strong> <strong><code>!</code></strong> <em>type</em></p>
@@ -415,7 +415,7 @@
 <h3 id="闭包表达式-1"><a href="#闭包表达式-1" class="headerlink" title="闭包表达式"></a>闭包表达式</h3><p><em>闭包表达式</em>会创建一个闭包，在其他语言中也叫 <em>lambda</em> 或匿名函数。跟函数一样，闭包包含了待执行的代码，不同的是闭包还会捕获所在环境中的常量和变量。它的形式如下：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">{ (<span class="operator">&lt;</span>#parameters#<span class="operator">&gt;</span>) -&gt; <span class="operator">&lt;</span>#return type#<span class="operator">&gt;</span> <span class="keyword">in</span></span><br><span class="line">   <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>闭包的参数声明形式跟函数一样，请参阅 <a href="doc:Declarations#函数声明">doc:Declarations#函数声明</a>.</p>
+<p>闭包的参数声明形式跟函数一样，请参阅 Declarations#函数声明&gt;.</p>
 <p>在闭包表达式中写入 <code>throws</code> 或 <code>async</code> 将显式地将闭包标记为丢掷或异步的。</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">{ (<span class="operator">&lt;</span>#parameters#<span class="operator">&gt;</span>) <span class="keyword">async</span> <span class="keyword">throws</span> -&gt; <span class="operator">&lt;</span>#return type#<span class="operator">&gt;</span> <span class="keyword">in</span></span><br><span class="line">   <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
@@ -432,9 +432,9 @@
 <p>下面几个闭包表达式是等价的：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">myFunction { (x: <span class="type">Int</span>, y: <span class="type">Int</span>) -&gt; <span class="type">Int</span> <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">return</span> x <span class="operator">+</span> y</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">myFunction { x, y <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">return</span> x <span class="operator">+</span> y</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">myFunction { <span class="keyword">return</span> <span class="variable">$0</span> <span class="operator">+</span> <span class="variable">$1</span> }</span><br><span class="line"></span><br><span class="line">myFunction { <span class="variable">$0</span> <span class="operator">+</span> <span class="variable">$1</span> }</span><br></pre></td></tr></tbody></table></figure>
 
-<p>关于如何将闭包作为参数来传递的内容，请参阅 <a href="doc:Expressions#函数调用表达式">doc:Expressions#函数调用表达式</a>.</p>
+<p>关于如何将闭包作为参数来传递的内容，请参阅 Expressions#函数调用表达式&gt;.</p>
 <p>使用闭包表达式时，可以不必将其存储在一个变量或常量中，例如作为函数调用的一部分来立即使用一个闭包。在上面的例子中，传入 <code>myFunction</code> 的闭包表达式就是这种立即使用类型的闭包。因此，一个闭包是否逃逸与其使用时的上下文相关。一个会被立即调用或者作为函数的非逃逸参数传递的闭包表达式是非逃逸的，否则，这个闭包表达式是逃逸的。</p>
-<p>关于逃逸闭包的内容，请参阅<a href="doc:Closures#逃逸闭包">doc:Closures#逃逸闭包</a>.</p>
+<p>关于逃逸闭包的内容，请参阅Closures#逃逸闭包&gt;.</p>
 <h4 id="捕获列表"><a href="#捕获列表" class="headerlink" title="捕获列表"></a>捕获列表</h4><p>默认情况下，闭包会捕获附近作用域中的常量和变量，并使用强引用指向它们。你可以通过一个<em>捕获列表</em>来显式指定它的捕获行为。</p>
 <p>捕获列表在参数列表之前，由中括号括起来，里面是由逗号分隔的一系列表达式。一旦使用了捕获列表，就必须使用 <code>in</code> 关键字，即使省略了参数名、参数类型和返回类型。</p>
 <p>捕获列表中的项会在闭包创建时被初始化。每一项都会用闭包附近作用域中的同名常量或者变量的值初始化。例如下面的代码示例中，捕获列表包含 <code>a</code> 而不包含 <code>b</code>，这将导致这两个变量具有不同的行为。</p>
@@ -450,8 +450,8 @@
 <p>在捕获列表中，也可以将任意表达式的值绑定到一个常量上。该表达式会在闭包被创建时进行求值，闭包会按照指定的引用类型来捕获表达式的值。例如：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 以弱引用捕获 self.parent 并赋值给 parent</span></span><br><span class="line">myFunction { [<span class="keyword">weak</span> parent <span class="operator">=</span> <span class="keyword">self</span>.parent] <span class="keyword">in</span> <span class="built_in">print</span>(parent<span class="operator">!</span>.title) }</span><br></pre></td></tr></tbody></table></figure>
 
-<p>关于闭包表达式的更多信息和例子，请参阅 <a href="doc:Closures#闭包表达式">doc:Closures#闭包表达式</a>.</p>
-<p>关于捕获列表的更多信息和例子，请参阅 <a href="doc:AutomaticReferenceCounting#闭包引起的循环强引用">doc:AutomaticReferenceCounting#闭包引起的循环强引用</a>.</p>
+<p>关于闭包表达式的更多信息和例子，请参阅 Closures#闭包表达式&gt;.</p>
+<p>关于捕获列表的更多信息和例子，请参阅 AutomaticReferenceCounting#闭包引起的循环强引用&gt;.</p>
 <blockquote>
 <p>Grammar of a closure expression:</p>
 <p><em>closure-expression</em> → <strong><code>{</code></strong> <em>attributes</em><em>?</em> <em>closure-signature</em><em>?</em> <em>statements</em><em>?</em> <strong><code>}</code></strong></p>
@@ -468,7 +468,7 @@
 <p>如果推断的是可选类型，可以在隐式成员表达式里使用不可选类型的成员。</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> someOptional: <span class="type">MyEnumeration</span>? <span class="operator">=</span> .someValue</span><br></pre></td></tr></tbody></table></figure>
 
-<p>隐式成员表达式可以跟在后缀运算符或者其他在<a href="doc:Expressions#后缀表达式">doc:Expressions#后缀表达式</a>里介绍的语法后面。这被称为 链式隐式成员表达式。尽管链式后缀表达式大多都是相同类型，但其实只需要整个链式成员表达式可以转换为上下文的类型就行了。更具体的，如果隐式类型是可选的，则可以使用非可选类型的值，如果隐式类型是类类型，则可以使用其子类的值。例如：</p>
+<p>隐式成员表达式可以跟在后缀运算符或者其他在Expressions#后缀表达式&gt;里介绍的语法后面。这被称为 链式隐式成员表达式。尽管链式后缀表达式大多都是相同类型，但其实只需要整个链式成员表达式可以转换为上下文的类型就行了。更具体的，如果隐式类型是可选的，则可以使用非可选类型的值，如果隐式类型是类类型，则可以使用其子类的值。例如：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SomeClass</span> {</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> shared <span class="operator">=</span> <span class="type">SomeClass</span>()</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> sharedSubclass <span class="operator">=</span> <span class="type">SomeSubclass</span>()</span><br><span class="line">    <span class="keyword">var</span> a <span class="operator">=</span> <span class="type">AnotherClass</span>()</span><br><span class="line">}</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SomeSubclass</span>: <span class="title class_">SomeClass</span> { }</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AnotherClass</span> {</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> s <span class="operator">=</span> <span class="type">SomeClass</span>()</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">f</span>() -&gt; <span class="type">SomeClass</span> { <span class="keyword">return</span> <span class="type">AnotherClass</span>.s }</span><br><span class="line">}</span><br><span class="line"><span class="keyword">let</span> x: <span class="type">SomeClass</span> <span class="operator">=</span> .shared.a.f()</span><br><span class="line"><span class="keyword">let</span> y: <span class="type">SomeClass</span>? <span class="operator">=</span> .shared</span><br><span class="line"><span class="keyword">let</span> z: <span class="type">SomeClass</span> <span class="operator">=</span> .sharedSubclass</span><br></pre></td></tr></tbody></table></figure>
 <p>上面的代码中，<code>x</code> 的类型和上下文的隐式类型完全匹配，<code>y</code> 的类型是从 <code>SomeClass</code> 转换成 <code>SomeClass?</code>，<code>z</code> 的类型是从 <code>SomeSubclass</code> 转换成 <code>SomeClass</code>。</p>
 <blockquote>
@@ -513,7 +513,7 @@
 <li>宏要么不接受参数,要么其参数是不带字符串插值的字面量。</li>
 <li>宏的返回类型与参数的类型匹配。</li>
 </ul>
-<p>你使用宏表达式来调用独立宏。要调用附加宏，请使用在 <a href="doc:Attributes">doc:Attributes</a>.<br>中描述的自定义属性语法。独立宏和附加宏的扩展方式如下：</p>
+<p>你使用宏表达式来调用独立宏。要调用附加宏，请使用在 Attributes&gt;.<br>中描述的自定义属性语法。独立宏和附加宏的扩展方式如下：</p>
 <ol>
 <li><p>Swift 解析源代码以生成抽象语法树（AST）。</p>
 </li>
@@ -527,7 +527,7 @@
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#outerMacro(<span class="number">12</span>, #innerMacro(<span class="number">34</span>), <span class="string">"some text"</span>)</span><br></pre></td></tr></tbody></table></figure>
 
 <p>一个具有多个角色的附加宏会针对每个角色进行一次扩展。每次扩展都接收相同的原始 AST 作为输入。Swift 通过收集所有生成的 AST 节点，并将它们放入 AST 中相应的位置，形成整体扩展。</p>
-<p>有关 Swift 中宏的概述 请参阅 <a href="doc:Macros">doc:Macros</a>。</p>
+<p>有关 Swift 中宏的概述 请参阅 Macros&gt;。</p>
 <blockquote>
 <p>Grammar of a macro-expansion expression:</p>
 <p><em>macro-expansion-expression</em> → <strong><code>#</code></strong> <em>identifier</em> <em>generic-argument-clause</em><em>?</em> <em>function-call-argument-clause</em><em>?</em> <em>trailing-closures</em><em>?</em></p>
@@ -612,7 +612,7 @@
 <p><em>key-path-string-expression</em> → <strong><code>#keyPath</code></strong> <strong><code>(</code></strong> <em>expression</em> <strong><code>)</code></strong></p>
 </blockquote>
 <h2 id="后缀表达式"><a href="#后缀表达式" class="headerlink" title="后缀表达式"></a>后缀表达式</h2><p><em>后缀表达式</em>就是在某个表达式的后面运用后缀运算符或其他后缀语法。从语法构成上来看，基本表达式也是后缀表达式。</p>
-<p>关于这些运算符的更多信息，请参阅 <a href="doc:BasicOperators">doc:BasicOperators</a> 和 <a href="doc:AdvancedOperators">doc:AdvancedOperators</a>.</p>
+<p>关于这些运算符的更多信息，请参阅 BasicOperators&gt; 和 AdvancedOperators&gt;.</p>
 <p>关于 Swift 标准库提供的运算符的更多信息，请参阅 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/operator_declarations">Operator Declarations</a>.</p>
 <blockquote>
 <p>Grammar of a postfix expression:</p>
@@ -671,7 +671,7 @@
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typealias</span> <span class="type">Callback</span> <span class="operator">=</span> (<span class="type">Int</span>) -&gt; <span class="type">Int</span></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">someFunction</span>(<span class="params">firstClosure</span>: <span class="type">Callback</span>? <span class="operator">=</span> <span class="literal">nil</span>,</span><br><span class="line">                <span class="params">secondClosure</span>: <span class="type">Callback</span>? <span class="operator">=</span> <span class="literal">nil</span>) {</span><br><span class="line">    <span class="keyword">let</span> first <span class="operator">=</span> firstClosure<span class="operator">?</span>(<span class="number">10</span>)</span><br><span class="line">    <span class="keyword">let</span> second <span class="operator">=</span> secondClosure<span class="operator">?</span>(<span class="number">20</span>)</span><br><span class="line">    <span class="built_in">print</span>(first <span class="operator">??</span> <span class="string">"-"</span>, second <span class="operator">??</span> <span class="string">"-"</span>)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">someFunction()  <span class="comment">// 打印 "- -"</span></span><br><span class="line">someFunction { <span class="keyword">return</span> <span class="variable">$0</span> <span class="operator">+</span> <span class="number">100</span> }  <span class="comment">// 歧义</span></span><br><span class="line">someFunction { <span class="keyword">return</span> <span class="variable">$0</span> } secondClosure: { <span class="keyword">return</span> <span class="variable">$0</span> }  <span class="comment">// 打印 "10 20"</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>在上面的例子中，Swift 5.3 中被标记为”歧义”的函数调用会打印”- 120”并产生一个编辑器警告。未来版本的 Swift 会打印”110 -“。</p>
-<p>如 <a href="doc:Declarations#具有特殊名称的方法">doc:Declarations#具有特殊名称的方法</a>所述，通过声明几种方法中的一种，类、结构体或枚举类型可以为函数调用语法启用语法糖。</p>
+<p>如 Declarations#具有特殊名称的方法&gt;所述，通过声明几种方法中的一种，类、结构体或枚举类型可以为函数调用语法启用语法糖。</p>
 <h4 id="指针类型的隐式转换"><a href="#指针类型的隐式转换" class="headerlink" title="指针类型的隐式转换"></a>指针类型的隐式转换</h4><p>在函数调用表达式里，如果实参和形参的类型不一致，编译器会尝试通过下面的规则进行隐式转换来匹配类型：</p>
 <ul>
 <li><code>inout SomeType</code> can become<br><code>UnsafePointer&lt;SomeType&gt;</code> or <code>UnsafeMutablePointer&lt;SomeType&gt;</code></li>
@@ -719,11 +719,11 @@
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> t <span class="operator">=</span> (<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>)</span><br><span class="line">t.<span class="number">0</span> <span class="operator">=</span> t.<span class="number">1</span></span><br><span class="line"><span class="comment">// 现在元组 (20, 20, 30)</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>对于模块的成员来说，只能直接访问顶级声明中的成员。</p>
-<p>使用 <code>dynamicMemberLookup</code> 属性声明的类型包含可以在运行时查找的成员，具体请参阅 <a href="doc:Attributes">doc:Attributes</a>.</p>
+<p>使用 <code>dynamicMemberLookup</code> 属性声明的类型包含可以在运行时查找的成员，具体请参阅 Attributes&gt;.</p>
 <p>为了区分只有参数名有所不同的方法或构造器，在圆括号中写出参数名，参数名后紧跟一个冒号，对于没有参数名的参数，使用下划线代替参数名。而对于重载方法，则需使用类型注解进行区分。例如：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SomeClass</span> {</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">someMethod</span>(<span class="params">x</span>: <span class="type">Int</span>, <span class="params">y</span>: <span class="type">Int</span>) {}</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">someMethod</span>(<span class="params">x</span>: <span class="type">Int</span>, <span class="params">z</span>: <span class="type">Int</span>) {}</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">overloadedMethod</span>(<span class="params">x</span>: <span class="type">Int</span>, <span class="params">y</span>: <span class="type">Int</span>) {}</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">overloadedMethod</span>(<span class="params">x</span>: <span class="type">Int</span>, <span class="params">y</span>: <span class="type">Bool</span>) {}</span><br><span class="line">}</span><br><span class="line"><span class="keyword">let</span> instance <span class="operator">=</span> <span class="type">SomeClass</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a <span class="operator">=</span> instance.someMethod              <span class="comment">// Ambiguous</span></span><br><span class="line"><span class="keyword">let</span> b <span class="operator">=</span> instance.someMethod(x:y:)        <span class="comment">// Unambiguous</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> d <span class="operator">=</span> instance.overloadedMethod        <span class="comment">// Ambiguous</span></span><br><span class="line"><span class="keyword">let</span> d <span class="operator">=</span> instance.overloadedMethod(x:y:)  <span class="comment">// Still ambiguous</span></span><br><span class="line"><span class="keyword">let</span> d: (<span class="type">Int</span>, <span class="type">Bool</span>) -&gt; <span class="type">Void</span>  <span class="operator">=</span> instance.overloadedMethod(x:y:)  <span class="comment">// Unambiguous</span></span><br></pre></td></tr></tbody></table></figure>
 
-<p>如果点号（<code>.</code>）出现在行首，它会被视为显式成员表达式的一部分，而不是 <a href="doc:Expressions#隐式成员表达式">doc:Expressions#隐式成员表达式</a> 的一部分。例如如下代码所展示的被分为多行的链式方法调用：</p>
+<p>如果点号（<code>.</code>）出现在行首，它会被视为显式成员表达式的一部分，而不是 Expressions#隐式成员表达式&gt; 的一部分。例如如下代码所展示的被分为多行的链式方法调用：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x <span class="operator">=</span> [<span class="number">10</span>, <span class="number">3</span>, <span class="number">20</span>, <span class="number">15</span>, <span class="number">4</span>]</span><br><span class="line">    .sorted()</span><br><span class="line">    .filter { <span class="variable">$0</span> <span class="operator">&gt;</span> <span class="number">5</span> }</span><br><span class="line">    .map { <span class="variable">$0</span> <span class="operator">*</span> <span class="number">100</span> }</span><br></pre></td></tr></tbody></table></figure>
 
 <p>你可以将这种多行链式语法与编译器控制语句结合，以控制调用每个方法的时间。例如，以下代码在 iOS 上应用了不同的过滤规则：</p>
@@ -750,7 +750,7 @@
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&lt;</span>#expression#<span class="operator">&gt;</span>[<span class="operator">&lt;</span>#index expressions#<span class="operator">&gt;</span>]</span><br></pre></td></tr></tbody></table></figure>
 
 <p>要获取下标表达式的值，可将索引表达式作为下标表达式的参数来调用下标 getter。下标 setter 的调用方式与之一样。</p>
-<p>关于下标的声明，请参阅 <a href="doc:Declarations#协议下标声明">doc:Declarations#协议下标声明</a>.</p>
+<p>关于下标的声明，请参阅 Declarations#协议下标声明&gt;.</p>
 <blockquote>
 <p>Grammar of a subscript expression:</p>
 <p><em>subscript-expression</em> → <em>postfix-expression</em> <strong><code>[</code></strong> <em>function-call-argument-list</em> <strong><code>]</code></strong></p>

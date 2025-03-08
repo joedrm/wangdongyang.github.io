@@ -58,8 +58,8 @@
 <meta property="og:site_name" content="那年星空">
 <meta property="og:description" content="声明引入类型、运算符、变量以及其他名称和构造。 声明将在程序中引入一个新的名称或构造例如，你使用声明来引入函数和方法，引入变量和常量，以及定义枚举、结构体、类和协议类型。你还可以使用声明来扩展现有具名类型的行为，并将其他地方声明的符号引入到你的程序中。 在 Swift 中，大多数声明也是定义，因为它们在声明的同时被实现或初始化。但由于协议不实现它的成员，所以协议成员在此仅仅是声明。为了方便起见，而">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-03-08T08:32:48.729Z">
-<meta property="article:modified_time" content="2025-03-08T08:32:48.729Z">
+<meta property="article:published_time" content="2025-03-08T08:41:45.583Z">
+<meta property="article:modified_time" content="2025-03-08T08:41:45.583Z">
 <meta property="article:author" content="joe">
 <meta name="twitter:card" content="summary">
 
@@ -230,7 +230,7 @@
 <p>声明的语法:</p>
 <p><em>declaration</em> → <em>import-declaration</em> <br><em>declaration</em> → <em>constant-declaration</em> <br><em>declaration</em> → <em>variable-declaration</em> <br><em>declaration</em> → <em>typealias-declaration</em> <br><em>declaration</em> → <em>function-declaration</em> <br><em>declaration</em> → <em>enum-declaration</em> <br><em>declaration</em> → <em>struct-declaration</em> <br><em>declaration</em> → <em>class-declaration</em> <br><em>declaration</em> → <em>actor-declaration</em> <br><em>declaration</em> → <em>protocol-declaration</em> <br><em>declaration</em> → <em>initializer-declaration</em> <br><em>declaration</em> → <em>deinitializer-declaration</em> <br><em>declaration</em> → <em>extension-declaration</em> <br><em>declaration</em> → <em>subscript-declaration</em> <br><em>declaration</em> → <em>macro-declaration</em> <br><em>declaration</em> → <em>operator-declaration</em> <br><em>declaration</em> → <em>precedence-group-declaration</em></p>
 </blockquote>
-<h2 id="顶级代码"><a href="#顶级代码" class="headerlink" title="顶级代码"></a>顶级代码</h2><p>Swift 源文件中的顶级代码由零个或多个语句、声明和表达式组成。默认情况下，在源文件顶层声明的变量、常量和其他具名声明可以被同一模块中每个源文件的代码访问。你可以使用访问级别修饰符来重写此默认行为，具体说明见 <a href="doc:Declarations#访问控制级别">doc:Declarations#访问控制级别</a>。</p>
+<h2 id="顶级代码"><a href="#顶级代码" class="headerlink" title="顶级代码"></a>顶级代码</h2><p>Swift 源文件中的顶级代码由零个或多个语句、声明和表达式组成。默认情况下，在源文件顶层声明的变量、常量和其他具名声明可以被同一模块中每个源文件的代码访问。你可以使用访问级别修饰符来重写此默认行为，具体说明见 Declarations#访问控制级别&gt;。</p>
 <p>有两种类型的顶级代码：顶级声明和可执行的顶级代码。顶级声明仅由声明组成，允许出现在所有 Swift 源文件中。可执行的顶级代码包含语句和表达式，而不仅仅是声明，仅允许作为程序的顶级入口点。</p>
 <p>编译 Swift 代码生成可执行文件时，无论文件和模块中的代码如何组织，都只能通过以下方法之一来指定顶级入口点：<code>main</code> 特性、<code>NSApplicationMain</code> 特性、<code>UIApplicationMain</code> 特性、<code>main.swift</code> 文件，或包含顶级可执行代码的文件。</p>
 <blockquote>
@@ -299,14 +299,14 @@ as shown by Rice's theorem.
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; print(&quot;The first number is \(firstNumber).&quot;)</span><br><span class="line">&lt;- The first number is 10.</span><br><span class="line">-&gt; print(&quot;The second number is \(secondNumber).&quot;)</span><br><span class="line">&lt;- The second number is 42.</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<p>在常量声明中，当可以推断出<em>常量名称</em>的类型时，类型注释（<code>:</code> <em>type</em>）是可选的，详见 <a href="doc:Types#类型推断">doc:Types#类型推断</a>。</p>
-<p>要声明一个常量类型属性，请使用 <code>static</code> 声明修饰符标记该声明。类的常量类型属性总是隐式为 final；你无法用 class 或 final 声明修饰符实现允许或禁止被子类重写的目的。类型属性的讨论请参见 <a href="doc:Properties#类型属性">doc:Properties#类型属性</a>。</p>
+<p>在常量声明中，当可以推断出<em>常量名称</em>的类型时，类型注释（<code>:</code> <em>type</em>）是可选的，详见 Types#类型推断&gt;。</p>
+<p>要声明一个常量类型属性，请使用 <code>static</code> 声明修饰符标记该声明。类的常量类型属性总是隐式为 final；你无法用 class 或 final 声明修饰符实现允许或禁止被子类重写的目的。类型属性的讨论请参见 Properties#类型属性&gt;。</p>
 <!--
   - test: `class-constants-cant-have-class-or-final`
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class Super &#123; class let x = 10 &#125;</span><br><span class="line">!$ error: class stored properties not supported in classes; did you mean &#x27;static&#x27;?</span><br><span class="line">!! class Super &#123; class let x = 10 &#125;</span><br><span class="line">!!               ~~~~~     ^</span><br><span class="line">-&gt; class S &#123; static final let x = 10 &#125;</span><br><span class="line">!$ error: static declarations are already final</span><br><span class="line">!! class S &#123; static final let x = 10 &#125;</span><br><span class="line">!!                  ^~~~~~</span><br><span class="line">!!-</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<p>有关常量的更多信息以及何时使用它们的指导，请参见 <a href="doc:TheBasics#常量和变量">doc:TheBasics#常量和变量</a> 和 <a href="doc:Properties#存储属性">doc:Properties#存储属性</a>。</p>
+<p>有关常量的更多信息以及何时使用它们的指导，请参见 TheBasics#常量和变量&gt; 和 Properties#存储属性&gt;。</p>
 <blockquote>
 <p>常量声明的语法</p>
 <p><em>constant-declaration</em> → <em>attributes</em><em>?</em> <em>declaration-modifiers</em><em>?</em> <strong><code>let</code></strong> <em>pattern-initializer-list</em></p>
@@ -315,9 +315,9 @@ as shown by Rice's theorem.
 <h2 id="变量声明"><a href="#变量声明" class="headerlink" title="变量声明"></a>变量声明</h2><p><em>变量声明</em>会在你的程序中引入一个具名的变量值，并使用 <code>var</code> 关键字进行声明。</p>
 <p>变量声明有多种形式，用于定义各种有名称的、可变的值，包括存储变量和计算变量及属性、存储变量和属性观察者，以及静态变量属性。使用哪种形式取决于变量声明的作用域以及你打算声明的变量类型。</p>
 <blockquote>
-<p>注意:<br>你还可以在协议声明的上下文中声明属性，参见 <a href="doc:Declarations#协议属性声明">doc:Declarations#协议属性声明</a>。</p>
+<p>注意:<br>你还可以在协议声明的上下文中声明属性，参见 Declarations#协议属性声明&gt;。</p>
 </blockquote>
-<p>你可以通过在子类的属性声明中标记 <code>override</code> 声明修饰符来重写属性，参见 <a href="doc:Inheritance#重写">doc:Inheritance#重写</a>。</p>
+<p>你可以通过在子类的属性声明中标记 <code>override</code> 声明修饰符来重写属性，参见 Inheritance#重写&gt;。</p>
 <h3 id="存储变量和存储变量属性"><a href="#存储变量和存储变量属性" class="headerlink" title="存储变量和存储变量属性"></a>存储变量和存储变量属性</h3><p>以下形式声明了一个存储变量或存储变量属性：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="operator">&lt;</span>#variable name#<span class="operator">&gt;</span>: <span class="operator">&lt;</span>#type#<span class="operator">&gt;</span> <span class="operator">=</span> <span class="operator">&lt;</span>#expression#<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
 
@@ -329,15 +329,15 @@ as shown by Rice's theorem.
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="operator">&lt;</span>#variable name#<span class="operator">&gt;</span>: <span class="operator">&lt;</span>#type#<span class="operator">&gt;</span> &#123;</span><br><span class="line">   <span class="keyword">get</span> &#123;</span><br><span class="line">      <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">set</span>(<span class="operator">&lt;</span>#setter name#<span class="operator">&gt;</span>) &#123;</span><br><span class="line">      <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>你可以在全局作用域、函数的全局作用域或类、结构体、枚举或扩展声明的上下文中定义这种形式的变量声明。当这种形式的变量声明在全局作用域或函数的全局作用域内声明时，它被称为<em>计算变量</em>。当它在类、结构体或扩展声明的上下文中声明时，它被称为<em>计算属性</em>。</p>
-<p>getter 用于读取值，setter 用于写入值。setter 子句是可选的，当只需要 getter 时，可以省略两个子句，直接返回请求的值，参见 <a href="doc:Properties#只读计算属性">doc:Properties#只读计算属性</a>。但如果提供了 setter 子句，则必须同时提供 getter 子句。</p>
-<p><em>setter 名称</em>和括号是可选的。如果你提供了 setter 名称，它将用作 setter 参数的名称。如果你不提供 setter 名称，setter 的默认参数名称是 <code>newValue</code>，参见 <a href="doc:Properties#简写Setter声明">doc:Properties#简写Setter声明</a>。</p>
+<p>getter 用于读取值，setter 用于写入值。setter 子句是可选的，当只需要 getter 时，可以省略两个子句，直接返回请求的值，参见 Properties#只读计算属性&gt;。但如果提供了 setter 子句，则必须同时提供 getter 子句。</p>
+<p><em>setter 名称</em>和括号是可选的。如果你提供了 setter 名称，它将用作 setter 参数的名称。如果你不提供 setter 名称，setter 的默认参数名称是 <code>newValue</code>，参见 Properties#简写Setter声明&gt;。</p>
 <p>与存储的具名值和存储的变量属性不同，计算的具名值或计算属性的值并不会存储在内存中。</p>
-<p>有关更多信息以及查看计算属性的示例，请参见 <a href="doc:Properties#计算属性">doc:Properties#计算属性</a>。</p>
+<p>有关更多信息以及查看计算属性的示例，请参见 Properties#计算属性&gt;。</p>
 <h3 id="存储变量观察者和属性观察者"><a href="#存储变量观察者和属性观察者" class="headerlink" title="存储变量观察者和属性观察者"></a>存储变量观察者和属性观察者</h3><p>你还可以使用 <code>willSet</code> 和 <code>didSet</code> 观察者声明一个存储变量或属性。带有观察者的存储变量或属性具有以下形式：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="operator">&lt;</span>#variable name#<span class="operator">&gt;</span>: <span class="operator">&lt;</span>#type#<span class="operator">&gt;</span> <span class="operator">=</span> <span class="operator">&lt;</span>#expression#<span class="operator">&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">willSet</span>(<span class="operator">&lt;</span>#setter name#<span class="operator">&gt;</span>) &#123;</span><br><span class="line">        <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">didSet</span>(<span class="operator">&lt;</span>#setter name#<span class="operator">&gt;</span>) &#123;</span><br><span class="line">        <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>你可以在全局作用域、函数的全局作用域或类或结构体声明的上下文中定义这种变量声明形式。当这种形式的变量声明在全局作用域或函数的全局作用域内声明时，观察者被称为<em>存储变量观察者</em>。当它在类或结构体声明的上下文中声明时，观察者被称为<em>属性观察者</em>。</p>
-<p>你可以为任何存储属性添加属性观察者。你还可以通过在子类中重写属性，为任何继承自父类的属性（无论是存储的还是计算的）添加属性观察者，参见 <a href="doc:Inheritance#重写属性观察器">doc:Inheritance#重写属性观察器</a>。</p>
+<p>你可以为任何存储属性添加属性观察者。你还可以通过在子类中重写属性，为任何继承自父类的属性（无论是存储的还是计算的）添加属性观察者，参见 Inheritance#重写属性观察器&gt;。</p>
 <p>构造器<em>表达式</em>在类或结构体声明的上下文中是可选的，但在其他地方是必须的。如果能通过构造器<em>表达式</em>推断出类型，则<em>类型</em>标注是可选的。通常，表达式的类型推断发生在首次读取属性时。如果在读取属性之前，初值已经被重写，则推断发生在首次写入属性时。</p>
 <!--
   - test: `overwriting-property-without-writing`
@@ -356,13 +356,13 @@ as shown by Rice's theorem.
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class Superclass &#123;</span><br><span class="line">       private var xValue = 12</span><br><span class="line">       var x: Int &#123;</span><br><span class="line">           get &#123; print(&quot;Getter was called&quot;); return xValue &#125;</span><br><span class="line">           set &#123; print(&quot;Setter was called&quot;); xValue = newValue &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">// This subclass doesn&#x27;t refer to oldValue in its observer, so the</span><br><span class="line">// superclass&#x27;s getter is called only once to print the value.</span><br><span class="line">-&gt; class New: Superclass &#123;</span><br><span class="line">       override var x: Int &#123;</span><br><span class="line">           didSet &#123; print(&quot;New value \(x)&quot;) &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   let new = New()</span><br><span class="line">   new.x = 100</span><br><span class="line">&lt;- Setter was called</span><br><span class="line">&lt;- Getter was called</span><br><span class="line">&lt;- New value 100</span><br><span class="line">---</span><br><span class="line">// This subclass refers to oldValue in its observer, so the superclass&#x27;s</span><br><span class="line">// getter is called once before the setter, and again to print the value.</span><br><span class="line">-&gt; class NewAndOld: Superclass &#123;</span><br><span class="line">       override var x: Int &#123;</span><br><span class="line">           didSet &#123; print(&quot;Old value \(oldValue) - new value \(x)&quot;) &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   let newAndOld = NewAndOld()</span><br><span class="line">   newAndOld.x = 200</span><br><span class="line">&lt;- Getter was called</span><br><span class="line">&lt;- Setter was called</span><br><span class="line">&lt;- Getter was called</span><br><span class="line">&lt;- Old value 12 - new value 200</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<p>有关更多信息以及如何使用属性观察者的示例，请参见 <a href="doc:Properties#属性观察器">doc:Properties#属性观察器</a>。</p>
+<p>有关更多信息以及如何使用属性观察者的示例，请参见 Properties#属性观察器&gt;。</p>
 <!--
   - test: `cant-mix-get-set-and-didSet`
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; struct S &#123;</span><br><span class="line">&gt;&gt;     var x: Int &#123;</span><br><span class="line">&gt;&gt;         get &#123; print(&quot;S getter&quot;); return 12 &#125;</span><br><span class="line">&gt;&gt;         set &#123; return &#125;</span><br><span class="line">&gt;&gt;         didSet &#123; print(&quot;S didSet&quot;) &#125;</span><br><span class="line">&gt;&gt;     &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">!$ error: &#x27;didSet&#x27; cannot be provided together with a getter</span><br><span class="line">!! didSet &#123; print(&quot;S didSet&quot;) &#125;</span><br><span class="line">!! ^</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<h3 id="类型变量属性"><a href="#类型变量属性" class="headerlink" title="类型变量属性"></a>类型变量属性</h3><p>要声明一个类型变量属性，请使用 <code>static</code> 声明修饰符标记声明。类可以使用 <code>class</code> 声明修饰符标记类型计算属性，以允许子类重写超类的实现。类型属性的讨论请参见 <a href="doc:Properties#类型属性">doc:Properties#类型属性</a>。</p>
+<h3 id="类型变量属性"><a href="#类型变量属性" class="headerlink" title="类型变量属性"></a>类型变量属性</h3><p>要声明一个类型变量属性，请使用 <code>static</code> 声明修饰符标记声明。类可以使用 <code>class</code> 声明修饰符标记类型计算属性，以允许子类重写超类的实现。类型属性的讨论请参见 Properties#类型属性&gt;。</p>
 <blockquote>
 <p>变量声明的语法:</p>
 <p><em>variable-declaration</em> → <em>variable-declaration-head</em> <em>pattern-initializer-list</em> <br><em>variable-declaration</em> → <em>variable-declaration-head</em> <em>variable-name</em> <em>type-annotation</em> <em>code-block</em> <br><em>variable-declaration</em> → <em>variable-declaration-head</em> <em>variable-name</em> <em>type-annotation</em> <em>getter-setter-block</em> <br><em>variable-declaration</em> → <em>variable-declaration-head</em> <em>variable-name</em> <em>type-annotation</em> <em>getter-setter-keyword-block</em> <br><em>variable-declaration</em> → <em>variable-declaration-head</em> <em>variable-name</em> <em>initializer</em> <em>willSet-didSet-block</em> <br><em>variable-declaration</em> → <em>variable-declaration-head</em> <em>variable-name</em> <em>type-annotation</em> <em>initializer</em><em>?</em> <em>willSet-didSet-block</em></p>
@@ -426,7 +426,7 @@ as shown by Rice's theorem.
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; protocol Sequence &#123;</span><br><span class="line">       associatedtype Iterator: IteratorProtocol</span><br><span class="line">       typealias Element = Iterator.Element</span><br><span class="line">   &#125;</span><br><span class="line">---</span><br><span class="line">-&gt; func sum&lt;T: Sequence&gt;(_ sequence: T) -&gt; Int where T.Element == Int &#123;</span><br><span class="line">       // ...</span><br><span class="line">&gt;&gt;     return 9000</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
 <p>没有这种类型别名，<code>sum</code> 函数必须将关联类型称为 <code>T.Iterator.Element</code>，而不是 <code>T.Element</code>。</p>
-<p>另见 <a href="doc:Declarations#协议关联类型声明">doc:Declarations#协议关联类型声明</a>。</p>
+<p>另见 Declarations#协议关联类型声明&gt;。</p>
 <blockquote>
 <p>类型别名声明的语法:</p>
 <p><em>typealias-declaration</em> → <em>attributes</em><em>?</em> <em>access-level-modifier</em><em>?</em> <strong><code>typealias</code></strong> <em>typealias-name</em> <em>generic-parameter-clause</em><em>?</em> <em>typealias-assignment</em> <br><em>typealias-name</em> → <em>identifier</em> <br><em>typealias-assignment</em> → <strong><code>=</code></strong> <em>type</em></p>
@@ -445,7 +445,7 @@ as shown by Rice's theorem.
 <p>如果函数的返回类型是 <code>Void</code> ，则可以省略返回类型，如下所示：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">&lt;</span><span class="keyword">#function</span> name#<span class="operator">&gt;</span>(<span class="operator">&lt;</span>#parameters#<span class="operator">&gt;</span>) {</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>因为参数类型无法被推断出来，所以函数的每个参数必须明确指定类型。如果在参数类型前写上 <code>inout</code>，则该参数可以在函数的作用域内被修改。关于 in-out 参数的详细讨论请参见下面的 <a href="doc:Declarations#In-Out-参数">doc:Declarations#In-Out-参数</a>。</p>
+<p>因为参数类型无法被推断出来，所以函数的每个参数必须明确指定类型。如果在参数类型前写上 <code>inout</code>，则该参数可以在函数的作用域内被修改。关于 in-out 参数的详细讨论请参见下面的 Declarations#In-Out-参数&gt;。</p>
 <p>如果一个函数声明中的<em>语句</em>只包含一个表达式，则默认返回该表达式的值。只有在表达式的类型和函数的返回类型不是 <code>Void</code>，并且不是像 <code>Never</code> 那样没有任何枚举值的枚举时，才会考虑这种隐式返回语法。</p>
 <!--
   As of Swift 5.3,
@@ -460,7 +460,7 @@ as shown by Rice's theorem.
 
 <p>在函数内部，可以定义另一个函数。这种定义在函数内部的函数，被称为<em>嵌套函数</em>。</p>
 <p>如果一个嵌套函数捕获了一个保证不会逃逸的值——例如一个 in-out 参数——或者作为一个非逃逸函数参数传递，那么这个嵌套函数就是非逃逸的。否则，嵌套函数就是逃逸的。</p>
-<p>有关嵌套函数的讨论，请参见 <a href="doc:Functions#嵌套函数">doc:Functions#嵌套函数</a>。</p>
+<p>有关嵌套函数的讨论，请参见 Functions#嵌套函数&gt;。</p>
 <h3 id="参数名称"><a href="#参数名称" class="headerlink" title="参数名称"></a>参数名称</h3><p>函数的参数是一个以逗号分隔的列表，每个参数都可以是不同的类型。函数调用时的参数顺序必须和函数声明时的参数顺序一致。最简单的参数列表有着如下的形式：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&lt;</span>#parameter name#<span class="operator">&gt;</span>: <span class="operator">&lt;</span>#parameter type#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
 
@@ -515,7 +515,7 @@ as shown by Rice's theorem.
 <p>出于同样的原因，你不能将相同的值传递给多个 in-out 参数。</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> someValue: <span class="type">Int</span></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">someFunction</span>(<span class="params">a</span>: <span class="keyword">inout</span> <span class="type">Int</span>, <span class="params">b</span>: <span class="keyword">inout</span> <span class="type">Int</span>) &#123;</span><br><span class="line">    a <span class="operator">+=</span> b</span><br><span class="line">    b <span class="operator">+=</span> <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 错误：不能将同一个值传递给多个 in-out 参数</span></span><br><span class="line">someFunction(<span class="operator">&amp;</span>someValue, <span class="operator">&amp;</span>someValue)</span><br></pre></td></tr></table></figure>
 
-<p>有关内存安全和内存独占的更多信息，请参见 <a href="doc:MemorySafety">doc:MemorySafety</a>。</p>
+<p>有关内存安全和内存独占的更多信息，请参见 MemorySafety&gt;。</p>
 <!--
   When the call-by-reference optimization is in play,
   it would happen to do what you want.
@@ -540,7 +540,7 @@ as shown by Rice's theorem.
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; import Dispatch</span><br><span class="line">&gt;&gt; func someMutatingOperation(_ a: inout Int) &#123;&#125;</span><br><span class="line">-&gt; func multithreadedFunction(queue: DispatchQueue, x: inout Int) &#123;</span><br><span class="line">      // Make a local copy and manually copy it back.</span><br><span class="line">      var localX = x</span><br><span class="line">      defer &#123; x = localX &#125;</span><br><span class="line"></span><br><span class="line">      // Operate on localX asynchronously, then wait before returning.</span><br><span class="line">      queue.async &#123; someMutatingOperation(&amp;localX) &#125;</span><br><span class="line">      queue.sync &#123;&#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<p>有关 in-out 参数的更多讨论和示例，请参见 <a href="doc:Functions#In-Out-参数">doc:Functions#In-Out-参数</a>.。</p>
+<p>有关 in-out 参数的更多讨论和示例，请参见 Functions#In-Out-参数&gt;.。</p>
 <!--
   - test: `escaping-cant-capture-inout`
 
@@ -587,7 +587,7 @@ Where are copies implicitly inserted?
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">_</span> : <span class="operator">&lt;</span>#parameter type#<span class="operator">&gt;</span></span><br><span class="line"><span class="operator">&lt;</span>#parameter name#<span class="operator">&gt;</span>: <span class="operator">&lt;</span>#parameter type#<span class="operator">&gt;</span><span class="operator">...</span></span><br><span class="line"><span class="operator">&lt;</span>#parameter name#<span class="operator">&gt;</span>: <span class="operator">&lt;</span>#parameter type#<span class="operator">&gt;</span> <span class="operator">=</span> <span class="operator">&lt;</span>#default argument value#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>下划线 (<code>_</code>) 参数被显式忽略，无法在函数体内访问。</p>
-<p>带有基本类型名称后面紧跟三个点（<code>...</code>）的参数被理解为可变参数。紧跟在可变参数后面的参数必须有一个实参标签。一个函数可以有多个可变参数。可变参数被视为包含基本类型名称元素的数组。例如，可变参数 <code>Int...</code> 被视为 <code>[Int]</code>。有关使用可变参数的示例，请参见 <a href="doc:Functions#可变参数">doc:Functions#可变参数</a>。</p>
+<p>带有基本类型名称后面紧跟三个点（<code>...</code>）的参数被理解为可变参数。紧跟在可变参数后面的参数必须有一个实参标签。一个函数可以有多个可变参数。可变参数被视为包含基本类型名称元素的数组。例如，可变参数 <code>Int...</code> 被视为 <code>[Int]</code>。有关使用可变参数的示例，请参见 Functions#可变参数&gt;。</p>
 <p>带有等号（<code>=</code>）且在类型后跟随一个表达式的参数，表示该参数有一个默认值。这个给定的表达式会在函数调用时进行求值。如果在调用函数时省略了该参数，则会使用默认值。</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">f</span>(<span class="params">x</span>: <span class="type">Int</span> <span class="operator">=</span> <span class="number">42</span>) -&gt; <span class="type">Int</span> { <span class="keyword">return</span> x }</span><br><span class="line">f()       <span class="comment">// 有效，使用默认值</span></span><br><span class="line">f(x: <span class="number">7</span>)   <span class="comment">// 有效，使用提供的值</span></span><br><span class="line">f(<span class="number">7</span>)      <span class="comment">// 无效，缺少实参标签</span></span><br></pre></td></tr></tbody></table></figure>
 
@@ -620,7 +620,7 @@ Where are copies implicitly inserted?
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class S3 &#123; class func f() -&gt; Int &#123; return 12 &#125; &#125;</span><br><span class="line">-&gt; class SS3: S3 &#123; override class func f() -&gt; Int &#123; return 120 &#125; &#125;</span><br><span class="line">-&gt; print(SS3.f())</span><br><span class="line">&lt;- 120</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
 <h3 id="特殊名称的方法"><a href="#特殊名称的方法" class="headerlink" title="特殊名称的方法"></a>特殊名称的方法</h3><p>一些具有特殊名称的方法为函数调用语法提供了语法糖。如果一个类型定义了这些方法之一，该类型的实例就可以使用函数调用语法。此时的函数调用会被理解为对该实例上某个特殊命名方法的调用</p>
-<p>类、结构体或枚举类型可以通过定义一个 <code>dynamicallyCall(withArguments:)</code> 方法或一个 <code>dynamicallyCall(withKeywordArguments:)</code> 方法来支持函数调用语法，参见 <a href="doc:Attributes#dynamicCallable">doc:Attributes#dynamicCallable</a>，或者通过定义一个作为函数调用（call-as-function）的方法，如下所述。如果该类型同时定义了一个作为函数调用的方法和 <code>dynamicCallable</code> 特性使用的其中一个方法，则在可以使用任一方法的情况下，编译器优先选择作为函数调用的方法。</p>
+<p>类、结构体或枚举类型可以通过定义一个 <code>dynamicallyCall(withArguments:)</code> 方法或一个 <code>dynamicallyCall(withKeywordArguments:)</code> 方法来支持函数调用语法，参见 Attributes#dynamicCallable&gt;，或者通过定义一个作为函数调用（call-as-function）的方法，如下所述。如果该类型同时定义了一个作为函数调用的方法和 <code>dynamicCallable</code> 特性使用的其中一个方法，则在可以使用任一方法的情况下，编译器优先选择作为函数调用的方法。</p>
 <p>作为函数调用方法的名称为 <code>callAsFunction()</code>，或其他以 <code>callAsFunction(</code> 开头并带有有标签或无标签参数的名称——例如，<code>callAsFunction(_:_:)</code> 和 <code>callAsFunction(something:)</code> 也是有效的作为函数调用方法名称。</p>
 <!--
   Above, callAsFunction( is in code voice even though
@@ -646,7 +646,7 @@ Where are copies implicitly inserted?
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; struct CallableStruct &#123;</span><br><span class="line">&gt;&gt;     var value: Int</span><br><span class="line">&gt;&gt;     func callAsFunction(_ number: Int, scale: Int) &#123; &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&gt;&gt; let callable = CallableStruct(value: 100)</span><br><span class="line">-&gt; let someFunction1: (Int, Int) -&gt; Void = callable(_:scale:)  // Error</span><br><span class="line">-&gt; let someFunction2: (Int, Int) -&gt; Void = callable.callAsFunction(_:scale:)</span><br><span class="line">&gt;&gt; _ = someFunction1 // suppress unused-constant warning</span><br><span class="line">&gt;&gt; _ = someFunction2 // suppress unused-constant warning</span><br><span class="line">!$ error: cannot find &#x27;callable(_:scale:)&#x27; in scope</span><br><span class="line">!! let someFunction1: (Int, Int) -&gt; Void = callable(_:scale:)  // Error</span><br><span class="line">!! ^~~~~~~~~~~~~~~~~~</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<p><code>subscript(dynamicMember:)</code> 下标为成员查找提供了语法糖，参见 <a href="doc:Attributes#dynamicMemberLookup">doc:Attributes#dynamicMemberLookup</a>。</p>
+<p><code>subscript(dynamicMember:)</code> 下标为成员查找提供了语法糖，参见 Attributes#dynamicMemberLookup&gt;。</p>
 <h3 id="抛出函数和方法"><a href="#抛出函数和方法" class="headerlink" title="抛出函数和方法"></a>抛出函数和方法</h3><p>可以抛出错误的函数和方法必须标记 <code>throws</code> 关键字。这些函数和方法被称为<em>抛出函数</em>和<em>抛出方法</em>。它们具有以下形式：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">&lt;</span><span class="keyword">#function</span> name#<span class="operator">&gt;</span>(<span class="operator">&lt;</span>#parameters#<span class="operator">&gt;</span>) <span class="keyword">throws</span> -&gt; <span class="operator">&lt;</span>#return type#<span class="operator">&gt;</span> &#123;</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -654,7 +654,7 @@ Where are copies implicitly inserted?
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">&lt;</span><span class="keyword">#function</span> name#<span class="operator">&gt;</span>(<span class="operator">&lt;</span>#parameters#<span class="operator">&gt;</span>) <span class="keyword">throws</span>(<span class="operator">&lt;</span><span class="keyword">#error</span> type#<span class="operator">&gt;</span>) -&gt; <span class="operator">&lt;</span>#return type#<span class="operator">&gt;</span> &#123;</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>调用抛出函数或方法的必须被包裹在一个 <code>try</code> 或 <code>try!</code> 表达式中（即，在 <code>try</code> 或 <code>try!</code> 操作符的作用域内）。</p>
-<p>函数的类型包括：它是否会抛出错误，以及它抛出的错误类型。非抛出函数是抛出函数的子类型。所以，可以在使用抛出函数的地方使用非抛出函数。有关抛出错误函数类型的更多信息，请参阅 <a href="doc:Types#Function-Type">doc:Types#Function-Type</a>。有关处理具有显式类型的错误的示例，请参阅 <a href="doc:ErrorHandling#Specifying-the-Error-Type">doc:ErrorHandling#Specifying-the-Error-Type</a>。</p>
+<p>函数的类型包括：它是否会抛出错误，以及它抛出的错误类型。非抛出函数是抛出函数的子类型。所以，可以在使用抛出函数的地方使用非抛出函数。有关抛出错误函数类型的更多信息，请参阅 Types#Function-Type&gt;。有关处理具有显式类型的错误的示例，请参阅 ErrorHandling#Specifying-the-Error-Type&gt;。</p>
 <p>你不能仅根据函数是否会抛出错误来重载一个函数。不过，你可以根据函数的<em>参数</em>是否会抛出错误来重载函数。</p>
 <p>抛出方法不能重写非抛出方法，且抛出方法也不能满足协议中对非抛出方法的要求。不过，非抛出方法可以重写抛出方法，且非抛出方法也可以满足协议中对会抛出方法的要求。</p>
 <h3 id="再抛出函数和方法"><a href="#再抛出函数和方法" class="headerlink" title="再抛出函数和方法"></a>再抛出函数和方法</h3><p>函数或方法可以使用 <code>rethrows</code> 关键字声明，表示它只在其某个函数参数抛出错误时才会抛出错误。这样的函数和方法被称为<em>再抛出函数（rethrowing functions）</em>和<em>再抛出方法（rethrowing methods）</em>。再抛出函数和方法必须至少有一个会抛出错误的函数参数。</p>
@@ -703,7 +703,7 @@ See also rdar://128972373
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; protocol P &#123; func f() async -&gt; Int &#125;</span><br><span class="line">&gt;&gt; class Super: P &#123;</span><br><span class="line">&gt;&gt;     func f() async -&gt; Int &#123; return 12 &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">&gt;&gt; class Sub: Super &#123;</span><br><span class="line">&gt;&gt;     func f() -&gt; Int &#123; return 120 &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
 <h3 id="永不返回的函数"><a href="#永不返回的函数" class="headerlink" title="永不返回的函数"></a>永不返回的函数</h3><p>Swift 定义了一个 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/never"><code>Never</code></a> 类型，表示一个函数或方法不会返回给调用者。返回类型为 <code>Never</code> 的函数和方法被称为<em>非返回</em>。非返回的函数和方法要么导致不可恢复的错误，要么开始一个无限进行的工作序列。这意味着在调用后立即运行的代码永远不会被执行。即使抛出错误的函数和再抛出错误的函数是非返回类型，它们仍然可以将程序控制权转移到相应的 <code>catch</code> 块。</p>
-<p>非返回的函数或方法可以在 guard 语句的 <code>else</code> 分支中调用，以结束该分支，见 <a href="doc:Statements#Guard-语句">doc:Statements#Guard-语句</a>。</p>
+<p>非返回的函数或方法可以在 guard 语句的 <code>else</code> 分支中调用，以结束该分支，见 Statements#Guard-语句&gt;。</p>
 <p>你可以重写一个非返回的方法，但新方法必须保持其返回类型和非返回的行为。</p>
 <blockquote>
 <p>函数声明的语法:</p>
@@ -726,8 +726,8 @@ See also rdar://128972373
 <p>枚举声明有两种基本形式，使用 <code>enum</code> 关键字进行声明。使用任一形式声明的枚举的主体包含零个或多个值——称为<em>枚举用例</em>——以及任意数量的声明，包括计算属性、实例方法、类型方法、构造器、类型别名，甚至其他枚举、结构体、类和协议类型。枚举声明不能包含析构器或协议声明。</p>
 <p>枚举类型可以采用任意数量的协议，但不能从类、结构体或其他枚举继承。</p>
 <p>与类和结构体不同，枚举类型没有隐式提供的默认构造器；所有构造器必须显式声明。构造器可以委托给枚举中的其他构造器，但初始化过程只有在构造器将枚举的一个用例赋值给 <code>self</code> 后才完成。</p>
-<p>像结构体但不同于类，枚举是值类型；当枚举的实例被赋值给变量或常量，或作为参数传递给函数调用时，会被复制。有关值类型的信息，请参见 <a href="doc:ClassesAndStructures#结构体和枚举是值类型">doc:ClassesAndStructures#结构体和枚举是值类型</a>。</p>
-<p>你可以通过扩展声明扩展枚举类型的行为，如 <a href="doc:Declarations#扩展声明">doc:Declarations#扩展声明</a> 中所讨论的。</p>
+<p>像结构体但不同于类，枚举是值类型；当枚举的实例被赋值给变量或常量，或作为参数传递给函数调用时，会被复制。有关值类型的信息，请参见 ClassesAndStructures#结构体和枚举是值类型&gt;。</p>
+<p>你可以通过扩展声明扩展枚举类型的行为，如 Declarations#扩展声明&gt; 中所讨论的。</p>
 <h3 id="任意类型的枚举成员"><a href="#任意类型的枚举成员" class="headerlink" title="任意类型的枚举成员"></a>任意类型的枚举成员</h3><p>如下的形式声明了一个包含任意类型枚举用例的枚举变量：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> &lt;#<span class="title class_">enumeration</span> <span class="title class_">name</span>#&gt;: &lt;#<span class="title class_">adopted</span> <span class="title class_">protocols</span>#&gt; {</span><br><span class="line">    <span class="keyword">case</span> <span class="operator">&lt;</span>#enumeration <span class="keyword">case</span> <span class="number">1</span>#<span class="operator">&gt;</span></span><br><span class="line">    <span class="keyword">case</span> <span class="operator">&lt;</span>#enumeration <span class="keyword">case</span> <span class="number">2</span>#<span class="operator">&gt;</span>(<span class="operator">&lt;</span>#associated value types#<span class="operator">&gt;</span>)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
@@ -748,7 +748,7 @@ See also rdar://128972373
   and assert() would require Number to conform to Equatable.
 -->
 
-<p>有关更多信息以及查看枚举关联值的示例，请参见 <a href="doc:Enumerations#关联值">doc:Enumerations#关联值</a>。</p>
+<p>有关更多信息以及查看枚举关联值的示例，请参见 Enumerations#关联值&gt;。</p>
 <h4 id="间接枚举"><a href="#间接枚举" class="headerlink" title="间接枚举"></a>间接枚举</h4><p>枚举类型可以具有递归结构，就是说，枚举用例的关联值类型可以是枚举类型自身。然而，枚举类型的实例具有值语义，这意味着它们在内存中有固定布局。为了支持递归，编译器必须插入一个间接层。</p>
 <p>要让某个枚举用例支持递归，请使用 <code>indirect</code> 声明修饰符进行标记。间接枚举成员必须具有关联值。</p>
 <!--
@@ -823,9 +823,9 @@ See also rdar://128972373
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; enum GamePlayMode: String &#123;</span><br><span class="line">      case cooperative, individual, competitive</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
 <p>在上述示例中，<code>GamePlayMode.cooperative</code> 的原始值是 <code>&quot;cooperative&quot;</code>，<code>GamePlayMode.individual</code> 的原始值是 <code>&quot;individual&quot;</code>，而 <code>GamePlayMode.competitive</code> 的原始值是 <code>&quot;competitive&quot;</code>。</p>
-<p>具有原始值类型的枚举隐式遵循在 Swift 标准库中定义的 <code>RawRepresentable</code> 协议。因此，它们具有 <code>rawValue</code> 属性和一个可失败构造器，其签名为 <code>init?(rawValue: RawValue)</code>。你可以使用 <code>rawValue</code> 属性访问枚举用例的原始值，如 <code>ExampleEnum.b.rawValue</code>。你还可以使用原始值通过调用枚举的可失败构造器来查找相应的用例，如 <code>ExampleEnum(rawValue: 5)</code>，这将返回一个可选的用例。有关更多信息以及查看具有原始值类型的案例示例，请参见 <a href="doc:Enumerations#原始值">doc:Enumerations#原始值</a>。</p>
-<h3 id="访问枚举成员"><a href="#访问枚举成员" class="headerlink" title="访问枚举成员"></a>访问枚举成员</h3><p>要引用枚举类型的用例，请使用点（<code>.</code>）语法，如 <code>EnumerationType.enumerationCase</code> 所示。当枚举类型可以从上下文中推断时，可以省略它（仍然需要 <code>.</code>），参见 <a href="doc:Enumerations#枚举语法">doc:Enumerations#枚举语法</a> 和 <a href="doc:Expressions#隐式成员表达式">doc:Expressions#隐式成员表达式</a>。</p>
-<p>要检查枚举用例的值，请使用 <code>switch</code> 语句，如 <a href="doc:Enumerations#使用-Switch-语句匹配枚举值">doc:Enumerations#使用-Switch-语句匹配枚举值</a> 中所示。在 <code>switch</code> 语句的用例分支中，枚举类型会与枚举用例进行模式匹配，详见 <a href="doc:Patterns#枚举用例模式">doc:Patterns#枚举用例模式</a>。</p>
+<p>具有原始值类型的枚举隐式遵循在 Swift 标准库中定义的 <code>RawRepresentable</code> 协议。因此，它们具有 <code>rawValue</code> 属性和一个可失败构造器，其签名为 <code>init?(rawValue: RawValue)</code>。你可以使用 <code>rawValue</code> 属性访问枚举用例的原始值，如 <code>ExampleEnum.b.rawValue</code>。你还可以使用原始值通过调用枚举的可失败构造器来查找相应的用例，如 <code>ExampleEnum(rawValue: 5)</code>，这将返回一个可选的用例。有关更多信息以及查看具有原始值类型的案例示例，请参见 Enumerations#原始值&gt;。</p>
+<h3 id="访问枚举成员"><a href="#访问枚举成员" class="headerlink" title="访问枚举成员"></a>访问枚举成员</h3><p>要引用枚举类型的用例，请使用点（<code>.</code>）语法，如 <code>EnumerationType.enumerationCase</code> 所示。当枚举类型可以从上下文中推断时，可以省略它（仍然需要 <code>.</code>），参见 Enumerations#枚举语法&gt; 和 Expressions#隐式成员表达式&gt;。</p>
+<p>要检查枚举用例的值，请使用 <code>switch</code> 语句，如 Enumerations#使用-Switch-语句匹配枚举值&gt; 中所示。在 <code>switch</code> 语句的用例分支中，枚举类型会与枚举用例进行模式匹配，详见 Patterns#枚举用例模式&gt;。</p>
 <!--
   FIXME: Or use if-case:
   enum E { case c(Int) }
@@ -872,18 +872,18 @@ See also rdar://128972373
 <h2 id="结构体声明"><a href="#结构体声明" class="headerlink" title="结构体声明"></a>结构体声明</h2><p><em>结构体声明</em>将一个具名的结构体类型引入到你的程序中。结构体声明使用 <code>struct</code> 关键字声明，具有以下形式：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> &lt;#<span class="title class_">structure</span> <span class="title class_">name</span>#&gt;: &lt;#<span class="title class_">adopted</span> <span class="title class_">protocols</span>#&gt; {</span><br><span class="line">    <span class="operator">&lt;</span>#declarations#<span class="operator">&gt;</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>结构体的主体包含零个或多个<em>声明</em>。这些<em>声明</em>可以包括存储属性和计算属性、类型属性、实例方法、类型方法、构造器、下标、类型别名，甚至其他结构体、类、actor 和枚举声明。结构体声明不能包含析构器或协议声明。有关包含各种类型声明的结构体的讨论和多个示例，请参见 <a href="doc:ClassesAndStructures">doc:ClassesAndStructures</a>。</p>
+<p>结构体的主体包含零个或多个<em>声明</em>。这些<em>声明</em>可以包括存储属性和计算属性、类型属性、实例方法、类型方法、构造器、下标、类型别名，甚至其他结构体、类、actor 和枚举声明。结构体声明不能包含析构器或协议声明。有关包含各种类型声明的结构体的讨论和多个示例，请参见 ClassesAndStructures&gt;。</p>
 <p>结构体类型可以采用任意数量的协议，但不能从类、枚举或其他结构体继承。</p>
 <p>有三种方法可以创建先前声明的结构体的实例：</p>
 <ul>
-<li>调用结构体中声明的某个构造器，参见 <a href="doc:Initialization#构造器">doc:Initialization#构造器</a>。</li>
-<li>如果没有声明构造器，则调用结构体的成员遍历构造器，参见 <a href="doc:Initialization#结构体类型的成员逐一构造器">doc:Initialization#结构体类型的成员逐一构造器</a>。</li>
-<li>如果没有声明构造器，且结构体声明的所有属性都给定了初始值，则调用结构体的默认构造器，参见 <a href="doc:Initialization#默认构造器">doc:Initialization#默认构造器</a>。</li>
+<li>调用结构体中声明的某个构造器，参见 Initialization#构造器&gt;。</li>
+<li>如果没有声明构造器，则调用结构体的成员遍历构造器，参见 Initialization#结构体类型的成员逐一构造器&gt;。</li>
+<li>如果没有声明构造器，且结构体声明的所有属性都给定了初始值，则调用结构体的默认构造器，参见 Initialization#默认构造器&gt;。</li>
 </ul>
-<p>初始化结构体中声明属性的过程在 <a href="doc:Initialization">doc:Initialization</a> 中描述。</p>
-<p>结构体实例的属性可以使用点 (<code>.</code>) 语法访问，参见 <a href="doc:ClassesAndStructures#访问属性">doc:ClassesAndStructures#访问属性</a>。</p>
-<p>结构体是值类型；当结构体的实例被赋值给变量或常量，或作为参数传递给函数调用时，会被复制。有关值类型的信息，请参见 <a href="doc:ClassesAndStructures#结构体和枚举是值类型">doc:ClassesAndStructures#结构体和枚举是值类型</a>。</p>
-<p>你可以通过扩展声明来扩展结构体类型的行为，参见 <a href="doc:Declarations#扩展声明">doc:Declarations#扩展声明</a>。</p>
+<p>初始化结构体中声明属性的过程在 Initialization&gt; 中描述。</p>
+<p>结构体实例的属性可以使用点 (<code>.</code>) 语法访问，参见 ClassesAndStructures#访问属性&gt;。</p>
+<p>结构体是值类型；当结构体的实例被赋值给变量或常量，或作为参数传递给函数调用时，会被复制。有关值类型的信息，请参见 ClassesAndStructures#结构体和枚举是值类型&gt;。</p>
+<p>你可以通过扩展声明来扩展结构体类型的行为，参见 Declarations#扩展声明&gt;。</p>
 <blockquote>
 <p>结构体声明的语法:</p>
 <p><em>struct-declaration</em> → <em>attributes</em><em>?</em> <em>access-level-modifier</em><em>?</em> <strong><code>struct</code></strong> <em>struct-name</em> <em>generic-parameter-clause</em><em>?</em> <em>type-inheritance-clause</em><em>?</em> <em>generic-where-clause</em><em>?</em> <em>struct-body</em> <br><em>struct-name</em> → <em>identifier</em> <br><em>struct-body</em> → <strong><code>{</code></strong> <em>struct-members</em><em>?</em> <strong><code>}</code></strong></p>
@@ -892,9 +892,9 @@ See also rdar://128972373
 <h2 id="类声明"><a href="#类声明" class="headerlink" title="类声明"></a>类声明</h2><p><em>类声明</em>将一个具名的类类型引入到你的程序中。类声明使用 <code>class</code> 关键字声明，具有以下形式：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> &lt;#<span class="title class_">class</span> <span class="title class_">name</span>#&gt;: &lt;#<span class="title class_">superclass</span>#&gt;, &lt;#<span class="title class_">adopted</span> <span class="title class_">protocols</span>#&gt; {</span><br><span class="line">    <span class="operator">&lt;</span>#declarations#<span class="operator">&gt;</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>类的主体包含零个或多个<em>声明</em>。这些<em>声明</em>可以包括存储属性和计算属性、实例方法、类型方法、构造器、一个析构器、下标、类型别名，甚至其他类、结构体、actor 和枚举声明。类声明不能包含协议声明。有关包含各种类型声明的类的讨论和多个示例，请参见 <a href="doc:ClassesAndStructures">doc:ClassesAndStructures</a>。</p>
+<p>类的主体包含零个或多个<em>声明</em>。这些<em>声明</em>可以包括存储属性和计算属性、实例方法、类型方法、构造器、一个析构器、下标、类型别名，甚至其他类、结构体、actor 和枚举声明。类声明不能包含协议声明。有关包含各种类型声明的类的讨论和多个示例，请参见 ClassesAndStructures&gt;。</p>
 <p>类类型只能继承自一个父类，即它的<em>超类</em>，但可以采用任意数量的协议。<em>超类</em>在<em>类名</em>和冒号之后首先出现，后面跟着任何<em>采用的协议</em>。泛型类可以继承其他泛型和非泛型类，但非泛型类只能继承其他非泛型类。当你在冒号后写泛型超类的名称时，必须包括该泛型类的全名，包括其泛型参数子句。</p>
-<p>如在 <a href="doc:Declarations#构造器声明">doc:Declarations#构造器声明</a> 中讨论的，类可以有指定构造器和便利构造器。类的指定构造器必须初始化所有声明的属性，并且必须在调用任何超类的指定构造器之前完成此操作。</p>
+<p>如在 Declarations#构造器声明&gt; 中讨论的，类可以有指定构造器和便利构造器。类的指定构造器必须初始化所有声明的属性，并且必须在调用任何超类的指定构造器之前完成此操作。</p>
 <p>类可以重写其超类的属性、方法、下标和构造器。重写的属性、方法、下标和指定构造器必须标记为 <code>override</code> 声明修饰符。</p>
 <!--
   - test: `designatedInitializersRequireOverride`
@@ -902,15 +902,15 @@ See also rdar://128972373
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; class C &#123; init() &#123;&#125; &#125;</span><br><span class="line">-&gt; class D: C &#123; override init() &#123; super.init() &#125; &#125;</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
 <p>要要求子类实现超类的构造器，请使用 <code>required</code> 声明修饰符标记超类的构造器。子类对该构造器的实现也必须使用 <code>required</code> 声明修饰符进行标记。</p>
-<p>尽管在<em>超类</em>中声明的属性和方法被当前类继承，但在<em>超类</em>中声明的指定构造器仅在子类满足 <a href="doc:Initialization#构造器的自动继承">doc:Initialization#构造器的自动继承</a> 中描述的条件时才会被继承。Swift 类不从通用基类继承。</p>
+<p>尽管在<em>超类</em>中声明的属性和方法被当前类继承，但在<em>超类</em>中声明的指定构造器仅在子类满足 Initialization#构造器的自动继承&gt; 中描述的条件时才会被继承。Swift 类不从通用基类继承。</p>
 <p>有两种方法可以创建一个先前声明的类的实例：</p>
 <ul>
-<li>调用类中声明的某个构造器，参见 <a href="doc:Initialization#构造器">doc:Initialization#构造器</a>。</li>
-<li>如果没有声明构造器，且类声明的所有属性都给定了初始值，则调用类的默认构造器，参见 <a href="doc:Initialization#默认构造器">doc:Initialization#默认构造器</a>。</li>
+<li>调用类中声明的某个构造器，参见 Initialization#构造器&gt;。</li>
+<li>如果没有声明构造器，且类声明的所有属性都给定了初始值，则调用类的默认构造器，参见 Initialization#默认构造器&gt;。</li>
 </ul>
-<p>使用点（<code>.</code>）语法访问类实例的属性，参见 <a href="doc:ClassesAndStructures#访问属性">doc:ClassesAndStructures#访问属性</a>。</p>
-<p>类是引用类型；当类的实例被赋值给变量或常量，或作为参数传递给函数调用时，是引用而不是复制。有关引用类型的信息，请参见 <a href="doc:ClassesAndStructures#类是引用类型">doc:ClassesAndStructures#类是引用类型</a>。</p>
-<p>你可以通过扩展声明扩展类类型的行为，参见 <a href="doc:Declarations#扩展声明">doc:Declarations#扩展声明</a>。</p>
+<p>使用点（<code>.</code>）语法访问类实例的属性，参见 ClassesAndStructures#访问属性&gt;。</p>
+<p>类是引用类型；当类的实例被赋值给变量或常量，或作为参数传递给函数调用时，是引用而不是复制。有关引用类型的信息，请参见 ClassesAndStructures#类是引用类型&gt;。</p>
+<p>你可以通过扩展声明扩展类类型的行为，参见 Declarations#扩展声明&gt;。</p>
 <blockquote>
 <p>类声明的语法:</p>
 <p><em>class-declaration</em> → <em>attributes</em><em>?</em> <em>access-level-modifier</em><em>?</em> <strong><code>final</code></strong><em>?</em> <strong><code>class</code></strong> <em>class-name</em> <em>generic-parameter-clause</em><em>?</em> <em>type-inheritance-clause</em><em>?</em> <em>generic-where-clause</em><em>?</em> <em>class-body</em> <br><em>class-declaration</em> → <em>attributes</em><em>?</em> <strong><code>final</code></strong> <em>access-level-modifier</em><em>?</em> <strong><code>class</code></strong> <em>class-name</em> <em>generic-parameter-clause</em><em>?</em> <em>type-inheritance-clause</em><em>?</em> <em>generic-where-clause</em><em>?</em> <em>class-body</em> <br><em>class-name</em> → <em>identifier</em> <br><em>class-body</em> → <strong><code>&#123;</code></strong> <em>class-members</em><em>?</em> <strong><code>&#125;</code></strong></p>
@@ -919,20 +919,20 @@ See also rdar://128972373
 <h2 id="Actor-声明"><a href="#Actor-声明" class="headerlink" title="Actor 声明"></a>Actor 声明</h2><p><em>actor 声明</em>将一个具名的 actor 类型引入到你的程序中。actor 声明使用 <code>actor</code> 关键字声明，具有以下形式：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">actor</span> &lt;#<span class="title class_">actor</span> <span class="title class_">name</span>#&gt;: &lt;#<span class="title class_">adopted</span> <span class="title class_">protocols</span>#&gt; &#123;</span><br><span class="line">    <span class="operator">&lt;</span>#declarations#<span class="operator">&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>actor 的主体包含零个或多个<em>声明</em>。这些<em>声明</em>可以包括存储属性和计算属性、实例方法、类型方法、构造器、一个析构器、下标、类型别名，甚至其他类、结构体和枚举声明。有关包含各种声明的 actor 的讨论和多个示例，请参见 <a href="doc:Concurrency#Actors">doc:Concurrency#Actors</a>。</p>
+<p>actor 的主体包含零个或多个<em>声明</em>。这些<em>声明</em>可以包括存储属性和计算属性、实例方法、类型方法、构造器、一个析构器、下标、类型别名，甚至其他类、结构体和枚举声明。有关包含各种声明的 actor 的讨论和多个示例，请参见 Concurrency#Actors&gt;。</p>
 <p>actor 类型可以采用任意数量的协议，但不能从类、枚举、结构体或其他 actor 继承。然而，标记为 <code>@objc</code> 特性的 actor 隐式地遵循 <code>NSObjectProtocol</code> 协议，并作为 <code>NSObject</code> 的子类型暴露给 Objective-C 运行时。</p>
 <p>有两种方法可以创建一个先前声明的 actor 的实例：</p>
 <ul>
-<li>调用 actor 中声明的某个构造方法，参见 <a href="doc:Initialization#构造器">doc:Initialization#构造器</a>。</li>
-<li>如果没有声明初始值，并且 actor 声明的所有属性都给定了初始值，则调用 actor 的默认构造器，参见 <a href="doc:Initialization#默认构造器">doc:Initialization#默认构造器</a>。</li>
+<li>调用 actor 中声明的某个构造方法，参见 Initialization#构造器&gt;。</li>
+<li>如果没有声明初始值，并且 actor 声明的所有属性都给定了初始值，则调用 actor 的默认构造器，参见 Initialization#默认构造器&gt;。</li>
 </ul>
 <p>默认情况下，actor 的成员是与该 actor 隔离的。方法体或属性的 getter 等代码是在该 actor 上执行的。actor 内部的代码可以同步地与这些成员交互，因为代码已经在同一个 actor 上运行；但 actor 外部的代码必须使用 <code>await</code> 标记，以表明该代码是异步地在另一个 actor 上运行的。键路径不能引用 actor 的隔离成员。actor 隔离的存储属性可以作为 in-out 参数传递给同步函数，但不能传递给异步函数。</p>
 <p>actor 还可以拥有非隔离成员，其声明使用 <code>nonisolated</code> 关键字标记。非隔离成员的执行方式类似于 actor 外部的代码：它无法与 actor 的任何隔离状态交互，调用者在使用时也不需要使用 <code>await</code> 进行标记。</p>
 <p>actor 的成员只有在它们是非隔离或异步的情况下才能标记为 <code>@objc</code> 属性。</p>
-<p>初始化 actor 中声明的属性的过程，参见 <a href="doc:Initialization">doc:Initialization</a>。</p>
-<p>actor 实例的属性可以使用点 (<code>.</code>) 语法访问，参见 <a href="doc:ClassesAndStructures#访问属性">doc:ClassesAndStructures#访问属性</a>。</p>
-<p>actor 是引用类型；当分配给变量或常量，或作为参数传递给函数调用时，actor 的实例是被引用而不是复制。有关引用类型的信息，请参见 <a href="doc:ClassesAndStructures#类是引用类型">doc:ClassesAndStructures#类是引用类型</a>。</p>
-<p>你可以通过扩展声明扩展 actor 类型的行为，参见 <a href="doc:Declarations#扩展声明">doc:Declarations#扩展声明</a>。</p>
+<p>初始化 actor 中声明的属性的过程，参见 Initialization&gt;。</p>
+<p>actor 实例的属性可以使用点 (<code>.</code>) 语法访问，参见 ClassesAndStructures#访问属性&gt;。</p>
+<p>actor 是引用类型；当分配给变量或常量，或作为参数传递给函数调用时，actor 的实例是被引用而不是复制。有关引用类型的信息，请参见 ClassesAndStructures#类是引用类型&gt;。</p>
+<p>你可以通过扩展声明扩展 actor 类型的行为，参见 Declarations#扩展声明&gt;。</p>
 <!--
   TODO Additional bits from the SE-0306 actors proposal:
 
@@ -951,12 +951,12 @@ See also rdar://128972373
 
 <p>协议声明可以出现在全局作用域内，或嵌套在非泛型类型或非泛型函数内部。</p>
 <p>协议的主体包含零个或多个<em>协议成员声明</em>，这些声明描述了任何采用该协议的类型必须满足的遵循性要求。特别是，协议可以声明遵循的类型必须实现某些属性、方法、构造器和下标。协议还可以声明特殊类型的类型别名，称为<em>关联类型</em>，可以指定协议中各种声明之间的关系。协议声明不能包含类、结构体、枚举或其他协议声明。<em>协议成员声明</em>将在下面详细讨论。</p>
-<p>协议类型可以从任意数量的其他协议继承。当一个协议类型从其他协议继承时，这些其他协议的要求集合会被聚合，任何从当前协议继承的类型必须遵循所有这些要求。有关如何使用协议继承的示例，请参见 <a href="doc:Protocols#协议的继承">doc:Protocols#协议的继承</a>。</p>
+<p>协议类型可以从任意数量的其他协议继承。当一个协议类型从其他协议继承时，这些其他协议的要求集合会被聚合，任何从当前协议继承的类型必须遵循所有这些要求。有关如何使用协议继承的示例，请参见 Protocols#协议的继承&gt;。</p>
 <blockquote>
-<p>注意:<br>你还可以使用协议组合类型聚合多个协议的合规性要求，参见 <a href="doc:Types#协议组合类型">doc:Types#协议组合类型</a> 和 <a href="doc:Protocols#协议组合">doc:Protocols#协议组合</a>。</p>
+<p>注意:<br>你还可以使用协议组合类型聚合多个协议的合规性要求，参见 Types#协议组合类型&gt; 和 Protocols#协议组合&gt;。</p>
 </blockquote>
 <p>你可以通过在该类型的扩展声明中采用协议，为先前声明的类型添加协议遵循性。在扩展中，你必须实现所采用协议的所有要求。如果该类型已经实现了所有要求，你可以将扩展声明的主体留空。</p>
-<p>默认情况下，遵循协议的类型必须实现协议中声明的所有属性、方法和下标。也就是说，你可以使用 <code>optional</code> 声明修饰符来标记这些协议成员声明，以指定遵循类型的实现是可选的。<code>optional</code> 修饰符只能应用于标记为 <code>objc</code> 特性的成员，并且只能应用于标记为 <code>objc</code> 特性的协议成员。因此，只有类类型可以采用并遵循包含可选成员要求的协议。有关如何使用 <code>optional</code> 声明修饰符的信息，以及如何访问可选协议成员的指导——例如，当你不确定遵循类型是否实现它们时——请参见 <a href="doc:Protocols#可选协议要求">doc:Protocols#可选协议要求</a>。</p>
+<p>默认情况下，遵循协议的类型必须实现协议中声明的所有属性、方法和下标。也就是说，你可以使用 <code>optional</code> 声明修饰符来标记这些协议成员声明，以指定遵循类型的实现是可选的。<code>optional</code> 修饰符只能应用于标记为 <code>objc</code> 特性的成员，并且只能应用于标记为 <code>objc</code> 特性的协议成员。因此，只有类类型可以采用并遵循包含可选成员要求的协议。有关如何使用 <code>optional</code> 声明修饰符的信息，以及如何访问可选协议成员的指导——例如，当你不确定遵循类型是否实现它们时——请参见 Protocols#可选协议要求&gt;。</p>
 <!--
   TODO: Currently, you can't check for an optional initializer,
   so we're leaving those out of the documentation, even though you can mark
@@ -985,8 +985,8 @@ See also rdar://128972373
 <blockquote>
 <p>注意:<br>如果一个协议标记了 <code>objc</code> 特性，则 <code>AnyObject</code> 要求隐式应用于该协议；无需显式的将该协议标记为 <code>AnyObject</code> 要求。</p>
 </blockquote>
-<p>协议是具名类型，因此它们可以出现在代码中与其他具名类型相同的位置，如 <a href="doc:Protocols#协议作为类型">doc:Protocols#协议作为类型</a> 中所讨论的。然而，你无法构造协议的实例，因为协议实际上并不提供它们所指定的要求的实现。</p>
-<p>你可以使用协议来声明类或结构体的代理应该实现哪些方法，参见 <a href="doc:Protocols#代理">doc:Protocols#代理</a>。</p>
+<p>协议是具名类型，因此它们可以出现在代码中与其他具名类型相同的位置，如 Protocols#协议作为类型&gt; 中所讨论的。然而，你无法构造协议的实例，因为协议实际上并不提供它们所指定的要求的实现。</p>
+<p>你可以使用协议来声明类或结构体的代理应该实现哪些方法，参见 Protocols#代理&gt;。</p>
 <blockquote>
 <p>协议声明的语法:</p>
 <p><em>protocol-declaration</em> → <em>attributes</em><em>?</em> <em>access-level-modifier</em><em>?</em> <strong><code>protocol</code></strong> <em>protocol-name</em> <em>type-inheritance-clause</em><em>?</em> <em>generic-where-clause</em><em>?</em> <em>protocol-body</em> <br><em>protocol-name</em> → <em>identifier</em> <br><em>protocol-body</em> → <strong><code>&#123;</code></strong> <em>protocol-members</em><em>?</em> <strong><code>&#125;</code></strong></p>
@@ -997,7 +997,7 @@ See also rdar://128972373
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="operator">&lt;</span>#property name#<span class="operator">&gt;</span>: <span class="operator">&lt;</span>#type#<span class="operator">&gt;</span> &#123; <span class="keyword">get</span> <span class="keyword">set</span> &#125;</span><br></pre></td></tr></table></figure>
 
 <p>与其他协议成员声明一样，这些属性声明仅声明遵循该协议的类型的 getter 和 setter 要求。因此，你不会在声明它的协议中直接实现 getter 或 setter。</p>
-<p>遵循协议的类型可以通过多种方式满足 getter 和 setter 的要求。如果属性声明同时包含 <code>get</code> 和 <code>set</code> 关键字，遵循类型可以用存储变量属性或可读写的计算属性（即实现了 getter 和 setter 的属性）来实现。然而，这样的属性声明不能被实现为常量属性或只读计算属性。如果属性声明只包含 <code>get</code> 关键字，则可以实现为任何类型的属性。关于符合协议类型如何实现属性要求的示例，参见 <a href="doc:Protocols#属性要求">doc:Protocols#属性要求</a>。</p>
+<p>遵循协议的类型可以通过多种方式满足 getter 和 setter 的要求。如果属性声明同时包含 <code>get</code> 和 <code>set</code> 关键字，遵循类型可以用存储变量属性或可读写的计算属性（即实现了 getter 和 setter 的属性）来实现。然而，这样的属性声明不能被实现为常量属性或只读计算属性。如果属性声明只包含 <code>get</code> 关键字，则可以实现为任何类型的属性。关于符合协议类型如何实现属性要求的示例，参见 Protocols#属性要求&gt;。</p>
 <p>在协议声明中声明类型属性要求时，使用 <code>static</code> 关键字标记属性声明。遵循该协议的结构体和枚举使用 <code>static</code> 关键字声明属性，而遵循该协议的类则可以使用 <code>static</code> 或 <code>class</code> 关键字声明属性。为结构体、枚举或类添加协议遵循的扩展使用与其扩展的类型相同的关键字。为类型属性要求提供默认实现的扩展使用 <code>static</code> 关键字。</p>
 <!--
   - test: `protocols-with-type-property-requirements`
@@ -1009,14 +1009,14 @@ See also rdar://128972373
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; protocol P &#123; static var x: Int &#123; get &#125; &#125;</span><br><span class="line">-&gt; extension P &#123; static var x: Int &#123; return 100 &#125; &#125;</span><br><span class="line">-&gt; struct S1: P &#123; &#125;</span><br><span class="line">-&gt; print(S1.x)</span><br><span class="line">&lt;- 100</span><br><span class="line">-&gt; struct S2: P &#123; static var x = 10 &#125;</span><br><span class="line">-&gt; print(S2.x)</span><br><span class="line">&lt;- 10</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<p>另见 <a href="doc:Declarations#变量声明">doc:Declarations#变量声明</a>。</p>
+<p>另见 Declarations#变量声明&gt;。</p>
 <blockquote>
 <p>协议属性声明的语法:</p>
 <p><em>protocol-property-declaration</em> → <em>variable-declaration-head</em> <em>variable-name</em> <em>type-annotation</em> <em>getter-setter-keyword-block</em></p>
 </blockquote>
-<h3 id="协议方法声明"><a href="#协议方法声明" class="headerlink" title="协议方法声明"></a>协议方法声明</h3><p>协议通过在协议声明体中包含一个协议方法声明，规定遵循该协议的类型必须实现一个方法。协议方法声明的形式与函数声明相同，但有两个例外：它们不包含函数体，且不能在函数声明中提供任何默认参数值。关于遵循协议类型如何实现方法要求的示例，参见 <a href="doc:Protocols#方法要求">doc:Protocols#方法要求</a>。</p>
+<h3 id="协议方法声明"><a href="#协议方法声明" class="headerlink" title="协议方法声明"></a>协议方法声明</h3><p>协议通过在协议声明体中包含一个协议方法声明，规定遵循该协议的类型必须实现一个方法。协议方法声明的形式与函数声明相同，但有两个例外：它们不包含函数体，且不能在函数声明中提供任何默认参数值。关于遵循协议类型如何实现方法要求的示例，参见 Protocols#方法要求&gt;。</p>
 <p>在协议声明中声明类或静态方法的要求时，使用 <code>static</code> 修饰符标记方法声明。遵循该协议的结构体和枚举使用 <code>static</code> 关键字声明该方法，而遵循该协议的类则使用 <code>static</code> 或 <code>class</code> 关键字声明该方法。为结构体、枚举或类添加协议遵循的扩展使用与其扩展的类型相同的关键字。为类型方法要求提供默认实现的扩展使用 <code>static</code> 关键字。</p>
-<p>另见 <a href="doc:Declarations#函数声明">doc:Declarations#函数声明</a>。</p>
+<p>另见 Declarations#函数声明&gt;。</p>
 <!--
   TODO: Talk about using ``Self`` in parameters and return types.
 -->
@@ -1028,7 +1028,7 @@ See also rdar://128972373
 <h3 id="协议构造器声明"><a href="#协议构造器声明" class="headerlink" title="协议构造器声明"></a>协议构造器声明</h3><p>协议通过在协议声明的主体中包含协议构造器声明，要求遵循的类型必须实现一个构造器。协议构造器声明的形式与构造器声明相同，只是不包括构造器的主体。</p>
 <p>遵循类型可以通过实现一个非可失败构造器或一个 <code>init!</code> 可失败构造器来满足非可失败协议构造器的要求。一个遵循类型可以通过实现任何类型的构造器来满足可失败协议构造器的要求。</p>
 <p>当一个类实现一个构造器以满足协议的构造器要求时，如果该类尚未标记为 <code>final</code> 声明修饰符，则构造器必须标记为 <code>required</code> 声明修饰符。</p>
-<p>另见 <a href="doc:Declarations#构造器声明">doc:Declarations#构造器声明</a>。</p>
+<p>另见 Declarations#构造器声明&gt;。</p>
 <blockquote>
 <p>协议构造器声明的语法:</p>
 <p><em>protocol-initializer-declaration</em> → <em>initializer-head</em> <em>generic-parameter-clause</em><em>?</em> <em>parameter-clause</em> <em>throws-clause</em><em>?</em> <em>generic-where-clause</em><em>?</em> <br><em>protocol-initializer-declaration</em> → <em>initializer-head</em> <em>generic-parameter-clause</em><em>?</em> <em>parameter-clause</em> <strong><code>rethrows</code></strong> <em>generic-where-clause</em><em>?</em></p>
@@ -1038,12 +1038,12 @@ See also rdar://128972373
 
 <p>下标声明仅声明遵循协议的类型所需的最小 getter 和 setter 实现要求。如果下标声明同时包含 <code>get</code> 和 <code>set</code> 关键字，则遵循的类型必须实现 getter 和 setter 子句。如果下标声明仅包含 <code>get</code> 关键字，则遵循的类型必须实现<em>至少</em>一个 getter 子句，并且可以选择性地实现一个 setter 子句。</p>
 <p>在协议声明中声明静态下标要求时，使用 <code>static</code> 声明修饰符标记下标声明。遵循该协议的结构体和枚举使用 <code>static</code> 关键字声明下标，而遵循该协议的类则使用 <code>static</code> 或 <code>class</code> 关键字声明下标。为结构体、枚举或类添加协议遵循性的扩展使用与其扩展的类型相同的关键字。为静态下标要求提供默认实现的扩展使用 <code>static</code> 关键字。</p>
-<p>另见 <a href="doc:Declarations#下标声明">doc:Declarations#下标声明</a>。</p>
+<p>另见 Declarations#下标声明&gt;。</p>
 <blockquote>
 <p>协议下标声明的语法:</p>
 <p><em>protocol-subscript-declaration</em> → <em>subscript-head</em> <em>subscript-result</em> <em>generic-where-clause</em><em>?</em> <em>getter-setter-keyword-block</em></p>
 </blockquote>
-<h3 id="协议关联类型声明"><a href="#协议关联类型声明" class="headerlink" title="协议关联类型声明"></a>协议关联类型声明</h3><p>协议使用 <code>associatedtype</code> 关键字声明关联类型。关联类型为作为协议声明一部分使用的类型提供了别名。关联类型类似于泛型参数子句中的类型参数，但它们与声明它们的协议中的 <code>Self</code> 相关联。在该上下文中，<code>Self</code> 指的是遵循该协议的最终类型。有关更多信息和示例，请参见 <a href="doc:Generics#关联类型">doc:Generics#关联类型</a>。</p>
+<h3 id="协议关联类型声明"><a href="#协议关联类型声明" class="headerlink" title="协议关联类型声明"></a>协议关联类型声明</h3><p>协议使用 <code>associatedtype</code> 关键字声明关联类型。关联类型为作为协议声明一部分使用的类型提供了别名。关联类型类似于泛型参数子句中的类型参数，但它们与声明它们的协议中的 <code>Self</code> 相关联。在该上下文中，<code>Self</code> 指的是遵循该协议的最终类型。有关更多信息和示例，请参见 Generics#关联类型&gt;。</p>
 <p>你在协议声明中使用通用的 <code>where</code> 子句，以便为从另一个协议继承的关联类型添加约束，而无需重新声明关联类型。以下 <code>SubProtocol</code> 的声明是等效的：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protocol</span> <span class="title class_">SomeProtocol</span> {</span><br><span class="line">    <span class="keyword">associatedtype</span> <span class="type">SomeType</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">protocol</span> <span class="title class_">SubProtocolA</span>: <span class="title class_">SomeProtocol</span> {</span><br><span class="line">    <span class="comment">// 此语法会产生警告。</span></span><br><span class="line">    <span class="keyword">associatedtype</span> <span class="type">SomeType</span>: <span class="type">Equatable</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// 推荐使用此语法。</span></span><br><span class="line"><span class="keyword">protocol</span> <span class="title class_">SubProtocolB</span>: <span class="title class_">SomeProtocol</span> <span class="title class_">where</span> <span class="title class_">SomeType</span>: <span class="title class_">Equatable</span> { }</span><br></pre></td></tr></tbody></table></figure>
 
@@ -1121,13 +1121,13 @@ See also rdar://128972373
   Here you have to pick one or the other -- you can't have both.
 -->
 
-<p>另见 <a href="doc:Declarations#类型别名声明">doc:Declarations#类型别名声明</a>。</p>
+<p>另见 Declarations#类型别名声明&gt;。</p>
 <blockquote>
 <p>协议关联类型声明的语法:</p>
 <p><em>protocol-associated-type-declaration</em> → <em>attributes</em><em>?</em> <em>access-level-modifier</em><em>?</em> <strong><code>associatedtype</code></strong> <em>typealias-name</em> <em>type-inheritance-clause</em><em>?</em> <em>typealias-assignment</em><em>?</em> <em>generic-where-clause</em><em>?</em></p>
 </blockquote>
 <h2 id="构造器声明"><a href="#构造器声明" class="headerlink" title="构造器声明"></a>构造器声明</h2><p><em>构造器声明</em>在你的程序中引入了一个类、结构体或枚举的构造器。构造器声明使用 <code>init</code> 关键字声明，有两种基本形式。</p>
-<p>结构体、枚举和类类型可以有任意数量的构造器，但是类的构造器具有不同的规则和行为。与结构体和枚举不同，类有两种类型的构造器：指定构造器和便利构造器，参见 <a href="doc:Initialization">doc:Initialization</a>。</p>
+<p>结构体、枚举和类类型可以有任意数量的构造器，但是类的构造器具有不同的规则和行为。与结构体和枚举不同，类有两种类型的构造器：指定构造器和便利构造器，参见 Initialization&gt;。</p>
 <p>以下形式声明了结构体和枚举的构造器，以及类的指定构造器：：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">init</span>(<span class="operator">&lt;</span>#parameters#<span class="operator">&gt;</span>) {</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
@@ -1145,7 +1145,7 @@ See also rdar://128972373
 <p>注意:<br>如果你使用 <code>required</code> 声明修饰符标记了一个构造器，则在子类中重写所需的构造器时，不要同时使用 <code>override</code> 修饰符标记该构造器。</p>
 </blockquote>
 <p>就像函数和方法一样，构造器可以抛出或再抛出错误。与函数和方法一样，你在构造器的参数后使用 <code>throws</code> 或 <code>rethrows</code> 关键字来指示适当的行为。同样，构造器可以是异步的，你使用 <code>async</code> 关键字来指示这一点。</p>
-<p>要查看各种类型声明中构造器的示例，请参见 <a href="doc:Initialization">doc:Initialization</a>。</p>
+<p>要查看各种类型声明中构造器的示例，请参见 Initialization&gt;。</p>
 <h3 id="可失败的构造器"><a href="#可失败的构造器" class="headerlink" title="可失败的构造器"></a>可失败的构造器</h3><p><em>可失败的构造器</em>是一种生成一个可选实例或一个隐式解包的可选实例的构造器，具体取决于构造器声明的类型。因此，可失败的构造器可以返回 <code>nil</code> 以表示初始化失败。</p>
 <p>要声明一个可失败的构造器并生成一个可选实例，需要在构造器声明中的 <code>init</code> 关键字后面加上问号（<code>init?</code>）。要声明一个可失败构造器并生成一个隐式解包的可选实例，则需要加上感叹号（<code>init!</code>）。下面的示例展示了一个 <code>init?</code> 可失败的构造器，它生成了一个结构体的可选实例。</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">SomeStruct</span> {</span><br><span class="line">    <span class="keyword">let</span> property: <span class="type">String</span></span><br><span class="line">    <span class="comment">// 生成一个 `SomeStruct` 可选实例</span></span><br><span class="line">    <span class="keyword">init?</span>(<span class="params">input</span>: <span class="type">String</span>) {</span><br><span class="line">        <span class="keyword">if</span> input.isEmpty {</span><br><span class="line">            <span class="comment">// 丢弃 'self' 并返回 'nil'</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">        }</span><br><span class="line">        property <span class="operator">=</span> input</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
@@ -1167,7 +1167,7 @@ See also rdar://128972373
 <p>可失败的构造器可以委托给任何类型的构造器。不可失败的构造器可以委托给另一个不可失败的构造器或一个 <code>init!</code> 可失败的构造器。不可失败的构造器可以通过强制解包超类构造器的结果来委托给一个 <code>init?</code> 可失败的构造器——例如，通过写 <code>super.init()!</code>。</p>
 <p>初始化失败会通过构造器委托传播。具体来说，如果一个可失败的构造器委托给一个失败并返回 <code>nil</code> 的构造器，那么委托的构造器也会失败并隐式返回 <code>nil</code>。如果一个不可失败的构造器委托给一个失败并返回 <code>nil</code> 的 <code>init!</code> 可失败构造器，那么会引发运行时错误（就像你使用<code>!</code>运算符来解包一个值为 <code>nil</code>的可选值一样）。</p>
 <p>可失败的指定构造器可以在子类中被任何类型的指定构造器重写。不可失败的指定构造器只能在子类中被不可失败的指定构造器重写。</p>
-<p>有关更多信息以及可失败构造器的示例，请参见 <a href="doc:Initialization#可失败构造器">doc:Initialization#可失败构造器</a>。</p>
+<p>有关更多信息以及可失败构造器的示例，请参见 Initialization#可失败构造器&gt;。</p>
 <blockquote>
 <p>初始化声明的语法:</p>
 <p><em>initializer-declaration</em> → <em>initializer-head</em> <em>generic-parameter-clause</em><em>?</em> <em>parameter-clause</em> <strong><code>async</code></strong><em>?</em> <em>throws-clause</em><em>?</em> <em>generic-where-clause</em><em>?</em> <em>initializer-body</em> <br><em>initializer-declaration</em> → <em>initializer-head</em> <em>generic-parameter-clause</em><em>?</em> <em>parameter-clause</em> <strong><code>async</code></strong><em>?</em> <strong><code>rethrows</code></strong> <em>generic-where-clause</em><em>?</em> <em>initializer-body</em> <br><em>initializer-head</em> → <em>attributes</em><em>?</em> <em>declaration-modifiers</em><em>?</em> <strong><code>init</code></strong> <br><em>initializer-head</em> → <em>attributes</em><em>?</em> <em>declaration-modifiers</em><em>?</em> <strong><code>init</code></strong> <strong><code>?</code></strong> <br><em>initializer-head</em> → <em>attributes</em><em>?</em> <em>declaration-modifiers</em><em>?</em> <strong><code>init</code></strong> <strong><code>!</code></strong> <br><em>initializer-body</em> → <em>code-block</em></p>
@@ -1178,7 +1178,7 @@ See also rdar://128972373
 <p>析构器在一个类对象不再有任何引用时，会在该对象被释放之前自动调用。析构器只能在类声明的主体内声明，不能在类的扩展中声明，并且每个类最多只能有一个析构器</p>
 <p>子类继承其超类的析构器，该析构器在子类对象被释放之前隐式调用。子类对象在其继承链中的所有析构器执行完毕之前不会被释放。</p>
 <p>析构器不会被直接调用。</p>
-<p>在类声明中如何使用析构器的示例，请参见 <a href="doc:Deinitialization">doc:Deinitialization</a>。</p>
+<p>在类声明中如何使用析构器的示例，请参见 Deinitialization&gt;。</p>
 <blockquote>
 <p>析构器声明的语法:</p>
 <p><em>deinitializer-declaration</em> → <em>attributes</em><em>?</em> <strong><code>deinit</code></strong> <em>code-block</em></p>
@@ -1186,7 +1186,7 @@ See also rdar://128972373
 <h2 id="扩展声明"><a href="#扩展声明" class="headerlink" title="扩展声明"></a>扩展声明</h2><p><em>扩展声明</em>允许你扩展现有类型的行为。扩展声明使用 <code>extension</code> 关键字声明，具有以下形式：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> &lt;#<span class="title class_">type</span> <span class="title class_">name</span>#&gt; <span class="title class_">where</span> &lt;#<span class="title class_">requirements</span>#&gt; &#123;</span><br><span class="line">    <span class="operator">&lt;</span>#declarations#<span class="operator">&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>扩展声明的主体包含零个或多个<em>声明</em>。这些<em>声明</em>可以包括计算属性、计算类型属性、实例方法、类型方法、构造器、下标声明，甚至类、结构体和枚举声明。扩展声明不能包含析构器或协议声明、存储属性、属性观察者或其他扩展声明。协议扩展中的声明不能标记为 <code>final</code>。有关包含各种类型声明的扩展的讨论和多个示例，请参见 <a href="doc:Extensions">doc:Extensions</a>。</p>
+<p>扩展声明的主体包含零个或多个<em>声明</em>。这些<em>声明</em>可以包括计算属性、计算类型属性、实例方法、类型方法、构造器、下标声明，甚至类、结构体和枚举声明。扩展声明不能包含析构器或协议声明、存储属性、属性观察者或其他扩展声明。协议扩展中的声明不能标记为 <code>final</code>。有关包含各种类型声明的扩展的讨论和多个示例，请参见 Extensions&gt;。</p>
 <p>如果<em>类型名称</em>是类、结构体或枚举类型，则扩展该类型。如果<em>类型名称</em>是协议类型，则扩展所有遵循该协议的类型。</p>
 <p>扩展声明可以扩展具有关联类型的泛型类型或协议，并可以包含<em>要求</em>。如果扩展类型的实例或遵循扩展协议的类型的实例满足<em>要求</em>，则该实例获得声明中指定的行为。</p>
 <p>扩展声明可以包含构造器声明。也就是说，如果你正在扩展的类型在另一个模块中定义，则构造器声明必须委托给该模块中已定义的构造器，以确保该类型的成员得到正确初始化。</p>
@@ -1290,9 +1290,9 @@ See also rdar://128972373
 <p>与计算属性一样，下标声明支持读取和写入所访问元素的值。getter 用于读取值，setter 用于写入值。setter 子句是可选的，当只需要 getter 时，可以省略两个子句，直接返回请求的值。也就是说，如果提供了 setter 子句，则必须同时提供 getter 子句。</p>
 <p><em>setter 名称</em>和括号是可选的。如果你提供了 setter 名称，它将用作 setter 的参数名称。如果你不提供 setter 名称，setter 的默认参数名称是 <code>value</code>。setter 的参数类型与<em>返回类型</em>相同。</p>
 <p>你可以在声明其类型的地方重载下标声明，只要<em>参数</em>或<em>返回类型</em>与要重载的下标不同。你也可以重写从超类继承的下标声明。在这样做时，必须使用 <code>override</code> 声明修饰符标记被重写的下标声明。</p>
-<p>下标参数遵循与函数参数相同的规则，但有两个例外。默认情况下，使用下标的参数没有参数标签，这与函数、方法和构造器不同。然而，你可以使用与函数、方法和构造器相同的语法提供显式参数标签。此外，下标不能有 in-out 参数。下标参数可以具有默认值，参见 <a href="doc:Declarations#特殊类型的参数">doc:Declarations#特殊类型的参数</a>。</p>
-<p>你还可以在协议声明的上下文中声明下标，参见 <a href="doc:Declarations#协议下标声明">doc:Declarations#协议下标声明</a>。</p>
-<p>有关下标的更多信息以及下标声明的示例，请参见 <a href="doc:Subscripts">doc:Subscripts</a>。</p>
+<p>下标参数遵循与函数参数相同的规则，但有两个例外。默认情况下，使用下标的参数没有参数标签，这与函数、方法和构造器不同。然而，你可以使用与函数、方法和构造器相同的语法提供显式参数标签。此外，下标不能有 in-out 参数。下标参数可以具有默认值，参见 Declarations#特殊类型的参数&gt;。</p>
+<p>你还可以在协议声明的上下文中声明下标，参见 Declarations#协议下标声明&gt;。</p>
+<p>有关下标的更多信息以及下标声明的示例，请参见 Subscripts&gt;。</p>
 <h3 id="类型下标声明"><a href="#类型下标声明" class="headerlink" title="类型下标声明"></a>类型下标声明</h3><p>要声明由类型本身而非类型实例公开的下标，可以在下标声明中使用 <code>static</code> 声明修饰符。类可以使用 <code>class</code> 声明修饰符来标记类型计算属性，以允许子类重写超类的实现。在类声明中，<code>static</code> 关键字的效果与将声明标记为 <code>class</code> 和 <code>final</code> 声明修饰符相同。</p>
 <!--
   - test: `cant-override-static-subscript-in-subclass`
@@ -1308,19 +1308,19 @@ See also rdar://128972373
 
 <p><em>宏实现</em>是另一个宏，用于指示执行此宏扩展的代码位置。执行宏扩展的代码是一个独立的 Swift 程序，该程序使用 <a target="_blank" rel="noopener" href="http://github.com/apple/swift-syntax/">SwiftSyntax</a> 模块与 Swift 代码进行交互。调用 Swift 标准库中的 <code>externalMacro(module:type:)</code> 宏，并传入包含宏实现的类型名称以及包含该类型的模块名称。</p>
 <p>宏可以被重载，遵循与函数相同的模型。宏声明仅在文件作用域内出现。</p>
-<p>有关 Swift 中宏的概述，请参见 <a href="doc:Macros">doc:Macros</a>。</p>
+<p>有关 Swift 中宏的概述，请参见 Macros&gt;。</p>
 <blockquote>
 <p>宏声明的语法:</p>
 <p><em>macro-declaration</em> → <em>macro-head</em> <em>identifier</em> <em>generic-parameter-clause</em><em>?</em> <em>macro-signature</em> <em>macro-definition</em><em>?</em> <em>generic-where-clause</em> <br><em>macro-head</em> → <em>attributes</em><em>?</em> <em>declaration-modifiers</em><em>?</em> <strong><code>macro</code></strong> <br><em>macro-signature</em> → <em>parameter-clause</em> <em>macro-function-signature-result</em><em>?</em> <br><em>macro-function-signature-result</em> → <strong><code>-&gt;</code></strong> <em>type</em> <br><em>macro-definition</em> → <strong><code>=</code></strong> <em>expression</em></p>
 </blockquote>
 <h2 id="运算符声明"><a href="#运算符声明" class="headerlink" title="运算符声明"></a>运算符声明</h2><p><em>运算符声明</em>将新的中缀、前缀或后缀运算符引入到你的程序中，并使用 <code>operator</code> 关键字进行声明。</p>
 <p>你可以声明三种不同优先级的运算符：中缀、前缀和后缀。运算符的<em>优先级</em>指定了运算符相对于其操作数的相对位置。</p>
-<p>运算符声明有三种基本形式，每种形式对应一种结合性。运算符的结合性通过在 <code>operator</code> 关键字之前标注 <code>infix</code>、<code>prefix</code> 或 <code>postfix</code> 声明修饰符来指定。在每种形式中，运算符的名称只能包含 <a href="doc:LexicalStructure#运算符">doc:LexicalStructure#运算符</a> 中定义的运算符字符。</p>
+<p>运算符声明有三种基本形式，每种形式对应一种结合性。运算符的结合性通过在 <code>operator</code> 关键字之前标注 <code>infix</code>、<code>prefix</code> 或 <code>postfix</code> 声明修饰符来指定。在每种形式中，运算符的名称只能包含 LexicalStructure#运算符&gt; 中定义的运算符字符。</p>
 <p>以下形式声明了一个新的中缀运算符：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">infix</span> <span class="keyword">operator</span> <span class="title">&lt;</span>#operator name#<span class="operator">&gt;</span>: <span class="operator">&lt;</span>#precedence group#<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p><em>中缀运算符</em>是一个二元运算符，它写在两个操作数之间，例如在表达式 <code>1 + 2</code> 中熟悉的加法运算符<code>+</code>。</p>
-<p>中缀运算符可以选择性地指定优先级组。如果你省略运算符的优先级组，Swift 将使用默认优先级组 <code>DefaultPrecedence</code>，该组的优先级仅高于 <code>TernaryPrecedence</code>。有关更多信息，请参见 <a href="doc:Declarations#优先级组声明">doc:Declarations#优先级组声明</a>。</p>
+<p>中缀运算符可以选择性地指定优先级组。如果你省略运算符的优先级组，Swift 将使用默认优先级组 <code>DefaultPrecedence</code>，该组的优先级仅高于 <code>TernaryPrecedence</code>。有关更多信息，请参见 Declarations#优先级组声明&gt;。</p>
 <p>以下形式声明了一个新的前缀运算符：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">prefix</span> <span class="keyword">operator</span> <span class="title">&lt;</span>#operator name#<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
 
@@ -1331,7 +1331,7 @@ See also rdar://128972373
 
 <p><em>后缀运算符</em>是一种一元运算符，它紧跟在操作数后面，例如在表达式 <code>a!</code> 中的后缀强制解包运算符 <code>!</code>。</p>
 <p>与前缀运算符一样，后缀运算符声明不指定优先级。后缀运算符是非结合的。</p>
-<p>在声明一个新运算符后，你通过声明一个与运算符同名的静态方法来实现它。这个静态方法是运算符作为参数所接受的类型之一的成员——例如，一个将 <code>Double</code> 乘以 <code>Int</code> 的运算符是作为 <code>Double</code> 或 <code>Int</code> 结构上的静态方法实现的。如果你在实现前缀或后缀运算符，你还必须在方法声明中标记相应的 <code>prefix</code> 或 <code>postfix</code> 声明修饰符。要查看如何创建和实现新运算符的示例，请参见 <a href="doc:AdvancedOperators#自定义运算符">doc:AdvancedOperators#自定义运算符</a>。</p>
+<p>在声明一个新运算符后，你通过声明一个与运算符同名的静态方法来实现它。这个静态方法是运算符作为参数所接受的类型之一的成员——例如，一个将 <code>Double</code> 乘以 <code>Int</code> 的运算符是作为 <code>Double</code> 或 <code>Int</code> 结构上的静态方法实现的。如果你在实现前缀或后缀运算符，你还必须在方法声明中标记相应的 <code>prefix</code> 或 <code>postfix</code> 声明修饰符。要查看如何创建和实现新运算符的示例，请参见 AdvancedOperators#自定义运算符&gt;。</p>
 <blockquote>
 <p>操作符声明的语法:</p>
 <p><em>operator-declaration</em> → <em>prefix-operator-declaration</em> | <em>postfix-operator-declaration</em> | <em>infix-operator-declaration</em></p>
@@ -1367,14 +1367,14 @@ See also rdar://128972373
 </ul>
 <p>因为带有 <code>dynamic</code> 修饰符的声明是通过 Objective-C 运行时进行调度的，因此它们必须标记为 <code>objc</code> 属性。</p>
 <ul>
-<li><p><code>final</code>：将此修饰符应用于类或类的属性、方法或下标成员。它应用于类以指示该类不能被子类化。它应用于类的属性、方法或下标，以指示类成员在任何子类中不能被重写。有关如何使用 <code>final</code> 属性的示例，请参见 <a href="doc:Inheritance#防止重写">doc:Inheritance#防止重写</a>。</p>
+<li><p><code>final</code>：将此修饰符应用于类或类的属性、方法或下标成员。它应用于类以指示该类不能被子类化。它应用于类的属性、方法或下标，以指示类成员在任何子类中不能被重写。有关如何使用 <code>final</code> 属性的示例，请参见 Inheritance#防止重写&gt;。</p>
 </li>
-<li><p><code>lazy</code>：将此修饰符应用于类或结构体的存储变量属性，以指示该属性的初始值在第一次访问该属性时最多计算并存储一次。有关如何使用 <code>lazy</code> 修饰符的示例，请参见 <a href="doc:Properties#延时加载存储属性">doc:Properties#延时加载存储属性</a>。</p>
+<li><p><code>lazy</code>：将此修饰符应用于类或结构体的存储变量属性，以指示该属性的初始值在第一次访问该属性时最多计算并存储一次。有关如何使用 <code>lazy</code> 修饰符的示例，请参见 Properties#延时加载存储属性&gt;。</p>
 </li>
 <li><p><code>optional</code>：将此修饰符应用于协议的属性、方法或下标成员，表示实现该协议的类型不必实现这些成员。</p>
 </li>
 </ul>
-<p>你只能将 <code>optional</code> 修饰符应用于带有 <code>objc</code> 属性的协议。因此，只有类类型可以采用并遵循包含可选成员要求的协议。有关如何使用 <code>optional</code> 修饰符的更多信息，以及在不确定遵循类型是否实现了这些成员时如何访问可选协议成员的指导，请参见 <a href="doc:Protocols#可选协议要求">doc:Protocols#可选协议要求</a>。</p>
+<p>你只能将 <code>optional</code> 修饰符应用于带有 <code>objc</code> 属性的协议。因此，只有类类型可以采用并遵循包含可选成员要求的协议。有关如何使用 <code>optional</code> 修饰符的更多信息，以及在不确定遵循类型是否实现了这些成员时如何访问可选协议成员的指导，请参见 Protocols#可选协议要求&gt;。</p>
 <!--
   TODO: Currently, you can't check for an optional initializer,
   so we're leaving those out of the documentation, even though you can mark
@@ -1388,16 +1388,16 @@ See also rdar://128972373
 </li>
 <li><p><code>static</code>：将此修饰符应用于结构体、类、枚举或协议的成员，以指示该成员属于类型本身，而不是该类型实例的成员。在类声明的作用域内，将 <code>static</code> 修饰符应用于成员声明上，与在该成员声明上写 <code>class</code> 和 <code>final</code> 修饰符具有相同的效果。然而，类的常量类型属性是一个例外：在这种情况下，<code>static</code> 具有其通常的、非类相关的含义，因为在这些声明上不能使用 <code>class</code> 或 <code>final</code>。</p>
 </li>
-<li><p><code>unowned</code>：将此修饰符应用于存储变量、常量或存储属性，以指示该变量或属性对作为其值存储的对象具有一个无主引用。如果在对象被释放后尝试访问该变量或属性，将会引发运行时错误。与弱引用类似，属性或值的类型必须是类类型；与弱引用不同，类型是非可选的。有关 <code>unowned</code> 修饰符的示例和更多信息，请参见 <a href="doc:AutomaticReferenceCounting#无主引用">doc:AutomaticReferenceCounting#无主引用</a>。</p>
+<li><p><code>unowned</code>：将此修饰符应用于存储变量、常量或存储属性，以指示该变量或属性对作为其值存储的对象具有一个无主引用。如果在对象被释放后尝试访问该变量或属性，将会引发运行时错误。与弱引用类似，属性或值的类型必须是类类型；与弱引用不同，类型是非可选的。有关 <code>unowned</code> 修饰符的示例和更多信息，请参见 AutomaticReferenceCounting#无主引用&gt;。</p>
 </li>
 <li><p><code>unowned(safe)</code>：<code>unowned</code> 的显式拼写。</p>
 </li>
-<li><p><code>unowned(unsafe)</code>：将此修饰符应用于存储变量、常量或存储属性，以指示该变量或属性对作为其值存储的对象具有一个无主引用。如果在对象被释放后尝试访问该变量或属性，你将访问对象曾经所在位置的内存，这是一种不安全的内存操作。与弱引用类似，属性或值的类型必须是类类型；与弱引用不同，该类型是非可选的。有关 <code>unowned</code> 修饰符的示例和更多信息，请参见 <a href="doc:AutomaticReferenceCounting#无主引用">doc:AutomaticReferenceCounting#无主引用</a>。</p>
+<li><p><code>unowned(unsafe)</code>：将此修饰符应用于存储变量、常量或存储属性，以指示该变量或属性对作为其值存储的对象具有一个无主引用。如果在对象被释放后尝试访问该变量或属性，你将访问对象曾经所在位置的内存，这是一种不安全的内存操作。与弱引用类似，属性或值的类型必须是类类型；与弱引用不同，该类型是非可选的。有关 <code>unowned</code> 修饰符的示例和更多信息，请参见 AutomaticReferenceCounting#无主引用&gt;。</p>
 </li>
-<li><p><code>weak</code>：将此修饰符应用于存储变量或存储变量属性，以指示该变量或属性对作为其值存储的对象具有弱引用。变量或属性的类型必须是可选类类型。如果在对象被释放后访问该变量或属性，其值为 <code>nil</code>。有关 <code>weak</code> 修饰符的示例和更多信息，请参见 <a href="doc:AutomaticReferenceCounting#弱引用">doc:AutomaticReferenceCounting#弱引用</a>。</p>
+<li><p><code>weak</code>：将此修饰符应用于存储变量或存储变量属性，以指示该变量或属性对作为其值存储的对象具有弱引用。变量或属性的类型必须是可选类类型。如果在对象被释放后访问该变量或属性，其值为 <code>nil</code>。有关 <code>weak</code> 修饰符的示例和更多信息，请参见 AutomaticReferenceCounting#弱引用&gt;。</p>
 </li>
 </ul>
-<h3 id="访问控制级别"><a href="#访问控制级别" class="headerlink" title="访问控制级别"></a>访问控制级别</h3><p>Swift 提供五种访问控制级别：open、public、internal、file private 和 private。你可以使用以下访问级别修饰符之一标记声明，以指定声明的访问级别。访问控制的详细信息请参见 <a href="doc:AccessControl">doc:AccessControl</a>。</p>
+<h3 id="访问控制级别"><a href="#访问控制级别" class="headerlink" title="访问控制级别"></a>访问控制级别</h3><p>Swift 提供五种访问控制级别：open、public、internal、file private 和 private。你可以使用以下访问级别修饰符之一标记声明，以指定声明的访问级别。访问控制的详细信息请参见 AccessControl&gt;。</p>
 <ul>
 <li><p><code>open</code>：将此修饰符应用于声明，以指示该声明可以被与该声明位于同一模块中的代码访问和子类化。标记为 <code>open</code> 访问级别修饰符的声明也可以被导入包含该声明的模块的模块中的代码访问和子类化。</p>
 </li>
@@ -1421,7 +1421,7 @@ See also rdar://128972373
 <li><p>在类型声明中声明的私有成员可以从该类型的扩展中访问。在一个扩展中声明的私有成员可以从其他扩展和扩展类型的声明中访问。</p>
 </li>
 </ul>
-<p>每个上述访问级别修饰符可选择性地接受一个参数，该参数由括号中包含的 <code>set</code> 关键字组成——例如，<code>private(set)</code>。当你想要为变量或下标的setter指定一个小于或等于变量或下标本身的访问级别时，请使用这种形式的访问级别修饰符，如 <a href="doc:AccessControl#Getters-和-Setters">doc:AccessControl#Getters-和-Setters</a> 中所讨论的。</p>
+<p>每个上述访问级别修饰符可选择性地接受一个参数，该参数由括号中包含的 <code>set</code> 关键字组成——例如，<code>private(set)</code>。当你想要为变量或下标的setter指定一个小于或等于变量或下标本身的访问级别时，请使用这种形式的访问级别修饰符，如 AccessControl#Getters-和-Setters&gt; 中所讨论的。</p>
 <blockquote>
 <p>声明修饰语的语法:</p>
 <p><em>declaration-modifier</em> → <strong><code>class</code></strong> | <strong><code>convenience</code></strong> | <strong><code>dynamic</code></strong> | <strong><code>final</code></strong> | <strong><code>infix</code></strong> | <strong><code>lazy</code></strong> | <strong><code>optional</code></strong> | <strong><code>override</code></strong> | <strong><code>postfix</code></strong> | <strong><code>prefix</code></strong> | <strong><code>required</code></strong> | <strong><code>static</code></strong> | <strong><code>unowned</code></strong> | <strong><code>unowned</code></strong> <strong><code>(</code></strong> <strong><code>safe</code></strong> <strong><code>)</code></strong> | <strong><code>unowned</code></strong> <strong><code>(</code></strong> <strong><code>unsafe</code></strong> <strong><code>)</code></strong> | <strong><code>weak</code></strong> <br><em>declaration-modifier</em> → <em>access-level-modifier</em> <br><em>declaration-modifier</em> → <em>mutation-modifier</em> <br><em>declaration-modifier</em> → <em>actor-isolation-modifier</em> <br><em>declaration-modifiers</em> → <em>declaration-modifier</em> <em>declaration-modifiers</em><em>?</em></p>

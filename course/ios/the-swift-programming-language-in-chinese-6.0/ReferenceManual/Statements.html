@@ -58,8 +58,8 @@
 <meta property="og:site_name" content="那年星空">
 <meta property="og:description" content="语句对表达式进行分组，并控制执行流程。 在 Swift 中，有三种类型的语句：简单语句、编译器控制语句和控制流语句。简单语句是最常见的，用于构造表达式或者声明。编译器控制语句允许程序改变编译器的行为，包含编译配置语句和行控制语句。 控制流语句则用于控制程序执行的流程，Swift 中有多种类型的控制流语句：循环语句、分支语句和控制转移语句。循环语句用于重复执行代码块；分支语句用于执行满足特定条件的代">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-03-08T08:32:48.735Z">
-<meta property="article:modified_time" content="2025-03-08T08:32:48.735Z">
+<meta property="article:published_time" content="2025-03-08T08:41:45.579Z">
+<meta property="article:modified_time" content="2025-03-08T08:41:45.579Z">
 <meta property="article:author" content="joe">
 <meta name="twitter:card" content="summary">
 
@@ -243,7 +243,7 @@
 -->
 
 <h2 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h2><p>循环语句会根据特定的循环条件来重复执行代码块。Swift 提供三种类型的循环语句：<code>for-in</code> 语句、<code>while</code> 语句和 <code>repeat-while</code> 语句。</p>
-<p>通过 break 语句和 continue 语句可以改变循环语句的控制流。有关这两条语句，可参阅 <a href="doc:Statements#Break-语句">doc:Statements#Break-语句</a> 和<br><a href="doc:Statements#Continue-语句">doc:Statements#Continue-语句</a> 。</p>
+<p>通过 break 语句和 continue 语句可以改变循环语句的控制流。有关这两条语句，可参阅 Statements#Break-语句&gt; 和<br>Statements#Continue-语句&gt; 。</p>
 <blockquote>
 <p>循环语句的语法：</p>
 <p><em>loop-statement</em> → <em>for-in-statement</em> <br><em>loop-statement</em> → <em>while-statement</em> <br><em>loop-statement</em> → <em>repeat-while-statement</em></p>
@@ -270,7 +270,7 @@
 </li>
 </ol>
 <p>由于会在执行循环体中的语句前判断条件的值，因此循环体中的语句可能会被执行若干次，也可能一次也不会被执行。</p>
-<p>条件的结果必须是 Bool 类型或者 Bool 的桥接类型。另外，条件语句也可以使用可选绑定，请参阅 <a href="doc:TheBasics#可选绑定">doc:TheBasics#可选绑定</a>。</p>
+<p>条件的结果必须是 Bool 类型或者 Bool 的桥接类型。另外，条件语句也可以使用可选绑定，请参阅 TheBasics#可选绑定&gt;。</p>
 <blockquote>
 <p>while 语句的语法：</p>
 <p><em>while-statement</em> → <strong><code>while</code></strong> <em>condition-list</em> <em>code-block</em></p>
@@ -296,7 +296,7 @@
 <p><em>repeat-while-statement</em> → <strong><code>repeat</code></strong> <em>code-block</em> <strong><code>while</code></strong> <em>expression</em></p>
 </blockquote>
 <h2 id="分支语句"><a href="#分支语句" class="headerlink" title="分支语句"></a>分支语句</h2><p>分支语句会根据一个或者多个条件来执行指定部分的代码。分支语句中的条件将会决定程序如何分支以及执行哪部分代码。Swift 提供三种类型的分支语句：<code>if</code> 语句、 <code>guard</code> 语句和 <code>switch</code> 语句。</p>
-<p><code>if</code> 语句和 <code>switch</code> 语句中的控制流可以用 <code>break</code> 语句改变，关于<code>break</code>的用法，请参阅 <a href="doc:Statements#Break-语句">doc:Statements#Break-语句</a> 。</p>
+<p><code>if</code> 语句和 <code>switch</code> 语句中的控制流可以用 <code>break</code> 语句改变，关于<code>break</code>的用法，请参阅 Statements#Break-语句&gt; 。</p>
 <blockquote>
 <p>分支语句的语法：</p>
 <p><em>branch-statement</em> → <em>if-statement</em> <br><em>branch-statement</em> → <em>guard-statement</em> <br><em>branch-statement</em> → <em>switch-statement</em></p>
@@ -312,7 +312,7 @@
 <p><code>if</code> 语句的 <code>else</code> 语句也可包含另一个 <code>if</code> 语句，从而形成一条链来测试更多的条件，像下面这样：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="operator">&lt;</span>#condition <span class="number">1</span>#<span class="operator">&gt;</span> {</span><br><span class="line">   <span class="operator">&lt;</span>#statements to execute <span class="keyword">if</span> condition <span class="number">1</span> <span class="keyword">is</span> <span class="literal">true</span>#<span class="operator">&gt;</span></span><br><span class="line">} <span class="keyword">else</span> <span class="keyword">if</span> <span class="operator">&lt;</span>#condition <span class="number">2</span>#<span class="operator">&gt;</span> {</span><br><span class="line">   <span class="operator">&lt;</span>#statements to execute <span class="keyword">if</span> condition <span class="number">2</span> <span class="keyword">is</span> <span class="literal">true</span>#<span class="operator">&gt;</span></span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">   <span class="operator">&lt;</span>#statements to execute <span class="keyword">if</span> both conditions are <span class="literal">false</span>#<span class="operator">&gt;</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>if 语句中条件的结果必须是 Bool 类型或者 Bool 的桥接类型。另外，条件语句也可以使用可选绑定，请参阅 <a href="doc:TheBasics#可选绑定">doc:TheBasics#可选绑定</a>.</p>
+<p>if 语句中条件的结果必须是 Bool 类型或者 Bool 的桥接类型。另外，条件语句也可以使用可选绑定，请参阅 TheBasics#可选绑定&gt;.</p>
 <blockquote>
 <p>if 语句的语法:</p>
 <p><em>if-statement</em> → <strong><code>if</code></strong> <em>condition-list</em> <em>code-block</em> <em>else-clause</em><em>?</em> <br><em>else-clause</em> → <strong><code>else</code></strong> <em>code-block</em> | <strong><code>else</code></strong> <em>if-statement</em></p>
@@ -321,7 +321,7 @@
 <p><code>guard</code> 语句的格式如下：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">guard</span> <span class="operator">&lt;</span>#condition#<span class="operator">&gt;</span> <span class="keyword">else</span> {</span><br><span class="line">   <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>语句中条件的结果必须是 Bool 类型或者 Bool 的桥接类型。另外，条件也可以是一条可选绑定，请参阅 <a href="doc:TheBasics#可选绑定">doc:TheBasics#可选绑定</a>。</p>
+<p>语句中条件的结果必须是 Bool 类型或者 Bool 的桥接类型。另外，条件也可以是一条可选绑定，请参阅 TheBasics#可选绑定&gt;。</p>
 <p>在 <code>guard</code> 语句中进行可选绑定的任何常量或者变量，其可用范围从声明开始直到作用域结束。</p>
 <p><code>guard</code> 语句必须有 <code>else</code> 子句，而且必须在该子句中调用返回类型是 <code>Never</code> 的函数，或者使用下面的语句退出当前作用域：</p>
 <ul>
@@ -330,7 +330,7 @@
 <li><code>continue</code></li>
 <li><code>throw</code></li>
 </ul>
-<p>关于控制转移语句，请参阅 <a href="doc:Statements#控制转移语句">doc:Statements#控制转移语句</a> 。关于返回类型是 <code>Never</code> 的函数，请参阅<a href="doc:Declarations#永远不返回的函数">doc:Declarations#永远不返回的函数</a>。</p>
+<p>关于控制转移语句，请参阅 Statements#控制转移语句&gt; 。关于返回类型是 <code>Never</code> 的函数，请参阅Declarations#永远不返回的函数&gt;。</p>
 <blockquote>
 <p>guard 语句的语法：</p>
 <p><em>guard-statement</em> → <strong><code>guard</code></strong> <em>condition-list</em> <strong><code>else</code></strong> <em>code-block</em></p>
@@ -340,7 +340,7 @@
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> <span class="operator">&lt;</span>#control expression#<span class="operator">&gt;</span> {</span><br><span class="line"><span class="keyword">case</span> <span class="operator">&lt;</span>#pattern <span class="number">1</span>#<span class="operator">&gt;</span>:</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">case</span> <span class="operator">&lt;</span>#pattern <span class="number">2</span>#<span class="operator">&gt;</span> <span class="keyword">where</span> <span class="operator">&lt;</span>#condition#<span class="operator">&gt;</span>:</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">case</span> <span class="operator">&lt;</span>#pattern <span class="number">3</span>#<span class="operator">&gt;</span> <span class="keyword">where</span> <span class="operator">&lt;</span>#condition#<span class="operator">&gt;</span>,</span><br><span class="line">    <span class="operator">&lt;</span>#pattern <span class="number">4</span>#<span class="operator">&gt;</span> <span class="keyword">where</span> <span class="operator">&lt;</span>#condition#<span class="operator">&gt;</span>:</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">    <span class="operator">&lt;</span>#statements#<span class="operator">&gt;</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p><code>switch</code> 语句会先计算 <em>控制表达式</em> 的值，然后与每一个 <code>case</code> 的模式进行匹配。如果匹配成功，程序将会执行对应的 <code>case</code> 中的语句。另外，每一个 <code>case</code> 的作用域都不能为空，也就是说在每一个 <code>case</code> 的冒号（<code>:</code>）后面必须至少有一条语句。如果你不想在匹配到的 <code>case</code> 中执行代码，只需在该 <code>case</code> 中写一条 <code>break</code> 语句即可。</p>
-<p>可以用作控制表达式的值是十分灵活的。除了标量类型外，如 <code>Int</code>、<code>Character</code>，你可以使用任何类型的值，包括浮点数、字符串、元组、自定义类型的实例和可选类型。控制表达式的值还可以用来匹配枚举类型中的成员值或是检查该值是否包含在指定的 <code>Range</code> 中。关于如何在 <code>switch</code> 语句中使用这些类型，请参阅 <a href="doc:ControlFlow#Switch语句">doc:ControlFlow#Switch语句</a> 中的 <a href="doc:ControlFlow">doc:ControlFlow</a>。</p>
+<p>可以用作控制表达式的值是十分灵活的。除了标量类型外，如 <code>Int</code>、<code>Character</code>，你可以使用任何类型的值，包括浮点数、字符串、元组、自定义类型的实例和可选类型。控制表达式的值还可以用来匹配枚举类型中的成员值或是检查该值是否包含在指定的 <code>Range</code> 中。关于如何在 <code>switch</code> 语句中使用这些类型，请参阅 ControlFlow#Switch语句&gt; 中的 ControlFlow&gt;。</p>
 <p>每个 case 的模式后面可以有一个 <code>where</code> 子句。<code>where</code> 子句由 <code>where</code> 关键字紧跟一个提供额外条件的表达式组成。因此，当且仅当控制表达式匹配一个 <code>case</code> 的模式且 <code>where</code> 子句的表达式为真时，<code>case</code> 中的语句才会被执行。在下面的例子中，控制表达式只会匹配包含两个相等元素的元组，例如 <code>(1, 1)</code>：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> <span class="keyword">let</span> (x, y) <span class="keyword">where</span> x <span class="operator">==</span> y:</span><br></pre></td></tr></tbody></table></figure>
 
@@ -368,7 +368,7 @@
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; let tuple = (1, 1)</span><br><span class="line">&gt;&gt; switch tuple &#123;</span><br><span class="line">&gt;&gt;     case (let x, 5), (let x as Any, 1): print(1)</span><br><span class="line">&gt;&gt;     default: print(2)</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">!$ error: pattern variable bound to type &#x27;Any&#x27;, expected type &#x27;Int&#x27;</span><br><span class="line">!! case (let x, 5), (let x as Any, 1): print(1)</span><br><span class="line">!!                       ^</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
 <h4 id="Switch-语句必须是详尽的"><a href="#Switch-语句必须是详尽的" class="headerlink" title="Switch 语句必须是详尽的"></a>Switch 语句必须是详尽的</h4><p>在 Swift 中，<code>switch</code> 语句中控制表达式的每一个可能的值都必须至少有一个 <code>case</code> 与之对应。在某些无法面面俱到的情况下（例如，表达式的类型是 <code>Int</code>），你可以使用 <code>default</code> 分支满足该要求。</p>
-<h4 id="对未来枚举的case进行switch"><a href="#对未来枚举的case进行switch" class="headerlink" title="对未来枚举的case进行switch"></a>对未来枚举的<code>case</code>进行<code>switch</code></h4><p><em>非冻结枚举(<code>nonfrozen enumeration</code>)</em> 是一种特殊的枚举类型，它可能在未来会增加新的枚举 case，即使这时候你已经编译并且发布了你的应用，所以在 switch 非冻结枚举前需要深思熟虑。当一个库的作者们把一个枚举标记为非冻结的，这意味着他们保留了增加新的枚举 case 的权利，并且任何和这个枚举交互的代码都必须在无需重新编译的条件下能够处理那些未来可能新加入的 case 。只有演进模式的库代码、标准库代码、用 Swift 实现的 Apple 框架、C 以及 Objective-C 代码才能够声明非冻结枚举。更多关于冻结和非冻结枚举的内容，请参阅 <a href="doc:Attributes#frozen">doc:Attributes#frozen</a>.</p>
+<h4 id="对未来枚举的case进行switch"><a href="#对未来枚举的case进行switch" class="headerlink" title="对未来枚举的case进行switch"></a>对未来枚举的<code>case</code>进行<code>switch</code></h4><p><em>非冻结枚举(<code>nonfrozen enumeration</code>)</em> 是一种特殊的枚举类型，它可能在未来会增加新的枚举 case，即使这时候你已经编译并且发布了你的应用，所以在 switch 非冻结枚举前需要深思熟虑。当一个库的作者们把一个枚举标记为非冻结的，这意味着他们保留了增加新的枚举 case 的权利，并且任何和这个枚举交互的代码都必须在无需重新编译的条件下能够处理那些未来可能新加入的 case 。只有演进模式的库代码、标准库代码、用 Swift 实现的 Apple 框架、C 以及 Objective-C 代码才能够声明非冻结枚举。更多关于冻结和非冻结枚举的内容，请参阅 Attributes#frozen&gt;.</p>
 <p>当你对非冻结枚举进行 switch 时，你总是需要有一个<code>default case</code>，即使每种枚举类型都已经有对应的 <code>case</code> 了。你可以在 <code>default</code> 前标注 <code>@unknown</code>，意思是这个 <code>case</code> 应该只匹配未来加入的枚举 <code>case</code>。如果你的 <code>default case</code> 中匹配了任何在编译时就能确定的枚举 <code>case</code>，Swift 会抛出一个警告。这可以很好地提醒你库的作者已经新增了一种 <code>case</code>，并且你还没有去处理。</p>
 <p>以下就是一个例子，我们对标准库的 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/mirror/ancestorrepresentation"><code>Mirror.AncestorRepresentation</code></a> 进行 switch 操作，每当有新的 case 加入，我们会得到一个警告，提示我们要去处理它。</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> representation: <span class="type">Mirror</span>.<span class="type">AncestorRepresentation</span> <span class="operator">=</span> .generated</span><br><span class="line"><span class="keyword">switch</span> representation &#123;</span><br><span class="line"><span class="keyword">case</span> .customized:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Use the nearest ancestor&#x27;s implementation.&quot;</span>)</span><br><span class="line"><span class="keyword">case</span> .generated:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Generate a default mirror for all ancestor classes.&quot;</span>)</span><br><span class="line"><span class="keyword">case</span> .suppressed:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Suppress the representation of all ancestor classes.&quot;</span>)</span><br><span class="line"><span class="keyword">@unknown</span> <span class="keyword">default</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Use a representation that was unknown when this code was compiled.&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Prints &quot;Generate a default mirror for all ancestor classes.&quot;</span></span><br></pre></td></tr></table></figure>
@@ -378,7 +378,7 @@
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let representation: Mirror.AncestorRepresentation = .generated</span><br><span class="line">-&gt; switch representation &#123;</span><br><span class="line">   case .customized:</span><br><span class="line">       print(&quot;Use the nearest ancestor&#x27;s implementation.&quot;)</span><br><span class="line">   case .generated:</span><br><span class="line">       print(&quot;Generate a default mirror for all ancestor classes.&quot;)</span><br><span class="line">   case .suppressed:</span><br><span class="line">       print(&quot;Suppress the representation of all ancestor classes.&quot;)</span><br><span class="line">-&gt; @unknown default:</span><br><span class="line">       print(&quot;Use a representation that was unknown when this code was compiled.&quot;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;- Generate a default mirror for all ancestor classes.</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<h4 id="不存在隐式落入"><a href="#不存在隐式落入" class="headerlink" title="不存在隐式落入"></a>不存在隐式落入</h4><p>当匹配到的 case 中的代码执行完毕后，switch 语句会直接退出，而不会继续执行下一个 case 。这就意味着，如果你想执行下一个 case，需要显式地在当前 case 中使用 fallthrough 语句。关于 fallthrough 语句的更多信息，请参阅<a href="doc:Statements#Fallthrough-语句">doc:Statements#Fallthrough-语句</a> 。</p>
+<h4 id="不存在隐式落入"><a href="#不存在隐式落入" class="headerlink" title="不存在隐式落入"></a>不存在隐式落入</h4><p>当匹配到的 case 中的代码执行完毕后，switch 语句会直接退出，而不会继续执行下一个 case 。这就意味着，如果你想执行下一个 case，需要显式地在当前 case 中使用 fallthrough 语句。关于 fallthrough 语句的更多信息，请参阅Statements#Fallthrough-语句&gt; 。</p>
 <blockquote>
 <p>switch 语句的语法：</p>
 <p><em>switch-statement</em> → <strong><code>switch</code></strong> <em>expression</em> <strong><code>&#123;</code></strong> <em>switch-cases</em><em>?</em> <strong><code>&#125;</code></strong> <br><em>switch-cases</em> → <em>switch-case</em> <em>switch-cases</em><em>?</em> <br><em>switch-case</em> → <em>case-label</em> <em>statements</em> <br><em>switch-case</em> → <em>default-label</em> <em>statements</em> <br><em>switch-case</em> → <em>conditional-switch-case</em></p>
@@ -392,9 +392,9 @@
   although as of Swift 4.2 only a single attribute (@unknown) is allowed.
 -->
 
-<h2 id="带标签的语句"><a href="#带标签的语句" class="headerlink" title="带标签的语句"></a>带标签的语句</h2><p>你可以在循环语句、if 语句、switch 语句或 do 语句前加上<em>语句标签</em>，它由标签名称跟一个冒号(<code>:</code>)组成。使用语句标签配合 <code>break</code> 和 <code>continue</code> 语句，以明确你希望如何在循环语句或 switch 语句中改变控制流程，关于<code>break</code> 和 <code>continue</code> 语句，请参阅<a href="doc:Statements#Break-语句">doc:Statements#Break-语句</a> 和<a href="doc:Statements#Continue-语句">doc:Statements#Continue-语句</a> 。</p>
+<h2 id="带标签的语句"><a href="#带标签的语句" class="headerlink" title="带标签的语句"></a>带标签的语句</h2><p>你可以在循环语句、if 语句、switch 语句或 do 语句前加上<em>语句标签</em>，它由标签名称跟一个冒号(<code>:</code>)组成。使用语句标签配合 <code>break</code> 和 <code>continue</code> 语句，以明确你希望如何在循环语句或 switch 语句中改变控制流程，关于<code>break</code> 和 <code>continue</code> 语句，请参阅Statements#Break-语句&gt; 和Statements#Continue-语句&gt; 。</p>
 <p>标签的作用域在该标签所标记的语句内。可以嵌套使用带标签的语句，但标签名称必须是唯一的。</p>
-<p>关于使用带标签的语句的例子，请参阅 <a href="doc:ControlFlow">doc:ControlFlow</a> 中的 <a href="doc:ControlFlow#带标签的语句">doc:ControlFlow#带标签的语句</a> 。</p>
+<p>关于使用带标签的语句的例子，请参阅 ControlFlow&gt; 中的 ControlFlow#带标签的语句&gt; 。</p>
 <!--
   - test: `backtick-identifier-is-legal-label`
 
@@ -416,7 +416,7 @@
 <p>当 <code>break</code> 语句后面带标签名时，可用于终止由这个标签标记的<code>循环</code>语句、<code>if</code> 语句或 <code>switch</code> 语句的执行。</p>
 <p>而只写 <code>break</code> 时，则会终止 <code>switch</code> 语句或 <code>break</code> 语句所属的最内层循环语句的执行。不能使用 <code>break</code> 语句来终止未使用标签的 <code>if</code> 语句。</p>
 <p>在这两种情况下，程序控制会被转移到包围的循环或 switch 语句后面的第一行代码（如果有的话）。</p>
-<p>关于使用 break 语句的例子，请参阅<a href="doc:ControlFlow">doc:ControlFlow</a>中的 <a href="doc:ControlFlow#Break语句">doc:ControlFlow#Break语句</a> 和 <a href="doc:ControlFlow#带标签的语句">doc:ControlFlow#带标签的语句</a>。</p>
+<p>关于使用 break 语句的例子，请参阅ControlFlow&gt;中的 ControlFlow#Break语句&gt; 和 ControlFlow#带标签的语句&gt;。</p>
 <blockquote>
 <p>break 语句的语法：</p>
 <p><em>break-statement</em> → <strong><code>break</code></strong> <em>label-name</em><em>?</em></p>
@@ -428,14 +428,14 @@
 <p>而当只写 <code>continue</code> 时，可用于终止 <code>continue</code> 语句所属的最内层循环中当前迭代的执行。</p>
 <p>在这两种情况下，控制权都会被转移给循环语句的条件语句。</p>
 <p>在 <code>for</code> 语句中，<code>continue</code> 语句执行后，增量表达式还是会被计算，这是因为每次循环体执行完毕后，增量表达式都会被计算。</p>
-<p>关于使用 <code>continue</code> 语句的例子，请参阅<a href="doc:ControlFlow">doc:ControlFlow</a>中的<a href="doc:ControlFlow#Continue语句">doc:ControlFlow#Continue语句</a> 和 <a href="doc:ControlFlow#带标签的语句">doc:ControlFlow#带标签的语句</a></p>
+<p>关于使用 <code>continue</code> 语句的例子，请参阅ControlFlow&gt;中的ControlFlow#Continue语句&gt; 和 ControlFlow#带标签的语句&gt;</p>
 <blockquote>
 <p>continue 语句的语法：</p>
 <p><em>continue-statement</em> → <strong><code>continue</code></strong> <em>label-name</em><em>?</em></p>
 </blockquote>
 <h3 id="Fallthrough-语句"><a href="#Fallthrough-语句" class="headerlink" title="Fallthrough 语句"></a>Fallthrough 语句</h3><p><code>fallthrough</code> 语句由 <code>fallthrough</code> 关键字组成，只能出现在 <code>switch</code> 语句的某个 <code>case</code> 块中。<code>fallthrough</code> 语句会导致程序执行从当前 <code>switch</code> 语句的一个 <code>case</code> 继续到下一个 <code>case</code>。即使下一个 <code>case</code> 标签的模式与 <code>switch</code> 语句的控制表达式的值不匹配，程序仍会继续执行该 <code>case</code>。</p>
 <p><code>fallthrough</code> 语句可出现在 <code>switch</code> 语句中的任意 <code>case</code> 中，但不能出现在最后一个 <code>case</code> 中。同时，<code>fallthrough</code> 语句也不能把控制权转移到使用了值绑定的 <code>case</code>。</p>
-<p>关于在 <code>switch</code> 语句中使用 <code>fallthrough</code> 语句的例子，请参阅<a href="doc:ControlFlow">doc:ControlFlow</a>中的<a href="doc:ControlFlow#控制转移语句">doc:ControlFlow#控制转移语句</a>。</p>
+<p>关于在 <code>switch</code> 语句中使用 <code>fallthrough</code> 语句的例子，请参阅ControlFlow&gt;中的ControlFlow#控制转移语句&gt;。</p>
 <blockquote>
 <p>fallthrough 语句的语法：</p>
 <p><em>fallthrough-statement</em> → <strong><code>fallthrough</code></strong></p>
@@ -446,7 +446,7 @@
 
 <p>当 <code>return</code> 语句后面带表达式时，表达式的值将会返回给调用函数或方法。如果表达式的值的类型与函数或者方法声明的返回类型不匹配，Swift 则会在返回表达式的值之前将表达式的值的类型转换为返回类型。</p>
 <blockquote>
-<p>注意：<br>正如 <a href="doc:Declarations#可失败构造器">doc:Declarations#可失败构造器</a>中所描述的， return 语句的一种特殊形式<code>return nil</code>可以在可失败的构造器中使用，以表示构造失败。</p>
+<p>注意：<br>正如 Declarations#可失败构造器&gt;中所描述的， return 语句的一种特殊形式<code>return nil</code>可以在可失败的构造器中使用，以表示构造失败。</p>
 </blockquote>
 <!--
   TODO: Discuss how the conversion takes place and what is allowed to be converted
@@ -464,7 +464,7 @@
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">throw</span> <span class="operator">&lt;</span>#expression#<span class="operator">&gt;</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p> <em>表达式</em> 的值必须具有符合<code>Error</code>协议的类型。如果包含 <code>throw</code> 语句的 <code>do</code> 语句或函数声明了它抛出的错误类型，则该表达式的值必须是该类型的实例。</p>
-<p>关于如何使用 <code>throw</code> 语句的例子，请参阅<a href="doc:ErrorHandling">doc:ErrorHandling</a>中的 <a href="doc:ErrorHandling#使用-Throwing-函数传递错误">doc:ErrorHandling#使用-Throwing-函数传递错误</a></p>
+<p>关于如何使用 <code>throw</code> 语句的例子，请参阅ErrorHandling&gt;中的 ErrorHandling#使用-Throwing-函数传递错误&gt;</p>
 <blockquote>
 <p>throw 语句的语法：</p>
 <p><em>throw-statement</em> → <strong><code>throw</code></strong> <em>expression</em></p>
@@ -509,7 +509,7 @@
 <li><p>如果 <code>do</code> 代码块包含的代码抛出超过一种类型的错误，并且没有全面的错误处理，则 Swift 推断该 <code>do</code> 语句抛出 <code>any Error</code>。</p>
 </li>
 </ul>
-<p>有关处理具有显式类型的错误的更多信息，可参阅 <a href="doc:ErrorHandling#指定错误类型">doc:ErrorHandling#指定错误类型</a>.</p>
+<p>有关处理具有显式类型的错误的更多信息，可参阅 ErrorHandling#指定错误类型&gt;.</p>
 <p>如果 <code>do</code> 代码块中的任何语句抛出了错误，程序会跳转到第一个能模式匹配该错误的 <code>catch</code> 子句。如果没有任何子句匹配，错误会传递到外层作作用域。如果错误在最顶层依旧没有被处理，程序执行会因为运行时错误而停止。</p>
 <p>如同 <code>switch</code> 语句，编译器会判断 <code>catch</code> 子句是否有遗漏。如果 <code>catch</code> 子句没有遗漏，则认为错误已被处理。否则，错误会自动传递到外层作用域，被某个 <code>catch</code> 子句处理掉或者被用 <code>throws</code> 关键字声明的抛出函数继续向外抛出。</p>
 <p>拥有多个模式匹配的 <code>catch</code> 子句只需其中一个匹配到错误即可。如果 <code>catch</code> 子句拥有多个模式匹配，所有的模式必须包含相同的绑定常量或变量，并且每个 <code>catch</code> 子句里所有绑定的变量或常量的类型必须相同。</p>
@@ -518,8 +518,8 @@
   matches the discussion of multi-pattern case under Switch Statement.
 -->
 
-<p>为了确保错误已经被处理，可以让 <code>catch</code> 子句使用匹配所有错误的模式，如通配符模式（<code>_</code>）。如果一个 <code>catch</code> 子句不指定一种具体模式，<code>catch</code> 子句会匹配任何错误，并绑定到名为 <code>error</code> 的局部常量。有关在 <code>catch</code> 子句中使用模式的更多信息，<br>可参阅 <a href="doc:Patterns">doc:Patterns</a>.</p>
-<p>关于如何在 <code>do</code> 语句中使用一系列 <code>catch</code> 子句的例子，请参阅<a href="doc:ErrorHandling#处理错误">doc:ErrorHandling#处理错误</a>.</p>
+<p>为了确保错误已经被处理，可以让 <code>catch</code> 子句使用匹配所有错误的模式，如通配符模式（<code>_</code>）。如果一个 <code>catch</code> 子句不指定一种具体模式，<code>catch</code> 子句会匹配任何错误，并绑定到名为 <code>error</code> 的局部常量。有关在 <code>catch</code> 子句中使用模式的更多信息，<br>可参阅 Patterns&gt;.</p>
+<p>关于如何在 <code>do</code> 语句中使用一系列 <code>catch</code> 子句的例子，请参阅ErrorHandling#处理错误&gt;.</p>
 <blockquote>
 <p>do 语句的语法：</p>
 <p><em>do-statement</em> → <strong><code>do</code></strong> <em>throws-clause</em><em>?</em> <em>code-block</em> <em>catch-clauses</em><em>?</em> <br><em>catch-clauses</em> → <em>catch-clause</em> <em>catch-clauses</em><em>?</em> <br><em>catch-clause</em> → <strong><code>catch</code></strong> <em>catch-pattern-list</em><em>?</em> <em>code-block</em> <br><em>catch-pattern-list</em> → <em>catch-pattern</em> | <em>catch-pattern</em> <strong><code>,</code></strong> <em>catch-pattern-list</em> <br><em>catch-pattern</em> → <em>pattern</em> <em>where-clause</em><em>?</em></p>
@@ -640,7 +640,7 @@
 <blockquote>
 <p>注意： 即使没有被编译，上面编译配置中的每个语句仍然会被解析。然而，唯一的例外是编译配置语句中包含 <code>swift()</code> 或 <code>compiler()</code> 条件：这时仅当编译器版本和语言版本匹配时，语句才会被解析。这种设定能确保旧的编译器不会尝试去解析新 Swift 版本的语法。</p>
 </blockquote>
-<p>关于在条件编译块中如何包装显式成员表达式，请参见<a href="doc:Expressions#显式成员表达式">doc:Expressions#显式成员表达式</a>。</p>
+<p>关于在条件编译块中如何包装显式成员表达式，请参见Expressions#显式成员表达式&gt;。</p>
 <blockquote>
 <p>条件编译代码块的语法：</p>
 <p><em>conditional-compilation-block</em> → <em>if-directive-clause</em> <em>elseif-directive-clauses</em><em>?</em> <em>else-directive-clause</em><em>?</em> <em>endif-directive</em></p>
@@ -667,7 +667,7 @@
 <p>行控制语句形式如下：</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">#sourceLocation</span>(file: <span class="operator">&lt;</span><span class="keyword">#file</span> path#<span class="operator">&gt;</span>, line: <span class="operator">&lt;</span><span class="keyword">#line</span> number#<span class="operator">&gt;</span>)</span><br><span class="line"><span class="keyword">#sourceLocation</span>()</span><br></pre></td></tr></tbody></table></figure>
 
-<p>第一种的行控制语句会改变该语句之后的代码中的字面量表达式 <code>#line</code>、 <code>#file</code>、<code>#fileID</code> 和 <code>#filePath</code> 所表示的值，从行控制语句里行号的代码开始。<em>行号</em>是一个大于 0 的整形字面量，会改变 <code>#line</code> 表达式的值。<em>file path</em>会更改 <code>#file</code>、<code>#fileID</code> 和 <code>#filePath</code> 的值，并且是一个字符串字面量。指定的字符串成为 <code>#filePath</code> 的值，字符串的最后一个路径组件用于 <code>#fileID</code> 的值。关于 <code>#file</code>、 <code>#fileID</code> 和 <code>#filePath</code>，可参阅<a href="doc:Expressions#字面量表达式">doc:Expressions#字面量表达式</a>。</p>
+<p>第一种的行控制语句会改变该语句之后的代码中的字面量表达式 <code>#line</code>、 <code>#file</code>、<code>#fileID</code> 和 <code>#filePath</code> 所表示的值，从行控制语句里行号的代码开始。<em>行号</em>是一个大于 0 的整形字面量，会改变 <code>#line</code> 表达式的值。<em>file path</em>会更改 <code>#file</code>、<code>#fileID</code> 和 <code>#filePath</code> 的值，并且是一个字符串字面量。指定的字符串成为 <code>#filePath</code> 的值，字符串的最后一个路径组件用于 <code>#fileID</code> 的值。关于 <code>#file</code>、 <code>#fileID</code> 和 <code>#filePath</code>，可参阅Expressions#字面量表达式&gt;。</p>
 <p>行控制语句的第二种形式是 <code>#sourceLocation()</code>，会将源代码的定位信息重置回默认的行号和文件名。</p>
 <blockquote>
 <p>行控制语句的语法:</p>

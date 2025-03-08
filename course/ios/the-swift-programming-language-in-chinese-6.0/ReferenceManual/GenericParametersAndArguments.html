@@ -51,15 +51,15 @@
   };
 </script>
 
-  <meta name="description" content="泛型形参和实参将参数声明抽象化以脱离具体类型。 本节描述泛型类型、泛型函数和泛型构造器的形参和实参。在声明泛型类型、函数或构造器时，需要指定泛型可处理的类型形参。这些类型形参相当于占位符，当实例化泛型类型或调用泛型函数、初始化器时，会被具体的类型实参替换。 关于 Swift 语言中的“泛型”，参阅 doc:Generics.   泛型形参子句泛型形参子句 指定了泛型类型或函数的类型形参，以及对这些">
+  <meta name="description" content="泛型形参和实参将参数声明抽象化以脱离具体类型。 本节描述泛型类型、泛型函数和泛型构造器的形参和实参。在声明泛型类型、函数或构造器时，需要指定泛型可处理的类型形参。这些类型形参相当于占位符，当实例化泛型类型或调用泛型函数、初始化器时，会被具体的类型实参替换。 关于 Swift 语言中的“泛型”，参阅 Generics&gt;.   泛型形参子句泛型形参子句 指定了泛型类型或函数的类型形参，以及对这些">
 <meta property="og:type" content="website">
 <meta property="og:title" content="那年星空">
 <meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/ReferenceManual/GenericParametersAndArguments.html">
 <meta property="og:site_name" content="那年星空">
-<meta property="og:description" content="泛型形参和实参将参数声明抽象化以脱离具体类型。 本节描述泛型类型、泛型函数和泛型构造器的形参和实参。在声明泛型类型、函数或构造器时，需要指定泛型可处理的类型形参。这些类型形参相当于占位符，当实例化泛型类型或调用泛型函数、初始化器时，会被具体的类型实参替换。 关于 Swift 语言中的“泛型”，参阅 doc:Generics.   泛型形参子句泛型形参子句 指定了泛型类型或函数的类型形参，以及对这些">
+<meta property="og:description" content="泛型形参和实参将参数声明抽象化以脱离具体类型。 本节描述泛型类型、泛型函数和泛型构造器的形参和实参。在声明泛型类型、函数或构造器时，需要指定泛型可处理的类型形参。这些类型形参相当于占位符，当实例化泛型类型或调用泛型函数、初始化器时，会被具体的类型实参替换。 关于 Swift 语言中的“泛型”，参阅 Generics&gt;.   泛型形参子句泛型形参子句 指定了泛型类型或函数的类型形参，以及对这些">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-03-08T08:32:48.732Z">
-<meta property="article:modified_time" content="2025-03-08T08:32:48.732Z">
+<meta property="article:published_time" content="2025-03-08T08:41:45.579Z">
+<meta property="article:modified_time" content="2025-03-08T08:41:45.579Z">
 <meta property="article:author" content="joe">
 <meta name="twitter:card" content="summary">
 
@@ -225,7 +225,7 @@
       <div class="post-body">
           <html><head></head><body></body></html><html><head></head><body><h1 id="泛型形参和实参"><a href="#泛型形参和实参" class="headerlink" title="泛型形参和实参"></a>泛型形参和实参</h1><p>将参数声明抽象化以脱离具体类型。</p>
 <p>本节描述泛型类型、泛型函数和泛型构造器的形参和实参。在声明泛型类型、函数或构造器时，需要指定泛型可处理的类型形参。这些类型形参相当于占位符，当实例化泛型类型或调用泛型函数、初始化器时，会被具体的类型实参替换。</p>
-<p>关于 Swift 语言中的“泛型”，参阅 <a href="doc:Generics">doc:Generics</a>.</p>
+<p>关于 Swift 语言中的“泛型”，参阅 Generics&gt;.</p>
 <!--
   NOTE: Generic types are sometimes referred to as :newTerm:`parameterized types`
   because they're declared with one or more type parameters.
@@ -280,7 +280,7 @@
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; protocol SomeProtocol &#123; &#125;</span><br><span class="line">&gt;&gt; extension Bool: SomeProtocol &#123; &#125;</span><br><span class="line">---</span><br><span class="line">&gt;&gt; extension Collection where Element: SomeProtocol &#123;</span><br><span class="line">&gt;&gt;     func returnTrue() -&gt; Bool where Element == Bool &#123;</span><br><span class="line">&gt;&gt;         return true</span><br><span class="line">&gt;&gt;     &#125;</span><br><span class="line">&gt;&gt;     func returnTrue() -&gt; Bool where Element == Int &#123;</span><br><span class="line">&gt;&gt;         return true</span><br><span class="line">&gt;&gt;     &#125;</span><br><span class="line">&gt;&gt; &#125;</span><br><span class="line">!$ error: no type for &#x27;Self.Element&#x27; can satisfy both &#x27;Self.Element == Int&#x27; and &#x27;Self.Element : SomeProtocol&#x27;</span><br><span class="line">!! func returnTrue() -&gt; Bool where Element == Int &#123;</span><br><span class="line">!!                                            ^</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
 <p>重载泛型函数或构造器，泛型形参子句中的类型形参必须有不同的约束或要求。当调用重载的泛型函数或构造器时，编译器会使用这些约束来决定调用哪个重载的函数或构造器。</p>
-<p>更多关于泛型 <code>where</code> 从句的内容和关于泛型函数声明的例子，参阅 <a href="doc:Generics#泛型-Where-语句">doc:Generics#泛型-Where-语句</a>.</p>
+<p>更多关于泛型 <code>where</code> 从句的内容和关于泛型函数声明的例子，参阅 Generics#泛型-Where-语句&gt;.</p>
 <blockquote>
 <p>泛型形参子句的语法格式：</p>
 <p><em>泛型形参子句</em> → <strong><code>&lt;</code></strong> <em>泛型形参列表</em> <strong><code>&gt;</code></strong> <br><em>泛型形参列表</em> → <em>泛型形参</em> | <em>泛型形参</em> <strong><code>,</code></strong> <em>泛型形参列表</em> <br><em>泛型形参</em> → <em>类型名称</em> <br><em>泛型形参</em> → <em>类型名称</em> <strong><code>:</code></strong> <em>类型标识符</em> <br><em>泛型形参</em> → <em>类型名称</em> <strong><code>:</code></strong> <em>协议合成类型</em></p>
@@ -312,7 +312,7 @@
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; let arrayOfArrays: Array&lt;Array&lt;Int&gt;&gt; = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<p>正如在<a href="doc:GenericParametersAndArguments#泛型形参子句">doc:GenericParametersAndArguments#泛型形参子句</a>中提到的，在指定泛型函数或构造器的类型实参时，不能使用泛型实参子句。</p>
+<p>正如在GenericParametersAndArguments#泛型形参子句&gt;中提到的，在指定泛型函数或构造器的类型实参时，不能使用泛型实参子句。</p>
 <blockquote>
 <p>泛型实参的语法格式：</p>
 <p><em>generic-argument-clause</em> → <strong><code>&lt;</code></strong> <em>generic-argument-list</em> <strong><code>&gt;</code></strong> <br><em>generic-argument-list</em> → <em>generic-argument</em> | <em>generic-argument</em> <strong><code>,</code></strong> <em>generic-argument-list</em> <br><em>generic-argument</em> → <em>type</em></p>

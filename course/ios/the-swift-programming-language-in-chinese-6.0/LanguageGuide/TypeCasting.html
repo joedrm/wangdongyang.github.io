@@ -51,15 +51,15 @@
   };
 </script>
 
-  <meta name="description" content="类型转换确定一个值的运行时类型，并为其提供更具体的类型信息。 类型转换是一种检查实例类型，或将该实例视为其类层次结构中不同父类或子类的方法。 Swift 中的类型转换是通过 is 和 as 操作符实现的。这两个操作符为值的类型检查或类型转换提供了一种简单而富有表现力的方法。 你还可以使用类型转换来检查类型是否遵循协议，如 doc:Protocols#检查是否遵循协议 中所述。 为类型转换定义类层次">
+  <meta name="description" content="类型转换确定一个值的运行时类型，并为其提供更具体的类型信息。 类型转换是一种检查实例类型，或将该实例视为其类层次结构中不同父类或子类的方法。 Swift 中的类型转换是通过 is 和 as 操作符实现的。这两个操作符为值的类型检查或类型转换提供了一种简单而富有表现力的方法。 你还可以使用类型转换来检查类型是否遵循协议，如 Protocols#检查是否遵循协议&gt; 中所述。 为类型转换定义类层次">
 <meta property="og:type" content="website">
 <meta property="og:title" content="那年星空">
 <meta property="og:url" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/TypeCasting.html">
 <meta property="og:site_name" content="那年星空">
-<meta property="og:description" content="类型转换确定一个值的运行时类型，并为其提供更具体的类型信息。 类型转换是一种检查实例类型，或将该实例视为其类层次结构中不同父类或子类的方法。 Swift 中的类型转换是通过 is 和 as 操作符实现的。这两个操作符为值的类型检查或类型转换提供了一种简单而富有表现力的方法。 你还可以使用类型转换来检查类型是否遵循协议，如 doc:Protocols#检查是否遵循协议 中所述。 为类型转换定义类层次">
+<meta property="og:description" content="类型转换确定一个值的运行时类型，并为其提供更具体的类型信息。 类型转换是一种检查实例类型，或将该实例视为其类层次结构中不同父类或子类的方法。 Swift 中的类型转换是通过 is 和 as 操作符实现的。这两个操作符为值的类型检查或类型转换提供了一种简单而富有表现力的方法。 你还可以使用类型转换来检查类型是否遵循协议，如 Protocols#检查是否遵循协议&gt; 中所述。 为类型转换定义类层次">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-03-08T08:32:48.707Z">
-<meta property="article:modified_time" content="2025-03-08T08:32:48.707Z">
+<meta property="article:published_time" content="2025-03-08T08:41:45.579Z">
+<meta property="article:modified_time" content="2025-03-08T08:41:45.579Z">
 <meta property="article:author" content="joe">
 <meta name="twitter:card" content="summary">
 
@@ -226,7 +226,7 @@
           <html><head></head><body></body></html><html><head></head><body><h1 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h1><p>确定一个值的运行时类型，并为其提供更具体的类型信息。</p>
 <p><em>类型转换</em>是一种检查实例类型，或将该实例视为其类层次结构中不同父类或子类的方法。</p>
 <p>Swift 中的类型转换是通过 <code>is</code> 和 <code>as</code> 操作符实现的。这两个操作符为值的类型检查或类型转换提供了一种简单而富有表现力的方法。</p>
-<p>你还可以使用类型转换来检查类型是否遵循协议，<br>如 <a href="doc:Protocols#检查是否遵循协议">doc:Protocols#检查是否遵循协议</a> 中所述。</p>
+<p>你还可以使用类型转换来检查类型是否遵循协议，<br>如 Protocols#检查是否遵循协议&gt; 中所述。</p>
 <h2 id="为类型转换定义类层次结构"><a href="#为类型转换定义类层次结构" class="headerlink" title="为类型转换定义类层次结构"></a>为类型转换定义类层次结构</h2><p>你可以使用类型转换在类和子类的层次结构中检查某个类实例的类型，并将该实例转换为同一层次结构中的另一个类。下面的三个代码片段定义了一个类层次结构和一个包含这些类的实例的数组，作为类型转换示例。</p>
 <p>第一个代码片段定义了一个新的名为 <code>MediaItem</code> 的基类。该类为数字媒体库中出现的任何类型项目提供基本功能。具体来说，它声明了一个 <code>String</code> 类型的 <code>name</code> 属性和一个 <code>init(name:)</code> 初始化器。（假设所有媒体项目，包括所有电影和歌曲，都有一个名称。）</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MediaItem</span> {</span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">name</span>: <span class="type">String</span>) {</span><br><span class="line">        <span class="keyword">self</span>.name <span class="operator">=</span> name</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>

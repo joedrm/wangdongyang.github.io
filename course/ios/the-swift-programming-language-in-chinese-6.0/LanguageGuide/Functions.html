@@ -58,8 +58,8 @@
 <meta property="og:site_name" content="那年星空">
 <meta property="og:description" content="函数定义和调用函数，标注参数并使用其返回值。 函数(Functions) 是执行特定任务的独立代码块。你可以通过给函数命名来标识某个函数的功能，这个名字可以被用来在需要的时候“调用”这个函数来完成它的任务。 Swift 的统一函数语法非常灵活，从没有形参名称的简单 C 风格函数到每个形参都有局部和外部参数名的复杂 Objective-C 风格方法，它都能表达。形参可以提供默认值，以简化函数调用，也">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-03-08T08:32:48.698Z">
-<meta property="article:modified_time" content="2025-03-08T08:32:48.698Z">
+<meta property="article:published_time" content="2025-03-08T08:41:45.540Z">
+<meta property="article:modified_time" content="2025-03-08T08:41:45.540Z">
 <meta property="article:author" content="joe">
 <meta name="twitter:card" content="summary">
 
@@ -248,7 +248,7 @@
 <p>–&gt;</p>
 <p>调用 <code>greet(person:)</code> 函数时，请在 <code>person</code> 参数标签后传递 <code>String</code> 值，例如 <code>greet(person: &quot;Anna&quot;)</code> 。由于函数返回的是 <code>String</code> 类型的值，因此 <code>greet(person:)</code> 可以被包含在 <code>print(_:separator:terminator:)</code> 的调用中，用来输出这个函数的返回值，如上所示。</p>
 <blockquote>
-<p>注意: <code>print(_:separator:terminator:)</code> 函数的第一个参数并没有设置一个标签，而其他的参数是可选的，因为他们已经有了默认值。<br>关于这些函数语法上的变化详见下方 <a href="doc:Functions#函数参数标签和参数名称">doc:Functions#函数参数标签和参数名称</a> 和 <a href="doc:Functions#默认参数值">doc:Functions#默认参数值</a>。</p>
+<p>注意: <code>print(_:separator:terminator:)</code> 函数的第一个参数并没有设置一个标签，而其他的参数是可选的，因为他们已经有了默认值。<br>关于这些函数语法上的变化详见下方 Functions#函数参数标签和参数名称&gt; 和 Functions#默认参数值&gt;。</p>
 </blockquote>
 <p>在 <code>greet(person:)</code> 的函数体中，先定义了一个新的名为 <code>greeting</code> 的 <code>String</code> 常量，并将其设置为简单的问候信息。然后用 <code>return</code> 关键字把这个问候返回出去。一旦 <code>return greeting</code> 被调用，该函数执行完毕并返回 <code>greeting</code> 的当前值。</p>
 <p>您可以使用不同的输入值多次调用 <code>greet(person:)</code> 函数。上面的示例显示了在输入值为 <code>&quot;Anna&quot;</code> 和 <code>&quot;Brian&quot;</code> 时调用该函数的结果。在每种情况下，函数都会返回一个定制的问候语。</p>
@@ -369,7 +369,7 @@ otherwise, using `_ = foo()` at the call site is better.
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; func greeting(for person: String) -&gt; String &#123;</span><br><span class="line">      &quot;Hello, &quot; + person + &quot;!&quot;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; print(greeting(for: &quot;Dave&quot;))</span><br><span class="line">&lt;- Hello, Dave!</span><br><span class="line">---</span><br><span class="line">-&gt; func anotherGreeting(for person: String) -&gt; String &#123;</span><br><span class="line">      return &quot;Hello, &quot; + person + &quot;!&quot;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; print(anotherGreeting(for: &quot;Dave&quot;))</span><br><span class="line">&lt;- Hello, Dave!</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
 <p><code>greeting(for:)</code> 函数的完整定义就是它返回的问候信息，这意味着它可以使用这种较短的形式。<code>anotherGreeting(for:)</code> 函数使用 <code>return</code> 关键字返回相同的问候信息但显得函数更长。如果您编写的函数只有一行 <code>return</code> ，则可以省略 <code>return</code> 。</p>
-<p>正如你将会在 <a href="doc:Properties#简化-Setter-声明">doc:Properties#简化-Setter-声明</a> 里看到的，属性的 getter 也可以使用隐式返回。</p>
+<p>正如你将会在 Properties#简化-Setter-声明&gt; 里看到的，属性的 getter 也可以使用隐式返回。</p>
 <blockquote>
 <p>注意:<br>作为隐式返回值编写的代码必须返回某个值。<br>例如，你不能使用 <code>print(13)</code> 作为隐式返回值。<br>然而，你可以使用不返回值的函数（如 <code>fatalError(&quot;Oh no!&quot;)</code>）作为隐式返回值，因为 Swift 知道它们并不会产生任何隐式返回。</p>
 </blockquote>
@@ -454,7 +454,7 @@ otherwise, using `_ = foo()` at the call site is better.
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// Unlabeled, immediately after</span><br><span class="line">&gt;&gt; func f(_ a: Int..., _ b: String) &#123;&#125;</span><br><span class="line">!$ error: a parameter following a variadic parameter requires a label</span><br><span class="line">!! func f(_ a: Int..., _ b: String) &#123;&#125;</span><br><span class="line">!! ^</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
 <h3 id="输入输出参数"><a href="#输入输出参数" class="headerlink" title="输入输出参数"></a>输入输出参数</h3><p>函数参数默认为常量。在函数体中更改函数参数的值会导致编译时错误。这意味着您不能错误地更改参数的值。如果您希望函数修改参数的值，并希望这些更改在函数调用结束后仍然有效，请将该参数定义为 <strong>in-out parameter（输入输出参数）</strong>。</p>
-<p>您可以通过在参数类型前添加 <code>inout</code> 关键字来编写输入输出参数。输入输出参数有一个值，该值 <strong>传入</strong> 给函数，被函数修改后，然后被 <strong>传出</strong> 函数，以替换原来的值。有关传入传出参数行为及相关编译器优化的详细讨论，请参阅 <a href="doc:Declarations#In-Out-参数">doc:Declarations#In-Out-参数</a>。</p>
+<p>您可以通过在参数类型前添加 <code>inout</code> 关键字来编写输入输出参数。输入输出参数有一个值，该值 <strong>传入</strong> 给函数，被函数修改后，然后被 <strong>传出</strong> 函数，以替换原来的值。有关传入传出参数行为及相关编译器优化的详细讨论，请参阅 Declarations#In-Out-参数&gt;。</p>
 <p>你只能传递变量给输入输出参数。不能传入常量或者字面量，因为这些是不能被修改的。当传入的参数作为输入输出参数时，需要在参数名前加 （<code>&amp;</code>） 符，表示这个值可以被函数修改。</p>
 <blockquote>
 <p>注意:<br>输入输出参数不能有默认值，而且可变参数不能标记为 <code>inout</code>。</p>

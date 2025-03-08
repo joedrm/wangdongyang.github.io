@@ -63,8 +63,8 @@
 <meta property="og:image" content="https://wanflutter.netlify.app/UTF8">
 <meta property="og:image" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/StringsAndCharacters/UTF16">
 <meta property="og:image" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/StringsAndCharacters/UnicodeScalar">
-<meta property="article:published_time" content="2025-03-08T08:32:48.705Z">
-<meta property="article:modified_time" content="2025-03-08T08:32:48.705Z">
+<meta property="article:published_time" content="2025-03-08T08:41:45.578Z">
+<meta property="article:modified_time" content="2025-03-08T08:41:45.578Z">
 <meta property="article:author" content="joe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://wanflutter.netlify.app/course/ios/the-swift-programming-language-in-chinese-6.0/LanguageGuide/StringsAndCharacters/multilineStringWhitespace">
@@ -305,7 +305,7 @@
 <ul>
 <li><p>转义字符 <code>\0</code>(空字符)、<code>\\</code>(反斜线)、<code>\r</code>(水平制表符)、<code>\t</code>(换行符)、<code>\n</code>(回车符)、<code>\&quot;</code>(双引号)、<code>\&#39;</code>(单引号)。</p>
 </li>
-<li><p>任意的 Unicode 标量，可以写成 <code>\u&#123;</code>n<code>&#125;</code>(u 为小写)，其中n为任意一到八位十六进制数且可用的 Unicode 位码。<br>(Unicode在文档<a href="doc:StringsAndCharacters#Unicode">doc:StringsAndCharacters#Unicode</a> 中进行解析讨论)</p>
+<li><p>任意的 Unicode 标量，可以写成 <code>\u&#123;</code>n<code>&#125;</code>(u 为小写)，其中n为任意一到八位十六进制数且可用的 Unicode 位码。<br>(Unicode在文档StringsAndCharacters#Unicode&gt; 中进行解析讨论)</p>
 </li>
 </ul>
 <!--
@@ -375,7 +375,7 @@
 <blockquote>
 <p>注意:<br>在 Objective-C 和 Cocoa 中，需要通过选择两个不同的类（NSString 和 NSMutableString）来指定字符串是否可以被修改。</p>
 </blockquote>
-<h2 id="字符串是值类型"><a href="#字符串是值类型" class="headerlink" title="字符串是值类型"></a>字符串是值类型</h2><p>在 Swift 中 <code>String</code> 类型是值类型。如果你创建了一个新的字符串，那么当其进行常量、变量赋值操作，或在函数&#x2F;方法中传递时，会进行值拷贝。在前述任一情况下，都会对已有字符串值创建新副本，并对该新副本而非原始字符串进行传递或赋值操作。值类型在<a href="doc:ClassesAndStructures#结构体和枚举是值类型">doc:ClassesAndStructures#结构体和枚举是值类型</a>中进行了详细描述。</p>
+<h2 id="字符串是值类型"><a href="#字符串是值类型" class="headerlink" title="字符串是值类型"></a>字符串是值类型</h2><p>在 Swift 中 <code>String</code> 类型是值类型。如果你创建了一个新的字符串，那么当其进行常量、变量赋值操作，或在函数&#x2F;方法中传递时，会进行值拷贝。在前述任一情况下，都会对已有字符串值创建新副本，并对该新副本而非原始字符串进行传递或赋值操作。值类型在ClassesAndStructures#结构体和枚举是值类型&gt;中进行了详细描述。</p>
 <p>Swift 默认拷贝 <code>String</code> 的行为保证了在函数&#x2F;方法向你传递的 <code>String</code> 所属权属于你，无论该值来自于哪里。你可以确信传递的 <code>String</code> 不会被修改，除非你自己去修改它。</p>
 <p>在实际编译时，Swift 编译器会优化字符串的使用，使实际的复制只发生在绝对必要的情况下，这意味着你将字符串作为值类型的同时可以获得极高的性能。</p>
 <h2 id="使用字符"><a href="#使用字符" class="headerlink" title="使用字符"></a>使用字符</h2><p>如果您想要获取某个字符串里的每一个字符值，可以采用 <code>for</code>-<code>in</code> 循环的方式对该字符串进行遍历操作，从而逐个访问到其中的每一个字符。</p>
@@ -386,7 +386,7 @@
 
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; for character in &quot;Dog!🐶&quot; &#123;</span><br><span class="line">      print(character)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;/ D</span><br><span class="line">&lt;/ o</span><br><span class="line">&lt;/ g</span><br><span class="line">&lt;/ !</span><br><span class="line">&lt;/ 🐶</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
-<p><code>for</code>-<code>in</code> 循环在 <a href="doc:ControlFlow#For-In-循环">doc:ControlFlow#For-In-循环</a>中进行了详细描述。</p>
+<p><code>for</code>-<code>in</code> 循环在 ControlFlow#For-In-循环&gt;中进行了详细描述。</p>
 <p>另外, 当您有一个只包含一个字符的字符串字面量时，通过明确给出 <code>Character</code> 这种类型的标注，就能够将其转化为一个独立存在的 <code>Character</code> 类型的常量或者变量。</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> exclamationMark: <span class="type">Character</span> <span class="operator">=</span> <span class="string">&quot;!&quot;</span></span><br></pre></td></tr></table></figure>
 
@@ -610,7 +610,7 @@
 <p>注意:<br><code>String</code> 和 <code>Substring</code> 都遵循<br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/stringprotocol"><code>StringProtocol</code></a>协议, 这意味着操作字符串的函数使用 <code>StringProtocol</code> 会更加方便。你可以传入 <code>String</code> 或 <code>Substring</code> 去调用函数。</p>
 </blockquote>
 <h2 id="比较字符串"><a href="#比较字符串" class="headerlink" title="比较字符串"></a>比较字符串</h2><p>Swift 提供了三种方式来比较文本值：字符串字符相等、前缀相等和后缀相等。</p>
-<h3 id="字符串和字符相等"><a href="#字符串和字符相等" class="headerlink" title="字符串和字符相等"></a>字符串和字符相等</h3><p>字符串/字符可以用等于操作符（<code>==</code>）和不等于操作符（<code>!=</code>），详细描述在 <a href="doc:BasicOperators#比较运算符">doc:BasicOperators#比较运算符</a>:</p>
+<h3 id="字符串和字符相等"><a href="#字符串和字符相等" class="headerlink" title="字符串和字符相等"></a>字符串和字符相等</h3><p>字符串/字符可以用等于操作符（<code>==</code>）和不等于操作符（<code>!=</code>），详细描述在 BasicOperators#比较运算符&gt;:</p>
 <figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> quotation <span class="operator">=</span> <span class="string">"We're a lot alike, you and I."</span></span><br><span class="line"><span class="keyword">let</span> sameQuotation <span class="operator">=</span> <span class="string">"We're a lot alike, you and I."</span></span><br><span class="line"><span class="keyword">if</span> quotation <span class="operator">==</span> sameQuotation {</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"These two strings are considered equal"</span>)</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 打印 "These two strings are considered equal"</span></span><br></pre></td></tr></tbody></table></figure>
 
 <!--
@@ -690,10 +690,10 @@
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; var mansionCount = 0</span><br><span class="line">-&gt; var cellCount = 0</span><br><span class="line">-&gt; for scene in romeoAndJuliet &#123;</span><br><span class="line">      if scene.hasSuffix(&quot;Capulet&#x27;s mansion&quot;) &#123;</span><br><span class="line">         mansionCount += 1</span><br><span class="line">      &#125; else if scene.hasSuffix(&quot;Friar Lawrence&#x27;s cell&quot;) &#123;</span><br><span class="line">         cellCount += 1</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">-&gt; print(&quot;\(mansionCount) mansion scenes; \(cellCount) cell scenes&quot;)</span><br><span class="line">&lt;- 6 mansion scenes; 2 cell scenes</span><br></pre></td></tr></table></figure>
 <p>–&gt;</p>
 <blockquote>
-<p>注意:<br><code>hasPrefix(*:)</code> 和 <code>hasSuffix(*:)</code> 方法都是在每个字符串中逐字符比较其可扩展的字符群集是否标准相等，详细描述在 <a href="doc:StringsAndCharacters#字符串和字符相等">doc:StringsAndCharacters#字符串和字符相等</a>.</p>
+<p>注意:<br><code>hasPrefix(*:)</code> 和 <code>hasSuffix(*:)</code> 方法都是在每个字符串中逐字符比较其可扩展的字符群集是否标准相等，详细描述在 StringsAndCharacters#字符串和字符相等&gt;.</p>
 </blockquote>
 <h2 id="字符串的-Unicode-表示形式"><a href="#字符串的-Unicode-表示形式" class="headerlink" title="字符串的 Unicode 表示形式"></a>字符串的 Unicode 表示形式</h2><p>当一个 Unicode 字符串被写进文本文件或者其他储存时，字符串中的 Unicode 标量会用 Unicode 定义的几种 <code>编码格式</code>（encoding forms）编码。每一个字符串中的小块编码都被称 <code>代码单元</code>（code units）。这些包括 UTF-8 编码格式（编码字符串为 8 位的代码单元），UTF-16 编码格式（编码字符串位 16 位的代码单元），以及 UTF-32 编码格式（编码字符串32位的代码单元）。</p>
-<p>Swift 提供了几种不同的方式来访问字符串的 Unicode 表示形式。你可以利用 <code>for-in</code> 来对字符串进行遍历，从而以 Unicode 可扩展的字符群集的方式访问每一个 <code>Character</code> 值。该过程在 <a href="doc:StringsAndCharacters#使用字符">doc:StringsAndCharacters#使用字符</a>中进行了描述。</p>
+<p>Swift 提供了几种不同的方式来访问字符串的 Unicode 表示形式。你可以利用 <code>for-in</code> 来对字符串进行遍历，从而以 Unicode 可扩展的字符群集的方式访问每一个 <code>Character</code> 值。该过程在 StringsAndCharacters#使用字符&gt;中进行了描述。</p>
 <p>另外，能够以其他三种 Unicode 兼容的方式访问字符串的值：</p>
 <ul>
 <li>UTF-8 代码单元集合（利用字符串的 <code>utf8</code> 属性进行访问）</li>
