@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Load 和 initialize 的不同地方有哪些?调用顺序不同，以main函数为分界，+load方法在 main 函数之前执行，+initialize 在main函数之后执行。子类中没有实现+load方法的话，子类不会调用父类的+load方法；而子类如果没有实现+initialize方法的话，也会自动调用父类的+initialize方法。+load方法是在类被装在进来的时候就会调用，+init">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/articles/2025%20iOS%20%E6%9C%80%E6%96%B0%E9%9D%A2%E8%AF%95%E9%A2%98.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="Load 和 initialize 的不同地方有哪些?调用顺序不同，以main函数为分界，+load方法在 main 函数之前执行，+initialize 在main函数之后执行。子类中没有实现+load方法的话，子类不会调用父类的+load方法；而子类如果没有实现+initialize方法的话，也会自动调用父类的+initialize方法。+load方法是在类被装在进来的时候就会调用，+init">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-04-15T07:53:29.708Z">
+<meta property="article:modified_time" content="2025-04-15T07:53:29.708Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/articles/2025%20iOS%20%E6%9C%80%E6%96%B0%E9%9D%A2%E8%AF%95%E9%A2%98">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><h2 id="Load-和-initialize-的不同地方有哪些"><a href="#Load-和-initialize-的不同地方有哪些" class="headerlink" title="Load 和 initialize 的不同地方有哪些?"></a>Load 和 initialize 的不同地方有哪些?</h2><p>调用顺序不同，以main函数为分界，<code>+load</code>方法在 main 函数之前执行，<code>+initialize</code> 在main函数之后执行。子类中没有实现<code>+load</code>方法的话，子类不会调用父类的<code>+load</code>方法；而子类如果没有实现<code>+initialize</code>方法的话，也会自动调用父类的<code>+initialize</code>方法。<code>+load</code>方法是在类被装在进来的时候就会调用，<code>+initialize</code>在实例化对象的时候调用，并且只会调用一次，是懒加载模式，如果这个类一直没有使用，就不回调用到<code>+initialize</code>方法。</p>
+<h2 id="链表和数组有什么区别"><a href="#链表和数组有什么区别" class="headerlink" title="链表和数组有什么区别?"></a>链表和数组有什么区别?</h2><p>数组和链表有以下不同：</p>
+<ol>
+<li>存储形式：数组是一块连续的空间，声明时就要确定长度。链表是一块可不连续的动态空间，长度可变，每个节点要保存相邻结点指针；</li>
+<li>数据查找：数组的线性查找速度快，查找操作直接使用偏移地址。链表需要按顺序检索结点，效率低。</li>
+<li>数据插入或删除：链表可以快速插入和删除结点，而数组则可能需要大量数据移动；</li>
+<li>越界问题：链表不存在越界问题，数组有越界问题。</li>
+<li>数组便于查询，链表便于插入删除。</li>
+<li>数组节省空间但是长度固定，链表虽然变长但是占了更多的存储空间。</li>
+</ol>
+<h2 id="说一说-iOS-的核心动画？"><a href="#说一说-iOS-的核心动画？" class="headerlink" title="说一说 iOS 的核心动画？"></a>说一说 iOS 的核心动画？</h2><p>动画有两种基本类型：隐式动画（一直存在，需要手动关闭）和显式动画（不存在，需要手动创建），在核心动画中，动画的实现原理是通过不断地修改<code>CALayer</code>的属性值来实现的。在实际使用中，我们通常使用 <code>animateWithDuration:animations:</code> 来创建核心动画。这些方法内部会自动创建核心动画，并将其添加到视图的<code>CALayer</code>中。</p>
+<p>动画的基本流程如下：</p>
+<ul>
+<li>创建动画对象：通过 UIView 的动画方法创建动画对象。</li>
+<li>指定动画属性：设置动画对象所要改变的属性值。</li>
+<li>指定动画时长：设置动画对象的持续时间。</li>
+<li>指定动画曲线：设置动画对象的动画曲线，用于控制动画的速度。</li>
+<li>指定动画完成后的操作：设置动画结束后需要执行的操作。</li>
+<li>开始动画：将动画对象添加到视图的CALayer中，开始动画。</li>
+</ul>
+<p>CAAnimation动画分类:</p>
+<ol>
+<li>基础动画（如物品放入购物车进行移动）( CABasicAnimation)</li>
+<li>关键帧动画，图片帧（如人、动物走动）( CAKeyframAnimation)</li>
+<li>转场动画（一个到另一个场景，如翻页）( CATransition)</li>
+<li>组合动画（ CAAnimationGroup）</li>
+</ol>
+<p>可以做动画的值：</p>
+<ol>
+<li>形状系列: frame bounds</li>
+<li>位置系列: center</li>
+<li>色彩系列: alpha color</li>
+<li>角度系列: transform(旋转的角度)</li>
+</ol>
+<h2 id="应用程序的生命周期函数主要有哪些？"><a href="#应用程序的生命周期函数主要有哪些？" class="headerlink" title="应用程序的生命周期函数主要有哪些？"></a>应用程序的生命周期函数主要有哪些？</h2><ul>
+<li>application:willFinishLaunchingWithOptions: 程序启动</li>
+<li>application:didFinishLaunchingWithOptions: 入口，只执行一次，启动完成准备开始运行。</li>
+<li>applicationWillResignActive: 切换到非活动状态，如按下home键、切换程序。</li>
+<li>applicationDidBecomeActive: 切换到激活状态</li>
+<li>applicationDidEnterBackground: 应用程序进入后台</li>
+<li>applicationWillEnterForeground: 应用程序将要被激活</li>
+<li>applicationWillTerminate: 应用程序将要退出</li>
+</ul>
+<h2 id="在一个HTTPS连接的网络中，输入账号和密码并单击登陆按钮后，到服务器返回这个请求前，这期间经历了？"><a href="#在一个HTTPS连接的网络中，输入账号和密码并单击登陆按钮后，到服务器返回这个请求前，这期间经历了？" class="headerlink" title="在一个HTTPS连接的网络中，输入账号和密码并单击登陆按钮后，到服务器返回这个请求前，这期间经历了？"></a>在一个HTTPS连接的网络中，输入账号和密码并单击登陆按钮后，到服务器返回这个请求前，这期间经历了？</h2><ol>
+<li>客户端打包请求。包括URL、端口、账号和密码等。使用POST加载到body中,发送给服务器</li>
+<li>服务器端接受请求，返回数字证书。</li>
+<li>客户端根据收到的证书，生成加密信息。并发送加密信息。</li>
+<li>服务端解锁加密信息，然后返回给客户端。</li>
+<li>客户端解锁返回信息。将内容显示在浏览器上。</li>
+</ol>
+<h2 id="多线程的实际应用场景中，回到主线程的方法有哪些？"><a href="#多线程的实际应用场景中，回到主线程的方法有哪些？" class="headerlink" title="多线程的实际应用场景中，回到主线程的方法有哪些？"></a>多线程的实际应用场景中，回到主线程的方法有哪些？</h2><ol>
+<li><p>通过 <code>performSelectorOnMainThread</code> 方法将任务调度到主线程执行。</p>
+ <figure class="highlight objc"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在子线程中调用</span></span><br><span class="line">[<span class="keyword">self</span> performSelectorOnMainThread:<span class="keyword">@selector</span>(updateUI) withObject:<span class="literal">nil</span> waitUntilDone:<span class="literal">NO</span>];</span><br><span class="line"></span><br><span class="line">- (<span class="type">void</span>)updateUI {</span><br><span class="line">    <span class="keyword">self</span>.label.text = <span class="string">@"更新后的文本"</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></li>
+<li><p>使用 <code>GCD</code> 的 <code>dispatch_get_main_queue</code>。</p>
+ <figure class="highlight objc"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">dispatch_async</span>(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, <span class="number">0</span>), ^{</span><br><span class="line">    <span class="comment">// 子线程执行耗时操作</span></span><br><span class="line">    <span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^{</span><br><span class="line">        <span class="keyword">self</span>.imageView.image = downloadedImage; <span class="comment">// 回到主线程更新UI</span></span><br><span class="line">    });</span><br><span class="line">});</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>使用 <code>NSOperationQueue</code> 将任务添加到主队列（mainQueue）实现主线程操作。</p>
+ <figure class="highlight objc"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSOperationQueue</span> *backgroundQueue = [[<span class="built_in">NSOperationQueue</span> alloc] init];</span><br><span class="line">[backgroundQueue addOperationWithBlock:^{</span><br><span class="line">    <span class="comment">// 子线程执行耗时操作</span></span><br><span class="line">    [[<span class="built_in">NSOperationQueue</span> mainQueue] addOperationWithBlock:^{</span><br><span class="line">        <span class="keyword">self</span>.progressView.progress = <span class="number">1.0</span>; <span class="comment">// 回到主线程</span></span><br><span class="line">    }];</span><br><span class="line">}];</span><br></pre></td></tr></tbody></table></figure></li>
+</ol>
+<p>优先使用GCD：代码简洁且性能高效，适合大多数场景。复杂任务用NSOperation：如需要任务取消、依赖关系或优先级控制。</p>
+<h2 id="谈谈对-GCD-的理解？"><a href="#谈谈对-GCD-的理解？" class="headerlink" title="谈谈对 GCD 的理解？"></a>谈谈对 GCD 的理解？</h2><p>最多支持创建64个线程，GCD中有两个核心概念，队列和任务。队列其实就是线程池，存放着任务，队列分串行队列和并发队列。任务是线程执行的代码，在队列中执行任务有两种方式：同步执行和异步执行。</p>
+<ul>
+<li>串行队列：按顺序执行。</li>
+<li>并发队列：同一时间间隔执行多个任务</li>
+<li>并行是真的有多个CPU 同时处理任务（多个线程在不同核上跑）</li>
+<li>并发是只有一个CPU ，单核高频切换任务，使用户觉得多个任务同时执行</li>
+<li>并行是同一时间执行多个任务</li>
+<li>并发是同一一时间间隔，执行多个任务</li>
+</ul>
+<p>同步执行：不会开启新的线程，任务按顺序执行。<br>异步执行：会开启新的线程，任务可以并发执行。<br>区别：会不会开启新的线程。</p>
+<p>组合：<br>同步串行队列：one by one<br>异步串行队列：one by one （因为前一个任务不执行完毕，队列不会调度）<br>同步并行队列：one by one （因为同步执行不会开启新的线程）<br>异步并发队列：可以实现任务的并发，经常用到。<br>主队列：主队列是串行队列，只有一个主线程，添加到主队列中的任务会在主线程执行。通过dispatch_get_main_queue获取主队列。<br>全局队列：全局队列是并发队列。可以通过dispatch_get_global_queue获取不同级别的全局队列。<br>同步主队列：死锁卡住不执行。<br>主队列异步：one by one （因为没有开启新线程）。</p>
+<h2 id="dispatch-barrier-async（栅栏函数）的作用是什么？"><a href="#dispatch-barrier-async（栅栏函数）的作用是什么？" class="headerlink" title="dispatch_barrier_async（栅栏函数）的作用是什么？"></a>dispatch_barrier_async（栅栏函数）的作用是什么？</h2><p>作用：</p>
+<ol>
+<li>在它前面的任务执行结束后它才执行，它后面的任务要等它执行完成后才会开始执行。</li>
+<li>避免数据竞争</li>
+</ol>
+<h2 id="多线程是如何产生死锁和死锁的原因？"><a href="#多线程是如何产生死锁和死锁的原因？" class="headerlink" title="多线程是如何产生死锁和死锁的原因？"></a>多线程是如何产生死锁和死锁的原因？</h2><p>所谓死锁: 是指两个或两个以上的进程（线程）在执行过程中，因争夺资源（如数据源，内存等，变量不是资源）而造成的一种互相等待的现象。主线程串行队列同步执行任务，会产生死锁</p>
+<p>死锁形成的原因：系统资源不足; 进程（线程）推进的顺序不恰当; 资源分配不当</p>
+<p>死锁形成的条件：<br>互斥： 一个资源每次都只能被一个进程占用。<br>占有且等待：一个进程本身占有资源（一种或多种），同时还有资源未得到满足，正在等待其他进程释放该资源。<br>不可抢占：别人已经占有了某项资源，你不能因为自己需要资源而去抢占其他资源。<br>循环等待： 存在一个进程链，使得每个进程都占有下一个进程所需要的至少一种资源。</p>
+<h2 id="消息发送机制流程"><a href="#消息发送机制流程" class="headerlink" title="消息发送机制流程"></a>消息发送机制流程</h2><p>消息机制 <code>objc_msgSend</code> 的执行流程，分为消息发送、动态方法解析、消息转发三个阶段<br>消息发送：当调用某个对象的方法的时候，会通过isa指针找到该类的 <code>cache</code> 缓存列表中查找，如果没有找到就去方法列表中查找，如果还没有找到就去他的父类中查找，直到最后查找到后为<code>nil</code>。然后就调用动态解析方法(是指在运行时通过类的<code>resolve method</code>方法动态为这个这个方法创建实现，如果还是没有找到,)。最后通过消息转发，把这个消息发送给其他对象来找这个方法。最后还没找到，就会抛出异常。</p>
+<h2 id="动态库与静态库的区别？"><a href="#动态库与静态库的区别？" class="headerlink" title="动态库与静态库的区别？"></a>动态库与静态库的区别？</h2><p>编译方式不同。静态库是在编译时将库的代码打包到可执行程序中，动态库则是在运行时动态加载到程序中的。</p>
+<h2 id="分类（category）和类扩展（Extension）的区别？"><a href="#分类（category）和类扩展（Extension）的区别？" class="headerlink" title="分类（category）和类扩展（Extension）的区别？"></a>分类（category）和类扩展（Extension）的区别？</h2><ol>
+<li>类别原则上只能添加方法而不能添加属性（能添加属性的原因只是通过runtime解决无setter/getter方法的问题</li>
+<li>类扩展不仅可以增加方法，还可以增加实例变量（或者属性），只是该变量默认是@private类型的。</li>
+<li>类扩展中声明的方法没被实现，编译器会报警，但是类别中的方法没被实现编译器是不会有任何警告的，这是因为类扩展是在编译阶段被添加到类中，而分类是在运行时添加到类中。</li>
+<li>类扩展不能像类别那样拥有独立的实现部分（@implementation部分），和本类共享一个实现。也就是说，类扩展所声明的方法必须依托对应宿主类的实现部分来实现。</li>
+</ol>
+<h2 id="属性关键字-readwrite，readonly，assign，retain，copy，nonatomic-各是什么作用，在那种情况下用？"><a href="#属性关键字-readwrite，readonly，assign，retain，copy，nonatomic-各是什么作用，在那种情况下用？" class="headerlink" title="属性关键字 readwrite，readonly，assign，retain，copy，nonatomic 各是什么作用，在那种情况下用？"></a>属性关键字 readwrite，readonly，assign，retain，copy，nonatomic 各是什么作用，在那种情况下用？</h2><ol>
+<li>readwrite 是可读可写特性。需要生成 getter 方法和 setter 方法。</li>
+<li>readonly 是只读特性。只会生成getter方法，不会生成setter方法，不希望属性在类外改变。</li>
+<li>assign 是赋值特性。setter方法将传入参数赋值给实例变量;仅设置变量时,assign用于基本数据类型。</li>
+<li>retain(MRC)/strong(ARC) 表示持有特性。setter方法将传入参数先保留，再赋值，传入参数的retaincount会+1。</li>
+<li>copy 表示拷贝特性。setter方法将传入对象复制一份，需要完全一份新的变量时。</li>
+<li>nonatomic 非原子操作。决定编译器生成的setter和getter方法是否是原子操作，atomic表示多线程安全，一般使用nonatomic，效率高。</li>
+</ol>
+<h2 id="用-property声明的-NSString-NSArray-NSDictionary-经常使用-copy-关键字，为什么？如果改用strong关键字，可能造成什么问题？"><a href="#用-property声明的-NSString-NSArray-NSDictionary-经常使用-copy-关键字，为什么？如果改用strong关键字，可能造成什么问题？" class="headerlink" title="用@property声明的 NSString / NSArray / NSDictionary 经常使用 copy 关键字，为什么？如果改用strong关键字，可能造成什么问题？"></a>用@property声明的 NSString / NSArray / NSDictionary 经常使用 copy 关键字，为什么？如果改用strong关键字，可能造成什么问题？</h2><p>如果我们使用是<code>strong</code>，那么这个属性赋值为可变对象，如果这个可变对象在外部被修改了,那么会影响该属性。使用copy的目的是，防止把可变类型的对象赋值给不可变类型的对象时，可变类型对象的值发送变化会无意间篡改不可变类型对象原来的值。</p>
+<h2 id="浅拷贝和深拷贝的区别？"><a href="#浅拷贝和深拷贝的区别？" class="headerlink" title="浅拷贝和深拷贝的区别？"></a>浅拷贝和深拷贝的区别？</h2><p>浅拷贝：只复制指向对象的指针，而不复制引用对象本身。<br>深拷贝：复制引用对象本身。内存中存在了两份独立对象本身，当修改A时，A_copy 不变。<br>区别是会不会生成一个新的对象。</p>
+<h2 id="这个写法会出什么问题？"><a href="#这个写法会出什么问题？" class="headerlink" title="这个写法会出什么问题？"></a>这个写法会出什么问题？</h2><figure class="highlight objc"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSMutableArray</span> *arr;</span><br></pre></td></tr></tbody></table></figure>
+<p>问题：添加,删除,修改数组内的元素的时候,程序会因为找不到对应的方法而崩溃。<br>原因：是因为 copy 就是复制一个不可变 NSArray 的对象，不能对 NSArray 对象进行添加/修改。</p>
+<h2 id="常见的-Objective-C-的数据类型有那些，和C的基本数据类型有什么区别？如：NSInteger和int"><a href="#常见的-Objective-C-的数据类型有那些，和C的基本数据类型有什么区别？如：NSInteger和int" class="headerlink" title="常见的 Objective-C 的数据类型有那些，和C的基本数据类型有什么区别？如：NSInteger和int"></a>常见的 Objective-C 的数据类型有那些，和C的基本数据类型有什么区别？如：NSInteger和int</h2><p>Objective-C的数据类型有NSString，NSNumber，NSArray，NSMutableArray，NSData等等，这些都是class，创建后便是对象，而C语言的基本数据类型int，只是一定字节的内存空间，用于存放数值;NSInteger是基本数据类型，并不是NSNumber的子类，当然也不是NSObject的子类。NSInteger是基本数据类型Int或者Long的别名(NSInteger的定义typedef long NSInteger)，<strong>它的区别在于，NSInteger会根据系统是32位还是64位来决定是本身是int还是long。</strong></p>
+<h2 id="id-声明的对象有什么特性？IOS开发之-bridge，-bridge-transfer和-bridge-retained"><a href="#id-声明的对象有什么特性？IOS开发之-bridge，-bridge-transfer和-bridge-retained" class="headerlink" title=".id 声明的对象有什么特性？IOS开发之__bridge，__bridge_transfer和__bridge_retained"></a>.id 声明的对象有什么特性？IOS开发之__bridge，__bridge_transfer和__bridge_retained</h2><p>id 声明的对象具有运行时的特性，即可以指向任意类型的Objcetive-C的对象</p>
+<ul>
+<li>__bridge 关键字来实现id类型与void*类型的相互转换</li>
+<li>__bridge_retained：类型被转换时，其对象的所有权也将被变换后变量所持有</li>
+<li>__bridge_transfer:在类型转换后，让其释放原先所有权的时候</li>
+</ul>
+<h2 id="Objective-C-如何对内存管理的，说说你的看法和解决方法？"><a href="#Objective-C-如何对内存管理的，说说你的看法和解决方法？" class="headerlink" title="Objective-C 如何对内存管理的，说说你的看法和解决方法？"></a>Objective-C 如何对内存管理的，说说你的看法和解决方法？</h2><p>Objective-C 的内存管理主要有三种方式ARC(自动内存计数)、手动内存计数、内存池。</p>
+<ol>
+<li>自动内存计数 ARC：由 Xcode 自动在App编译阶段，在代码中添加内存管理代码。</li>
+<li>手动内存计数 MRC：遵循内存谁申请、谁释放；谁添加，谁释放的原则。</li>
+<li>内存释放池 Release Pool：把需要释放的内存统一放在一个池子中，当池子被抽干后(drain)，池子中所有的内存空间也被自动释放掉。内存池的释放操作分为自动和手动。自动释放受runloop机制影响。</li>
+</ol>
+<h2 id="HTTPS-和-HTTP-的区别？"><a href="#HTTPS-和-HTTP-的区别？" class="headerlink" title="HTTPS 和 HTTP 的区别？"></a>HTTPS 和 HTTP 的区别？</h2><ol>
+<li>https协议需要到ca申请证书，一般免费证书很少，需要交费。</li>
+<li>http是超文本传输协议，信息是明文传输，https 则是具有安全性的 ssl 加密传输协议。</li>
+<li>http和https使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。</li>
+<li>http的连接很简单，是无状态的；HTTPS 协议是由 SSL+HTTP 协议构建的可进行加密传输、身份认证的网络协议，比 http 协议安全。</li>
+</ol>
+<h2 id="为什么我们常见的-delegate-属性都用是-weak-而不是-retain-strong？"><a href="#为什么我们常见的-delegate-属性都用是-weak-而不是-retain-strong？" class="headerlink" title="为什么我们常见的 delegate 属性都用是 weak 而不是 retain/strong？"></a>为什么我们常见的 delegate 属性都用是 weak 而不是 retain/strong？</h2><p>是为了防止delegate两端产生不必要的循环引用。</p>
+<figure class="highlight objc"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>) <span class="type">id</span>&lt;<span class="built_in">UITableViewDelegate</span>&gt; delegate;</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="delegate-Notification-KVO-区别？"><a href="#delegate-Notification-KVO-区别？" class="headerlink" title=".delegate Notification KVO 区别？"></a>.delegate Notification KVO 区别？</h2><ul>
+<li>KVO 适合多对一的监听。</li>
+<li>delegate 基于协议 protocol 实现,一对一通信。</li>
+<li>notification 通知中心，多对一通信。</li>
+</ul>
+<h2 id="开发中常用的锁有如下几种？"><a href="#开发中常用的锁有如下几种？" class="headerlink" title="开发中常用的锁有如下几种？"></a>开发中常用的锁有如下几种？</h2><ol>
+<li>@synchronized.  </li>
+<li>NSLock 对象锁  </li>
+<li>NSRecursiveLock 递归锁  </li>
+<li>pthread_mutex 互斥锁（C语言） </li>
+<li>dispatch_semaphore 信号量实现加锁（GCD）信号量是一个计数器，大于0时继续执行，小于等于0时线程等待，可以通过加减信号量来实现加解锁。</li>
+</ol>
+<h2 id="KVC的底层实现？"><a href="#KVC的底层实现？" class="headerlink" title="KVC的底层实现？"></a>KVC的底层实现？</h2><p>当一个对象调用 setValue 方法时，方法内部会做以下操作：</p>
+<ol>
+<li>检查是否存在相应的key的set方法，如果存在，就调用 set 方法。</li>
+<li>如果 set 方法不存在，就会查找与 key 相同名称并且带下划线的成员变量，如果有，则直接给成员变量属性赋值。</li>
+<li>如果没有找到 _key，就会查找相同名称的属性 key，如果有就直接赋值。</li>
+<li>如果还没有找到，则调用 valueForUndefinedKey:和setValue:forUndefinedKey: 方法。</li>
+</ol>
+<p>这些方法的默认实现都是抛出异常，我们可以根据需要重写它们。</p>
+<h2 id="KVO内部实现原理"><a href="#KVO内部实现原理" class="headerlink" title="KVO内部实现原理"></a>KVO内部实现原理</h2><ol>
+<li>KVO是基于 runtime 机制实现的</li>
+<li>当某个类的属性对象第一次被观察时，系统就会在运行期动态地创建该类的一个派生类，在这个派生类中重写基类中任何被观察属性的 setter 方法。派生类在被重写的 setter 方法内实现真正的通知机制</li>
+<li>如果原类为 Person，那么生成的派生类名为 NSKVONotifying_Person</li>
+<li>键值观察通知依赖于 NSObject 的两个方法: willChangeValueForKey: 和 didChangevalueForKey。</li>
+</ol>
+<h2 id="你是否接触过OC中的反射机制？简单聊一下概念和使用"><a href="#你是否接触过OC中的反射机制？简单聊一下概念和使用" class="headerlink" title="你是否接触过OC中的反射机制？简单聊一下概念和使用"></a>你是否接触过OC中的反射机制？简单聊一下概念和使用</h2><ol>
+<li>class反射，通过类名的字符串形式实例化对象，将类名变为字符串，如：NSClassFromString。NSClassFromString。</li>
+<li>SEL的反射 NSSelectorFromString NSStringFromSelector。</li>
+</ol>
+<h2 id="const、static、extern、inline-简介"><a href="#const、static、extern、inline-简介" class="headerlink" title="const、static、extern、inline 简介"></a>const、static、extern、inline 简介</h2><p>const 常量<br>static 作静态变量，static 与const 联合使用:声明一个只读的静态变量<br>extern 作用只是用来获取全局变量(包括全局静态变量)的值，不能用于定义变量<br>extern 与 const 联合使用:在”多个文件中”经常使用的同一个字符串常量，可以使用extern与const组合。<br>inline 内联函数.作用:替代宏.</p>
+<p>inline 内联函数的说明</p>
+<ol>
+<li>内联函数只是我们向编译器提供的申请,编译器不一定采取inline形式调用函数。</li>
+<li>内联函数不能承载大量的代码.如果内联函数的函数体过大,编译器会自动放弃内联。</li>
+<li>内联函数内不允许使用循环语句或开关语句。</li>
+<li>内联函数的定义须在调用之前。</li>
+</ol>
+<h2 id="iOS开发中-nil、Nil、NULL-和-NSNull-null-的区别？"><a href="#iOS开发中-nil、Nil、NULL-和-NSNull-null-的区别？" class="headerlink" title="iOS开发中 nil、Nil、NULL 和 [NSNull null] 的区别？"></a>iOS开发中 nil、Nil、NULL 和 [NSNull null] 的区别？</h2><ul>
+<li>nil：（定义空实例的id），当一个对象置为nil时，这个对象的内存地址就会被系统收回。</li>
+<li>Nil：（定义空类的id），nil完全等同于Nil。</li>
+<li>NULL：返回NSNull的单例实例），是一个简单的空指针。</li>
+<li>NSNull null：（他是一个oc类，用于表示集合中的空值的对象，比如 array）。</li>
+</ul>
+<h2 id="UIView-和-CALayer-的关系？"><a href="#UIView-和-CALayer-的关系？" class="headerlink" title="UIView 和 CALayer 的关系？"></a>UIView 和 CALayer 的关系？</h2><p>UIView 负责响应事件，CALayer 负责绘制 UI。<br>UIView 中持有一个 layer 属性。</p>
+<h2 id="属性引用self-xx与-xx的区别"><a href="#属性引用self-xx与-xx的区别" class="headerlink" title="属性引用self.xx与_xx的区别"></a>属性引用self.xx与_xx的区别</h2><p>其中 self.xx 是调用的xx属性的 get/set 方法，而 _xx 则只是使用成员变量 _xx，并不会调用 get/set 方法。属性有 get set 方法，成员变量没有。</p>
+<h2 id="id、instancetype-有什么区别？"><a href="#id、instancetype-有什么区别？" class="headerlink" title="id、instancetype 有什么区别？"></a>id、instancetype 有什么区别？</h2><p>instancetype 和 id 都是万能指针，指向对象。<br>不同点：</p>
+<ol>
+<li>id 在编译的时候不能判断对象的真实类型，instancetype 在编译的时候可以判断对象的真实类型。</li>
+<li>id 可以用来定义变量，可以作为返回值类型，可以作为形参类型；instancetype 只能作为返回值类型。</li>
+</ol>
+<h2 id="什么是谓词？"><a href="#什么是谓词？" class="headerlink" title="什么是谓词？"></a>什么是谓词？</h2><p><code>NSPredicate</code> 相当于过滤器</p>
+<figure class="highlight objc"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSPredicate</span> *predicate = [<span class="built_in">NSPredicate</span> predicateWithFormat:<span class="string">@"SELF &gt; 2 &amp;&amp; SELF &lt; 5"</span>];</span><br><span class="line"><span class="built_in">NSArray</span> *filterArray = [testArray filteredArrayUsingPredicate:predicate];</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="如何访问并修改一个类的私有属性？"><a href="#如何访问并修改一个类的私有属性？" class="headerlink" title="如何访问并修改一个类的私有属性？"></a>如何访问并修改一个类的私有属性？</h2><ol>
+<li>KVC。我们可以用 setValue：的方法设置私有属性，并利用 valueForKey：的方法访问私有属性。</li>
+<li>runtime。我们可以利用 runtime 获取某个类的所有属性（私有属性、非私有属性），在获取到某个类的属性后就可以对该属性进行访问以及修改了。</li>
+</ol>
+<h2 id="一个-objc-对象的-isa-的指针指向什么？有什么作用？"><a href="#一个-objc-对象的-isa-的指针指向什么？有什么作用？" class="headerlink" title="一个 objc 对象的 isa 的指针指向什么？有什么作用？"></a>一个 objc 对象的 isa 的指针指向什么？有什么作用？</h2><p>类的 isa 指向元类（meta class），元类 isa 指向元类的根类。isa：是一个Class 类型的指针。isa帮助一个对象找到它的方法。每个实例对象有个 isa 的指针。</p>
+<h2 id="isKindOfClass、isMemberOfClass、selector-作用分别是什么？"><a href="#isKindOfClass、isMemberOfClass、selector-作用分别是什么？" class="headerlink" title=".isKindOfClass、isMemberOfClass、selector 作用分别是什么？"></a>.isKindOfClass、isMemberOfClass、selector 作用分别是什么？</h2><ul>
+<li>isKindOfClass：作用是某个对象属于某个类型或者继承自某类型。</li>
+<li>isMemberOfClass：某个对象确切属于某个类型。</li>
+<li>selector：通过方法名，获取在内存中的函数的入口地址。</li>
+</ul>
+<h2 id="delegate-和-notification-的区别"><a href="#delegate-和-notification-的区别" class="headerlink" title="delegate 和 notification 的区别"></a>delegate 和 notification 的区别</h2><ol>
+<li>二者都用于传递消息，不同之处主要在于一个是一对一的，另一个是一对多的。</li>
+<li>notification 通过维护一个 array，实现一对多消息的转发。</li>
+<li>delegate 需要两者之间必须建立联系，不然没法调用代理的方法；notification 不需要两者之间有联系。</li>
+</ol>
+<h2 id="Objective-C-的类可以多重继承么？可以实现多个接口么？Category-是什么？重写一个类的方式用继承好还是分类好？为什么？"><a href="#Objective-C-的类可以多重继承么？可以实现多个接口么？Category-是什么？重写一个类的方式用继承好还是分类好？为什么？" class="headerlink" title="Objective-C 的类可以多重继承么？可以实现多个接口么？Category 是什么？重写一个类的方式用继承好还是分类好？为什么？"></a>Objective-C 的类可以多重继承么？可以实现多个接口么？Category 是什么？重写一个类的方式用继承好还是分类好？为什么？</h2><p>Objective-C 的类不可以多重继承；可以实现多个接口（协议）；Category 是类别；一般情况用分类好，用Category 去重写类的方法，仅对本 Category 有效，不会影响到其他类与原有类的关系。</p>
+<h2 id="layoutSubviews-的作用和调用机制是什么？"><a href="#layoutSubviews-的作用和调用机制是什么？" class="headerlink" title="layoutSubviews 的作用和调用机制是什么？"></a>layoutSubviews 的作用和调用机制是什么？</h2><ol>
+<li>layoutSubviews作用，更新子视图的位置的时候，通过调用 layoutSubviews 方法，实现对子视图重新布局。 </li>
+<li>layoutSubviews调用机制<ul>
+<li>直接调用setLayoutSubviews。</li>
+<li>addSubview的时候触发layoutSubviews。</li>
+<li>当view的frame发生改变的时候触发layoutSubviews。</li>
+<li>第一次滑动UIScrollView的时候触发layoutSubviews。</li>
+<li>旋转Screen会触发父UIView上的layoutSubviews事件。</li>
+<li>改变一个UIView大小的时候也会触发父UIView上的layoutSubviews事件。</li>
+<li>init初始化不会触发layoutSubviews，但是使用initWithFrame进行初始化时，当rect的值不为CGRectZero时，也会触发。</li>
+</ul>
+</li>
+<li>其他<ul>
+<li><code>- (void)layoutSubviews;</code>这个方法，默认没有做任何事情，需要子类进行重写；</li>
+<li><code>- (void)setNeedsLayout;</code>标记为需要重新布局，异步调用layoutIfNeeded刷新布局，不立即刷新，但layoutSubviews一定会被调用；</li>
+<li><code>- (void)layoutIfNeeded;</code>如果，有需要刷新的标记，立即调用<code>layoutSubviews</code>进行布局（如果没有标记，不会调用layoutSubviews）。</li>
+</ul>
+</li>
+</ol>
+<h2 id="BAD-ACCESS-在什么情况下出现？"><a href="#BAD-ACCESS-在什么情况下出现？" class="headerlink" title="BAD_ACCESS 在什么情况下出现？"></a>BAD_ACCESS 在什么情况下出现？</h2><p>这种问题在开发时经常遇到。原因是访问了<code>野指针</code>，比如访问已经释放对象的成员变量或者发消息、死循环等。</p>
+<h2 id="iOS的沙盒目录结构是怎样的？"><a href="#iOS的沙盒目录结构是怎样的？" class="headerlink" title="iOS的沙盒目录结构是怎样的？"></a>iOS的沙盒目录结构是怎样的？</h2><ol>
+<li>Application：存放程序源文件，上架前经过数字签名，上架后不可修改。</li>
+<li>Documents：常用目录，iCloud备份目录，存放数据。（这里不能存缓存文件，否则上架不被通过）</li>
+<li>Library：<ul>
+<li>Caches：存放体积大又不需要备份的数据。(常用的缓存路径)</li>
+<li>Preference：设置目录，iCloud会备份设置信息。</li>
+</ul>
+</li>
+<li>tmp：存放临时文件，不会被备份，而且这个文件下的数据有可能随时被清除的可能。</li>
+</ol>
+<h2 id="用-dispatch-source-实现可取消的定时器？"><a href="#用-dispatch-source-实现可取消的定时器？" class="headerlink" title="用 dispatch_source 实现可取消的定时器？"></a>用 dispatch_source 实现可取消的定时器？</h2><figure class="highlight objc"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> CancelableTimer {</span><br><span class="line">    private var timer: DispatchSourceTimer?</span><br><span class="line">    private var count: Int = <span class="number">0</span></span><br><span class="line">    private let totalCount: Int</span><br><span class="line">    </span><br><span class="line">    init(totalCount: Int, interval: TimeInterval, handler: @escaping (Int) -&gt; Void) {</span><br><span class="line">        <span class="keyword">self</span>.totalCount = totalCount</span><br><span class="line">        setupTimer(interval: interval, handler: handler)</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// MARK: - 创建定时器</span></span><br><span class="line">    private func setupTimer(interval: TimeInterval, handler: @escaping (Int) -&gt; Void) {</span><br><span class="line">        let queue = DispatchQueue.global(qos: .background)</span><br><span class="line">        timer = DispatchSource.makeTimerSource(queue: queue)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 配置定时器参数（精度允许 0.1 秒误差）</span></span><br><span class="line">        timer?.schedule(deadline: .now(), repeating: interval, leeway: .milliseconds(<span class="number">100</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 设置事件回调</span></span><br><span class="line">        timer?.setEventHandler { [<span class="keyword">weak</span> <span class="keyword">self</span>] <span class="keyword">in</span></span><br><span class="line">            guard let <span class="keyword">self</span> = <span class="keyword">self</span> <span class="keyword">else</span> { <span class="keyword">return</span> }</span><br><span class="line">            <span class="keyword">self</span>.count += <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 主线程更新 UI</span></span><br><span class="line">            DispatchQueue.main.async {</span><br><span class="line">                handler(<span class="keyword">self</span>.count)</span><br><span class="line">            }</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 达到总次数后自动取消</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">self</span>.count &gt;= <span class="keyword">self</span>.totalCount {</span><br><span class="line">                <span class="keyword">self</span>.cancel()</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 启动定时器</span></span><br><span class="line">        timer?.resume()</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// MARK: - 手动取消定时器</span></span><br><span class="line">    func cancel() {</span><br><span class="line">        timer?.cancel()</span><br><span class="line">        timer = <span class="literal">nil</span> <span class="comment">// 避免野指针</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="请简单的介绍下-APNS-发送系统消息的机制？"><a href="#请简单的介绍下-APNS-发送系统消息的机制？" class="headerlink" title="请简单的介绍下 APNS 发送系统消息的机制？"></a>请简单的介绍下 APNS 发送系统消息的机制？</h2><p>APNS的原理：</p>
+<ol>
+<li>应用在通知中心注册，由iOS系统向APNS请求返回设备令牌(device Token)。</li>
+<li>应用程序接收到设备令牌并发送给自己的后台服务器。</li>
+<li>服务器把要推送的内容和设备发送给 APNS。</li>
+<li>APNS根据设备令牌找到设备，再由 iOS 根据 APPID 把推送内容展示。</li>
+</ol>
+<h2 id="日常开发中如何检查内存泄漏的？"><a href="#日常开发中如何检查内存泄漏的？" class="headerlink" title="日常开发中如何检查内存泄漏的？"></a>日常开发中如何检查内存泄漏的？</h2><p>静态分析方法（Analyze）和动态分析方法（Instrument的leak）。</p>
+<p>Analyze 优点：</p>
+<ol>
+<li>能够在编码阶段，开发自行进行代码检查。早期发现代码隐患。</li>
+<li>直接分析源代码来发现程序中的错误，而不需要实际运行。</li>
+<li>自动检测 Objective-C 程序中的 BUG，发现内存泄露和其它问题。</li>
+<li>内存问题发现越早，解决的代价就越小。</li>
+</ol>
+<p>主要分析以下四种问题：</p>
+<ol>
+<li>逻辑错误：访问空指针或未初始化的变量等。</li>
+<li>内存管理错误：如内存泄漏等。</li>
+<li>声明错误：从未使用过的变量.</li>
+<li>Api 调用错误：未包含使用的库和框架。</li>
+</ol>
+<p>Instruments里面工具很多，常用：</p>
+<ol>
+<li>Time Profiler: 性能分析。</li>
+<li>Zombies：检查是否访问了僵尸对象，但是这个工具只能从上往下检查，不智能。</li>
+<li>Allocations：用来检查内存，写算法的那批人也用这个来检查。</li>
+<li>Leaks：检查内存，看是否有内存泄露。</li>
+</ol>
+<h2 id="iOS中的事件的产生和传递"><a href="#iOS中的事件的产生和传递" class="headerlink" title="iOS中的事件的产生和传递"></a>iOS中的事件的产生和传递</h2><ol>
+<li>事件的产生，发生触摸事件后，加入到 UIApplication 队列中，将事件分发下去，先发送事件给应用程序的主窗口（keyWindow）。主窗口会在视图层次结构中找到一个最合适的视图来处理触摸事件。找到合适的视图控件后，就会调用视图控件的 touches 方法来作具体的事件处理。</li>
+<li>事件的传递，触摸事件的传递是从父控件传递到子控件，也就是 UIApplication-&gt;window-&gt; 寻找处理事件最合适的 view。注意: 如果父控件不能接受触摸事件，那么子控件就不可能接收到触摸事件应用如何找到最合适的控件来处理事件？<ol>
+<li>首先判断主窗口（keyWindow）自己是否能接受触摸事件</li>
+<li>判断触摸点是否在自己身上</li>
+<li>子控件数组中从后往前遍历子控件，重复前面的两个步骤（所谓从后往前遍历子控件，就是首先查找子控件数组中最后一个元素，然后执行1、2步骤）</li>
+<li>view，比如叫做fitView，那么会把这个事件交给这个fitView，再遍历这个fitView的子控件，直至没有更合适的view为止。</li>
+<li>如果没有符合条件的子控件，那么就认为自己最合适处理这个事件，也就是自己是最合适的view。</li>
+</ol>
+</li>
+</ol>
+<p>UIView不能接收触摸事件的三种情况：</p>
+<ul>
+<li>不允许交互：userInteractionEnabled = NO</li>
+<li>隐藏：如果把父控件隐藏，那么子控件也会隐藏，隐藏的控件不能接受事件</li>
+<li>透明度：如果设置一个控件的透明度&lt;0.01，会直接影响子控件的透明度。alpha：0.0~0.01为透明。</li>
+</ul>
+<p>事件传递后触发响应者链条：响应者链条是由很多UIResponder的对象组合起来的链条。一般是沿着响应者链条向上传递，传递的过程为：</p>
+<ol>
+<li>判断当前是否为控制器的view，是，事件就传递给控制器，不是，事件就传递给父控件。</li>
+<li>在视图层次结构的最顶层，如果也不能处理收到的事件，则将事件传递给window对象处理。</li>
+<li>如果window对象也不处理，则将事件传递给UIApplication对象。</li>
+<li>如果UIApplication对象也不处理，则将事件丢弃。</li>
+</ol>
+<p><code>hitTest:withEvent:</code></p>
+<p>这是iOS事件的传递和响应中最重要的方法之一，在前边也有提到，现在来具体的介绍一下这个方法。只要事件一传递给一个控件，这个控件就会调用自己的 hitTest:withEvent: 方法。他的作用就是寻找并返回最适合的view，无论这个控件能不能处理事件，也不管触摸点在不在这个控件上，事件都会先传递给这个控件，随后就调用该方法。</p>
+<p>事件传递给窗口或控件的后，就调用 hitTest:withEvent: 方法寻找更合适的view。所以是，先传递事件，再根据事件在自己身上找更合适的view。不管子控件是不是最合适的view，系统默认都要先把事件传递给子控件，经过子控件调用子控件自己的 hitTest:withEvent: 方法验证后才知道有没有更合适的view。即便父控件是最合适的view了，子控件的 hitTest:withEvent: 方法还是会调用，不然怎么知道有没有更合适的！即，如果确定最终父控件是最合适的view，那么该父控件的子控件的hitTest:withEvent:方法也是会被调用的。如果 hitTest:withEvent: 方法中返回nil，那么调用该方法的控件本身和其子控件都不是最合适的view，也就是在自己身上没有找到更合适的view。那么最合适的view就是该控件的父控件。</p>
+<h2 id="SDWebImage-内部实现原理"><a href="#SDWebImage-内部实现原理" class="headerlink" title="SDWebImage 内部实现原理"></a>SDWebImage 内部实现原理</h2><p>以Key-Value的形式存储图片。以url 作为key在SDWebImageCache中进行查找，找到后拿出来显示，找不到下载,SDWebImage原理：</p>
+<ol>
+<li>从内存（字典）中找图片（当这个图片在本次使用程序的过程中已经被加载过），找到直接使用。</li>
+<li>从沙盒中找（当这个图片在之前使用程序的过程中被加载过），找到使用，缓存到内存中。3. 从网络上获取，使用，缓存到内存，缓存到沙盒。</li>
+</ol>
+<h2 id="GCD中的Block是在堆上还是栈上？"><a href="#GCD中的Block是在堆上还是栈上？" class="headerlink" title="GCD中的Block是在堆上还是栈上？"></a>GCD中的Block是在堆上还是栈上？</h2><p>堆上。</p>
+<h2 id="什么是异步渲染？"><a href="#什么是异步渲染？" class="headerlink" title="什么是异步渲染？"></a>什么是异步渲染？</h2><p>异步渲染就是在子线程进行绘制，然后拿到主线程显示。</p>
+<h2 id="什么是离屏渲染，什么情况会导致离屏渲染？"><a href="#什么是离屏渲染，什么情况会导致离屏渲染？" class="headerlink" title="什么是离屏渲染，什么情况会导致离屏渲染？"></a>什么是离屏渲染，什么情况会导致离屏渲染？</h2><p>显示屏外部，有一部分数据缓冲区，如果有时因为面临一些限制，无法把渲染结果直接写入 frame buffer，而是先暂存在另外的内存区域，之后再写入frame buffer，那么这个过程被称之为离屏渲染。比如阴影/圆角/透明度/毛玻璃。</p>
+<h2 id="swift-与-oc-区别？"><a href="#swift-与-oc-区别？" class="headerlink" title="swift 与 oc 区别？"></a>swift 与 oc 区别？</h2><p>Swift 和 OC 共用一套运行时环境，两者可以互相引用混合编程。其次就是，OC 之前积累的很多类库，在 Swift 中大部分依然可以直接使用。Swift 大多数概念与 OC 一样。Swift 引入了可选类型，空安全，元组(tuples)把多个值组合成一个复合值。元组内的值可以使任意类型，并不要求是相同类型</p>
+<p>细节使用区别</p>
+<ol>
+<li>swift 不分 .h 和 .m 文件 ，一个类只有 .swift 一个文件，所以整体的文件数量比起 OC 有一定减少。</li>
+<li>swift 句尾不需要分号 ，除非你想在一行中写三行代码就加分号隔开。</li>
+<li>swift数据类型都会自动判断 ， 只区分变量 var 和常量 let</li>
+<li>强制类型转换格式不同 OC 强转：(int)a Swift强转：Int(a)</li>
+<li>关于 BOOL 类型更加严格 ，Swift不再是OC的非0就是真，而是true才是真false才是假</li>
+<li>swift 的循环语句中必须加{} 就算只有一行代码也必须要加</li>
+<li>swift 的 switch 语句后面可以跟各种数据类型了 ，如 Int、字符串都行，并且里面不用写 break（OC好像不能字符串）</li>
+<li>swift if 后的括号可以省略: if a&gt;b {}，而OC里 if后面必须写括号。</li>
+<li>swift 打印用print(“”) 打印变量时可以 print(“(value)”)，不用像OC那样记很多%@，d%等。<br>10、Swift 的【Any】可以代表任何类型的值，无论是类、枚举、结构体还是任何其他 Swift 类型，这个对应 OC 中的【id】类型。</li>
+</ol>
+<h2 id="Swift-比-Objective-C-有什么优势？"><a href="#Swift-比-Objective-C-有什么优势？" class="headerlink" title="Swift 比 Objective-C 有什么优势？"></a>Swift 比 Objective-C 有什么优势？</h2><p>Swift 支持空安全，是类型安全的编程语言，代码简介，去掉了.h .m，一个类对应只有一个文件，速度更快，学习成本低（a. 类型安全 b. 闭包 c. 速度快）。<br>缺点：三方库没有oc的全，想用oc的三方库，只能使用桥接文件实现。</p>
+<h2 id="Swift-是面向对象还是函数式的编程语言"><a href="#Swift-是面向对象还是函数式的编程语言" class="headerlink" title="Swift 是面向对象还是函数式的编程语言?"></a>Swift 是面向对象还是函数式的编程语言?</h2><p>Swift 既是面向对象的，又是函数式的编程语言。说 Swift 是面向对象的语言，是因为 Swift 支持类的封装、继承、和多态说 Swift 是函数式编程语言，是因为 Swift 支持 map, reduce, filter, flatmap 这类去除中间状态、数学函数式的方法，更加强调运算结果而不是中间过程。</p>
+<h2 id="请说明并比较以下关键词：Open-Public-Internal-File-private-Private"><a href="#请说明并比较以下关键词：Open-Public-Internal-File-private-Private" class="headerlink" title="请说明并比较以下关键词：Open, Public, Internal, File-private, Private"></a>请说明并比较以下关键词：Open, Public, Internal, File-private, Private</h2><p>访问控制权限，从高到底依次为 Open, Public, Internal, File-private, Private。他们遵循的基本原则是：高级别的变量不允许被定义为低级别变量的成员变量。</p>
+<ul>
+<li>Open 具备最高的访问权限。其修饰的类和方法可以在任意 Module 中被访问和重写。</li>
+<li>Public 的权限仅次于 Open。与 Open 唯一的区别在于它修饰的对象可以在任意 Module 中被访问，但不能重写。</li>
+<li>Internal 是默认的权限。只能在当前定义的 Module 中访问和重写，它可以被一个 Module 中的多个文件访问，但不可以被其他的 Module 中被访问。</li>
+<li>File-private 被修饰的对象只能在当前文件中被使用</li>
+<li>Private 是最低的访问权限。它的对象只能在定义的作用域内使用。离开了这个作用域，即使是同一个文件中的其他作用域，也无法访问。</li>
+</ul>
+<h2 id="用-Swift-将协议（protocol）中的部分方法设计成可选（optional），该怎样实现？"><a href="#用-Swift-将协议（protocol）中的部分方法设计成可选（optional），该怎样实现？" class="headerlink" title="用 Swift 将协议（protocol）中的部分方法设计成可选（optional），该怎样实现？"></a>用 Swift 将协议（protocol）中的部分方法设计成可选（optional），该怎样实现？</h2><p>Swift中，默认所有方法在协议中都是必须实现的。在协议前加上 @objc ，然后再在方法前加上@objc  optional</p>
+<h2 id="swift-中，如何阻止一个方法属性、属性、下标被子类改写"><a href="#swift-中，如何阻止一个方法属性、属性、下标被子类改写" class="headerlink" title="swift 中，如何阻止一个方法属性、属性、下标被子类改写?"></a>swift 中，如何阻止一个方法属性、属性、下标被子类改写?</h2><p>在类的定义中使用 final 关键字声明类、属性、方法和下标。final 声明的类不能被继承，final 声明的属性、方法和下标不能被重写。</p>
+<h2 id="swift中关键字-guard-和-defer-的用法？"><a href="#swift中关键字-guard-和-defer-的用法？" class="headerlink" title="swift中关键字 guard 和 defer 的用法？"></a>swift中关键字 guard 和 defer 的用法？</h2><p>guard 也是基于一个表达式的布尔值去判断一段代码是否该被执行。与 if 语句不同的是，guard 只有在条件不满足的时候才会执行这段代码。</p>
+<figure class="highlight objc"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">guard let name = <span class="keyword">self</span>.text <span class="keyword">else</span> {  <span class="keyword">return</span> }</span><br></pre></td></tr></tbody></table></figure>
+<p>defer的用法是，这条语句并不会马上执行，而是被推入栈中，直到函数结束时才再次被调用。</p>
+<h2 id="struct-与-class-的区别？"><a href="#struct-与-class-的区别？" class="headerlink" title="struct 与 class 的区别？"></a>struct 与 class 的区别？</h2><ul>
+<li>struct 是值类型，class 是引用类型。值类型的变量直接包含它们的数据，对于值类型都有它们自己的数据副本，因此对一个变量操作不可能影响另一个变量。引用类型的变量存储对他们的数据引用，因此后者称为对象，因此对一个变量操作可能影响另一个变量所引用的对象。</li>
+<li>二者的本质区别：struct是深拷贝，拷贝的是内容；class是浅拷贝，拷贝的是指针。</li>
+<li>property的初始化不同：class 在初始化时不能直接把 property 放在 默认的constructor 的参数里，而是需要自己创建一个带参数的constructor；而struct可以，把属性放在默认的constructor 的参数里。</li>
+<li>变量赋值方式不同：struct是值拷贝；class是引用拷贝。</li>
+<li>immutable变量：swift的可变内容和不可变内容用var和let来甄别，如果初始为let的变量再去修改会发生编译错误。struct遵循这一特性；class不存在这样的问题。</li>
+<li>mutating function： struct 和 class 的差別是 struct 的 function 要去改变 property 的值的时候要加上 mutating，而 class 不用。</li>
+<li>继承： struct不可以继承，class可以继承。</li>
+<li>struct比class更轻量：struct分配在栈中，class分配在堆中。</li>
+</ul>
+<h2 id="为什么-Swift常把-struct-作为数据模型？"><a href="#为什么-Swift常把-struct-作为数据模型？" class="headerlink" title="为什么 Swift常把 struct 作为数据模型？"></a>为什么 Swift常把 struct 作为数据模型？</h2><p>优点：</p>
+<ul>
+<li>安全性： 因为 Struct 是用值类型传递的，它们没有引用计数。</li>
+<li>内存： 由于他们没有引用数，他们不会因为循环引用导致内存泄漏。</li>
+<li>速度： 值类型通常来说是以栈的形式分配的，而不是用堆。因此他们比 Class 要快很多!</li>
+<li>拷贝：Objective-C 里拷贝一个对象,你必须选用正确的拷贝类型（深拷贝、浅拷贝）,而值类型的拷贝则非常轻松！</li>
+<li>线程安全： 值类型是自动线程安全的。无论你从哪个线程去访问你的 Struct ，都非常简单。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>Objective-C与swift混合开发：</li>
+<li>OC调用的swift代码必须继承于NSObject。</li>
+<li>继承：struct不能相互继承。</li>
+<li>NSUserDefaults：Struct 不能被序列化成 NSData 对象。</li>
+</ul>
+<h2 id="同步和异步任务的区别？"><a href="#同步和异步任务的区别？" class="headerlink" title="同步和异步任务的区别？"></a>同步和异步任务的区别？</h2><ul>
+<li>同步：等待任务完成，一个接一个，顺可预测(Predictable Execution Order),通常情况在 Main</li>
+<li>异步：不分先后执行顺序完成任务，顺序不可预测(Unpredictable Order)，通常在 Background</li>
+</ul>
+<h2 id="iOS应用是如何启动以及如何优化？"><a href="#iOS应用是如何启动以及如何优化？" class="headerlink" title="iOS应用是如何启动以及如何优化？"></a>iOS应用是如何启动以及如何优化？</h2><ol>
+<li>pre-main阶段</li>
+<li>加载动态链接器dyld到App进程</li>
+<li>加载动态库（包括所依赖的所有动态库）</li>
+<li>Rebase 修正内部的指针指向</li>
+<li>Bind 修正外部指针指向 </li>
+<li>初始化Objective C Runtime 包括oc的类、分类的注册，selector唯一性检查等<br>初始化代码，调用Oc类和分类的+load方法，构造器函数的调用（用attribute((constructor))修饰的函数、创建C++静态全局变量等</li>
+<li>执行main函数后，调用didFinishLaunching方法完成初始化</li>
+</ol>
+<p>对于 pre-main 阶段的耗时测量方法，在 Xcode 中 Edit scheme -&gt; Run -&gt; Auguments 将环境变量DYLD_PRINT_STATISTICS 设为 1。之后控制台会输出耗时。DYLD_PRINT_STATISTICS_DETAILS<br>建议应用的启动时间控制在400ms之下，并且在20s内启动，否则系统会 kill app。一般是优化 main 函数阶段，大多数的耗时是在自己写的代码里。</p>
+<p>优化方法：</p>
+<ul>
+<li>减少自定义的动态库数量，合并动态库，官方建议不超过6个。因为动态库的加载方式比静态库慢。如果必须依赖动态库，则把多个非系统的动态库合并成一个动态库。静态库是在编译时将库的代码打包到可执行程序中，动态库则是在运行时动态加载到程序中的。</li>
+<li>减少Objective-C类,分类和Selector的个数，类似功能尽量合并</li>
+<li>减少使用构造器函数</li>
+<li>减少使用oc的load</li>
+<li>减少c++静态全局变量</li>
+<li>压缩资源图片，，因为在启动加载时会加载资源图片进行IO操作。所以图片小加载速度也会显著提升。</li>
+<li>删除无用的方法和类，多用Swift Structs，因为Swfit Structs是静态分发的</li>
+<li>延迟初始化那些不必要的UIViewController。</li>
+<li>didFinishLaunching中，耗时操作的优化</li>
+<li>类和方法名不要太⻓。</li>
+</ul>
+<h2 id="property-的本质是什么？"><a href="#property-的本质是什么？" class="headerlink" title="@property 的本质是什么？"></a>@property 的本质是什么？</h2><p>@property的本质是实例变量（ivar）+ 存取方法，即 @property = ivar + getter + setter；属性” (property)作为 Objective-C 的特性，主要用于封装对象中的数据。 Objective-C 对象数据保存为实例变量。实例变量一般通过“存取方法”来访问。 getter 读取，setter 写入。</p>
+<h2 id="什么情况使用-weak-关键字，相比-assign-有什么不同？"><a href="#什么情况使用-weak-关键字，相比-assign-有什么不同？" class="headerlink" title="什么情况使用 weak 关键字，相比 assign 有什么不同？"></a>什么情况使用 weak 关键字，相比 assign 有什么不同？</h2><p>什么情况使用 weak 关键字？循环引用的时候,比如: delegate 代理属性；xib的IBOutlet 控件属性一般也使用 weak。</p>
+<p>不同点：assigin 可以修饰非 OC 对象，比如简单数据类型 int bool,weak 必须用于 OC 对象。<br>weak 是弱引用，被weak修饰的对象，引用计数不会加1，不会产生野指针。weak修饰的对象释放后，指针会自动被置nil，是安全的。assign 修饰基本数据类型是安全的。如果修饰对象，会产生野指针；修饰的对象释放后，指针不会自动置空。所以一般都是用 assign 来修饰基本类型，weak 来修饰对象。</p>
+<h2 id="谈谈-iOS-开发中用到哪些设计模式？"><a href="#谈谈-iOS-开发中用到哪些设计模式？" class="headerlink" title="谈谈 iOS 开发中用到哪些设计模式？"></a>谈谈 iOS 开发中用到哪些设计模式？</h2><ul>
+<li>工厂模式，将创建对象的方法进行封装，调用即可创建对象</li>
+<li>单例模式，保证一个类仅有一个实例，并提供一个访问它的全局访问点。 UIApplication userdefault<br>dispatch_once private static let test = .init</li>
+<li>代理模式 UITableViewDatasource UITableViewdelegate uitexttfielddelegate等，适用于告知代理对象进行事件处理</li>
+<li>观察者模式KVO，添加监听，发生变化时触发监听方法，使用结束后移除监听。一般是通过notificationcenter addobserver,他是一个单例，一对多的消息广播模式</li>
+<li>KVC 键值编码。</li>
+</ul>
+<h2 id="使用了哪些架构模式？"><a href="#使用了哪些架构模式？" class="headerlink" title="使用了哪些架构模式？"></a>使用了哪些架构模式？</h2><ul>
+<li>‌MVC 通过controller来协调model和view之间的交互，将代码变得模块化</li>
+<li>MVVM 在 MVC 的基础上，衍生出了 ViewModel 来处理 Model 的数据，复用性更高，ViewModel 处理 网络请求、数据逻辑和缓存读写等等。</li>
+<li>微服务架构，特别适合大型的项目，可以将模块单独拆分成不同的 project，然后嵌入到项目中，kite有微服务架构的思想。</li>
+</ul>
+<h2 id="设计原则？"><a href="#设计原则？" class="headerlink" title="设计原则？"></a>设计原则？</h2><ul>
+<li>单一职责原则强调一个类或模块只负责一项功能，例如CALayer负责动画和视图显示，而 UIView 则提供显示内容和事件处理。</li>
+<li>开闭原则要求对修改关闭，对扩展开放，例如通过使用 category 来实现功能的扩展。要考虑到后续的扩展性，而不是在原有的基础上来回修改。</li>
+<li>依赖倒置原则指出抽象不应该依赖于具体实现，而实现应该依赖于抽象，这有助于提高代码的灵活性和可维护性。</li>
+<li>里氏替换原则表明子类必须能够替换其基类而不会引起程序行为的变化，这在面向对象编程中尤为重要。</li>
+<li>接口隔离原则使用多个专门的协议来做接口隔离、而不是一个庞大臃肿的协议。UITableviewDelegate、UITableViewDataSource。</li>
+<li>迪米特法则，也称为最少知识原则，强调一个对象应当对其他对象尽可能少的依赖，以减少类与类之间的耦合。实现高聚合、低耦合。</li>
+</ul>
+<h2 id="App-做过哪些优化？"><a href="#App-做过哪些优化？" class="headerlink" title="App 做过哪些优化？"></a>App 做过哪些优化？</h2><ul>
+<li>启动过程耗时</li>
+<li>优化内存泄露，包括循环引用</li>
+<li>优化闪退或卡死</li>
+<li>优化过大图片、冗余文件</li>
+<li>控制ipa包体积</li>
+<li>页面流畅度</li>
+</ul>
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Load-%E5%92%8C-initialize-%E7%9A%84%E4%B8%8D%E5%90%8C%E5%9C%B0%E6%96%B9%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="nav-number">1.</span> <span class="nav-text">Load 和 initialize 的不同地方有哪些?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E8%A1%A8%E5%92%8C%E6%95%B0%E7%BB%84%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="nav-number">2.</span> <span class="nav-text">链表和数组有什么区别?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B4%E4%B8%80%E8%AF%B4-iOS-%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8A%A8%E7%94%BB%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">说一说 iOS 的核心动画？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E4%B8%BB%E8%A6%81%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">应用程序的生命周期函数主要有哪些？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E4%B8%80%E4%B8%AAHTTPS%E8%BF%9E%E6%8E%A5%E7%9A%84%E7%BD%91%E7%BB%9C%E4%B8%AD%EF%BC%8C%E8%BE%93%E5%85%A5%E8%B4%A6%E5%8F%B7%E5%92%8C%E5%AF%86%E7%A0%81%E5%B9%B6%E5%8D%95%E5%87%BB%E7%99%BB%E9%99%86%E6%8C%89%E9%92%AE%E5%90%8E%EF%BC%8C%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%94%E5%9B%9E%E8%BF%99%E4%B8%AA%E8%AF%B7%E6%B1%82%E5%89%8D%EF%BC%8C%E8%BF%99%E6%9C%9F%E9%97%B4%E7%BB%8F%E5%8E%86%E4%BA%86%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">在一个HTTPS连接的网络中，输入账号和密码并单击登陆按钮后，到服务器返回这个请求前，这期间经历了？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E4%B8%AD%EF%BC%8C%E5%9B%9E%E5%88%B0%E4%B8%BB%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">多线程的实际应用场景中，回到主线程的方法有哪些？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%88%E8%B0%88%E5%AF%B9-GCD-%E7%9A%84%E7%90%86%E8%A7%A3%EF%BC%9F"><span class="nav-number">7.</span> <span class="nav-text">谈谈对 GCD 的理解？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dispatch-barrier-async%EF%BC%88%E6%A0%85%E6%A0%8F%E5%87%BD%E6%95%B0%EF%BC%89%E7%9A%84%E4%BD%9C%E7%94%A8%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">8.</span> <span class="nav-text">dispatch_barrier_async（栅栏函数）的作用是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%A6%82%E4%BD%95%E4%BA%A7%E7%94%9F%E6%AD%BB%E9%94%81%E5%92%8C%E6%AD%BB%E9%94%81%E7%9A%84%E5%8E%9F%E5%9B%A0%EF%BC%9F"><span class="nav-number">9.</span> <span class="nav-text">多线程是如何产生死锁和死锁的原因？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81%E6%9C%BA%E5%88%B6%E6%B5%81%E7%A8%8B"><span class="nav-number">10.</span> <span class="nav-text">消息发送机制流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%BA%93%E4%B8%8E%E9%9D%99%E6%80%81%E5%BA%93%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">11.</span> <span class="nav-text">动态库与静态库的区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%B1%BB%EF%BC%88category%EF%BC%89%E5%92%8C%E7%B1%BB%E6%89%A9%E5%B1%95%EF%BC%88Extension%EF%BC%89%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">12.</span> <span class="nav-text">分类（category）和类扩展（Extension）的区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E5%85%B3%E9%94%AE%E5%AD%97-readwrite%EF%BC%8Creadonly%EF%BC%8Cassign%EF%BC%8Cretain%EF%BC%8Ccopy%EF%BC%8Cnonatomic-%E5%90%84%E6%98%AF%E4%BB%80%E4%B9%88%E4%BD%9C%E7%94%A8%EF%BC%8C%E5%9C%A8%E9%82%A3%E7%A7%8D%E6%83%85%E5%86%B5%E4%B8%8B%E7%94%A8%EF%BC%9F"><span class="nav-number">13.</span> <span class="nav-text">属性关键字 readwrite，readonly，assign，retain，copy，nonatomic 各是什么作用，在那种情况下用？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8-property%E5%A3%B0%E6%98%8E%E7%9A%84-NSString-NSArray-NSDictionary-%E7%BB%8F%E5%B8%B8%E4%BD%BF%E7%94%A8-copy-%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%EF%BC%9F%E5%A6%82%E6%9E%9C%E6%94%B9%E7%94%A8strong%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%8C%E5%8F%AF%E8%83%BD%E9%80%A0%E6%88%90%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="nav-number">14.</span> <span class="nav-text">用@property声明的 NSString &#x2F; NSArray &#x2F; NSDictionary 经常使用 copy 关键字，为什么？如果改用strong关键字，可能造成什么问题？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">15.</span> <span class="nav-text">浅拷贝和深拷贝的区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%99%E4%B8%AA%E5%86%99%E6%B3%95%E4%BC%9A%E5%87%BA%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="nav-number">16.</span> <span class="nav-text">这个写法会出什么问题？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84-Objective-C-%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E6%9C%89%E9%82%A3%E4%BA%9B%EF%BC%8C%E5%92%8CC%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F%E5%A6%82%EF%BC%9ANSInteger%E5%92%8Cint"><span class="nav-number">17.</span> <span class="nav-text">常见的 Objective-C 的数据类型有那些，和C的基本数据类型有什么区别？如：NSInteger和int</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#id-%E5%A3%B0%E6%98%8E%E7%9A%84%E5%AF%B9%E8%B1%A1%E6%9C%89%E4%BB%80%E4%B9%88%E7%89%B9%E6%80%A7%EF%BC%9FIOS%E5%BC%80%E5%8F%91%E4%B9%8B-bridge%EF%BC%8C-bridge-transfer%E5%92%8C-bridge-retained"><span class="nav-number">18.</span> <span class="nav-text">.id 声明的对象有什么特性？IOS开发之__bridge，__bridge_transfer和__bridge_retained</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Objective-C-%E5%A6%82%E4%BD%95%E5%AF%B9%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%EF%BC%8C%E8%AF%B4%E8%AF%B4%E4%BD%A0%E7%9A%84%E7%9C%8B%E6%B3%95%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9F"><span class="nav-number">19.</span> <span class="nav-text">Objective-C 如何对内存管理的，说说你的看法和解决方法？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTPS-%E5%92%8C-HTTP-%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">20.</span> <span class="nav-text">HTTPS 和 HTTP 的区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E4%BB%AC%E5%B8%B8%E8%A7%81%E7%9A%84-delegate-%E5%B1%9E%E6%80%A7%E9%83%BD%E7%94%A8%E6%98%AF-weak-%E8%80%8C%E4%B8%8D%E6%98%AF-retain-strong%EF%BC%9F"><span class="nav-number">21.</span> <span class="nav-text">为什么我们常见的 delegate 属性都用是 weak 而不是 retain&#x2F;strong？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#delegate-Notification-KVO-%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">22.</span> <span class="nav-text">.delegate Notification KVO 区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E9%94%81%E6%9C%89%E5%A6%82%E4%B8%8B%E5%87%A0%E7%A7%8D%EF%BC%9F"><span class="nav-number">23.</span> <span class="nav-text">开发中常用的锁有如下几种？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#KVC%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%EF%BC%9F"><span class="nav-number">24.</span> <span class="nav-text">KVC的底层实现？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#KVO%E5%86%85%E9%83%A8%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="nav-number">25.</span> <span class="nav-text">KVO内部实现原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%A0%E6%98%AF%E5%90%A6%E6%8E%A5%E8%A7%A6%E8%BF%87OC%E4%B8%AD%E7%9A%84%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%EF%BC%9F%E7%AE%80%E5%8D%95%E8%81%8A%E4%B8%80%E4%B8%8B%E6%A6%82%E5%BF%B5%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">26.</span> <span class="nav-text">你是否接触过OC中的反射机制？简单聊一下概念和使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#const%E3%80%81static%E3%80%81extern%E3%80%81inline-%E7%AE%80%E4%BB%8B"><span class="nav-number">27.</span> <span class="nav-text">const、static、extern、inline 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS%E5%BC%80%E5%8F%91%E4%B8%AD-nil%E3%80%81Nil%E3%80%81NULL-%E5%92%8C-NSNull-null-%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">28.</span> <span class="nav-text">iOS开发中 nil、Nil、NULL 和 [NSNull null] 的区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UIView-%E5%92%8C-CALayer-%E7%9A%84%E5%85%B3%E7%B3%BB%EF%BC%9F"><span class="nav-number">29.</span> <span class="nav-text">UIView 和 CALayer 的关系？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E5%BC%95%E7%94%A8self-xx%E4%B8%8E-xx%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">30.</span> <span class="nav-text">属性引用self.xx与_xx的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#id%E3%80%81instancetype-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">31.</span> <span class="nav-text">id、instancetype 有什么区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%B0%93%E8%AF%8D%EF%BC%9F"><span class="nav-number">32.</span> <span class="nav-text">什么是谓词？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%AE%BF%E9%97%AE%E5%B9%B6%E4%BF%AE%E6%94%B9%E4%B8%80%E4%B8%AA%E7%B1%BB%E7%9A%84%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%EF%BC%9F"><span class="nav-number">33.</span> <span class="nav-text">如何访问并修改一个类的私有属性？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA-objc-%E5%AF%B9%E8%B1%A1%E7%9A%84-isa-%E7%9A%84%E6%8C%87%E9%92%88%E6%8C%87%E5%90%91%E4%BB%80%E4%B9%88%EF%BC%9F%E6%9C%89%E4%BB%80%E4%B9%88%E4%BD%9C%E7%94%A8%EF%BC%9F"><span class="nav-number">34.</span> <span class="nav-text">一个 objc 对象的 isa 的指针指向什么？有什么作用？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#isKindOfClass%E3%80%81isMemberOfClass%E3%80%81selector-%E4%BD%9C%E7%94%A8%E5%88%86%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">35.</span> <span class="nav-text">.isKindOfClass、isMemberOfClass、selector 作用分别是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#delegate-%E5%92%8C-notification-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">36.</span> <span class="nav-text">delegate 和 notification 的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Objective-C-%E7%9A%84%E7%B1%BB%E5%8F%AF%E4%BB%A5%E5%A4%9A%E9%87%8D%E7%BB%A7%E6%89%BF%E4%B9%88%EF%BC%9F%E5%8F%AF%E4%BB%A5%E5%AE%9E%E7%8E%B0%E5%A4%9A%E4%B8%AA%E6%8E%A5%E5%8F%A3%E4%B9%88%EF%BC%9FCategory-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E9%87%8D%E5%86%99%E4%B8%80%E4%B8%AA%E7%B1%BB%E7%9A%84%E6%96%B9%E5%BC%8F%E7%94%A8%E7%BB%A7%E6%89%BF%E5%A5%BD%E8%BF%98%E6%98%AF%E5%88%86%E7%B1%BB%E5%A5%BD%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">37.</span> <span class="nav-text">Objective-C 的类可以多重继承么？可以实现多个接口么？Category 是什么？重写一个类的方式用继承好还是分类好？为什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#layoutSubviews-%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E8%B0%83%E7%94%A8%E6%9C%BA%E5%88%B6%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">38.</span> <span class="nav-text">layoutSubviews 的作用和调用机制是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BAD-ACCESS-%E5%9C%A8%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E5%87%BA%E7%8E%B0%EF%BC%9F"><span class="nav-number">39.</span> <span class="nav-text">BAD_ACCESS 在什么情况下出现？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS%E7%9A%84%E6%B2%99%E7%9B%92%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84%EF%BC%9F"><span class="nav-number">40.</span> <span class="nav-text">iOS的沙盒目录结构是怎样的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8-dispatch-source-%E5%AE%9E%E7%8E%B0%E5%8F%AF%E5%8F%96%E6%B6%88%E7%9A%84%E5%AE%9A%E6%97%B6%E5%99%A8%EF%BC%9F"><span class="nav-number">41.</span> <span class="nav-text">用 dispatch_source 实现可取消的定时器？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B7%E7%AE%80%E5%8D%95%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8B-APNS-%E5%8F%91%E9%80%81%E7%B3%BB%E7%BB%9F%E6%B6%88%E6%81%AF%E7%9A%84%E6%9C%BA%E5%88%B6%EF%BC%9F"><span class="nav-number">42.</span> <span class="nav-text">请简单的介绍下 APNS 发送系统消息的机制？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E4%B8%AD%E5%A6%82%E4%BD%95%E6%A3%80%E6%9F%A5%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E7%9A%84%EF%BC%9F"><span class="nav-number">43.</span> <span class="nav-text">日常开发中如何检查内存泄漏的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS%E4%B8%AD%E7%9A%84%E4%BA%8B%E4%BB%B6%E7%9A%84%E4%BA%A7%E7%94%9F%E5%92%8C%E4%BC%A0%E9%80%92"><span class="nav-number">44.</span> <span class="nav-text">iOS中的事件的产生和传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SDWebImage-%E5%86%85%E9%83%A8%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="nav-number">45.</span> <span class="nav-text">SDWebImage 内部实现原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GCD%E4%B8%AD%E7%9A%84Block%E6%98%AF%E5%9C%A8%E5%A0%86%E4%B8%8A%E8%BF%98%E6%98%AF%E6%A0%88%E4%B8%8A%EF%BC%9F"><span class="nav-number">46.</span> <span class="nav-text">GCD中的Block是在堆上还是栈上？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%BC%82%E6%AD%A5%E6%B8%B2%E6%9F%93%EF%BC%9F"><span class="nav-number">47.</span> <span class="nav-text">什么是异步渲染？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%A6%BB%E5%B1%8F%E6%B8%B2%E6%9F%93%EF%BC%8C%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%BC%9A%E5%AF%BC%E8%87%B4%E7%A6%BB%E5%B1%8F%E6%B8%B2%E6%9F%93%EF%BC%9F"><span class="nav-number">48.</span> <span class="nav-text">什么是离屏渲染，什么情况会导致离屏渲染？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#swift-%E4%B8%8E-oc-%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">49.</span> <span class="nav-text">swift 与 oc 区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Swift-%E6%AF%94-Objective-C-%E6%9C%89%E4%BB%80%E4%B9%88%E4%BC%98%E5%8A%BF%EF%BC%9F"><span class="nav-number">50.</span> <span class="nav-text">Swift 比 Objective-C 有什么优势？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Swift-%E6%98%AF%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%98%E6%98%AF%E5%87%BD%E6%95%B0%E5%BC%8F%E7%9A%84%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80"><span class="nav-number">51.</span> <span class="nav-text">Swift 是面向对象还是函数式的编程语言?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B7%E8%AF%B4%E6%98%8E%E5%B9%B6%E6%AF%94%E8%BE%83%E4%BB%A5%E4%B8%8B%E5%85%B3%E9%94%AE%E8%AF%8D%EF%BC%9AOpen-Public-Internal-File-private-Private"><span class="nav-number">52.</span> <span class="nav-text">请说明并比较以下关键词：Open, Public, Internal, File-private, Private</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8-Swift-%E5%B0%86%E5%8D%8F%E8%AE%AE%EF%BC%88protocol%EF%BC%89%E4%B8%AD%E7%9A%84%E9%83%A8%E5%88%86%E6%96%B9%E6%B3%95%E8%AE%BE%E8%AE%A1%E6%88%90%E5%8F%AF%E9%80%89%EF%BC%88optional%EF%BC%89%EF%BC%8C%E8%AF%A5%E6%80%8E%E6%A0%B7%E5%AE%9E%E7%8E%B0%EF%BC%9F"><span class="nav-number">53.</span> <span class="nav-text">用 Swift 将协议（protocol）中的部分方法设计成可选（optional），该怎样实现？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#swift-%E4%B8%AD%EF%BC%8C%E5%A6%82%E4%BD%95%E9%98%BB%E6%AD%A2%E4%B8%80%E4%B8%AA%E6%96%B9%E6%B3%95%E5%B1%9E%E6%80%A7%E3%80%81%E5%B1%9E%E6%80%A7%E3%80%81%E4%B8%8B%E6%A0%87%E8%A2%AB%E5%AD%90%E7%B1%BB%E6%94%B9%E5%86%99"><span class="nav-number">54.</span> <span class="nav-text">swift 中，如何阻止一个方法属性、属性、下标被子类改写?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#swift%E4%B8%AD%E5%85%B3%E9%94%AE%E5%AD%97-guard-%E5%92%8C-defer-%E7%9A%84%E7%94%A8%E6%B3%95%EF%BC%9F"><span class="nav-number">55.</span> <span class="nav-text">swift中关键字 guard 和 defer 的用法？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#struct-%E4%B8%8E-class-%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">56.</span> <span class="nav-text">struct 与 class 的区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-Swift%E5%B8%B8%E6%8A%8A-struct-%E4%BD%9C%E4%B8%BA%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%EF%BC%9F"><span class="nav-number">57.</span> <span class="nav-text">为什么 Swift常把 struct 作为数据模型？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E5%92%8C%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">58.</span> <span class="nav-text">同步和异步任务的区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS%E5%BA%94%E7%94%A8%E6%98%AF%E5%A6%82%E4%BD%95%E5%90%AF%E5%8A%A8%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96%EF%BC%9F"><span class="nav-number">59.</span> <span class="nav-text">iOS应用是如何启动以及如何优化？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#property-%E7%9A%84%E6%9C%AC%E8%B4%A8%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">60.</span> <span class="nav-text">@property 的本质是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%BD%BF%E7%94%A8-weak-%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%8C%E7%9B%B8%E6%AF%94-assign-%E6%9C%89%E4%BB%80%E4%B9%88%E4%B8%8D%E5%90%8C%EF%BC%9F"><span class="nav-number">61.</span> <span class="nav-text">什么情况使用 weak 关键字，相比 assign 有什么不同？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%88%E8%B0%88-iOS-%E5%BC%80%E5%8F%91%E4%B8%AD%E7%94%A8%E5%88%B0%E5%93%AA%E4%BA%9B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="nav-number">62.</span> <span class="nav-text">谈谈 iOS 开发中用到哪些设计模式？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E4%BA%86%E5%93%AA%E4%BA%9B%E6%9E%B6%E6%9E%84%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="nav-number">63.</span> <span class="nav-text">使用了哪些架构模式？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99%EF%BC%9F"><span class="nav-number">64.</span> <span class="nav-text">设计原则？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#App-%E5%81%9A%E8%BF%87%E5%93%AA%E4%BA%9B%E4%BC%98%E5%8C%96%EF%BC%9F"><span class="nav-number">65.</span> <span class="nav-text">App 做过哪些优化？</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

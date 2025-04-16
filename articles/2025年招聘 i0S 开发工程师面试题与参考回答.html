@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="那年星空" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="面试问答题〈总共 10 个问题) 第一题：请你简单描述一下你对 iOS 开发的理解，并谈谈你认为一个优秀的 iOS 开发工程师应该具备哪些技能。 参考回答：iOS 开发对我来说忘味者利用 Swift 或 Objective-C 语言，结合 Apple 官方提供框架和工具，为 iOS 设备构建高质量、用户友好的应用。 我认为优秀的 iOS 开发工程师需要具备以下技能：  扎实的基础知识：包括数据结构">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那年星空">
+<meta property="og:url" content="https://wanflutter.netlify.app/articles/2025%E5%B9%B4%E6%8B%9B%E8%81%98%20i0S%20%E5%BC%80%E5%8F%91%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%8E%E5%8F%82%E8%80%83%E5%9B%9E%E7%AD%94.html">
+<meta property="og:site_name" content="那年星空">
+<meta property="og:description" content="面试问答题〈总共 10 个问题) 第一题：请你简单描述一下你对 iOS 开发的理解，并谈谈你认为一个优秀的 iOS 开发工程师应该具备哪些技能。 参考回答：iOS 开发对我来说忘味者利用 Swift 或 Objective-C 语言，结合 Apple 官方提供框架和工具，为 iOS 设备构建高质量、用户友好的应用。 我认为优秀的 iOS 开发工程师需要具备以下技能：  扎实的基础知识：包括数据结构">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-04-15T09:30:50.269Z">
+<meta property="article:modified_time" content="2025-04-15T09:30:50.269Z">
+<meta property="article:author" content="joe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wanflutter.netlify.app/articles/2025%E5%B9%B4%E6%8B%9B%E8%81%98%20i0S%20%E5%BC%80%E5%8F%91%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%8E%E5%8F%82%E8%80%83%E5%9B%9E%E7%AD%94">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: false,
+    isPage: true,
+    isArchive: false
+  };
+</script>
+
+  <title> | 那年星空
+  </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ad7c0c3175207d3b8885d6a63355af1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">那年星空</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <html><head></head><body></body></html><html><head></head><body><p>面试问答题〈总共 10 个问题)</p>
+<p><strong>第一题：请你简单描述一下你对 iOS 开发的理解，并谈谈你认为一个优秀的 iOS 开发工程师应该具备哪些技能。</strong></p>
+<p>参考回答：iOS 开发对我来说忘味者利用 Swift 或 Objective-C 语言，结合 Apple 官方提供框架和工具，为 iOS 设备构建高质量、用户友好的应用。</p>
+<p>我认为优秀的 iOS 开发工程师需要具备以下技能：</p>
+<ul>
+<li>扎实的基础知识：包括数据结构、算法、面向对象编程以及 iOS 平台相关知识，如 <code>UIKit</code>、<code>Foundation</code> 等。</li>
+<li>精通 Swift 或 Objective-C：能够熟练使用至少一种苹果官方语言进行代码编写，并能理解其特性和最佳实践。</li>
+<li>了解 iOS 开发流程 从项目规划、设计、开发、测试到发布，了解整个开发流程，并能高效地完成各个阶段的工作。</li>
+<li>热悉设计模式和架构设计：能够应用合适的设计模式和架构，使代码结构清晰、可维护性强。</li>
+<li>掌握调试和优化技巧：能够高效地定位和解决代码问题，并理解性能优化的方法，提升应用的运行效率。</li>
+<li>了解 App Store 审核规范，能够根据 Apple 的指南开发符合规范的应用，便于提交审核并发布到 App Store。</li>
+<li>善于沟通和合作：能够与产品经理、设计师以及其他开发人员进行有效的沟通，协作完成项目。</li>
+<li>持续学习和提升：iOS 平台不断发展，需要持续学习新知识和新技术，保持自身竞争力。</li>
+</ul>
+<p><strong>第二题：简述在 iOS 开发中，White-Box testing(白盒测试) 与 Black-Box testing（黑盒测试） 的区别，并举例说在 iOS 应用开发中应如何应用这两种测试策略。</strong></p>
+<p>参考回答：在 iOS 开发中，White-Box testing（白盒测试）与 Black-Box testing （黑盒测试）是两种常见的测试策路，它们各自有独特的使用场景和目的。</p>
+<p>白盒测试 (White-Box testing)：白盒测试是一种通过检查程产源代码的内部结构和工作流程来进行測试的技术。它关注的是程序内部的逻辑和内部机制，确保代码的每一个细节都符合预期，且没有辑错误。</p>
+<p>特性与优点：</p>
+<ul>
+<li>详细性：白盒测试可以对代码的每一个部分进行深入测试。</li>
+<li>发现内部问题：能较早地发现代码里的逻辑错误、内存泄漏、死锁等问题。</li>
+</ul>
+<p>应用场景：</p>
+<ul>
+<li>单元测试（Unit Testing）：例如测试一个 iOS 应用的单个视图控制器的某个方法是否按预期处理了特定输入。</li>
+<li>静态代码分析：编写自动化脚本或使用静态代码分析工具（如 <code>Infer、Coverity</code> 等）来扫描代码并查找潜在的缺陷。</li>
+</ul>
+<p>黑盒测试 (Black-Box testing)：黑盒测试是一种通过观察程序外部行为和功能来进行测试的方法。它不关心程序内部的实现细节，只关心程序的功能是否符合预期规格和要求。</p>
+<p>特性与优点：</p>
+<ul>
+<li>独立性：不依赖于源代码，可以由非开发人员执行。</li>
+<li>快速性：不必深入代码，可以快速完成测试。</li>
+</ul>
+<p>应用场景：</p>
+<ul>
+<li>功能性测试 (Functional Testing )：比如检查登录界面的输入是否正确地促使<br>用户登录，或者验证支付流程是否投照预定的流程走。</li>
+<li>用户接受测试 (User Acceptance Testing, UAT)：通过最終用户进行体验，以确保应用程序满足了用户需求。</li>
+</ul>
+<p>iOS 应用开发中的应用：在 iOS 应用开发中，两种测试策略的应用需要结合使用，以全面覆盖开发质量。</p>
+<ul>
+<li>白盒测试：在开发过程中，频繁进行单元测试和集成测试，确保每个模块、每个功能的代码严格按照设计文档实现，不含有逻辑错误和潜在风险。可以使用 Xcode 自带的 Testing 框架，配合相关测试库如 <code>Kiwi</code> 和 <code>Specta</code> 进行自动化测试。</li>
+<li>黑盒测试：在产品发布前，执行全面的功能性测试和验收测试，确保应用程序的各项功能满足用户需求和业务日标。这种情况下，可以编写详细的功能测试用例，并使用测试工具 如 <code>Appium</code> 进行自动化UI测试，或者仅仅通过手动测试来验证应用的功能是否正确。</li>
+</ul>
+<p>实际例子</p>
+<ol>
+<li>白盒测试示例：<ul>
+<li>假设你在开发一个用户登录功能。在白盒测试中，你需要编写的测试用例来确保</li>
+<li>正确校验用户名和密码输入（例如密码是否符合复杂度要求）。</li>
+<li>在不匹配的情况下，错误消息是否适当显示。</li>
+<li>服务器端响应是否被正确地处理并反馈给 U。</li>
+<li>使用xcode Sandbox 或者 App Code Signing 进行签名测试，可以确保应用在不同设备上正常运行。</li>
+</ul>
+</li>
+<li>黑盒测试示例：<ul>
+<li>对于用户注册流程，你可以设置多个黑盒测试用例来验证。</li>
+<li>用户注册后是否能够正常登录。</li>
+<li>是否限制了用户使用非常短或非常长的用户名。</li>
+<li>密码策略（比如密码的复杂性、长度要求）是否正确实施。</li>
+<li>页面上的所有输入字段是否正确处理了数据（比如不接收特殊字符）。</li>
+</ul>
+</li>
+</ol>
+<p><strong>第三题：描述一下 iOS 的内存管理机制以及你如何避免内存泄漏?</strong></p>
+<p>参考答案：iOS 的内存管理机制主要是通过堆内存和栈内存两种方式来管理的。栈内存是由编译器自动管理的，当一个方法完成后，其局部变量占用的内存就会被释放。而堆内存则需要开发者显式地分配和释放。</p>
+<ol>
+<li>使用自动引用计数（ARC）：ARC 是一种自动内存管理机制，它可以自动地插入 <code>retain、release</code> 和 <code>autorelease</code> 方法来管理对象的内存，大大减少了手动内存管理的工作。</li>
+<li>守内存管理规则：即遵循“谁创建、谁释放”的原则。如果你通过 alloc、copy、new 或者 retain 方法创建了一个对象，那么你就需要负责释放它。可以使用 <code>autorelease</code> 来自动释放对象。</li>
+<li>避免循环引用：循环引用会导致内存泄漏。可以使用 <code>weak</code> 引用来打破循环引用，或者使用 <code>block</code> 时使用 <code>weakify</code> 和 <code>strongify</code> 宏来防止循环引用。</li>
+<li>使用零强引用：在某些情况下，可以使用零强引用（zeroing weak reference）来避免野指针的出现。零强引用会在对象释放后自动置为 nil，避免了野指针的问题。</li>
+<li>使用合适的集合类：使用合适的集合类（如 NSArray、NSDictionary）来管理对象的引用，这样可以避免手动管理内存。</li>
+<li>使用 <code>autorelease pool</code>：在循环中创建大量的临时对象时，可以使用 <code>autorelease pool</code> 来减少内存的占用。可以使用 <code>@autoreleasepool</code> 块来创建自动释放池。</li>
+<li>使用 <code>Instruments</code> 调试工具：<code>Instruments</code> 是一款强大的性能分析和调试工具，可以帮助你找出内存泄漏的问题。可以使用 <code>Instruments</code> 来检测内存泄漏并定位问题的原因。</li>
+<li>使用类协议和委托模式，在设计类与类之问的关系时，使用委托模式可以避免对象之间形成复杂的内存关联。</li>
+<li>定期清理内存：避免在应用运行过程中让内存持续增长，可以通过代码检查和使用内存泄漏工具来自行检查和修复。</li>
+</ol>
+<p><strong>第四题：请解释一下什么是 MVC (Model-View-Controller) 设计模式，并说明在 iOS<br>开发中如何应用它。</strong><br>参考答案：</p>
+<p><strong>第五题：请简述你对 MVVM 架构模式的理解, 并谈谈你在实际项目中如何应用过它?</strong></p>
+<p>参考答案：</p>
+<p>第六题：请描述一下你在 iOS 开发中遇到的一个技术挑战，并说明你是如何解決这个问题的。<br>参考答案及解析：</p>
+<p>第七題：请您简单介绍一下您了解到的 iOS 架构模式，并结合实际项目经验，说明<br>您在项目中使用过哪些架构模式，以及它们如何提高项目的结构性和维护性。</p>
+</body></html>
+      </div>
+      
+      
+      
+    </div>
+    
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="joe"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">joe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangdongyang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangdongyang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/wf_pinbo@163.com" title="E-Mail → wf_pinbo@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/null" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备2021004873号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'vrpizpRNUt6dhU7r9k6mBGRy-gzGzoHsz',
+    appKey: '5lIjR9cSntdE9MvI7DIf55Xn',
+    placeholder: "ヾﾉ≧∀≦)o 来呀！吐槽一番吧！",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>
