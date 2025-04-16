@@ -1,14 +1,4 @@
----
-title: Flutter大型项目架构：UI设计系统实现（二）
-date: 2024-04-26 11:00:35
-tags:
----
-
-![](https://s2.loli.net/2024/04/26/lFsxrMQ8ojuPk4G.png)
-
 [上一篇](https://www.nnxkcloud.com/2024/04/21/flutter%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%EF%BC%9Aui%E8%AE%BE%E8%AE%A1%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%B8%80%EF%BC%89/) 介绍了 `UI` 设计系统实现中的原子级别如 `color`、`font`、`padding`、`radius` 等的管理方式，本篇主要来介绍设计系统中分子级别和细胞级别，也就是一些最基本和常见的 `widget`  和自定义的 `widget` 。它们在整个项目大量重复的去使用，来看看它们在 `UI` 设计系统是如何封装的呢。
-
-<!-- more -->
 
 我们在写 `UI` 界面的时候，经常会遇到很多 `widget` 它们长得很像，却又有一些细微的差别，比如说在很多页面都会出现的操作 `button`，有提交表单数据 `primary button`，也有其它交互的操作的 `secondary button` 等等，但是这些按钮之间只有背景颜色、显示文案及用户点击的回调的区别。
 
