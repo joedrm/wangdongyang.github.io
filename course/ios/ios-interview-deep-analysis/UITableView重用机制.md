@@ -264,7 +264,7 @@ UITableView 重用机制
     
     if (change) {
         change = NO;
-        return @[@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q"];
+        return @[@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K"];
     }
     else{
         change = YES;
